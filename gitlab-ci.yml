@@ -1,0 +1,7 @@
+stages: [test]
+
+smoke:
+  stage: test
+  image: alpine:3.20
+  script:
+    - echo "Runner OK in $(uname -a)"
