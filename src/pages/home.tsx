@@ -2,15 +2,22 @@ import Button from "../components/ui/button";
 
 const Home = () => {
   return (
-    <div className="container py-10">
-      <h1 className="text-3xl font-semibold mb-4">Welcome</h1>
-      <p className="mb-6">Test</p>
-      <div className="flex items-center gap-3">
-        <Button onClick={() => console.log("first")}>First</Button>
-        <Button variant="ghost" onClick={() => console.log("second")}>
-          Second
-        </Button>
-      </div>
+    <div className="container py-10 flex flex-col gap-4 ">
+      <Button variant="primary" size="small" className="">
+        Salvar
+      </Button>
+      <Button variant="secondary" size="medium">
+        Salvar
+      </Button>
+      <Button variant="destructive" size="large">
+        Salvar
+      </Button>
+      <Button variant="confirm" size="large">
+        Salvar
+      </Button>
+      <Button variant="primary" desactive size="large">
+        Salvar
+      </Button>
     </div>
   );
 };
