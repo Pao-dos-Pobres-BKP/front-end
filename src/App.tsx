@@ -2,7 +2,12 @@ import "./App.css";
 import Navigation from "./constant";
 
 function App() {
-  return <Navigation />;
+  return (
+    <div>
+      <div>Hello World!</div>
+      <Navigation />
+    </div>
+  );
 }
 
 export default App;
