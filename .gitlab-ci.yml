@@ -5,7 +5,6 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   DOCKER_BUILDKIT: "1"
   DOCKER_HOST: tcp://docker:2375
-
   ECR_URL: "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
   IMAGE: "$ECR_URL/$ECR_REPO"
 
@@ -17,15 +16,25 @@ build_and_push:
       alias: docker
       command: ["--mtu=1450"]
   before_script:
-    - apk add --no-cache aws-cli
+    - apk add --no-cache aws-cli jq
     - aws ecr get-login-password --region "$AWS_DEFAULT_REGION" | docker login --username AWS --password-stdin "$ECR_URL"
     - docker system prune -af || true
     - docker builder prune -af || true
     - docker image prune -af || true
   script:
-    - docker build --build-arg VITE_API_BASE_URL="$VITE_API_BASE_URL" --build-arg VITE_BASE_PATH="/fe/" -t "$IMAGE:$CI_COMMIT_SHORT_SHA" -t "$IMAGE:latest" -f Dockerfile .
-    - docker push "$IMAGE:$CI_COMMIT_SHORT_SHA"
-    - docker push "$IMAGE:latest"
+    - set -e
+    - export IMAGE_TAG="$CI_COMMIT_SHORT_SHA"
+    - docker build --build-arg VITE_API_BASE_URL="$VITE_API_BASE_URL" --build-arg VITE_BASE_PATH="/fe/" -t "$IMAGE:$IMAGE_TAG" -f Dockerfile .
+    - docker push "$IMAGE:$IMAGE_TAG"
+    - aws ecr describe-images --repository-name "$ECR_REPO" --image-ids imageTag="$IMAGE_TAG" --query 'imageDetails[0].imageDigest' --output text > image_digest.txt
+    - echo "$IMAGE_TAG" > image_tag.txt
+    - echo "$IMAGE@$(cat image_digest.txt)" > image_ref_immutable.txt
+  artifacts:
+    when: always
+    paths:
+      - image_tag.txt
+      - image_digest.txt
+      - image_ref_immutable.txt
   only:
     - main
     - master
@@ -43,6 +52,7 @@ deploy_to_github:
     - git config --global user.email "ci-bot@your-org"
     - git config --global user.name "GitLab CI"
   script:
+    - set -e
     - git clone --mirror "$CI_REPOSITORY_URL" mirror.git
     - cd mirror.git
     - git remote add github "$GITHUB_REPO_SSH"
