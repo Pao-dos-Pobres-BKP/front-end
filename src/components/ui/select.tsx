@@ -59,9 +59,9 @@ export const Select: React.FC<SelectProps> = ({
     const selectedLabel = options.find(o => o.value === selected)?.label;
 
     const baseContainer = "relative";
-    const baseButton = "flex items-center justify-between bg-white border border-gray-300 rounded-[10px] shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-500 transition duration-150";
+    const baseButton = "flex items-center justify-between border border-gray-300 rounded-[10px] shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-500 transition duration-150";
     const baseButtonOpen = "ring-2 ring-primary-500";
-    const baseButtonDisabled = "bg-gray-100 text-gray-400 cursor-not-allowed";
+    const baseButtonDisabled = "bg-gray-200 text-gray-400 cursor-not-allowed";
     const baseIcon = "text-gray-400 transition-transform";
     const baseIconOpen = "rotate-180";
     const baseList = "absolute z-10 mt-1 bg-white border border-gray-200 rounded-[10px] shadow-lg max-h-60 overflow-y-auto py-1";
