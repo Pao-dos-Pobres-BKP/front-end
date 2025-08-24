@@ -6,7 +6,7 @@ import { ROUTES } from "./routes";
 
 const Navigation = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.VITE_BASE_PATH || "/"}>
       <Routes>
         <Route element={<AppShell />} path="/">
           <Route path={ROUTES.home} element={<Home />} />
