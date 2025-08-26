@@ -1,8 +1,55 @@
 # Pão dos Pobres Frontend
 
-# Documentação do Projeto
+Frontend da aplicação Pão dos Pobres, desenvolvido com React, TypeScript, Vite e Tailwind CSS.
 
-Este projeto utiliza React, TypeScript, Vite e Tailwind CSS. Abaixo está uma explicação de cada pasta e arquivo principal, além de instruções para rodar e desenvolver o projeto.
+## Pré-requisitos
+
+Antes de começar, certifique-se de ter instalado em sua máquina:
+
+- **Node.js** (versão 18 ou superior) - [Download aqui](https://nodejs.org/)
+- **npm** (vem com o Node.js) ou **yarn** como gerenciador de pacotes
+- **Git** para controle de versão
+
+Para verificar se possui as versões corretas instaladas:
+
+```bash
+node --version  # deve retornar v18.x.x ou superior
+npm --version   # deve retornar uma versão recente
+```
+
+## Como rodar o projeto
+
+1. **Clone o repositório:**
+
+   ```bash
+   git clone <url-do-repositorio>
+   cd front-end
+   ```
+
+2. **Instale as dependências:**
+
+   ```bash
+   npm install
+   ```
+
+3. **Rode o projeto em modo desenvolvimento:**
+
+   ```bash
+   npm run dev
+   ```
+
+   O projeto estará disponível em `http://localhost:15570`
+
+4. **Para build de produção:**
+
+   ```bash
+   npm run build
+   ```
+
+5. **Para visualizar o build de produção:**
+   ```bash
+   npm run preview
+   ```
 
 ## Estrutura de Pastas e Arquivos
 
@@ -31,32 +78,39 @@ Este projeto utiliza React, TypeScript, Vite e Tailwind CSS. Abaixo está uma ex
 - **vite.config.ts**: Configuração do Vite.
 - **eslint.config.js**: Configuração do ESLint.
 
-## Como rodar o projeto
+## Scripts Disponíveis
 
-1. Instale as dependências:
-   ```bash
-   npm install
-   ```
-2. Rode o projeto em modo desenvolvimento:
-   ```bash
-   npm run dev
-   ```
-3. Para build de produção:
-   ```bash
-   npm run build
-   ```
+- `npm run dev` - Inicia o servidor de desenvolvimento
+- `npm run build` - Gera build de produção
+- `npm run preview` - Visualiza o build de produção localmente
+- `npm run lint` - Executa verificação de código com ESLint
+- `npm run format` - Formata o código com Prettier
 
-## Observações
-- Edite apenas arquivos dentro de `src/` para modificar o funcionamento da aplicação.
-- Os arquivos de configuração (`*.config.js`, `tsconfig*.json`, etc.) normalmente não precisam ser alterados, exceto para ajustes avançados.
-- Para adicionar novas páginas, crie arquivos em `src/pages/` e configure as rotas em `src/constant/routes.ts`.
-- Componentes reutilizáveis devem ser criados em `src/components/ui/`.
-- Para estilos, utilize as classes do Tailwind CSS.
+## Desenvolvimento
 
----
+### Adicionando Novas Páginas
 
-Se tiver dúvidas, consulte a documentação oficial das ferramentas utilizadas:
-- [React](https://react.dev/)
-- [Vite](https://vitejs.dev/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [TypeScript](https://www.typescriptlang.org/)
+1. Crie um arquivo em `src/pages/` (ex: `nova-pagina.tsx`)
+2. Adicione a rota em `src/constant/routes.ts`
+3. Configure a rota no roteador da aplicação
+
+### Criando Componentes
+
+- **Componentes reutilizáveis**: `src/components/ui/`
+- **Componentes de layout**: `src/components/layout/`
+- **Hooks personalizados**: `src/hooks/`
+
+### Estilos
+
+- Utilize classes do **Tailwind CSS** para estilização
+- Estilos globais em `src/index.css` e `src/App.css`
+
+## Documentação e Recursos
+
+Para aprender mais sobre as tecnologias utilizadas:
+
+- [React](https://react.dev/) - Biblioteca para interfaces de usuário
+- [TypeScript](https://www.typescriptlang.org/) - JavaScript com tipagem estática
+- [Vite](https://vitejs.dev/) - Build tool rápida para desenvolvimento
+- [Tailwind CSS](https://tailwindcss.com/) - Framework CSS utility-first
+- [React Router](https://reactrouter.com/) - Roteamento para React
