@@ -66,7 +66,7 @@ const navBtnBase = "h-7 w-7 p-0 select-none rounded-md bg-transparent hover:bg-s
           defaultClassNames.month_caption
         ),
         dropdowns: cn(
-          "w-full flex items-center text-sm font-medium justify-center h-(--cell-size) gap-1.5",
+          "w-full flex items-center text-sm font-medium justify-center h-(--cell-size) gap-1.5 text-black",
           defaultClassNames.dropdowns
         ),
         dropdown_root: cn(
@@ -90,7 +90,7 @@ const navBtnBase = "h-7 w-7 p-0 select-none rounded-md bg-transparent hover:bg-s
             "text-black rounded-md flex-1 font-normal text-[0.8rem] select-none",
           defaultClassNames.weekday
         ),
-        week: cn("flex w-full mt-2", defaultClassNames.week),
+        week: cn("flex w-full mt-2 gap-2", defaultClassNames.week),
         week_number_header: cn(
           "select-none w-(--cell-size)",
           defaultClassNames.week_number_header
@@ -200,12 +200,12 @@ function CalendarDayButton({
     className={cn(
         "flex aspect-square size-auto w-full min-w-(--cell-size) p-0",
         "bg-transparent border border-slate-300 text-black",
-        "hover:bg-slate-100",
-        "data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground",
+        "hover:bg-gray-200 hover:text-black",
+        "data-[selected-single=true]:bg-white data-[selected-single=true]:text-black data-[selected-single=true]:border-[#CBD5E1]",
         "data-[range-middle=true]:bg-accent data-[range-middle=true]:text-accent-foreground",
         "data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground",
         "data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground",
-        "group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-ring/50 group-data-[focused=true]/day:ring-[3px]",
+        "group-data-[focused=true]/day:border-[#CBD5E1] group-data-[focused=true]/day:ring-[#000] group-data-[focused=true]/day:ring-1",
         "data-[range-end=true]:rounded-md data-[range-end=true]:rounded-r-md data-[range-middle=true]:rounded-none data-[range-start=true]:rounded-md data-[range-start=true]:rounded-l-md",
         "[&>span]:text-xs [&>span]:opacity-70",
         defaultClassNames.day,

@@ -2,7 +2,7 @@
 
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
-import { Calendar as CalendarIcon } from "lucide-react"
+import { Calendar as CalendarIcon, ChevronDownIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import Button from "@/components/ui/button"
@@ -28,17 +28,14 @@ export function DatePicker({
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant="primary"
-          data-empty={!value}
-          className={cn(
-            "w-[280px] justify-start text-left font-normal",
-            "data-[empty=true]:text-muted-foreground",
-            "bg-transparent border border-[var(--color-border)] hover:bg-[var(--color-components)]",
-            className
-          )}
+        variant="secondary"
+        size="medium"
+        data-empty={!value}
+        className={cn("justify-between", className)}
         >
-          <CalendarIcon className="mr-2 h-4 w-4" />
-          {value ? format(value, "P", { locale: ptBR }) : <span>{placeholder}</span>}
+        <CalendarIcon className="mr-2 h-4 w-4" />
+        {value ? format(value, "P", { locale: ptBR }) : <span>{placeholder}</span>}
+        <ChevronDownIcon className="ml-2 h-4 w-4 text-muted-foreground" />
         </Button>
       </PopoverTrigger>
 
