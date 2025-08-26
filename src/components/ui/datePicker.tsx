@@ -16,26 +16,30 @@ export interface DatePickerProps {
   className?: string
   fromYear?: number
   toYear?: number
+  buttonVariant?: React.ComponentProps<typeof Button>["variant"]
+  buttonSize?: React.ComponentProps<typeof Button>["size"]
 }
 
 export function DatePicker({
   value,
   onChange,
   placeholder = "Selecione uma data",
-  className
+  className,
+  buttonVariant,
+  buttonSize,
 }: DatePickerProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
-        variant="secondary"
-        size="medium"
-        data-empty={!value}
-        className={cn("justify-between", className)}
+          variant={buttonVariant}
+          size={buttonSize}
+          data-empty={!value}
+          className={cn("justify-between", className)}
         >
-        <CalendarIcon className="mr-2 h-4 w-4" />
-        {value ? format(value, "P", { locale: ptBR }) : <span>{placeholder}</span>}
-        <ChevronDownIcon className="ml-2 h-4 w-4 text-muted-foreground" />
+          <CalendarIcon className="mr-2 h-4 w-4" />
+          {value ? format(value, "P", { locale: ptBR }) : <span>{placeholder}</span>}
+          <ChevronDownIcon className="ml-2 h-4 w-4 text-muted-foreground" />
         </Button>
       </PopoverTrigger>
 
