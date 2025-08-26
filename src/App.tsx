@@ -4,7 +4,7 @@ import Navigation from "./constant";
 function App() {
   return (
     <div>
-      <div>Hello World!</div>
+      {/* NavBar */}
       <Navigation />
     </div>
   );
