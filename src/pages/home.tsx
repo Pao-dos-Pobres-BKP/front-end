@@ -1,9 +1,9 @@
-import Button from "../components/ui/button";
+import { Tabs } from "@/components/layout/tabs";
 
 const Home = () => {
   return (
     <div className="container py-10 flex flex-col gap-4 ">
-      <Button variant="primary" size="small" className="">
+      {/* <Button variant="primary" size="small" className="">
         Salvar
       </Button>
       <Button variant="secondary" size="medium">
@@ -17,7 +17,9 @@ const Home = () => {
       </Button>
       <Button variant="primary" desactive size="large">
         Salvar
-      </Button>
+      </Button> */}
+
+      <Tabs tabs={["Usuário", "Senha"]} />
     </div>
   );
 };
