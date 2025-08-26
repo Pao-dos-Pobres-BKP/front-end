@@ -23,7 +23,7 @@ function Calendar({
 }) {
   const defaultClassNames = getDefaultClassNames()
 
-const navBtnBase = "h-7 w-7 p-0 select-none rounded-md bg-transparent hover:bg-slate-100 text-black"
+  const navBtnBase = "h-7 w-7 p-0 select-none rounded-md bg-transparent hover:bg-slate-100 text-black"
 
   return (
     <DayPicker
@@ -70,7 +70,7 @@ const navBtnBase = "h-7 w-7 p-0 select-none rounded-md bg-transparent hover:bg-s
           defaultClassNames.dropdowns
         ),
         dropdown_root: cn(
-            "relative border border-slate-300 rounded-md has-focus:border-ring shadow-xs has-focus:ring-ring/50 has-focus:ring-[3px]",
+          "relative border border-slate-300 rounded-md has-focus:border-ring shadow-xs has-focus:ring-ring/50 has-focus:ring-[3px]",
           defaultClassNames.dropdown_root
         ),
         dropdown: cn(
@@ -87,7 +87,7 @@ const navBtnBase = "h-7 w-7 p-0 select-none rounded-md bg-transparent hover:bg-s
         table: "w-full border-collapse",
         weekdays: cn("flex", defaultClassNames.weekdays),
         weekday: cn(
-            "text-black rounded-md flex-1 font-normal text-[0.8rem] select-none",
+          "text-black rounded-md flex-1 font-normal text-[0.8rem] select-none",
           defaultClassNames.weekday
         ),
         week: cn("flex w-full mt-2 gap-2", defaultClassNames.week),
@@ -195,9 +195,9 @@ function CalendarDayButton({
 
   return (
     <Button
-    ref={ref}
-    variant={buttonVariant}
-    className={cn(
+      ref={ref}
+      variant={buttonVariant}
+      className={cn(
         "flex aspect-square size-auto w-full min-w-(--cell-size) p-0",
         "bg-transparent border border-slate-300 text-black",
         "hover:bg-gray-200 hover:text-black",
@@ -210,7 +210,7 @@ function CalendarDayButton({
         "[&>span]:text-xs [&>span]:opacity-70",
         defaultClassNames.day,
         className
-    )}
+      )}
       data-day={day.date.toLocaleDateString()}
       data-selected-single={
         modifiers.selected &&
