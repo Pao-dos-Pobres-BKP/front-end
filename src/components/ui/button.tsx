@@ -61,7 +61,7 @@ EXEMPLOS:
 <Button variant="primary" size="medium">Salvar</Button>
 <Button variant="outline" size="large">Cancelar</Button>
 <Button variant="secondary" size="small"> Cancelar</Button>
-<Button variant="destructive" size="large" >Excluir</Button>
+<Button variant="destructive" size="large">Excluir</Button>
 
 
 Se quiser desativar o botão, use a prop `desactive`:

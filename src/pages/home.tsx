@@ -1,3 +1,4 @@
+import { Progress } from "../components/ui/progress";
 import Button from "../components/ui/button";
 
 const Home = () => {
@@ -18,6 +19,7 @@ const Home = () => {
       <Button variant="primary" desactive size="large">
         Salvar
       </Button>
+      <Progress value={30} variant="blue" size="full" />
     </div>
   );
 };
