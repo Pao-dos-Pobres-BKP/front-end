@@ -1,27 +1,21 @@
 import * as React from "react";
 import * as ProgressPrimitive from "@radix-ui/react-progress";
-import { cva, type VariantProps } from "class-variance-authority"; // Importar cva
-
+import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-// --- Variantes para o elemento Root (a barra de fundo) ---
-const progressVariants = cva(
-  // Classes base que se aplicam a todas as variantes
-  "relative w-full overflow-hidden rounded-full bg-[#64748B33]",
-  {
-    variants: {
-      size: {
-        small: "h-1",
-        medium: "h-2",
-        large: "h-4",
-        full: "h-4 w-full",
-      },
+const progressVariants = cva("relative w-full overflow-hidden rounded-full bg-[#64748B33]", {
+  variants: {
+    size: {
+      small: "h-1",
+      medium: "h-2",
+      large: "h-4",
+      full: "h-4 w-full",
     },
-    defaultVariants: {
-      size: "full",
-    },
-  }
-);
+  },
+  defaultVariants: {
+    size: "full",
+  },
+});
 
 const indicatorVariants = cva("h-full w-full flex-1 transition-all", {
   variants: {
