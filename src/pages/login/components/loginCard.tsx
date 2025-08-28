@@ -1,6 +1,6 @@
 import logoHorizontal from "../../../assets/logo-horizontal.png";
 
-const LoginCard = ({children}: {children: React.ReactNode}) => {
+function LoginCard({children}: {children: React.ReactNode}) {
   return (
     <div
       className="bg-[#D2D2D2E0] rounded-lg shadow-lg opacity-100 
