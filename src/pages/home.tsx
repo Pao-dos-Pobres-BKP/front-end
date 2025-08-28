@@ -19,7 +19,10 @@ const Home = () => {
       <Button variant="primary" desactive size="large">
         Salvar
       </Button>
-      <Progress value={30} variant="blue" size="full" />
+      <Progress value={100} />
+      <Progress value={75} variant="lightBlue" size="small" />
+      <Progress value={50} variant="cian" size="medium" />
+      <Progress value={25} />
     </div>
   );
 };

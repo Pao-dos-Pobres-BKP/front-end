@@ -20,9 +20,9 @@ const progressVariants = cva("relative w-full overflow-hidden rounded-full bg-[#
 const indicatorVariants = cva("h-full w-full flex-1 transition-all", {
   variants: {
     variant: {
-      blue: "bg-[#026E98]", // Cor azul
-      green: "bg-green-500", // Cor verde
-      red: "bg-red-500", // Cor vermelha
+      blue: "bg-[linear-gradient(90deg,#026E98,#005172)]",
+      lightBlue: "bg-[#026E98]",
+      cian: "bg-[#00D1D3]",
     },
   },
   defaultVariants: {
@@ -64,8 +64,8 @@ porcentagem de preenchimento (de 0 a 100). Nesse Molde:
 
 EXEMPLOS:
 <Progress value={75} />
-<Progress value={30} variant="green" size="small" />
-<Progress value={90} variant="red" size="large" />
+<Progress value={30} variant="blue" size="small" />
+<Progress value={90} variant="lightBlue" size="large" />
 
 Se precisar botar mais coisa como uma margem, tu pode usar a prop className:
 <Progress value={50} className="mt-4" />
