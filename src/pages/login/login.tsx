@@ -1,4 +1,6 @@
-import bgLogin from "../assets/bg-login.png";
+import bgLogin from "../../assets/bg-login.png";
+import LoginCard from "./components/loginCard";
+import LoginContent from "./components/loginContent";
 
 const Login = () => {
   return (
@@ -11,9 +13,9 @@ const Login = () => {
       />
       {/* Conteúdo da página */}
       <div className="relative z-10 w-full h-full flex items-center justify-center px-4">
-        <div className="text-white text-center">
-          <h1 className="text-3xl font-semibold mb-4">Página de Login</h1>
-        </div>
+        <LoginCard>
+          <LoginContent />
+        </LoginCard>
       </div>
     </div>
   );
