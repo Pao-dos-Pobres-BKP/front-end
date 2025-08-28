@@ -25,7 +25,7 @@ export default tseslint.config([
         {
           patterns: [
             {
-              group: ["../../*", "../../../*", "../../../../*"],
+              group: ["**/../../*"],
               message:
                 "Use absolute imports (@/*) instead of deep relative imports. Max allowed: ../",
             },
