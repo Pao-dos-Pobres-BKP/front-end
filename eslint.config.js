@@ -19,5 +19,20 @@ export default tseslint.config([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["../../*", "../../../*", "../../../../*"],
+              message:
+                "Use absolute imports (@/*) instead of deep relative imports. Max allowed: ../",
+            },
+          ],
+        },
+      ],
+    },
+    ignores: ["dist", "node_modules"],
   },
 ]);
