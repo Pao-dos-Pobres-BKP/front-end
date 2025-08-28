@@ -1,3 +1,4 @@
+import { Avatar } from "@/components/ui/avatar";
 import Button from "../components/ui/button";
 
 const Home = () => {
@@ -17,7 +18,10 @@ const Home = () => {
       </Button>
       <Button variant="primary" desactive size="large">
         Salvar
-      </Button>
+        </Button>
+    <Avatar imgUrl="https://github.com/arturbschultz.png" size="small"/>    
+    <Avatar imgUrl="https://github.com/arturbschultz.png"/>    
+    <Avatar imgUrl="https://github.com/arturbschultz.png" size="large"/>    
     </div>
   );
 };
