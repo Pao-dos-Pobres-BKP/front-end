@@ -14,7 +14,7 @@ const Textarea = React.forwardRef<
         "border border-gray-300 shadow-sm",
         "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-500",
         "disabled:cursor-not-allowed disabled:opacity-50",
-        "!rounded-xl",
+        "rounded-lg",
         className
       )}
       ref={ref}
