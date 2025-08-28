@@ -69,12 +69,14 @@ export function Badge({
     content = count > maxCount ? `${maxCount}+` : count.toString()
   }
 
+  const isCounterCircle =
+    shape === "counter" && typeof count === "number" && count <= maxCount
+
   return (
     <span
       className={cn(
         badgeVariants({ variant, size, shape, truncate }),
-        leftIcon && children ? "gap-1.5" : "",
-        rightIcon && children ? "gap-1.5" : "",
+        isCounterCircle ? "rounded-full aspect-square px-0 py-0 min-w-[24px]" : "",
         isIconOnly ? "inline-flex items-center justify-center" : "",
         className
       )}
@@ -83,9 +85,7 @@ export function Badge({
       {...props}
     >
       {leftIcon ? <span className="shrink-0 inline-flex">{leftIcon}</span> : null}
-      {content ? (
-        <span className={truncate ? "min-w-0" : undefined}>{content}</span>
-      ) : null}
+      {content ? <span className={truncate ? "min-w-0" : undefined}>{content}</span> : null}
       {rightIcon ? <span className="shrink-0 inline-flex">{rightIcon}</span> : null}
     </span>
   )
