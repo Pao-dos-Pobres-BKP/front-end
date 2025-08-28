@@ -17,12 +17,12 @@ const progressVariants = cva("relative w-full overflow-hidden rounded-full bg-[#
   },
 });
 
-const indicatorVariants = cva("h-full w-full flex-1 transition-all", {
+const indicatorVariants = cva("h-full w-full flex-1 transition-all rounded-full", {
   variants: {
     variant: {
       blue: "bg-[linear-gradient(90deg,#026E98,#005172)]",
-      lightBlue: "bg-[#026E98]",
-      cian: "bg-[#00D1D3]",
+      lightBlue: "bg-[var(--color-brand-light)]",
+      cian: "bg-[var(--color-components-2)]",
     },
   },
   defaultVariants: {
