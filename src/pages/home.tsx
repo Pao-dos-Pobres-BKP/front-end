@@ -21,10 +21,11 @@ const Home = () => {
         Salvar
       </Button>
 
-      <Tabs tabs={["Usuário", "Senha"]}>
+      <Tabs tabs={["Usuário", "Senha"]} variant="secondary">
         <div>Conteúdo do Usuário</div>
         <div>Conteúdo da Senha</div>
       </Tabs>
+
       <Progress value={100} />
       <Progress value={75} variant="lightBlue" size="small" />
       <Progress value={50} variant="cian" size="medium" />
