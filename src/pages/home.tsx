@@ -21,6 +21,11 @@ const Home = () => {
         Salvar
       </Button>
 
+      <Tabs tabs={["Usuário", "Senha"]}>
+        <div>Conteúdo do Usuário</div>
+        <div>Conteúdo da Senha</div>
+      </Tabs>
+
       <Tabs tabs={["Usuário", "Senha"]} variant="secondary">
         <div>Conteúdo do Usuário</div>
         <div>Conteúdo da Senha</div>
