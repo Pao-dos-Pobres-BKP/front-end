@@ -11,7 +11,7 @@ export const Tabs = ({ tabs, children }: TabsProps) => {
 
   return (
     <div>
-      <div className="flex items-center bg-[var(--color-components)] p-1 rounded-[6px] mb-2">
+      <div className="flex items-center bg-[var(--color-components)] p-1 rounded-[6px] mb-2 w-fit">
         {tabs.map((tab, index) => (
           <button
             key={index}
@@ -28,7 +28,7 @@ export const Tabs = ({ tabs, children }: TabsProps) => {
         ))}
       </div>
 
-      <div className="w-full">{children[activeTab]}</div>
+      <div className="w-full flex flex-col items-start">{children[activeTab]}</div>
     </div>
   );
 };
