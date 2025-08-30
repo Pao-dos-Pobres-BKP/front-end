@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import type { ReactNode } from "react";
 import { UserContext } from "../contexts/UserContext";
 import type { RoleEnum } from "../contexts/UserContext";
 import type { User } from "../contexts/UserContext";
@@ -6,7 +7,11 @@ import type { UserContextType } from "../contexts/UserContext";
 import { jwtDecode } from "jwt-decode";
 import type { JWTTokenPayload } from "../types/JWTTokenPayload";
 
-export const UserProvider = () => {
+type UserProviderProps = {
+  children: ReactNode;
+};
+
+export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUserState] = useState<User | null>(null);
 
   useEffect(() => {
@@ -55,5 +60,5 @@ export const UserProvider = () => {
     logout,
   };
 
-  return <UserContext.Provider value={contextValue}></UserContext.Provider>;
+  return <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>;
 };
