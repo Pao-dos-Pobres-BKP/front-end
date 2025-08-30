@@ -35,11 +35,19 @@ export function PieChartComponent({
   }, {} as ChartConfig)
 
   return (
-    <Card className="bg-white text-black w-[365px] h-[374px] border border-black rounded-[10px]">
+    <Card
+      className="
+        bg-white text-black 
+        w-[343px] h-[374px] 
+        sm:w-[520px] sm:h-[440px] 
+        md:w-[1360px] md:h-[538px] 
+        border border-black rounded-[10px]
+      "
+    >
       <CardHeader className="justify-center">
         <div className="text-black text-sm font-bold text-align: center">{title}</div>
       </CardHeader>
-      <CardContent className="h-[650px]">
+      <CardContent className="md:w-[1340px] md:h-[393px] w-[343px] h-[374px] ">
         <ChartContainer config={chartConfig} className="h-full w-full">
           <PieChart>
             <ChartTooltip
