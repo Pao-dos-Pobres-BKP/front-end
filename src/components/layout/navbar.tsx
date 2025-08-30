@@ -6,7 +6,6 @@ import VectorIcon from "../../assets/Vector.svg?react";
 import DiscoverIcon from "../../assets/Discovery.svg?react";
 import UserIcon from "../../assets/User.svg?react";
 import ActivityIcon from "../../assets/Activity.svg?react";
-import { useAuth } from "../../hooks/useAuth";
 
 function Navbar() {
   const isAuthenticated = true;
@@ -46,7 +45,6 @@ function Navbar() {
           </NavLink>
         )}
 
-        {/* Links só aparecem se logado */}
         {isAuthenticated && (
           <>
             <NavLink to="/dashboard" className={getNavLinkClass}>
