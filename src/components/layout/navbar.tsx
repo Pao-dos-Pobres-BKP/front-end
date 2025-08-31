@@ -8,12 +8,17 @@ import DiscoverIcon from "../../assets/Discovery.svg?react";
 import UserIcon from "../../assets/User.svg?react";
 import ActivityIcon from "../../assets/Activity.svg?react";
 import { Menu, X } from "lucide-react";
+//import { useUser } from "../../hooks/useUser";
 
 function Navbar() {
-  const isAuthenticated = false;
   const [isOpen, setIsOpen] = useState(false);
 
-  // DADOS MOCKADOS DO USUÁRIO
+  //MUDAR AS LINHAS ABAIXO PARA QUANDO O AUTH ESTIVER PRONTO
+  //const { user } = useUser();
+  //const isAuthenticated = !!user;
+
+  // DADOS MOCKADOS DO USUÁRIO ENQUANTO AUTH NÃO ESTÁ PRONTA:
+  const isAuthenticated = false;
   const user = {
     name: "Bernardo Kirsch",
     avatarUrl: "https://i.pravatar.cc/40",
