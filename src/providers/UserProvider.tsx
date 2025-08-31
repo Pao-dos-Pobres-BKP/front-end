@@ -26,11 +26,14 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         } else {
           setUserState({
             id: decoded.id,
-            name: decoded.name,
+            fullname: decoded.fullname,
+            birthDate: decoded.birthDate,
             email: decoded.email,
-            avatarUrl: decoded.avatarUrl,
             accessToken: decoded.accessToken,
             role: decoded.role as RoleEnum,
+            gender: decoded.gender,
+            phone: decoded.phone,
+            cpf: decoded.cpf,
           });
         }
       } catch (err) {

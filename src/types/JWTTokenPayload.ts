@@ -1,11 +1,15 @@
 import type { RoleEnum } from "@/contexts/UserContext";
+import type { Gender } from "@/contexts/UserContext";
 
 export interface JWTTokenPayload {
   id: string;
+  fullname: string;
   email: string;
-  name: string;
+  birthDate: Date;
+  gender: Gender;
+  phone: string;
+  cpf: string;
   role: RoleEnum;
-  avatarUrl?: string;
   accessToken: string;
   exp: number;
   iat: number;

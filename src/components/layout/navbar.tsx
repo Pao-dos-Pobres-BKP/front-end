@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import LogoIcon from "../../assets/Logo.svg?react";
 import StarIcon from "../../assets/Star.svg?react";
@@ -6,9 +7,17 @@ import VectorIcon from "../../assets/Vector.svg?react";
 import DiscoverIcon from "../../assets/Discovery.svg?react";
 import UserIcon from "../../assets/User.svg?react";
 import ActivityIcon from "../../assets/Activity.svg?react";
+import { Menu, X } from "lucide-react";
 
 function Navbar() {
-  const isAuthenticated = true;
+  const isAuthenticated = false;
+  const [isOpen, setIsOpen] = useState(false);
+
+  // DADOS MOCKADOS DO USUÁRIO
+  const user = {
+    name: "Bernardo Kirsch",
+    avatarUrl: "https://i.pravatar.cc/40",
+  };
 
   const linkStyles = "flex items-center gap-2.5 px-4 py-2 rounded-3xl transition-colors";
   const getNavLinkClass = ({ isActive }: { isActive: boolean }) => {
@@ -20,53 +29,141 @@ function Navbar() {
   };
 
   return (
-    <div className="bg-[var(--color-components-2)] fixed top-0 left-0 w-full z-50 h-16">
-      <div className="px-7 flex justify-between items-center h-full text-[var(--color-components)]">
-        <div>
-          <Link to="/">
-            <LogoIcon className="h-12 w-auto fill-current" />
-          </Link>
-        </div>
+    <nav className="bg-[var(--color-components-2)] fixed top-0 left-0 w-full z-50 h-16 flex items-center shadow-md px-8">
+      <div className="flex-shrink-0">
+        <Link to="/">
+          <LogoIcon className="h-12 w-auto fill-current text-[var(--color-components)]" />
+        </Link>
+      </div>
 
-        <NavLink to="/" className={getNavLinkClass}>
-          <HomeIcon className="h-5 w-5 fill-current" />
-          <strong>Home</strong>
-        </NavLink>
-
-        <NavLink to="/campanhas" className={getNavLinkClass}>
-          <StarIcon className="h-5 w-5 fill-current" />
-          <strong>Campanhas</strong>
-        </NavLink>
-
-        {!isAuthenticated && (
-          <NavLink to="/login" className={getNavLinkClass}>
-            <strong>Login/Registre-se</strong>
-            <VectorIcon className="h-5 w-5 fill-current" />
+      {/*DESKTOP*/}
+      <div className="flex-grow flex justify-center">
+        <div className="hidden lg:flex items-center gap-4">
+          <NavLink to="/" className={getNavLinkClass}>
+            <HomeIcon className="h-5 w-5 fill-current" />
+            <strong>Home</strong>
           </NavLink>
-        )}
-
-        {isAuthenticated && (
-          <>
+          {isAuthenticated && (
             <NavLink to="/dashboard" className={getNavLinkClass}>
               <ActivityIcon className="h-5 w-5 fill-current" />
               <strong>Dashboard</strong>
             </NavLink>
-            <NavLink to="/doacao" className={getNavLinkClass}>
-              <DiscoverIcon className="h-5 w-5 fill-current" />
-              <strong>Comunicados</strong>
-            </NavLink>
-            <NavLink to="/doadores" className={getNavLinkClass}>
-              <UserIcon className="h-5 w-5 fill-current" />
-              <strong>Doadores</strong>
-            </NavLink>
-            <NavLink to="/perfil" className={getNavLinkClass}>
-              <VectorIcon className="h-5 w-5 fill-current" />
-              <strong>Profile</strong>
-            </NavLink>
-          </>
-        )}
+          )}
+          <NavLink to="/campanhas" className={getNavLinkClass}>
+            <StarIcon className="h-5 w-5 fill-current" />
+            <strong>Campanhas</strong>
+          </NavLink>
+          {isAuthenticated && (
+            <>
+              <NavLink to="/comunicados" className={getNavLinkClass}>
+                <DiscoverIcon className="h-5 w-5 fill-current" />
+                <strong>Comunicados</strong>
+              </NavLink>
+              <NavLink to="/doadores" className={getNavLinkClass}>
+                <UserIcon className="h-5 w-5 fill-current" />
+                <strong>Doadores</strong>
+              </NavLink>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+
+      <div className="flex-shrink-0">
+        {/*DESKTOP*/}
+        <div className="hidden lg:flex items-center">
+          {isAuthenticated ? (
+            <Link
+              to="/perfil"
+              className="flex items-center gap-3 px-4 py-2 rounded-3xl hover:bg-black/10 transition-colors max-w-40"
+            >
+              <img
+                src={user.avatarUrl}
+                alt={`Avatar de ${user.name}`}
+                className="h-8 w-8 rounded-full"
+              />
+              <strong className="text-[var(--color-components)] font-semibold ">{user.name}</strong>
+            </Link>
+          ) : (
+            <NavLink to="/login" className={getNavLinkClass}>
+              <strong>Login/Registre-se</strong>
+              <VectorIcon className="h-5 w-5 fill-current" />
+            </NavLink>
+          )}
+        </div>
+
+        <button onClick={() => setIsOpen(true)} className="lg:hidden p-2">
+          <Menu className="h-6 w-6 text-[var(--color-components)]" />
+        </button>
+      </div>
+
+      {/*MOBILE*/}
+      {isOpen && (
+        <div className="fixed inset-0 z-50 flex justify-end">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setIsOpen(false)}></div>
+          <div className="relative w-64 bg-[var(--color-components-2)] h-full shadow-lg p-6 flex flex-col gap-4">
+            <button onClick={() => setIsOpen(false)} className="absolute top-4 right-4">
+              <X className="h-6 w-6 text-[var(--color-components)]" />
+            </button>
+
+            {isAuthenticated && (
+              <div className="flex flex-col gap-3 text-left">
+                <div className="flex gap-3 text-left mb-2 max-w-45">
+                  <img
+                    src={user.avatarUrl}
+                    alt={`Avatar de ${user.name}`}
+                    className="h-8 w-8 rounded-full"
+                  />
+                  <strong className="text-[var(--color-components)] truncate font-semibold text-lg">
+                    {user.name}
+                  </strong>
+                </div>
+                <hr className="border-[var(--color-components)]" />
+              </div>
+            )}
+
+            <div className="flex flex-col gap-2">
+              <NavLink to="/" className={getNavLinkClass} onClick={() => setIsOpen(false)}>
+                <HomeIcon className="h-5 w-5 fill-current" />
+                <strong>Home</strong>
+              </NavLink>
+
+              <NavLink to="/campanhas" className={getNavLinkClass} onClick={() => setIsOpen(false)}>
+                <StarIcon className="h-5 w-5 fill-current" />
+                <strong>Campanhas</strong>
+              </NavLink>
+
+              {isAuthenticated && (
+                <>
+                  <NavLink
+                    to="/comunicados"
+                    className={getNavLinkClass}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <DiscoverIcon className="h-5 w-5 fill-current" />
+                    <strong>Notícias</strong>
+                  </NavLink>
+                  <NavLink
+                    to="/doadores"
+                    className={getNavLinkClass}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <UserIcon className="h-5 w-5 fill-current" />
+                    <strong>Doadores</strong>
+                  </NavLink>
+                </>
+              )}
+
+              {!isAuthenticated && (
+                <NavLink to="/login" className={getNavLinkClass} onClick={() => setIsOpen(false)}>
+                  <VectorIcon className="h-5 w-5 fill-current" />
+                  <strong>Login/Registre-se</strong>
+                </NavLink>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </nav>
   );
 }
 
