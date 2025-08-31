@@ -1,5 +1,6 @@
 import { Tabs } from "@/components/layout/tabs";
 import { Progress } from "../components/ui/progress";
+import { Avatar } from "@/components/ui/avatar";
 import Button from "../components/ui/button";
 
 const Home = () => {
@@ -35,6 +36,10 @@ const Home = () => {
       <Progress value={75} variant="lightBlue" size="small" />
       <Progress value={50} variant="cian" size="medium" />
       <Progress value={25} />
+
+      <Avatar imgUrl="https://github.com/arturbschultz.png" size="small"/>    
+      <Avatar imgUrl="https://github.com/arturbschultz.png"/>    
+      <Avatar imgUrl="https://github.com/arturbschultz.png" size="large"/>    
     </div>
   );
 };
