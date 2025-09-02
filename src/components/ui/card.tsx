@@ -1,4 +1,3 @@
-// React import not required with the current JSX runtime
 import cn from "../../utils/cn";
 import Button from "./button";
 import { Progress } from "./progress";
@@ -8,16 +7,15 @@ export type CampaignCardProps = {
     raised: number;
     goal: number;
     creatorName?: string;
-    // variant now supports three visual models requested from Figma
     variant?: "hero" | "profile" | "compact";
     actionLabel?: string;
     onAction?: () => void;
     className?: string;
-    // profile-specific props
+    // profile
     donorName?: string;
     donorEmail?: string;
     donationAmount?: number;
-    memberSince?: string; // e.g. 'DD/MM/AAAA' or year
+    memberSince?: string; //'DD/MM/AAAA' or year
     campaigns?: string[];
 };
 
@@ -33,8 +31,6 @@ export default function CampaignCard({
     goal,
     creatorName,
     variant = "hero",
-    actionLabel = "Doar",
-    onAction,
     className,
     donorName,
     donorEmail,
@@ -44,9 +40,7 @@ export default function CampaignCard({
 }: CampaignCardProps) {
     const percent = goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
 
-    // Render per variant requested in the Figma
     if (variant === "profile") {
-        // donor / profile card (middle example)
         return (
             <article className={cn("w-full bg-white border border-[#e6e8eb] rounded-2xl p-4", className)} role="group" aria-label={`Perfil do doador ${donorName ?? ""}`}>
                 <div>
@@ -58,13 +52,13 @@ export default function CampaignCard({
                         </div>
                         <div className="flex items-center justify-between gap-4 w-full">
                             <div>
-                                <div className="font-semibold text-[#034d6b]">{donorName ?? "Fulano De Tal"}</div>
-                                <div className="text-sm text-[#6b7280]">{donorEmail ?? "email@email.com"}</div>
+                                <div className="text-left font-semibold text-[#034d6b]">{donorName ?? "Fulano De Tal"}</div>
+                                <div className="text-sm font-semibold text-[#6b7280]">{donorEmail ?? "email@email.com"}</div>
                             </div>
 
                             <div className="text-right">
                                 <div className="text-left text-lg font-bold text-[#034d6b]">{donationAmount ? formatCurrency(donationAmount) : "+0,00"}</div>
-                                <div className="text-sm text-[#f68537]">para {title}</div>
+                                <div className="text-sm text-[#f68537] font-semibold">para {title}</div>
                             </div>
                         </div>
                     </div>
@@ -72,23 +66,23 @@ export default function CampaignCard({
                     <div className="flex-1">
 
 
-                        <div className="mt-3">
-                            <div className="flex items-center gap-3">
+                        <div className="mt-3 text-[#005172]">
+                            <div className="flex font-semibold items-center gap-3">
                                 <div>Quanto doou: </div>
                                 <div className="flex-1">
                                     <div className="rounded-full bg-[#e6e8eb] overflow-hidden">
                                         <Progress value={percent} variant="blue" size="large" />
                                     </div>
                                 </div>
-                                <div className="text-md font-bold text-[#6b7280]">{formatCurrency(goal)}</div>
+                                <div className="text-md font-bold ">{formatCurrency(goal)}</div>
                             </div>
 
-                            <div className="mt-3 text-sm text-[var(--color-text-muted)] w-full text-left">
-                                <div className="mt-1 font-bold">Campanhas:</div>
-                                <ul className="list-disc list-inside text-[#034d6b]">
-                                    {campaigns.slice(0, 3).map((c, i) => (<li key={i} className="text-sm">{c}</li>))}
+                            <div className="mt-3 font-semibold text-[var(--color-text-muted)] w-full text-left">
+                                <div className="mt-1 font-bold mb-1">Campanhas:</div>
+                                <ul className="list-disc list-inside">
+                                    {campaigns.slice(0, 3).map((c, i) => (<li key={i}>{c}</li>))}
                                 </ul>
-                                <div className="flex mt-2 items-center justify-between">
+                                <div className="flex mt-2 font-semibold items-center justify-between">
                                     <div>Membro desde: {memberSince ?? "DD/MM/AAAA"}</div>
                                     <div>
                                         <Button variant="secondary" size="small">Adicionar Dados</Button>
@@ -105,37 +99,39 @@ export default function CampaignCard({
     }
 
     if (variant === "compact") {
-        // compact horizontal card (bottom example)
         return (
             <article className={cn("w-full bg-white border border-[#e6e8eb] rounded-2xl p-3 flex items-center justify-between", className)} role="group" aria-label={`Card compacto ${title}`}>
                 <div className="flex items-center gap-3 min-w-0">
-                    <span className="inline-flex items-center justify-center h-6 w-6 text-[#034d6b]">♥</span>
+                    <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9.645 17.9101L9.638 17.9071L9.616 17.8951C9.48729 17.8243 9.35961 17.7516 9.233 17.6771C7.71081 16.7726 6.28827 15.71 4.989 14.5071C2.688 12.3601 0.25 9.17407 0.25 5.25007C0.25 2.32207 2.714 7.09512e-05 5.688 7.09512e-05C6.51475 -0.00397847 7.33178 0.178412 8.07832 0.533676C8.82486 0.888941 9.4817 1.40794 10 2.05207C10.5184 1.40781 11.1754 0.888729 11.9221 0.533459C12.6689 0.178188 13.4861 -0.00412905 14.313 7.09512e-05C17.286 7.09512e-05 19.75 2.32207 19.75 5.25007C19.75 9.17507 17.312 12.3611 15.011 14.5061C13.7117 15.709 12.2892 16.7716 10.767 17.6761C10.6404 17.7509 10.5127 17.8239 10.384 17.8951L10.362 17.9071L10.355 17.9111L10.352 17.9121C10.2436 17.9695 10.1227 17.9995 10 17.9995C9.87729 17.9995 9.75644 17.9695 9.648 17.9121L9.645 17.9101Z" fill="url(#paint0_linear_198_2670)" />
+                        <defs>
+                            <linearGradient id="paint0_linear_198_2670" x1="10" y1="0" x2="10" y2="17.9995" gradientUnits="userSpaceOnUse">
+                                <stop offset="0.427885" stop-color="#005172" />
+                                <stop offset="1" stop-color="#00D1D3" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
                     <div className="min-w-0">
-                        <div className="font-semibold text-[#034d6b] truncate">{title}</div>
-                        {creatorName && <div className="text-sm text-[#f68537]">{creatorName}</div>}
+                        <div className="font-semibold text-[#034d6b] truncate text-2xl">{title}</div>
+                        {creatorName && <div className="text-sm text-left font-semibold text-[#f68537]">{creatorName}</div>}
                     </div>
                 </div>
 
                 <div className="flex-1 mx-6">
                     <div className="flex items-center justify-end gap-4">
-                        <div className="text-lg font-bold text-[#034d6b]">{formatCurrency(raised)}</div>
-                        <div className="text-sm text-[#6b7280]">de {formatCurrency(goal)}</div>
+                        <div className="text-2xl font-bold text-[#034d6b]">{formatCurrency(raised)}</div>
+                        <div className="text-md text-[#6b7280]">de {formatCurrency(goal)}</div>
                     </div>
                     <div className="mt-2">
                         <div className="w-full rounded-full bg-[#e6e8eb] overflow-hidden">
-                            <Progress value={percent} variant="blue" size="small" />
+                            <Progress value={percent} variant="blue" size="medium" />
                         </div>
                     </div>
-                </div>
-
-                <div className="flex-shrink-0">
-                    <Button variant="secondary" size="small" onClick={onAction}>{actionLabel}</Button>
                 </div>
             </article>
         );
     }
 
-    // default: hero / large banner (top example)
     return (
         <article
             className={cn(
@@ -146,28 +142,21 @@ export default function CampaignCard({
             role="group"
             aria-label={`Card da campanha ${title}`}
         >
-            <div className="flex items-start gap-4 w-full">
-                <div className="flex-shrink-0 pt-1">
-                    <span className="inline-flex items-center justify-center h-8 w-8 text-[var(--color-brand)]">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                            <path d="M12 21s-7-4.5-9-7.5C-1 8 5 3 8 6c1 1.5 2 2.5 4 4 2-1.5 3-2.5 4-4 3-3 9 2 5 7.5C19 16.5 12 21 12 21z" fill="currentColor" />
-                        </svg>
-                    </span>
-                </div>
-
+            <div className="flex gap-4 w-full">
                 <div className="flex-1 min-w-0">
-                    <div className="flex flex-col md:flex-row md:items-start md:justify-between md:gap-4">
-                        <div className="min-w-0">
-                            <h3 className="text-2xl md:text-3xl font-semibold text-[#034d6b] leading-tight truncate">{title}</h3>
-                            {creatorName && <p className="mt-1 text-base text-[#f68537]">{creatorName}</p>}
+                    <div className="min-w-0">
+                        <div className="flex-shrink-0 pt-1 flex items-center gap-3 justify-center">
+                            <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9.645 17.9101L9.638 17.9071L9.616 17.8951C9.48729 17.8243 9.35961 17.7516 9.233 17.6771C7.71081 16.7726 6.28827 15.71 4.989 14.5071C2.688 12.3601 0.25 9.17407 0.25 5.25007C0.25 2.32207 2.714 7.09512e-05 5.688 7.09512e-05C6.51475 -0.00397847 7.33178 0.178412 8.07832 0.533676C8.82486 0.888941 9.4817 1.40794 10 2.05207C10.5184 1.40781 11.1754 0.888729 11.9221 0.533459C12.6689 0.178188 13.4861 -0.00412905 14.313 7.09512e-05C17.286 7.09512e-05 19.75 2.32207 19.75 5.25007C19.75 9.17507 17.312 12.3611 15.011 14.5061C13.7117 15.709 12.2892 16.7716 10.767 17.6761C10.6404 17.7509 10.5127 17.8239 10.384 17.8951L10.362 17.9071L10.355 17.9111L10.352 17.9121C10.2436 17.9695 10.1227 17.9995 10 17.9995C9.87729 17.9995 9.75644 17.9695 9.648 17.9121L9.645 17.9101Z" fill="url(#paint0_linear_198_2670)" />
+                            </svg>
+                            <h3 className="text-3xl font-semibold text-[#034d6b] leading-tight truncate">{title}</h3>
                         </div>
-
-                        <div className="mt-4 md:mt-0 md:text-right flex flex-col items-start md:items-end">
-                            <div className="flex items-baseline gap-3">
-                                <span className="text-2xl md:text-3xl font-bold text-[#034d6b]">{formatCurrency(raised)}</span>
-                                <span className="text-base text-[#6b7280]">de {formatCurrency(goal)}</span>
-                            </div>
-                            <span className="mt-1 text-base text-[#6b7280]">{percent}%</span>
+                        {creatorName && <p className="mt-1 text-base text-[#f68537] font-semibold"> por {creatorName}</p>}
+                    </div>
+                    <div className="mt-4 items-center flex flex-col">
+                        <div className="flex items-baseline gap-3">
+                            <span className="text-3xl font-bold text-[#034d6b]">{formatCurrency(raised)}</span>
+                            <span className="text-base text-[#6b7280]">de {formatCurrency(goal)}</span>
                         </div>
                     </div>
 
@@ -177,10 +166,6 @@ export default function CampaignCard({
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div className="mt-4 md:mt-0 md:ml-4 flex items-center gap-3">
-                <Button variant="secondary" size="small" onClick={onAction}>{actionLabel}</Button>
             </div>
         </article>
     );
