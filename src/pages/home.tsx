@@ -1,3 +1,6 @@
+import { Tabs } from "@/components/layout/tabs";
+import { Progress } from "../components/ui/progress";
+import { Avatar } from "@/components/ui/avatar";
 import Button from "../components/ui/button";
 
 const Home = () => {
@@ -18,6 +21,25 @@ const Home = () => {
       <Button variant="primary" desactive size="large">
         Salvar
       </Button>
+
+      <Tabs tabs={["Usuário", "Senha"]}>
+        <div>Conteúdo do Usuário</div>
+        <div>Conteúdo da Senha</div>
+      </Tabs>
+
+      <Tabs tabs={["Usuário", "Senha"]} variant="secondary">
+        <div>Conteúdo do Usuário</div>
+        <div>Conteúdo da Senha</div>
+      </Tabs>
+
+      <Progress value={100} />
+      <Progress value={75} variant="lightBlue" size="small" />
+      <Progress value={50} variant="cian" size="medium" />
+      <Progress value={25} />
+
+      <Avatar imgUrl="https://github.com/arturbschultz.png" size="small"/>    
+      <Avatar imgUrl="https://github.com/arturbschultz.png"/>    
+      <Avatar imgUrl="https://github.com/arturbschultz.png" size="large"/>    
     </div>
   );
 };
