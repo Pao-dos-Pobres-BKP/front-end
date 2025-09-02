@@ -1,6 +1,7 @@
 import cn from "../../utils/cn";
 import Button from "./button";
 import { Progress } from "./progress";
+import { useState } from "react";
 
 export type CampaignCardProps = {
     title: string;
@@ -39,12 +40,27 @@ export default function CampaignCard({
     campaigns = [],
 }: CampaignCardProps) {
     const percent = goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
+    const [detailsOpen, setDetailsOpen] = useState(true);
 
     if (variant === "profile") {
         return (
             <article className={cn("w-full bg-white border border-[#e6e8eb] rounded-2xl p-4", className)} role="group" aria-label={`Perfil do doador ${donorName ?? ""}`}>
                 <div>
-                    <div className="flex gap-4">
+                    <div
+                        className="flex gap-4 cursor-pointer relative"
+                        onClick={() => setDetailsOpen((v) => !v)}
+                        id="profile-card-header"
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                setDetailsOpen((v) => !v);
+                            }
+                        }}
+                        aria-expanded={detailsOpen}
+                        aria-controls="profile-card-details"
+                    >
                         <div>
                             <div className="h-12 w-12 rounded-full bg-[#00d1d3] flex items-center justify-center text-white font-semibold" aria-hidden>
                                 {donorName ? donorName.split(" ").map(s => s[0]).slice(0, 2).join("") : "U"}
@@ -61,13 +77,22 @@ export default function CampaignCard({
                                 <div className="text-sm text-[#f68537] font-semibold">para {title}</div>
                             </div>
                         </div>
+                        <div
+                            className={cn(
+                                "text-[#6b7280] transition-transform transform duration-200 h-5 w-5 content-center justify-center", detailsOpen ? "rotate-180" : "rotate-0")}>
+                            <svg width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </div>
                     </div>
 
-                    <div className="flex-1">
-
-
+                    <div
+                        className={cn("flex-1", !detailsOpen && "hidden")}
+                        id="profile-card-details"
+                        aria-hidden={!detailsOpen}
+                    >
                         <div className="mt-3 text-[#005172]">
-                            <div className="flex font-semibold items-center gap-3">
+                            <div className="flex font-semibold items-center gap-3  pt-3 border-t-1 border-gray-300">
                                 <div>Quanto doou: </div>
                                 <div className="flex-1">
                                     <div className="rounded-full bg-[#e6e8eb] overflow-hidden">
@@ -79,7 +104,7 @@ export default function CampaignCard({
 
                             <div className="mt-3 font-semibold text-[var(--color-text-muted)] w-full text-left">
                                 <div className="mt-1 font-bold mb-1">Campanhas:</div>
-                                <ul className="list-disc list-inside">
+                                <ul className="list-disc list-inside text-sm">
                                     {campaigns.slice(0, 3).map((c, i) => (<li key={i}>{c}</li>))}
                                 </ul>
                                 <div className="flex mt-2 font-semibold items-center justify-between">
