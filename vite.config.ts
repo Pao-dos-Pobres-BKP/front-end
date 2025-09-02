@@ -1,11 +1,14 @@
+/// <reference types="vitest/config" />
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
+import svgr from "vite-plugin-svgr"; // 1. Importe o plugin aqui
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  // 2. Adicione o svgr() à lista de plugins
+  plugins: [react(), svgr(), tailwindcss()],
   resolve: {
     alias: { "@": path.resolve(__dirname, "src") },
   },
@@ -24,6 +27,12 @@ export default defineConfig({
         assetFileNames: `[name].[ext]`,
       },
     },
+  },
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: ["./vitest-setup.ts"],
+    include: ["**/*.{test,spec}.{js,jsx,ts,tsx}"],
   },
   base: "./",
   server: {
