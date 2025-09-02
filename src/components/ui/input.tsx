@@ -29,8 +29,8 @@ const Input = ({
   };
 
   return (
-    <div className={fullWidth ? "w-full" : "w-80"}>
-      {label && (
+    <div className="w-full">
+      {label && ( 
         <label className={getLabelClasses()}>
           {label}
         </label>

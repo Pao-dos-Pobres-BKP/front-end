@@ -35,23 +35,25 @@ export default function Login() {
 
         <div className="mt-6 mx-auto w-full max-w-[420px] text-center">
           <form noValidate className="space-y-4">
-            <InputWithLabel
-              id="email"
-              labelText="E-mail"
-              placeholder="Digite seu e-mail"
-              type="email"
-            />
+            <div className="flex flex-col gap-3">
+              <InputWithLabel
+                id="email"
+                labelText="E-mail"
+                placeholder="Digite seu e-mail"
+                type="email"
+              />
 
-            <InputWithLabel
-              id="senha"
-              labelText="Senha"
-              placeholder="Digite sua senha"
-              type="password"
-              helperText={
-                <Link href="/esqueci-senha" variant="blue">
-                  Esqueceu sua senha?
-                </Link>
-              } />
+              <InputWithLabel
+                id="senha"
+                labelText="Senha"
+                placeholder="Digite sua senha"
+                type="password"
+                helperText={
+                  <Link href="/esqueci-senha" variant="blue">
+                    Esqueceu sua senha?
+                  </Link>
+                } />
+            </div>
 
             <div className="pt-2 flex flex-col gap-3">
               <Button type="button" variant="confirm" className="w-full">
