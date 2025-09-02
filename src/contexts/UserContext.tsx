@@ -1,0 +1,24 @@
+import { createContext } from "react";
+
+export type RoleEnum = "ADMIN" | "USER";
+export type Gender = "MALE" | "FEMALE" | "OTHER";
+
+export interface User {
+  id: string;
+  fullname: string;
+  email: string;
+  birthDate: Date;
+  gender: Gender;
+  phone: string;
+  cpf: string;
+  role: RoleEnum;
+  accessToken: string;
+}
+
+export interface UserContextType {
+  user: User | null;
+  setUser: (user: User | null) => void;
+  logout: () => void;
+}
+
+export const UserContext = createContext<UserContextType | undefined>(undefined);
