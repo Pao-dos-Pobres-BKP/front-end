@@ -3,9 +3,9 @@ import Navbar from "./navbar";
 
 const AppShell = () => {
   return (
-    <div className="min-h-dvh flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-grow pt-16">
+      <main className="flex-1 w-full">
         <Outlet />
       </main>
     </div>

@@ -9,6 +9,7 @@ import UserIcon from "../../assets/User.svg?react";
 import ActivityIcon from "../../assets/Activity.svg?react";
 import { Menu, X } from "lucide-react";
 import { useUser } from "../../hooks/useUser";
+import { NAVBAR_HEIGHT_CLASS, Z_INDEX } from "../../constant/layout";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,7 +28,9 @@ function Navbar() {
   };
 
   return (
-    <nav className="bg-[var(--color-components-2)] fixed top-0 left-0 w-full z-50 h-16 flex items-center shadow-md px-8">
+    <nav
+      className={`bg-[var(--color-components-2)] sticky top-0 w-full z-${Z_INDEX.NAVBAR} ${NAVBAR_HEIGHT_CLASS} flex items-center shadow-md px-8`}
+    >
       <div className="flex-shrink-0">
         <Link to="/">
           <LogoIcon className="h-12 w-auto fill-current text-[var(--color-components)]" />

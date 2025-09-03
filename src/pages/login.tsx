@@ -49,6 +49,7 @@ export default function Login() {
       console.log(user);
       navigate("/perfil");
     } catch (error) {
+      console.error(error);
       setApiError("Credenciais inválidas.");
     } finally {
       setIsLoading(false);
