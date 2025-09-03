@@ -28,17 +28,7 @@ export default defineConfig({
       },
     },
   },
-<<<<<<< HEAD
   base: process.env.VITE_BASE_PATH || "./",
-=======
-  test: {
-    globals: true,
-    environment: "jsdom",
-    setupFiles: ["./vitest-setup.ts"],
-    include: ["**/*.{test,spec}.{js,jsx,ts,tsx}"],
-  },
-  base: "./",
->>>>>>> e9279986746a3a227b0559a2e77efbeaa1d231c8
   server: {
     port: 15570,
     cors: true,
