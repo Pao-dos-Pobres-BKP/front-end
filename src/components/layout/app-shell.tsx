@@ -3,12 +3,11 @@ import Navbar from "./navbar";
 
 const AppShell = () => {
   return (
-    <div className="min-h-dvh flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      <Outlet />
-      <footer className="border-t py-6 text-center text-sm text-muted-foreground">
-        vite + react + tailwind
-      </footer>
+      <main className="flex-1 w-full">
+        <Outlet />
+      </main>
     </div>
   );
 };
