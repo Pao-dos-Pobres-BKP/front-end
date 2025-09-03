@@ -42,4 +42,4 @@ deploy_to_github:
     - git push --mirror github
   only:
     - main
-    - master
+    - master 
