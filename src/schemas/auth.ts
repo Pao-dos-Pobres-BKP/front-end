@@ -4,7 +4,7 @@ export const loginSchema = z.object({
   email: z
     .string()
     .nonempty({ message: "O email é obrigatório" })
-    .email({ message: "Formato de email inválido" }),
+    .email({ message: "Email inválido" }),
   password: z
     .string()
     .nonempty({ message: "A senha é obrigatória" })

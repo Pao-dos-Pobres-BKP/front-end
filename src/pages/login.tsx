@@ -7,6 +7,9 @@ import Divider from "@/components/ui/divider";
 import bgLogin from "@/assets/fundo-pp.png";
 import type { LoginInput } from "@/schemas/auth";
 import { loginSchema } from "@/schemas/auth";
+import { login } from "@/services/auth";
+import { useUser } from "@/hooks/useUser";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,14 +18,20 @@ export default function Login() {
     password: "",
   });
   const [errors, setErrors] = useState<Partial<Record<keyof LoginInput, string>>>({});
+  const [apiError, setApiError] = useState<string | null>(null);
+  const { setUser } = useUser();
+  const navigate = useNavigate();
+
   const handleChange = (field: keyof LoginInput) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((f) => ({ ...f, [field]: e.target.value }));
     setErrors((err) => ({ ...err, [field]: undefined }));
+    setApiError(null);
   };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setApiError(null);
 
-    // Validação Zod
     const result = loginSchema.safeParse(form);
     if (!result.success) {
       const fieldErrors: typeof errors = {};
@@ -33,9 +42,18 @@ export default function Login() {
       return;
     }
 
-    // Login
     setIsLoading(true);
+    try {
+      const user = await login(form);
+      setUser(user);
+      navigate("/perfil");
+    } catch (error) {
+      setApiError("Credenciais inválidas.");
+    } finally {
+      setIsLoading(false);
+    }
   };
+
   return (
     <div className="fixed inset-0 w-screen h-screen overflow-hidden">
       <div
@@ -83,16 +101,17 @@ export default function Login() {
                   value={form.password}
                   onChange={handleChange("password")}
                   error={errors.password}
-                  helperText={
-                    <Link href="/esqueci-senha" variant="blue">
-                      Esqueceu sua senha?
-                    </Link>
-                  }
                 />
+                <div className="flex space-between w-full text-sm justify-between items-center">
+                  <Link href="/esqueci-senha" variant="blue">
+                    Esqueceu sua senha?
+                  </Link>
+                  <div>{apiError && <p className=" text-sm text-red-600">{apiError}</p>}</div>
+                </div>
               </div>
 
               <div className="pt-2 flex flex-col gap-3">
-                <Button type="submit" variant="confirm" className="w-full">
+                <Button type="submit" variant="confirm" className="w-full" disabled={isLoading}>
                   {isLoading ? "Carregando..." : "Entrar"}
                 </Button>
 
@@ -107,6 +126,7 @@ export default function Login() {
                   variant="primary"
                   data-testid="btn-cadastrar"
                   className="w-full"
+                  onClick={() => navigate("/cadastro")}
                 >
                   Cadastre-se
                 </Button>

@@ -35,7 +35,6 @@ export function InputWithLabel({
         aria-invalid={hasError}
         aria-describedby={descriptorId}
         className="w-full h-11 sm:h-12"
-        error={error}
         {...inputProps}
       />
 
