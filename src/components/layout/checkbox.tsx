@@ -29,4 +29,4 @@ const Checkbox = ({ id, label }: { id: string; label: string }) => {
   );
 };
 
-export default Checkbox;
+export default Checkbox;

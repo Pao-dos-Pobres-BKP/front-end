@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
-import LogoIcon from "../../assets/Logo.svg?react";
-import StarIcon from "../../assets/Star.svg?react";
-import HomeIcon from "../../assets/Home.svg?react";
-import VectorIcon from "../../assets/Vector.svg?react";
-import DiscoverIcon from "../../assets/Discovery.svg?react";
-import UserIcon from "../../assets/User.svg?react";
-import ActivityIcon from "../../assets/Activity.svg?react";
+import LogoIcon from "@/assets/Logo.svg?react";
+import StarIcon from "@/assets/Star.svg?react";
+import HomeIcon from "@/assets/Home.svg?react";
+import VectorIcon from "@/assets/Vector.svg?react";
+import DiscoverIcon from "@/assets/Discovery.svg?react";
+import UserIcon from "@/assets/User.svg?react";
+import ActivityIcon from "@/assets/Activity.svg?react";
 import { Menu, X } from "lucide-react";
-import { useUser } from "../../hooks/useUser";
-import { NAVBAR_HEIGHT_CLASS, Z_INDEX } from "../../constant/layout";
+import { useUser } from "@/hooks/useUser";
+import { NAVBAR_HEIGHT_CLASS, Z_INDEX } from "@/constant/layout";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);

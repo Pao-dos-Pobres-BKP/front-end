@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "../../../components/ui/button";
-import Link from "../../../components/ui/link";
-import Input from "../../../components/ui/input";
-import Divider from "../../../components/ui/divider";
+import Button from "@/components/ui/button";
+import Link from "@/components/ui/link";
+import Input from "@/components/ui/input";
+import Divider from "@/components/ui/divider";
 import type { LoginInput } from "@/schemas/auth";
 import { loginSchema } from "@/schemas/auth";
 import { login } from "@/services/auth";

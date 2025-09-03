@@ -1,4 +1,4 @@
-import cn from "../../utils/cn";
+import cn from "@/utils/cn";
 import React, { useState } from "react";
 
 type TooltipPosition = 'top' | 'bottom' | 'left' | 'right';
