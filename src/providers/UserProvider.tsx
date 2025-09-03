@@ -13,7 +13,6 @@ type UserProviderProps = {
 
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUserState] = useState<User | null>(null);
-
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
@@ -21,15 +20,16 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         const decoded = jwtDecode<JWTTokenPayload>(token);
 
         if (decoded.exp * 1000 < Date.now()) {
-          console.warn("Expired token, logging out user.");
-          setUser(null);
+          console.warn("Token expirado, a remover o utilizador.");
+          localStorage.removeItem("authToken");
+          setUserState(null);
         } else {
           setUserState({
             id: decoded.id,
             fullname: decoded.fullname,
             birthDate: decoded.birthDate,
             email: decoded.email,
-            accessToken: decoded.accessToken,
+            accessToken: token,
             role: decoded.role as RoleEnum,
             gender: decoded.gender,
             phone: decoded.phone,
@@ -39,6 +39,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       } catch (err) {
         console.error("Token inválido:", err);
         localStorage.removeItem("authToken");
+        setUserState(null);
       }
     }
   }, []);
@@ -54,7 +55,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
   const logout = () => {
     localStorage.removeItem("authToken");
-    setUser(null);
+    setUserState(null);
   };
 
   const contextValue: UserContextType = {
