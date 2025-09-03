@@ -46,6 +46,7 @@ export default function Login() {
     try {
       const user = await login(form);
       setUser(user);
+      console.log(user);
       navigate("/perfil");
     } catch (error) {
       setApiError("Credenciais inválidas.");

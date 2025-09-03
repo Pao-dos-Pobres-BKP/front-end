@@ -8,21 +8,14 @@ import DiscoverIcon from "../../assets/Discovery.svg?react";
 import UserIcon from "../../assets/User.svg?react";
 import ActivityIcon from "../../assets/Activity.svg?react";
 import { Menu, X } from "lucide-react";
-//import { useUser } from "../../hooks/useUser";
+import { useUser } from "../../hooks/useUser";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  //MUDAR AS LINHAS ABAIXO PARA QUANDO O AUTH ESTIVER PRONTO
-  //const { user } = useUser();
-  //const isAuthenticated = !!user;
-
-  // DADOS MOCKADOS DO USUÁRIO ENQUANTO AUTH NÃO ESTÁ PRONTA:
-  const isAuthenticated = true;
-  const user = {
-    name: "Bernardo Kirsch",
-    avatarUrl: "https://i.pravatar.cc/40",
-  };
+  const { user } = useUser();
+  const isAuthenticated = !!user;
+  const avatarUrl = "https://i.pravatar.cc/40";
 
   const linkStyles = "flex items-center gap-2.5 px-4 py-2 rounded-3xl transition-colors";
   const getNavLinkClass = ({ isActive }: { isActive: boolean }) => {
@@ -82,11 +75,13 @@ function Navbar() {
               className="flex items-center gap-3 px-4 py-2 rounded-3xl hover:bg-black/10 transition-colors max-w-40"
             >
               <img
-                src={user.avatarUrl}
-                alt={`Avatar de ${user.name}`}
+                src={avatarUrl}
+                alt={`Avatar de ${user.fullname}`}
                 className="h-8 w-8 rounded-full"
               />
-              <strong className="text-[var(--color-components)] font-semibold ">{user.name}</strong>
+              <strong className="text-[var(--color-components)] font-semibold ">
+                {user.fullname}
+              </strong>
             </Link>
           ) : (
             <NavLink to="/login" className={getNavLinkClass}>
@@ -114,12 +109,12 @@ function Navbar() {
               <div className="flex flex-col gap-3 text-left">
                 <div className="flex gap-3 text-left mb-2 max-w-45">
                   <img
-                    src={user.avatarUrl}
-                    alt={`Avatar de ${user.name}`}
+                    src={avatarUrl}
+                    alt={`Avatar de ${user.fullname}`}
                     className="h-8 w-8 rounded-full"
                   />
                   <strong className="text-[var(--color-components)] truncate font-semibold text-lg">
-                    {user.name}
+                    {user.fullname}
                   </strong>
                 </div>
                 <hr className="border-[var(--color-components)]" />

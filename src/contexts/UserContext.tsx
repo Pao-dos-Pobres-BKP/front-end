@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-export type RoleEnum = "ADMIN" | "USER";
+export type RoleEnum = "ADMIN" | "DONOR";
 export type Gender = "MALE" | "FEMALE" | "OTHER";
 
 export interface User {
