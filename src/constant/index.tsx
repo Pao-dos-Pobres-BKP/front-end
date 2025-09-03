@@ -3,7 +3,7 @@ import Home from "../pages/home";
 import NotFound from "../pages/not-found";
 import AppShell from "../components/layout/app-shell";
 import { ROUTES } from "./routes";
-import Login from "@/pages/login";
+import Login from "@/pages/login/login";
 import Doacao from "@/pages/doacao";
 import Campanhas from "@/pages/campanhas";
 import Perfil from "@/pages/perfil";
