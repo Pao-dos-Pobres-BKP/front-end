@@ -1,13 +1,41 @@
-// pages/Login.tsx
 import Button from "../components/ui/button";
 import Link from "../components/ui/link";
 import { InputWithLabel } from "../components/ui/input-with-label";
-
+import { useState } from "react";
 import logoLogin from "@/assets/logo-login-pp.svg";
 import Divider from "@/components/ui/divider";
 import bgLogin from "@/assets/fundo-pp.png";
+import type { LoginInput } from "@/schemas/auth";
+import { loginSchema } from "@/schemas/auth";
 
 export default function Login() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [form, setForm] = useState<LoginInput>({
+    email: "",
+    password: "",
+  });
+  const [errors, setErrors] = useState<Partial<Record<keyof LoginInput, string>>>({});
+  const handleChange = (field: keyof LoginInput) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm((f) => ({ ...f, [field]: e.target.value }));
+    setErrors((err) => ({ ...err, [field]: undefined }));
+  };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Validação Zod
+    const result = loginSchema.safeParse(form);
+    if (!result.success) {
+      const fieldErrors: typeof errors = {};
+      for (const issue of result.error.issues) {
+        fieldErrors[issue.path[0] as keyof LoginInput] = issue.message;
+      }
+      setErrors(fieldErrors);
+      return;
+    }
+
+    // Login
+    setIsLoading(true);
+  };
   return (
     <div className="fixed inset-0 w-screen h-screen overflow-hidden">
       <div
@@ -35,13 +63,16 @@ export default function Login() {
           </div>
 
           <div className="mt-6 mx-auto w-full max-w-[420px] text-center">
-            <form noValidate className="space-y-4">
+            <form noValidate onSubmit={handleSubmit} className="space-y-4">
               <div className="flex flex-col gap-3">
                 <InputWithLabel
                   id="email"
                   labelText="E-mail"
                   placeholder="Digite seu e-mail"
                   type="email"
+                  value={form.email}
+                  onChange={handleChange("email")}
+                  error={errors.email}
                 />
 
                 <InputWithLabel
@@ -49,6 +80,9 @@ export default function Login() {
                   labelText="Senha"
                   placeholder="Digite sua senha"
                   type="password"
+                  value={form.password}
+                  onChange={handleChange("password")}
+                  error={errors.password}
                   helperText={
                     <Link href="/esqueci-senha" variant="blue">
                       Esqueceu sua senha?
@@ -58,8 +92,8 @@ export default function Login() {
               </div>
 
               <div className="pt-2 flex flex-col gap-3">
-                <Button type="button" variant="confirm" className="w-full">
-                  Entrar
+                <Button type="submit" variant="confirm" className="w-full">
+                  {isLoading ? "Carregando..." : "Entrar"}
                 </Button>
 
                 <Button type="button" variant="secondary" className="w-full">

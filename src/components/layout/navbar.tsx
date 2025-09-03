@@ -18,7 +18,7 @@ function Navbar() {
   //const isAuthenticated = !!user;
 
   // DADOS MOCKADOS DO USUÁRIO ENQUANTO AUTH NÃO ESTÁ PRONTA:
-  const isAuthenticated = false;
+  const isAuthenticated = true;
   const user = {
     name: "Bernardo Kirsch",
     avatarUrl: "https://i.pravatar.cc/40",
