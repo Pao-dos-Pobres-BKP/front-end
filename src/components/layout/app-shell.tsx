@@ -13,7 +13,7 @@ const AppShell = () => {
     } else {
       navigate("/perfil");
     }
-  }, [user]);
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
