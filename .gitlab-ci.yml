@@ -1,4 +1,4 @@
-stages: [deploy]
+stages: [build_and_push, deploy]
 
 variables:
   DOCKER_BUILDKIT: "1"
