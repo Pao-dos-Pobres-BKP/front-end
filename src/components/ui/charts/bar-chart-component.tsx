@@ -102,7 +102,7 @@ export function BarChartComponent({
             />
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+              content={<ChartTooltipContent hideLabel className="bg-white text-black border border-gray-200 rounded-md shadow-md"/>}
             />
             <Bar dataKey="doacoes" fill="#E8B931" radius={8} />
           </BarChart>

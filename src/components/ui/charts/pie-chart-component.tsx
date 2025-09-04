@@ -51,7 +51,7 @@ export function PieChartComponent({
         <ChartContainer config={chartConfig} className="h-full w-full">
           <PieChart>
             <ChartTooltip
-              content={<ChartTooltipContent hideLabel />}
+              content={<ChartTooltipContent hideLabel className="bg-white text-black border border-gray-200 rounded-md shadow-md" />}
             />
             <Pie
               data={data}

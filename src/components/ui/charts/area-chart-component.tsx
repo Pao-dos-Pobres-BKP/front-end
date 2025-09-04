@@ -71,7 +71,7 @@ export function AreaChartComponent({
             />
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent indicator="dot" hideLabel />}
+              content={<ChartTooltipContent indicator="dot" hideLabel className="bg-white text-black border border-gray-200 rounded-md shadow-md" />}
             />
             <Area
               dataKey="total"
