@@ -6,6 +6,8 @@
   line-height: 1.5;
   font-weight: 400;
 
+  --radius: 0.3rem;
+
   --color-background: #ffffff;
   --color-components: #005172;
   --color-components-2: #00d1d3;
@@ -13,6 +15,7 @@
   --color-brand-dark: #034d6b;
 
   --color-text-1: #efefef;
+  --color-text-2: #64748B;
   --color-text-brand: #00d1d3;
   --color-text-special: #bd48c9;
   --color-text-success: #24a254;
@@ -36,14 +39,12 @@
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 20rem;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--color-background);
-  color: var(--color-text-brand);
+  color: #005172;
   font-family: var(--font-family-primary);
   font-size: var(--font-size-body-m);
   font-weight: var(--font-weight-regular);
@@ -79,13 +80,14 @@ body {
   line-height: 120%;
 }
 
+html,
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  padding: 0;
+  height: 100%;
 }
+
+/* Removed conflicting body styles that interfered with navbar layout */
 
 @media (prefers-color-scheme: light) {
   :root {
