@@ -1,23 +1,23 @@
-"use client"
+"use client";
 
-import { format } from "date-fns"
-import { ptBR } from "date-fns/locale"
-import { Calendar as CalendarIcon, ChevronDownIcon } from "lucide-react"
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Calendar as CalendarIcon, ChevronDownIcon } from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import Button from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { cn } from "@/lib/utils";
+import Button from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 export interface DatePickerProps {
-  value?: Date
-  onChange?: (date: Date | undefined) => void
-  placeholder?: string
-  className?: string
-  fromYear?: number
-  toYear?: number
-  buttonVariant?: React.ComponentProps<typeof Button>["variant"]
-  buttonSize?: React.ComponentProps<typeof Button>["size"]
+  value?: Date;
+  onChange?: (date: Date | undefined) => void;
+  placeholder?: string;
+  className?: string;
+  fromYear?: number;
+  toYear?: number;
+  buttonVariant?: React.ComponentProps<typeof Button>["variant"];
+  buttonSize?: React.ComponentProps<typeof Button>["size"];
 }
 
 export function DatePicker({
@@ -54,5 +54,5 @@ export function DatePicker({
         />
       </PopoverContent>
     </Popover>
-  )
+  );
 }
