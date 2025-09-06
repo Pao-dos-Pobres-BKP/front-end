@@ -71,7 +71,10 @@ const Input = ({
         {RightIcon && (
           <button
             type="button"
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-components)]/60 hover:text-[var(--color-components)] focus:outline-none focus:text-[var(--color-components)] transition-colors cursor-pointer"
+            className={cn(
+              "absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-components)]/60 hover:text-[var(--color-components)] focus:outline-none focus:text-[var(--color-components)] transition-colors",
+              onClickRightIcon && "cursor-pointer"
+            )}
             onClick={onClickRightIcon}
           >
             {RightIcon}
