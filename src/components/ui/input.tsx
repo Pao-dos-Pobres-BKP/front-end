@@ -1,10 +1,9 @@
 import cn from "@/utils/cn";
 import * as React from "react";
-// import { Eye, EyeOff } from "lucide-react";
 
 type LabelPosition = "left" | "center" | "right";
 
-type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+type InputProps = React.ComponentProps<"input"> & {
   fullWidth?: boolean;
   label?: string;
   labelPosition?: LabelPosition;
@@ -28,17 +27,12 @@ const Input = ({
   onClickRightIcon,
   ...props
 }: InputProps) => {
-  // const [showPassword, setShowPassword] = React.useState(false);
   const hasError = !!error;
   const hasHelperText =
     helperText !== undefined && !(typeof helperText === "string" && helperText.trim().length === 0);
   const displayLabel = labelText || label;
 
   const descriptorId = hasError ? `${id}-error` : hasHelperText ? `${id}-helper` : undefined;
-
-  // const togglePasswordVisibility = () => {
-  //   setShowPassword(!showPassword);
-  // };
 
   const getLabelClasses = () => {
     const baseClasses = "block mb-1 text-sm font-medium text-[var(--color-components)]";
@@ -66,7 +60,7 @@ const Input = ({
           aria-invalid={hasError}
           aria-describedby={descriptorId}
           className={cn(
-            "rounded- border border-[var(--color-components)]/30 bg-white px-3 py-2 text-sm text-black shadow-sm outline-none placeholder:text-[var(--color-components)]/50 focus:border-[var(--color-components)] focus:ring-1 focus:ring-[var(--color-components)]",
+            "rounded-[6px] border border-[var(--color-components)]/30 bg-white px-3 py-2 text-sm text-black shadow-sm outline-none placeholder:text-[var(--color-components)]/50 focus:border-[var(--color-components)] focus:ring-1 focus:ring-[var(--color-components)]",
             fullWidth ? "w-full" : "w-80",
             hasError && "border-red-500 focus:border-red-500 focus:ring-red-500",
             className
