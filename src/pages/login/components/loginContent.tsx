@@ -9,7 +9,7 @@ import { loginSchema } from "@/schemas/auth";
 import { login } from "@/services/auth";
 import { useUser } from "@/hooks/useUser";
 
-export default function LoginContent() {
+export default function LoginContent({ onRegisterClick }: { onRegisterClick: () => void }) {
   const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState<LoginInput>({
     email: "",
@@ -103,7 +103,7 @@ export default function LoginContent() {
             variant="primary"
             data-testid="btn-cadastrar"
             className="w-full"
-            onClick={() => navigate("/cadastro")}
+            onClick={onRegisterClick}
           >
             Cadastre-se
           </Button>
