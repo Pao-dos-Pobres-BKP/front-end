@@ -6,7 +6,7 @@ import Link from "@/components/ui/link";
 export default function Login() {
   return (
     <div
-      className="w-full min-h-[calc(100vh-4rem)] overflow-y-auto"
+      className="w-full min-h-[calc(100vh-4rem)] flex items-center justify-center overflow-y-auto"
       style={{
         backgroundImage: `linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 57, 80, 0.6) 66.98%, rgba(0, 81, 114, 0.6) 100%), url(${bgLogin})`,
         backgroundSize: "cover",
@@ -19,7 +19,7 @@ export default function Login() {
         <main
           className="
             w-full max-w-[400px]
-            rounded-2xl bg-[#D2D2D2E0] backdrop-blur
+            bg-[#D2D2D2E0] backdrop-blur
             shadow-2xl
             py-4 px-3 sm:py-6 sm:px-5
             rounded-xl
