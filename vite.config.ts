@@ -28,7 +28,7 @@ export default defineConfig({
       },
     },
   },
-  base: process.env.VITE_BASE_PATH || "./",
+  base: "./",
   server: {
     port: 15570,
     cors: true,
