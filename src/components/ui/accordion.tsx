@@ -55,8 +55,8 @@ const accordionVariants = cva(
 );
 
 const accordionContentVariants = cva(
-  "px-5 py-3 text-sm overflow-hidden " + 
-  "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down", 
+  "px-5 py-3 text-sm overflow-hidden " +
+    "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
   {
     variants: {
       variant: {
