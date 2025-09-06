@@ -9,9 +9,11 @@ import Campanhas from "@/pages/campanhas";
 import Perfil from "@/pages/perfil";
 import Dashboard from "@/pages/dashboard";
 
+const BASE = (import.meta.env.VITE_BASE_PATH || "").replace(/\/$/, "");
+
 const Navigation = () => {
   return (
-    <BrowserRouter basename={import.meta.env.VITE_BASE_PATH || "/"}>
+    <BrowserRouter basename={BASE}>
       <Routes>
         <Route element={<AppShell />} path="/">
           <Route path={ROUTES.home} element={<Home />} />
