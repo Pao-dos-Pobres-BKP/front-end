@@ -9,8 +9,11 @@ import { loginSchema } from "@/schemas/auth";
 import { login } from "@/services/auth";
 import { useUser } from "@/hooks/useUser";
 
+import { Eye, EyeOff } from "lucide-react";
+
 export default function LoginContent({ onRegisterClick }: { onRegisterClick: () => void }) {
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState<LoginInput>({
     email: "",
     password: "",
@@ -73,12 +76,15 @@ export default function LoginContent({ onRegisterClick }: { onRegisterClick: () 
             id="senha"
             label="Senha"
             placeholder="Digite sua senha"
-            type="password"
+            type={showPassword ? "text" : "password"}
             value={form.password}
             onChange={handleChange("password")}
             fullWidth
             error={errors.password}
+            RightIcon={showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            onClickRightIcon={() => setShowPassword((prev) => !prev)}
           />
+
           <div className="mt-[-12px] flex space-between w-full text-sm justify-between items-center">
             <Link href="/esqueci-senha" variant="blue">
               Esqueceu sua senha?
