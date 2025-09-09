@@ -4,11 +4,12 @@ import Button from "../components/ui/button";
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
 import { AccordionTrigger } from "@/components/ui/accordion";
 import { AccordionContent } from "@/components/ui/accordion";
+import { SearchBar } from "@/components/layout/search-bar";
 
 const Home = () => {
   return (
     <div className="container py-10 flex flex-col gap-4 bg-gray-200 justify-center items-center">
-      <Button variant="primary" size="small" className="">
+      {/* <Button variant="primary" size="small" className="">
         Salvar
       </Button>
       <Button variant="secondary" size="medium">
@@ -47,7 +48,9 @@ const Home = () => {
           <AccordionTrigger>Usuário</AccordionTrigger>
           <AccordionContent>Conteúdo do Usuário</AccordionContent>
         </AccordionItem>
-      </Accordion>
+      </Accordion> */}
+
+      <SearchBar />
     </div>
   );
 };
