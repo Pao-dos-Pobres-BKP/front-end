@@ -1,4 +1,5 @@
 import Navbar from "@/components/layout/navbar";
+import { Footer } from "@/components/layout/footer";
 import type { ReactElement } from "react";
 import exemplo_foto_perfil from "@/assets/exemplo_foto_perfil.jpg";
 import { EditSquare } from "react-iconly";
@@ -68,6 +69,7 @@ export default function Perfil(): ReactElement {
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }
