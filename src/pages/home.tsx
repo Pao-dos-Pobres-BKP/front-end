@@ -5,6 +5,7 @@ import { Accordion, AccordionItem } from "@/components/ui/accordion";
 import { AccordionTrigger } from "@/components/ui/accordion";
 import { AccordionContent } from "@/components/ui/accordion";
 import { SearchBar } from "@/components/layout/search-bar";
+import { Footer } from "@/components/layout/footer";
 
 const Home = () => {
   return (
@@ -49,8 +50,6 @@ const Home = () => {
           <AccordionContent>Conteúdo do Usuário</AccordionContent>
         </AccordionItem>
       </Accordion> */}
-
-      <SearchBar />
     </div>
   );
 };
