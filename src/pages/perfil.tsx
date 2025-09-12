@@ -1,39 +1,47 @@
 import Navbar from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import type { ReactElement } from "react";
+import { Progress } from "@/components/ui/progress";
 import exemplo_foto_perfil from "@/assets/exemplo_foto_perfil.jpg";
 import { EditSquare } from "react-iconly";
 
+import { useState } from "react";
 
-export default function Perfil(): ReactElement {
+
+
+export default function Perfil() {
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleSairDaConta = () => {
     alert("Sair da Conta clicado");
   };
 
   const handleEditarConta = () => {
-    alert("Editar Conta clicado");
+    setIsEditing((prev) => !prev);
   };
 
   return (
     <div className="min-h-screen bg-[#2F5361] font-inter">
       <Navbar />
       <div className="flex justify-center px-6 py-6">
-        <div className="w-full max-w-6md bg-white rounded-xl shadow-lg p-4">  
+        <div className="w-full max-w-6md bg-white rounded-xl shadow-lg p-4">
           <div className="flex items-center justify-between bg-white rounded-lg p-4 mb-6">
-            <div className="flex items-start gap-4">
+            <div className="flex items-center gap-4">
               <img
                 src={exemplo_foto_perfil}
                 alt="Foto do usuário"
-                className="w-20 h-20 rounded-lg object-cover"
+                className="w-20 h-20 rounded-2xl object-cover"
               />
               <div className="flex flex-col flex-1">
-                <h2 className="text-xl font-bold text-[#005172] text-left whitespace-normal break-words">
-                  Fulano de Tal
-                </h2>
-                <p className="text-sm text-[#005172]">
-                  Membro desde 12 de Agosto de 2023
-                </p>
+                <div className="h-7 flex items-center">
+                  <h2 className="text-[27px] font-bold text-[#005172] text-left whitespace-normal break-words leading-tight">
+                    Fulano de Tal
+                  </h2>
+                </div>
+                <div className="h-6 flex items-center">
+                  <p className="text-xs font-inter text-[#005172]">
+                    Membro desde 12 de Agosto de 2023
+                  </p>
+                </div>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -50,10 +58,98 @@ export default function Perfil(): ReactElement {
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-6">
-            <div className="md:w-100 flex flex-col gap-4">
-              <div className="bg-blue-200 rounded-lg p-4 flex-1 min-h-[220px]">
-                Dados do Usuário
+          <div className="flex flex-col md:flex-row gap-8">
+            <div className="md:w-0.5/3 flex flex-col gap-4">
+              <div className="bg-white rounded-lg p-6 flex-1 min-h-[520px]">
+
+                <div className="flex flex-col space-y-10">
+
+                  <div className="flex items-center gap-2">
+                    <label className=" text-sm font-medium text-[#005172] text-left">
+                      Data de Nascimento
+                    </label>
+                    <input
+                      type="text"
+                      value="12 de Agosto de 1971"
+                      disabled={!isEditing}
+                      className={`w-60 px-3 py-2 border rounded-xl ${isEditing
+                          ? "bg-white text-[#005172] border-[#005172] focus:outline-none focus:ring-2 focus:ring-[#005172]"
+                          : "bg-white text-[#94A3B8] border-[#CBD5E1] cursor-not-allowed"
+                        }`}
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <label className=" text-sm font-medium text-[#005172] text-left">
+                      Gênero
+                    </label>
+                    <input
+                      type="text"
+                      value="Masculino"
+                      disabled={!isEditing}
+                      className={`w-60 px-3 py-2 border rounded-xl ${isEditing
+                          ? "bg-white text-[#005172] border-[#005172] focus:outline-none focus:ring-2 focus:ring-[#005172]"
+                          : "bg-white text-[#94A3B8] border-[#CBD5E1] cursor-not-allowed"
+                        }`}
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <label className=" text-sm font-medium text-[#005172] text-left">
+                      CPF
+                    </label>
+                    <input
+                      type="text"
+                      value="123.456.789-00"
+                      disabled={!isEditing}
+                      className={`w-60 px-3 py-2 border rounded-xl ${isEditing
+                          ? "bg-white text-[#005172] border-[#005172] focus:outline-none focus:ring-2 focus:ring-[#005172]"
+                          : "bg-white text-[#94A3B8] border-[#CBD5E1] cursor-not-allowed"
+                        }`}
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <label className=" text-sm font-medium text-[#005172] text-left">
+                      Telefone
+                    </label>
+                    <input
+                      type="text"
+                      value="(51) 9 9999-8888"
+                      disabled={!isEditing}
+                      className={`w-60 px-3 py-2 border rounded-xl ${isEditing
+                          ? "bg-white text-[#005172] border-[#005172] focus:outline-none focus:ring-2 focus:ring-[#005172]"
+                          : "bg-white text-[#94A3B8] border-[#CBD5E1] cursor-not-allowed"
+                        }`}
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <label className=" text-sm font-medium text-[#005172] text-left">
+                      E-mail
+                    </label>
+                    <input
+                      type="text"
+                      value="fulanodetal@email.com.br"
+                      disabled={!isEditing}
+                      className={`w-60 px-3 py-2 border rounded-xl ${isEditing
+                          ? "bg-white text-[#005172] border-[#005172] focus:outline-none focus:ring-2 focus:ring-[#005172]"
+                          : "bg-white text-[#94A3B8] border-[#CBD5E1] cursor-not-allowed"
+                        }`}
+                    />
+                  </div>
+                </div>
+
+                <div className="mt-10 flex items-center gap-2">
+                  <span className="text-sm text-[#005172] whitespace-nowrap">
+                    Quanto doou até agora:
+                  </span>
+                  <Progress value={75} variant="blue" size="medium" className="flex-1" />
+                  <span className="text-sm text-[#005172] whitespace-nowrap">
+                    R$ 2.000,00
+                  </span>
+                </div>
+
               </div>
             </div>
 
@@ -69,7 +165,7 @@ export default function Perfil(): ReactElement {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
