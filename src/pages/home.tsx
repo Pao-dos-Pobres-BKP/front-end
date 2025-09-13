@@ -1,3 +1,4 @@
+/*
 import { Tabs } from "@/components/layout/tabs";
 import { Avatar } from "@/components/ui/avatar";
 import Button from "../components/ui/button";
@@ -6,7 +7,7 @@ import { AccordionTrigger } from "@/components/ui/accordion";
 import { AccordionContent } from "@/components/ui/accordion";
 import { SearchBar } from "@/components/layout/search-bar";
 import { Footer } from "@/components/layout/footer";
-
+*/
 const Home = () => {
   return (
     <div className="container py-10 flex flex-col gap-4 bg-gray-200 justify-center items-center">

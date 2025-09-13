@@ -8,8 +8,8 @@ const AppShell = () => {
       <Navbar />
       <main className="flex-1 w-full">
         <Outlet />
-        <Footer />
       </main>
+      <Footer />
     </div>
   );
 };
