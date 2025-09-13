@@ -24,7 +24,7 @@ const validationRules = {
   },
   password: (value: string) => {
     if (!value.trim()) return "Senha é obrigatória";
-    if (value.length < 6) return "Senha deve ter pelo menos 6 caracteres";
+    if (value.length < 9) return "Senha deve ter pelo menos 9 caracteres";
     return null;
   },
   confirmPassword: (value: string) => {
