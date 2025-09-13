@@ -7,7 +7,7 @@ import AccessFormFields, { type AccessFormData } from "./shared/AccessFormFields
 
 interface AccessFieldsProps {
   onBack: () => void;
-  onRegister: () => void;
+  onRegister: (data: AccessFormData) => void;
 }
 
 const initialForm: AccessFormData = {
@@ -41,25 +41,20 @@ export default function AccessFields({ onBack, onRegister }: AccessFieldsProps) 
   );
 
   const handleRegister = async () => {
-    // Validação adicional para confirmação de senha
     const isFormValid = validateForm();
-
     if (form.password !== form.confirmPassword) {
-      setErrors((prev: Partial<Record<keyof AccessFormData, string>>) => ({
+      setErrors((prev) => ({
         ...prev,
         confirmPassword: "Senhas não coincidem",
       }));
       return;
     }
-
     if (!isFormValid) return;
 
     setIsLoading(true);
-
-    // Simulando uma chamada de API
     setTimeout(() => {
       setIsLoading(false);
-      onRegister();
+      onRegister(form);
     }, 1500);
   };
 
@@ -71,9 +66,7 @@ export default function AccessFields({ onBack, onRegister }: AccessFieldsProps) 
   return (
     <FormContainer>
       <AccessFormFields form={form} errors={errors} onChange={updateField} disabled={isLoading} />
-
       <StepIndicator steps={steps} />
-
       <FormActions
         primaryAction={{
           label: isLoading ? "Cadastrando..." : "Cadastrar",

@@ -4,11 +4,28 @@ import PersonalFields from "./components/personalFields";
 import AccessFields from "./components/accessFields";
 import SuccessRegistration from "./components/successRegistration";
 import LoginLayout from "./components/loginLayout";
+import type { PersonalFormData } from "./components/shared/PersonalFormFields";
+import type { AccessFormData } from "./components/shared/AccessFormFields";
 
 type FormStep = "login" | "personal" | "access" | "success";
 
+type RegistrationData = PersonalFormData & AccessFormData;
+
 export default function Login() {
   const [currentStep, setCurrentStep] = useState<FormStep>("login");
+  const [registrationData, setRegistrationData] = useState<Partial<RegistrationData>>({});
+
+  const handleNextFromPersonal = (data: PersonalFormData) => {
+    setRegistrationData((prev) => ({ ...prev, ...data }));
+    setCurrentStep("access");
+  };
+
+  const handleRegister = (data: AccessFormData) => {
+    const finalData = { ...registrationData, ...data };
+    console.log("Dados finais para cadastro:", finalData);
+    // CHAMADA DA API VAI AQUIIIIIIIII!!!
+    setCurrentStep("success");
+  };
 
   const getHeaderConfig = () => {
     switch (currentStep) {
@@ -46,15 +63,12 @@ export default function Login() {
         return (
           <PersonalFields
             onCancel={() => setCurrentStep("login")}
-            onNext={() => setCurrentStep("access")}
+            onNext={handleNextFromPersonal}
           />
         );
       case "access":
         return (
-          <AccessFields
-            onBack={() => setCurrentStep("personal")}
-            onRegister={() => setCurrentStep("success")}
-          />
+          <AccessFields onBack={() => setCurrentStep("personal")} onRegister={handleRegister} />
         );
       case "success":
         return <SuccessRegistration onBackToLogin={() => setCurrentStep("login")} />;
