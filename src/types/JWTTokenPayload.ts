@@ -5,10 +5,11 @@ export interface JWTTokenPayload {
   id: string;
   fullname: string;
   email: string;
-  birthDate: Date;
-  gender: Gender;
-  phone: string;
-  cpf: string;
+  birthDate?: Date;
+  gender?: Gender;
+  phone?: string;
+  cpf?: string;
+  root?: boolean;
   role: RoleEnum;
   accessToken: string;
   exp: number;

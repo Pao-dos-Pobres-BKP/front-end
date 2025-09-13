@@ -29,6 +29,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
             fullname: decoded.fullname,
             birthDate: decoded.birthDate,
             email: decoded.email,
+            root: decoded.root,
             accessToken: token,
             role: decoded.role as RoleEnum,
             gender: decoded.gender,
