@@ -1,14 +1,13 @@
-import React from 'react';
-import inconfidenciaLogo from '../../assets/PartnerCompanies/Inconfidencia.png';
-import tkeLogo from '../../assets/PartnerCompanies/TKE.png';
-import pontalLogo from '../../assets/PartnerCompanies/Pontal.png';
-import jockeyLogo from '../../assets/PartnerCompanies/JockeyRS.png';
-import cwaLogo from '../../assets/PartnerCompanies/CWA.png';
-import metaLogo from '../../assets/PartnerCompanies/MetaAgenciaDigital.png';
-import paimLogo from '../../assets/PartnerCompanies/Paim.png';
-import cindapaLogo from '../../assets/PartnerCompanies/Cindapa.png';
-import maisALogo from '../../assets/PartnerCompanies/maisA.png'; 
-import ondawebLogo from '../../assets/PartnerCompanies/OndaWeb.png';
+import inconfidenciaLogo from '@/assets/PartnerCompanies/Inconfidencia.png';
+import tkeLogo from '@/assets/PartnerCompanies/TKE.png';
+import pontalLogo from '@/assets/PartnerCompanies/Pontal.png';
+import jockeyLogo from '@/assets/PartnerCompanies/JockeyRS.png';
+import cwaLogo from '@/assets/PartnerCompanies/CWA.png';
+import metaLogo from '@/assets/PartnerCompanies/MetaAgenciaDigital.png';
+import paimLogo from '@/assets/PartnerCompanies/Paim.png';
+import cindapaLogo from '@/assets/PartnerCompanies/Cindapa.png';
+import maisALogo from '@/assets/PartnerCompanies/maisA.png'; 
+import ondawebLogo from '@/assets/PartnerCompanies/OndaWeb.png';
 
 const partners = [
   { src: inconfidenciaLogo, alt: 'Logo Inconfidência' },
