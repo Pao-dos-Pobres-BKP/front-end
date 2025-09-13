@@ -4,12 +4,13 @@ import PersonalFields from "./components/personalFields";
 import AccessFields from "./components/accessFields";
 import SuccessRegistration from "./components/successRegistration";
 import LoginLayout from "./components/loginLayout";
+import { signIn } from "@/services/signIn";
 import type { PersonalFormData } from "./components/shared/PersonalFormFields";
 import type { AccessFormData } from "./components/shared/AccessFormFields";
 
 type FormStep = "login" | "personal" | "access" | "success";
 
-type RegistrationData = PersonalFormData & AccessFormData;
+export type RegistrationData = PersonalFormData & AccessFormData;
 
 export default function Login() {
   const [currentStep, setCurrentStep] = useState<FormStep>("login");
@@ -23,7 +24,7 @@ export default function Login() {
   const handleRegister = (data: AccessFormData) => {
     const finalData = { ...registrationData, ...data };
     console.log("Dados finais para cadastro:", finalData);
-    // CHAMADA DA API VAI AQUIIIIIIIII!!!
+    signIn(finalData as RegistrationData);
     setCurrentStep("success");
   };
 
