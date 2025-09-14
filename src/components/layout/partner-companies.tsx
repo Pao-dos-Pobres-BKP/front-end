@@ -50,14 +50,7 @@ const PartnerCompanies = () => {
           size="large"
           className="!text-xl !font-bold"
            onClick={() => {
-             try {
-               const urlNormal = 'https://www.paodospobres.org.br/seja-parceiro/';
-               window.location.href = urlNormal;
-             } catch (error) {
-               console.error("Erro ao redirecionar, usando fallback:", error);
-               const linkMock = 'https://www.paodospobres.org.br/';
-               window.location.href = linkMock;
-             }
+           window.location.href = 'https://www.paodospobres.org.br/';
            }}
         >
           Saiba mais 
