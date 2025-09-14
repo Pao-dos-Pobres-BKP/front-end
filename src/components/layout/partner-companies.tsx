@@ -24,24 +24,26 @@ const partners = [
 
 const PartnerCompanies = () => {
   return (
-    <div className="bg-[#005172] flex flex-col items-center p-6 md:p-12 lg:p-24 gap-6 md:gap-12">
-      <h2 className="text-white font-manrope font-bold text-3xl leading-[48px] tracking-[0.5px] w-full text-center">Empresas Parceiras</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 justify-items-center">
+    <div className="bg-[#06B3C0] flex flex-col items-center p-6 md:p-12 lg:p-24 gap-6 md:gap-12">
+      <h2 className="text-[#005172] font-manrope font-bold text-3xl leading-[48px] tracking-[0.5px] self-start">Empresas Parceiras</h2>
+            
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-12 align-self stretch;">
         {partners.map((partner, index) => (
           <img
             key={index}
             src={partner.src}
             alt={partner.alt} 
-            className="w-full h-auto object-contain max-h-24" 
+            className="w-48 h-48 object-contain max-h-24 filter brightness-0 invert" 
           />
         ))}
       </div>
+
       <div className="flex justify-center mt-6">
         <button
-          className="bg-white w-[278px] h-[63px] py-3 px-2 justify-center items-center rounded-[10px] shadow-lg hover:bg-gray-200 transition-colors duration-300"
+          className="bg-white w-72 h-16 py-3 px-2 justify-center items-center rounded-[10px] font-bold shadow-lg hover:bg-gray-200 transition-colors duration-300 cursor-pointer"
           onClick={() => {
             const redirect = true;
-            const urlNormal = 'https://paodospobre.com.br';
+            const urlNormal = 'https://paodospobres.com.br';
             const linkMock = 'https://mock.com';
             window.location.href = redirect ? urlNormal : linkMock;
           }}

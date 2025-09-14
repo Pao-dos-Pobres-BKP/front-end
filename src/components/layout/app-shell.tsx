@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "./navbar";
 import { Footer } from "./footer";
-import PartnerCompanies from "./partnerCompanies";
+import PartnerCompanies from "./partner-companies";
 
 const AppShell = () => {
   return (
