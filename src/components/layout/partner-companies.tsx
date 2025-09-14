@@ -8,6 +8,7 @@ import paimLogo from '@/assets/PartnerCompanies/Paim.png';
 import cindapaLogo from '@/assets/PartnerCompanies/Cindapa.png';
 import maisALogo from '@/assets/PartnerCompanies/maisA.png'; 
 import ondawebLogo from '@/assets/PartnerCompanies/OndaWeb.png';
+import Button from '../ui/button';
 
 const partners = [
   { src: inconfidenciaLogo, alt: 'Logo Inconfidência' },
@@ -25,7 +26,7 @@ const partners = [
 const PartnerCompanies = () => {
   return (
     <div className="bg-[#06B3C0] flex flex-col items-center p-6 md:p-12 lg:p-24 gap-6 md:gap-12">
-      <h2 className="text-[#005172] font-manrope font-bold text-3xl leading-[48px] tracking-[0.5px] self-start">Empresas Parceiras</h2>
+      <h2 className="text-[#005172] font-manrope font-bold text-3xl leading-[48px] tracking-[0.5px] self-start">EMPRESAS PARCEIRAS</h2>
             
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-12 align-self stretch;">
         {partners.map((partner, index) => (
@@ -33,14 +34,16 @@ const PartnerCompanies = () => {
             key={index}
             src={partner.src}
             alt={partner.alt} 
-            className="w-48 h-48 object-contain max-h-24 filter brightness-0 invert" 
+            className="w-48 h-48 object-contain max-h-24" 
           />
         ))}
       </div>
 
       <div className="flex justify-center mt-6">
-        <button
-          className="bg-white w-72 h-16 py-3 px-2 justify-center items-center rounded-[10px] font-bold shadow-lg hover:bg-gray-200 transition-colors duration-300 cursor-pointer"
+        <Button 
+          variant="secondary" 
+          size="large"
+          className="!text-xl !font-bold"
           onClick={() => {
             const redirect = true;
             const urlNormal = 'https://paodospobres.com.br';
@@ -48,8 +51,8 @@ const PartnerCompanies = () => {
             window.location.href = redirect ? urlNormal : linkMock;
           }}
         >
-          Saiba mais
-        </button>
+          Saiba mais 
+        </Button>
       </div>
     </div>
   );
