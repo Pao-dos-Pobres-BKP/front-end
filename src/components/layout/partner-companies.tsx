@@ -50,7 +50,7 @@ const PartnerCompanies = () => {
           size="large"
           className="!text-xl !font-bold"
            onClick={() => {
-           window.location.href = 'https://www.paodospobres.org.br/';
+           window.location.href = 'https://www.paodospobres.org.br/seja-parceiro/';
            }}
         >
           Saiba mais 
