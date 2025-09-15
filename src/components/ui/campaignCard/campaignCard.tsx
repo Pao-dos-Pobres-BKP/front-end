@@ -1,8 +1,8 @@
 import { formatCurrency } from "@/utils/formatCurrency";
-import cn from "../../utils/cn";
-import { CampaignCardCompact } from "./campaignCardCompact";
+import cn from "../../../utils/cn";
+import { Progress } from "../progress";
 import { CampaignCardProfile } from "./campaignCardProfile";
-import { Progress } from "./progress";
+import { CampaignCardCompact } from "./campaignCardCompact";
 
 export type CampaignCardProps = {
     title: string;

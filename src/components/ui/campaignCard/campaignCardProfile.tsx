@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/utils/formatCurrency";
-import Button from "./button";
+import Button from "../button";
 import { useState } from "react";
-import { Progress } from "./progress";
+import { Progress } from "../progress";
 import { ChevronDownIcon } from "lucide-react"
 
 export type CampaignCardProfileProps = {
@@ -74,30 +74,35 @@ export function CampaignCardProfile({
                 </div>
 
                 <div
-                    className={cn("flex-1", !detailsOpen && "hidden")}
+                    className={cn(
+                        "grid transition-[grid-template-rows] duration-300 ease-in-out",
+                        detailsOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                    )}
                     id="profile-card-details"
                     aria-hidden={!detailsOpen}
                 >
-                    <div className="text-[#005172] bg-[#DEDEDE] pb-4 pl-4 pr-4">
-                        <div className="flex font-semibold items-center gap-3  pt-3 border-t-1 border-gray-300">
-                            <div>Quanto doou: </div>
-                            <div className="flex-1">
-                                <div className="rounded-full overflow-hidden">
-                                    <Progress value={percent} variant="blue" size="large" />
+                    <div className="overflow-hidden rounded-b-2xl">
+                        <div className="text-[#005172] bg-[#DEDEDE] pb-4 pl-4 pr-4">
+                            <div className="flex font-semibold items-center gap-3  pt-3 border-t-1 border-gray-300">
+                                <div>Quanto doou: </div>
+                                <div className="flex-1">
+                                    <div className="rounded-full overflow-hidden">
+                                        <Progress value={percent} variant="blue" size="large" />
+                                    </div>
                                 </div>
+                                <div className="text-md font-bold ">{formatCurrency(goal)}</div>
                             </div>
-                            <div className="text-md font-bold ">{formatCurrency(goal)}</div>
-                        </div>
 
-                        <div className="mt-3 font-semibold text-[var(--color-text-muted)] w-full text-left">
-                            <div className="mt-1 font-bold mb-1">Campanhas:</div>
-                            <ul className="list-disc list-inside text-sm">
-                                {campaigns.slice(0, 3).map((c, i) => (<li key={i}>{c}</li>))}
-                            </ul>
-                            <div className="flex mt-2 font-semibold items-center justify-between">
-                                <div>Membro desde: {memberSince ?? "DD/MM/AAAA"}</div>
-                                <div>
-                                    <Button variant="secondary" size="small">Adicionar Dados</Button>
+                            <div className="mt-3 font-semibold text-[var(--color-text-muted)] w-full text-left">
+                                <div className="mt-1 font-bold mb-1">Campanhas:</div>
+                                <ul className="list-disc list-inside text-sm">
+                                    {campaigns.slice(0, 3).map((c, i) => (<li key={i}>{c}</li>))}
+                                </ul>
+                                <div className="flex mt-2 font-semibold items-center justify-between">
+                                    <div>Membro desde: {memberSince ?? "DD/MM/AAAA"}</div>
+                                    <div>
+                                        <Button variant="secondary" size="small">Adicionar Dados</Button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
