@@ -1,21 +1,22 @@
-import { Progress } from "../components/ui/progress";
 import Button from "../components/ui/button";
-import CampaignCard from "@/components/ui/campaignCard";
+import CampaignCard from "@/components/ui/campaignCard/campaignCard";
 
 const Home = () => {
   return (
     <div className="container py-10 flex flex-col gap-6 bg-[var(--color-background)] px-6">
       <h1 className="text-2xl font-bold">Exemplos de CampaignCard</h1>
 
-      {/* Hero example */}
       <CampaignCard
         title="Campanha de Santo Antônio"
         creatorName="Fundação Pão dos Pobres Santo Antônio"
         raised={81825.33}
         goal={90000}
+        donorName=""
+        donorEmail=""
+        memberSince=""
+        campaigns={[]}
       />
 
-      {/* Profile example */}
       <CampaignCard
         title="Campanha de Santo Antônio"
         raised={2000}
@@ -29,7 +30,6 @@ const Home = () => {
         situation="pending"
       />
 
-      {/* Compact example */}
       <CampaignCard
         title="Campanha de Santo Antônio"
         creatorName="Fundação Pão dos Pobres Santo Antônio"
@@ -38,9 +38,12 @@ const Home = () => {
         actionLabel="Acessar"
         variant="compact"
         situation="pending"
+        donorName=""
+        donorEmail=""
+        memberSince=""
+        campaigns={[]}
       />
 
-      {/* Keep existing playground controls for quick testing */}
       <div className="mt-6 flex gap-3 flex-wrap">
         <Button variant="primary" size="small">
           Salvar
