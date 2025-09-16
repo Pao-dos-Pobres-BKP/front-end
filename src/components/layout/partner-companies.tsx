@@ -31,7 +31,12 @@ const PartnerCompanies = () => {
     pb-4 md:pb-6 lg:pb-8 
     gap-6 md:gap-12"
     >
-      <h2 className="text-[#005172] font-manrope font-bold text-3xl leading-[48px] tracking-[0.5px] self-start">EMPRESAS PARCEIRAS</h2>
+      <h2 className="
+      text-[#005172] font-manrope font-bold 
+      text-3xl leading-[48px] tracking-[0.5px] 
+      self-center md:self-start
+      text-center md:text-start"
+      >EMPRESAS PARCEIRAS</h2>
             
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-12 align-self stretch;">
         {partners.map((partner, index) => (
