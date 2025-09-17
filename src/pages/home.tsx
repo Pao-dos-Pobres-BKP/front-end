@@ -6,13 +6,17 @@ import { AccordionTrigger } from "@/components/ui/accordion";
 import { AccordionContent } from "@/components/ui/accordion";
 import { SearchBar } from "@/components/layout/search-bar";
 import { Footer } from "@/components/layout/footer";
+import PartnerCompanies from "@/components/layout/partner-companies";
 
 const Home = () => {
   return (
     <div className="container py-10 flex flex-col gap-4 bg-gray-200 justify-center items-center">
+      <PartnerCompanies />
+      /* Para ficar na dimensão correta, ao testar, remover o conteúdo do container acima */
+
       {/* <Button variant="primary" size="small" className="">
         Salvar
-      </Button>
+      </Button>SS
       <Button variant="secondary" size="medium">
         Salvar
       </Button>
