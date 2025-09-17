@@ -1,6 +1,5 @@
 import * as React from "react";
 import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import seta from "@/assets/seta.svg";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button_shad";
@@ -194,7 +193,7 @@ const CarouselPrevious = React.forwardRef<HTMLButtonElement, React.ComponentProp
         onClick={scrollPrev}
         {...props}
       >
-        <img src={seta} alt="" className="h-8 w-8 absolute transform rotate-180" />
+        <img src={seta} alt="" className="h-8 w-8 absolute transform rotate-180 hidden md:block" />
         <span className="sr-only">Previous slide</span>
       </Button>
     );
@@ -222,7 +221,7 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
         onClick={scrollNext}
         {...props}
       >
-        <img src={seta} alt="" className="h-8 w-8 absolute" />
+        <img src={seta} alt="" className="h-8 w-8 absolute hidden md:block" />
       </Button>
     );
   }
