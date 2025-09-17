@@ -15,12 +15,12 @@ export type CampaignCardProps = {
     onAction?: () => void;
     className?: string;
     situation?: "approved" | "pending" | "rejected" | "recurring";
-    // profile
-    donorName: string;
-    donorEmail: string;
+    // profile (opcionais)
+    donorName?: string;
+    donorEmail?: string;
     donationAmount?: number;
-    memberSince: string; //'DD/MM/AAAA' or year
-    campaigns: string[];
+    memberSince?: string; //'DD/MM/AAAA' or year
+    campaigns?: string[];
 };
 
 export default function CampaignCard({
@@ -30,40 +30,44 @@ export default function CampaignCard({
     creatorName,
     variant = "default",
     className,
-    donorName,
-    donorEmail,
+    donorName = "",
+    donorEmail = "",
     donationAmount,
-    memberSince,
+    memberSince = "",
     campaigns = [],
     situation
 }: CampaignCardProps) {
     const percent = goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
 
     if (variant === "profile") {
-        return <CampaignCardProfile
-            donorName={donorName}
-            donorEmail={donorEmail}
-            donationAmount={donationAmount}
-            memberSince={memberSince}
-            campaigns={campaigns}
-            title={title}
-            raised={raised}
-            goal={goal}
-            className={className}
-            progressPercent={percent}
-        />;
+        return (
+            <CampaignCardProfile
+                donorName={donorName}
+                donorEmail={donorEmail}
+                donationAmount={donationAmount}
+                memberSince={memberSince}
+                campaigns={campaigns}
+                title={title}
+                raised={raised}
+                goal={goal}
+                className={className}
+                progressPercent={percent}
+            />
+        );
     }
 
     if (variant === "compact") {
-        return <CampaignCardCompact
-            situation={situation}
-            goal={goal}
-            raised={raised}
-            creatorName={creatorName}
-            title={title}
-            className={className}
-            progressPercent={percent}
-        />;
+        return (
+            <CampaignCardCompact
+                situation={situation}
+                goal={goal}
+                raised={raised}
+                creatorName={creatorName}
+                title={title}
+                className={className}
+                progressPercent={percent}
+            />
+        );
     }
 
     return (
@@ -103,4 +107,3 @@ export default function CampaignCard({
         </article>
     );
 }
-

@@ -18,10 +18,6 @@ const Home = () => {
         creatorName="Fundação Pão dos Pobres Santo Antônio"
         raised={81825.33}
         goal={90000}
-        donorName=""
-        donorEmail=""
-        memberSince=""
-        campaigns={[]}
       />
 
       <CampaignCard
