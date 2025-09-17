@@ -5,18 +5,32 @@ import exemplo_foto_perfil from "@/assets/exemplo_foto_perfil.jpg";
 import { EditSquare } from "react-iconly";
 
 import { useState } from "react";
+import EditUserModal from "@/components/ui/edit-user-modal";
 
 
 
 export default function Perfil() {
-  const [isEditing, setIsEditing] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [dados, setDados] = useState({
+    nome: "Fulano de Tal",
+    nascimento: "12 de Agosto de 1971",
+    genero: "Masculino",
+    cpf: "123.456.789-00",
+    telefone: "(51) 9 9999-8888",
+    email: "fulanodetal@email.com.br"
+  });
 
   const handleSairDaConta = () => {
     alert("Sair da Conta clicado");
   };
 
   const handleEditarConta = () => {
-    setIsEditing((prev) => !prev);
+    setIsModalOpen(true);
+  };
+
+  const handleSalvarPerfil = (novosDados: any) => {
+    setDados(novosDados);
+    console.log("Dados salvos:", novosDados);
   };
 
   return (
@@ -33,8 +47,8 @@ export default function Perfil() {
               />
               <div className="flex flex-col flex-1">
                 <div className="h-7 flex items-center">
-                  <h2 className="text-[27px] font-bold text-[#005172] text-left whitespace-normal break-words leading-tight">
-                    Fulano de Tal
+                  <h2 className="text-[27px] font-bold text-[#005172]">
+                    {dados.nome}
                   </h2>
                 </div>
                 <div className="h-6 flex items-center">
@@ -60,7 +74,7 @@ export default function Perfil() {
 
           <div className="flex flex-col md:flex-row gap-8">
             <div className="md:w-0.5/3 flex flex-col gap-4">
-              <div className="bg-white rounded-lg p-6 flex-1 min-h-[520px]">
+              <div className="bg-white rounded-lg p-6 flex-1 min-h-[420px]">
 
                 <div className="flex flex-col space-y-10">
 
@@ -70,11 +84,9 @@ export default function Perfil() {
                     </label>
                     <input
                       type="text"
-                      value="12 de Agosto de 1971"
-                      disabled={!isEditing}
-                      className={`w-60 px-3 py-2 border rounded-xl ${isEditing
-                          ? "bg-white text-[#005172] border-[#005172] focus:outline-none focus:ring-2 focus:ring-[#005172]"
-                          : "bg-white text-[#94A3B8] border-[#CBD5E1] cursor-not-allowed"
+                      value= {dados.nascimento}
+                      className={`w-60 px-3 py-2 border rounded-xl 
+                        : "bg-white text-[#94A3B8] border-[#CBD5E1] cursor-not-allowed"
                         }`}
                     />
                   </div>
@@ -85,11 +97,9 @@ export default function Perfil() {
                     </label>
                     <input
                       type="text"
-                      value="Masculino"
-                      disabled={!isEditing}
-                      className={`w-60 px-3 py-2 border rounded-xl ${isEditing
-                          ? "bg-white text-[#005172] border-[#005172] focus:outline-none focus:ring-2 focus:ring-[#005172]"
-                          : "bg-white text-[#94A3B8] border-[#CBD5E1] cursor-not-allowed"
+                      value={dados.genero}
+                      className={`w-60 px-3 py-2 border rounded-xl 
+                        : "bg-white text-[#94A3B8] border-[#CBD5E1] cursor-not-allowed"
                         }`}
                     />
                   </div>
@@ -100,11 +110,9 @@ export default function Perfil() {
                     </label>
                     <input
                       type="text"
-                      value="123.456.789-00"
-                      disabled={!isEditing}
-                      className={`w-60 px-3 py-2 border rounded-xl ${isEditing
-                          ? "bg-white text-[#005172] border-[#005172] focus:outline-none focus:ring-2 focus:ring-[#005172]"
-                          : "bg-white text-[#94A3B8] border-[#CBD5E1] cursor-not-allowed"
+                      value={dados.cpf}
+                      className={`w-60 px-3 py-2 border rounded-xl 
+                        : "bg-white text-[#94A3B8] border-[#CBD5E1] cursor-not-allowed"
                         }`}
                     />
                   </div>
@@ -115,11 +123,9 @@ export default function Perfil() {
                     </label>
                     <input
                       type="text"
-                      value="(51) 9 9999-8888"
-                      disabled={!isEditing}
-                      className={`w-60 px-3 py-2 border rounded-xl ${isEditing
-                          ? "bg-white text-[#005172] border-[#005172] focus:outline-none focus:ring-2 focus:ring-[#005172]"
-                          : "bg-white text-[#94A3B8] border-[#CBD5E1] cursor-not-allowed"
+                      value={dados.telefone}
+                      className={`w-60 px-3 py-2 border rounded-xl 
+                        : "bg-white text-[#94A3B8] border-[#CBD5E1] cursor-not-allowed"
                         }`}
                     />
                   </div>
@@ -130,11 +136,9 @@ export default function Perfil() {
                     </label>
                     <input
                       type="text"
-                      value="fulanodetal@email.com.br"
-                      disabled={!isEditing}
-                      className={`w-60 px-3 py-2 border rounded-xl ${isEditing
-                          ? "bg-white text-[#005172] border-[#005172] focus:outline-none focus:ring-2 focus:ring-[#005172]"
-                          : "bg-white text-[#94A3B8] border-[#CBD5E1] cursor-not-allowed"
+                      value={dados.email}
+                      className={`w-60 px-3 py-2 border rounded-xl 
+                        : "bg-white text-[#94A3B8] border-[#CBD5E1] cursor-not-allowed"
                         }`}
                     />
                   </div>
@@ -153,18 +157,87 @@ export default function Perfil() {
               </div>
             </div>
 
-            <div className="flex-1 flex flex-col gap-2">
-              <div className="bg-yellow-200 rounded-lg p-4 flex-1 min-h-[320px]">
-                Campanhas
-              </div>
+            <div className="flex-1 flex flex-col gap-3 items-start">
+              <h3 className="text-sm font-semibold text-[#005172]">
+                Campanhas que apoia
+              </h3>
+
+            {/*  <CampaignCard
+                variant="compact"
+                title="Campanha de Santo Antônio"
+                raised={81825.33}
+                goal={90000}
+                creatorName="Fundação Pão dos Pobres Santo Antônio"
+                situation="approved"
+                donorName=""
+                donorEmail=""
+                memberSince=""
+                campaigns={[]}
+                onAction={() => alert("Remover apoio")}
+                className="border border-[#005172] rounded-lg text-sm p-3"
+              />
+
+              <CampaignCard
+                variant="compact"
+                title="Campanha de Santo Antônio"
+                raised={81825.33}
+                goal={90000}
+                creatorName="Fundação Pão dos Pobres Santo Antônio"
+                situation="approved"
+                donorName=""
+                donorEmail=""
+                memberSince=""
+                campaigns={[]}
+                onAction={() => alert("Remover apoio")}
+                className="border border-[#005172] rounded-lg text-sm p-3"
+              />
+
+              <CampaignCard
+                variant="compact"
+                title="Campanha de Santo Antônio"
+                raised={81825.33}
+                goal={90000}
+                creatorName="Fundação Pão dos Pobres Santo Antônio"
+                situation="approved"
+                donorName=""
+                donorEmail=""
+                memberSince=""
+                campaigns={[]}
+                onAction={() => alert("Remover apoio")}
+                className="border border-[#005172] rounded-lg text-sm p-3"
+              />
+
+              <CampaignCard
+                variant="compact"
+                title="Campanha de Santo Antônio"
+                raised={81825.33}
+                goal={90000}
+                creatorName="Fundação Pão dos Pobres Santo Antônio"
+                situation="approved"
+                donorName=""
+                donorEmail=""
+                memberSince=""
+                campaigns={[]}
+                onAction={() => alert("Remover apoio")}
+                className="border border-[#005172] rounded-lg text-sm p-3"
+              /> */}
             </div>
           </div>
 
-          <div className="mt-8 bg-purple-200 rounded-lg p-6 min-h-[580px]">
+          <hr className="border-t border-[#266D88CC] mx-50 my-8" />
+          
+          <div className="mt-2 bg-purple-200 rounded-lg p-4 min-h-[580px]">
             Histórico de Doações
           </div>
         </div>
       </div>
+      
+      <EditUserModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleSalvarPerfil}
+        initialData={dados}
+      />
       <Footer />
     </div>
   );
