@@ -37,7 +37,7 @@ const Home = () => {
         goal={90000}
         actionLabel="Acessar"
         variant="compact"
-        situation="pending"
+        situation="recurring"
         donorName=""
         donorEmail=""
         memberSince=""
