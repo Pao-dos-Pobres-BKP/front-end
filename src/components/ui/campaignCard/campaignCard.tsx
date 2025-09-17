@@ -4,8 +4,6 @@ import { Progress } from "../progress";
 import { CampaignCardProfile } from "./campaignCardProfile";
 import { CampaignCardCompact } from "./campaignCardCompact";
 import blueHeart from "@/assets/blueHeart.svg";
-import orangeHeart from "@/assets/orangeHeart.svg";
-import redHeart from "@/assets/redHeart.svg";
 
 export type CampaignCardProps = {
     title: string;
@@ -82,6 +80,9 @@ export default function CampaignCard({
                 <div className="flex-1 min-w-0">
                     <div className="min-w-0">
                         <div className="flex-shrink-0 flex items-center gap-2 justify-center">
+                            <div className="h-5 w-5 flex-shrink-0">
+                                <img src={blueHeart} alt="Coração azul" className="h-5 w-5" />
+                            </div>
                             <h3 className="text-3xl font-semibold text-[#034d6b] leading-tight truncate">{title}</h3>
                         </div>
                         {creatorName && (<p className="mt-1 text-base text-[#f68537] font-semibold text-center"> por {creatorName}</p>)}
