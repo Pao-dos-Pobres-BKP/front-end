@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import Navbar from "./navbar";
 import { Footer } from "./footer";
 import PartnerCompanies from "./partner-companies";
+import News from "./news";
 
 const AppShell = () => {
   return (
@@ -9,9 +10,10 @@ const AppShell = () => {
       <Navbar />
       <main className="flex-1 w-full">
         <Outlet />
+        <News />
         <PartnerCompanies />
-        <Footer />
       </main>
+      <Footer />
     </div>
   );
 };

@@ -17,8 +17,10 @@ const buttonVariants = cva(
           "bg-[var(--color-text-warning)] hover:bg-[var(--color-text-error)] text-[var(--color-background)]",
         confirm:
           "bg-[var(--color-text-success)] text-[var(--color-background)] hover:text-[var(--color-text-brand)]",
+        invisible: "bg-transparent hover:bg-[var(--color-background)]",
       },
       size: {
+        extrasmall: "h-5 w-20",
         small: "h-12 w-48",
         medium: "h-12 w-60",
         large: "h-12 w-80",
