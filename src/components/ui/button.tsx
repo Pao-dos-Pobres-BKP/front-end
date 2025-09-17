@@ -1,20 +1,22 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-import cn from "../../utils/cn";
+import cn from "@/utils/cn";
 
 const buttonVariants = cva(
-  "px-6 py-2 font-semibold rounded-[10px] transition-colors focus:outline-none  focus:ring-offset-2 shadow-sm hover:shadow-lg disabled:opacity-50 disabled:pointer-events-none inline-flex items-center justify-center text-sm",
+  "cursor-pointer px-6 py-2 font-semibold rounded-[10px] transition-colors focus:outline-none  focus:ring-offset-2 shadow-sm hover:shadow-lg disabled:opacity-50 disabled:pointer-events-none inline-flex items-center justify-center text-sm",
   {
     variants: {
       variant: {
         primary:
-          "bg-[var(--color-background)] hover:bg-[var(--color-components)] border border-[var(--color-border)] text-[var(--color-text-brand)] hover:text-[var(--color-text-1)]",
+          "bg-[var(--color-components)] text-[var(--color-text-1)] hover:text-[var(--color-text-brand)]",
         secondary:
-          "bg-[var(--color-components)] hover:bg-[var(--color-background)] text-[var(--color-text-1)] hover:text-[var(--color-text-brand)]",
+          "bg-[var(--color-background)] hover:bg-[var(--color-components)] border border-[var(--color-border)] text-[var(--color-text-brand)] hover:text-[var(--color-text-1)]",
+        tertiary:
+          "bg-[var(--color-text-2)] hover:text-[var(--color-text-brand)] text-[var(--color-text-1)]",
         destructive:
           "bg-[var(--color-text-warning)] hover:bg-[var(--color-text-error)] text-[var(--color-background)]",
         confirm:
-          "bg-[var(--color-text-success)] hover:bg-[var(--color-text-success-2)] text-[var(--color-background)]",
+          "bg-[var(--color-text-success)] text-[var(--color-background)] hover:text-[var(--color-text-brand)]",
       },
       size: {
         small: "h-12 w-48",

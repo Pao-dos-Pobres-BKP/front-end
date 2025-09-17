@@ -1,20 +1,16 @@
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
   "inline-flex items-center justify-center gap-1.5 rounded-[8px] min-h-[24px] px-[8px] py-[3px] border text-xs font-semibold transition-colors",
   {
     variants: {
       variant: {
-        default:
-          "border-transparent bg-primary text-white hover:bg-primary/90",
-        orange:
-          "border-transparent bg-[var(--color-text-special-2)] text-white hover:opacity-90",
-        blue:
-          "border-transparent bg-[var(--color-components-2)] text-white hover:opacity-90",
-        blueDark:
-          "border-transparent bg-[var(--color-components)] text-white hover:opacity-90",
+        default: "border-transparent bg-primary text-white hover:bg-primary/90",
+        orange: "border-transparent bg-[var(--color-text-special-2)] text-white hover:opacity-90",
+        blue: "border-transparent bg-[var(--color-components-2)] text-white hover:opacity-90",
+        blueDark: "border-transparent bg-[var(--color-components)] text-white hover:opacity-90",
         destructive:
           "bg-[var(--color-text-warning)] hover:bg-[var(--color-text-error)] text-[var(--color-background)]",
         outline:
@@ -36,16 +32,16 @@ const badgeVariants = cva(
     },
     defaultVariants: { variant: "default", size: "sm", shape: "pill", truncate: false },
   }
-)
+);
 
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLSpanElement>,
-  VariantProps<typeof badgeVariants> {
-  leftIcon?: React.ReactNode
-  rightIcon?: React.ReactNode
-  ariaLabel?: string
-  count?: number
-  maxCount?: number
+    VariantProps<typeof badgeVariants> {
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
+  ariaLabel?: string;
+  count?: number;
+  maxCount?: number;
 }
 
 export function Badge({
@@ -62,15 +58,14 @@ export function Badge({
   maxCount = 20,
   ...props
 }: BadgeProps) {
-  const isIconOnly = !children && (leftIcon || rightIcon)
+  const isIconOnly = !children && (leftIcon || rightIcon);
 
-  let content = children
+  let content = children;
   if (typeof count === "number") {
-    content = count > maxCount ? `${maxCount}+` : count.toString()
+    content = count > maxCount ? `${maxCount}+` : count.toString();
   }
 
-  const isCounterCircle =
-    shape === "counter" && typeof count === "number" && count <= maxCount
+  const isCounterCircle = shape === "counter" && typeof count === "number" && count <= maxCount;
 
   return (
     <span
@@ -88,5 +83,5 @@ export function Badge({
       {content ? <span className={truncate ? "min-w-0" : undefined}>{content}</span> : null}
       {rightIcon ? <span className="shrink-0 inline-flex">{rightIcon}</span> : null}
     </span>
-  )
+  );
 }
