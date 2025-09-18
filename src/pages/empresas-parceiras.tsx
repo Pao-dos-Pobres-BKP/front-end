@@ -52,7 +52,7 @@ const partners = () => {
         flex flex-col items-center 
         px-6 md:px-12 lg:px-24 
         pt-8 md:pt-16 lg:pt-20 
-        pb-8 md:pb-12 lg:pb-16 
+        pb-4
         gap-4 md:gap-8
         flex-1"
       >
@@ -69,39 +69,64 @@ const partners = () => {
         text-[#005172] font-manrope font-bold 
         text-3xl leading-[48px] tracking-[0.5px] 
         self-center md:self-start
-        text-center md:text-start mb-8"
+        text-center md:text-start mb-4"
         >EMPRESAS PARCEIRAS</h2>
-            
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-12 w-full mb-12 md:mb-16">
+          
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 w-full mb-12 md:mb-16">
           {companies.map((company, index) => (
             <img
               key={index}
               src={company.src}
               alt={company.alt} 
-              className="w-48 h-48 object-contain max-h-24" 
+              className="w-55 h-55 object-contain" 
             />
-          ))}
+        ))}
         </div>
 
         <h2 className="
         text-[#005172] font-manrope font-bold 
         text-3xl leading-[48px] tracking-[0.5px] 
         self-center md:self-start
-        text-center md:text-start mb-8"
+        text-center md:text-start mb-4"
         >INSTITUIÇÕES PARCEIRAS</h2>
 
-       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-12 w-full">
-        {institutions.map((institution, index) => (
-          <img
-            key={index}
-            src={institution.src}
-            alt={institution.alt} 
-            className="w-48 h-48 object-contain max-h-24" 
-          />
-        ))}
-       </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 w-full">
+          {institutions.map((institution, index) => (
+            <img
+              key={index}
+              src={institution.src}
+              alt={institution.alt} 
+              className="w-55 h-55 object-contain" 
+            />
+          ))}
+        </div>
+      </main>
 
-        <div className="flex justify-center mt-12 md:mt-16">
+      <section className="bg-[#005172] w-full flex flex-col justify-center items-center
+        px-6 md:px-12 lg:px-24 
+        py-8 md:py-12">
+        
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-white font-manrope font-extrabold text-sm uppercase tracking-wider mb-4">
+            FAÇA SUA PARTE 
+          </p>
+          
+          <h2 className="text-2xl md:text-3xl text-white font-manrope font-bold mb-8 leading-tight"> 
+            SAIBA COMO SUA EMPRESA PODE AJUDAR
+          </h2>
+          
+          <div className="space-y-2 mb-6 text-sm md:text-base">
+            <p className="text-white font-manrope font-bold leading-relaxed">
+              Rua da República, 801 - Cidade Baixa - Porto Alegre/RS - CEP 91380-250
+            </p>
+            <p className="text-white font-manrope font-bold leading-relaxed">
+              Telefones: (51) 3433-6900 | (51) 3433-6902
+            </p>
+            <p className="text-white font-manrope font-bold leading-relaxed">
+              relacaoinstitucional@paodospobres.com.br
+            </p>
+          </div>
+          
           <Button
             variant="secondary"
             size="large"
@@ -110,10 +135,10 @@ const partners = () => {
               window.location.href = `mailto:${email}`;
             }}
           >
-            Faça parte
+            Entrar em contato
           </Button>
         </div>
-      </main>
+      </section>
   </div>
   );
 };

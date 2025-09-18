@@ -12,7 +12,6 @@ const Home = () => {
   return (
     <div className="container py-10 flex flex-col gap-4 bg-gray-200 justify-center items-center">
       <PartnerCompanies />
-      /* Para ficar na dimensão correta, ao testar, remover o conteúdo do container acima */
 
       {/* <Button variant="primary" size="small" className="">
         Salvar
