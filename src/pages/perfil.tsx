@@ -1,16 +1,20 @@
 import Navbar from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Progress } from "@/components/ui/progress";
+import CampaignCard from "@/components/ui/campaignCard/campaignCard";
+import Input from "@/components/ui/input";
 import exemplo_foto_perfil from "@/assets/exemplo_foto_perfil.jpg";
-import { EditSquare } from "react-iconly";
+import { EditSquare, Plus } from "react-iconly";
 
 import { useState } from "react";
 import EditUserModal from "@/components/ui/edit-user-modal";
-
+import ConfirmLogoutModal from "@/components/ui/confirm-logout-modal";
 
 
 export default function Perfil() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+
   const [dados, setDados] = useState({
     nome: "Fulano de Tal",
     nascimento: "12 de Agosto de 1971",
@@ -20,9 +24,35 @@ export default function Perfil() {
     email: "fulanodetal@email.com.br"
   });
 
-  const handleSairDaConta = () => {
-    alert("Sair da Conta clicado");
-  };
+  //const campanhas: any[] = [];      // para testar quando não tiver campanhas apoiando.
+
+  const campanhas = [
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: "Fundação Pão dos Pobres Santo Antônio",
+      raised: 81825.33,
+      goal: 90000,
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: "Fundação Pão dos Pobres Santo Antônio",
+      raised: 81825.33,
+      goal: 90000,
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: "Fundação Pão dos Pobres Santo Antônio",
+      raised: 81825.33,
+      goal: 90000,
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: "Fundação Pão dos Pobres Santo Antônio",
+      raised: 81825.33,
+      goal: 90000,
+    },
+
+  ];
 
   const handleEditarConta = () => {
     setIsModalOpen(true);
@@ -30,7 +60,10 @@ export default function Perfil() {
 
   const handleSalvarPerfil = (novosDados: any) => {
     setDados(novosDados);
-    console.log("Dados salvos:", novosDados);
+  };
+
+  const handleConfirmLogout = () => {
+    setIsLogoutModalOpen(false);
   };
 
   return (
@@ -60,7 +93,7 @@ export default function Perfil() {
             </div>
             <div className="flex items-center gap-2">
               <button
-                onClick={handleSairDaConta}
+                onClick={() => setIsLogoutModalOpen(true)}
                 className="px-6 py-2 text-sm border rounded-xl text-[#005172] hover:bg-[#e6f3f5] transition-colors"
               >
                 Sair da Conta
@@ -84,7 +117,7 @@ export default function Perfil() {
                     </label>
                     <input
                       type="text"
-                      value= {dados.nascimento}
+                      value={dados.nascimento}
                       className={`w-60 px-3 py-2 border rounded-xl 
                         : "bg-white text-[#94A3B8] border-[#CBD5E1] cursor-not-allowed"
                         }`}
@@ -162,81 +195,120 @@ export default function Perfil() {
                 Campanhas que apoia
               </h3>
 
-            {/*  <CampaignCard
-                variant="compact"
-                title="Campanha de Santo Antônio"
-                raised={81825.33}
-                goal={90000}
-                creatorName="Fundação Pão dos Pobres Santo Antônio"
-                situation="approved"
-                donorName=""
-                donorEmail=""
-                memberSince=""
-                campaigns={[]}
-                onAction={() => alert("Remover apoio")}
-                className="border border-[#005172] rounded-lg text-sm p-3"
-              />
-
-              <CampaignCard
-                variant="compact"
-                title="Campanha de Santo Antônio"
-                raised={81825.33}
-                goal={90000}
-                creatorName="Fundação Pão dos Pobres Santo Antônio"
-                situation="approved"
-                donorName=""
-                donorEmail=""
-                memberSince=""
-                campaigns={[]}
-                onAction={() => alert("Remover apoio")}
-                className="border border-[#005172] rounded-lg text-sm p-3"
-              />
-
-              <CampaignCard
-                variant="compact"
-                title="Campanha de Santo Antônio"
-                raised={81825.33}
-                goal={90000}
-                creatorName="Fundação Pão dos Pobres Santo Antônio"
-                situation="approved"
-                donorName=""
-                donorEmail=""
-                memberSince=""
-                campaigns={[]}
-                onAction={() => alert("Remover apoio")}
-                className="border border-[#005172] rounded-lg text-sm p-3"
-              />
-
-              <CampaignCard
-                variant="compact"
-                title="Campanha de Santo Antônio"
-                raised={81825.33}
-                goal={90000}
-                creatorName="Fundação Pão dos Pobres Santo Antônio"
-                situation="approved"
-                donorName=""
-                donorEmail=""
-                memberSince=""
-                campaigns={[]}
-                onAction={() => alert("Remover apoio")}
-                className="border border-[#005172] rounded-lg text-sm p-3"
-              /> */}
+              {campanhas.length > 0 ? (
+                campanhas.map((campanha, index) => (
+                  <CampaignCard
+                    key={index}
+                    title={campanha.title}
+                    creatorName={campanha.creatorName}
+                    raised={campanha.raised}
+                    goal={campanha.goal}
+                    actionLabel="Acessar"
+                    variant="compact"
+                    situation="recurring"
+                    className="border border-[#005172] rounded-lg text-sm p-3"
+                  />
+                ))
+              ) : (
+                <div className="w-full mx-auto py-8 rounded-lg bg-blue-100 text-[#005172] text-center font-medium border border-[#005172] rounded-lg">
+                  Você ainda não apoia nenhuma campanha.
+                </div>
+              )}
             </div>
           </div>
 
           <hr className="border-t border-[#266D88CC] mx-50 my-8" />
-          
-          <div className="mt-2 bg-purple-200 rounded-lg p-4 min-h-[580px]">
+          <h2 className="text-2xl font-bold text-[#005172] mt-2 mb-4">
             Histórico de Doações
+          </h2>
+
+          <div className="mt-2 bg-white rounded-lg p-6 min-h-[580px] flex flex-col">
+            <div className="flex flex-col md:flex-row gap-3 items-center mb-6 w-full">
+              <Input
+                placeholder="Buscar..."
+                fullWidth
+              />
+
+              <div className="relative">
+                <label
+                  htmlFor="filtro-doacoes"
+                  className="absolute -top-5 left-0 text-xs text-white"
+                >
+                  Filtro
+                </label>
+                <select
+                  id="filtro-doacoes"
+                  className="appearance-none bg-[#F68537] hover:bg-orange-600 font-thin text-white py-2 pl-3 pr-12 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400 cursor-pointer"
+                >
+                  <option value="" disabled>
+                    Selecione uma data
+                  </option>
+                  <option value="30">Últimos 30 dias</option>
+                  <option value="60">Últimos 60 dias</option>
+                  <option value="120">Últimos 120 dias</option>
+                </select>
+                <svg
+                  className="w-4 h-4 text-white absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
+
+              <button className="px-4 py-2 rounded-lg bg-[#F68537] text-white font-thin hover:bg-orange-600 transition-colors">
+                Pesquisar
+              </button>
+
+              <button className="bg-[#F68537] hover:bg-orange-600 text-white p-2.5 rounded-md shadow-md flex items-center justify-center">
+                <Plus set="light" primaryColor="white" size="small" />
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-3 flex-1">
+              {campanhas.map((campanha, index) => (
+                <CampaignCard
+                  key={index}
+                  title={campanha.title}
+                  creatorName={campanha.creatorName}
+                  raised={campanha.raised}
+                  goal={campanha.goal}
+                  actionLabel="Ver detalhes"
+                  variant="compact"
+                  situation="pending"
+                  className="border border-[#005172] rounded-lg text-sm p-3"
+                />
+              ))}
+            </div>
+
+            <div className="flex justify-center items-center gap-2 mt-6">
+              <button className="px-3 py-1 border rounded-md text-[#005172] hover:bg-gray-100">1</button>
+              <button className="px-3 py-1 border rounded-md text-[#005172] hover:bg-gray-100">2</button>
+              <button className="px-3 py-1 border rounded-md text-[#005172] hover:bg-gray-100">3</button>
+              <span className="px-2">...</span>
+              <button className="px-3 py-1 border rounded-md text-[#005172] hover:bg-gray-100">10</button>
+            </div>
           </div>
         </div>
       </div>
-      
+
       <EditUserModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSave={handleSalvarPerfil}
         initialData={dados}
+      />
+
+      <ConfirmLogoutModal
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+        onConfirm={handleConfirmLogout}
       />
       <Footer />
     </div>
