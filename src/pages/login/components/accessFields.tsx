@@ -25,6 +25,13 @@ const validationRules = {
   password: (value: string) => {
     if (!value.trim()) return "Senha é obrigatória";
     if (value.length < 9) return "Senha deve ter pelo menos 9 caracteres";
+    if (!/[a-z]/.test(value)) return "Senha deve conter pelo menos 1 letra minúscula";
+    if (!/[A-Z]/.test(value)) return "Senha deve conter pelo menos 1 letra maiúscula";
+    if (!/\d/.test(value)) return "Senha deve conter pelo menos 1 número";
+    if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~`]/.test(value)) {
+      return "Senha deve conter pelo menos 1 símbolo (!@#$%^&*...)";
+    }
+
     return null;
   },
   confirmPassword: (value: string) => {

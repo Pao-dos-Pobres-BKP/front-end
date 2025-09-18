@@ -1,15 +1,28 @@
 import type { RegistrationData } from "../pages/login/login";
 import api from "./api";
 
+export function formatCPF(cpfValue: string): string {
+  const cleanCPF = cpfValue.replace(/\D/g, "");
+  return cleanCPF;
+}
+
+export function formatPhone(phoneValue: string): string {
+  const cleanPhone = phoneValue.replace(/\D/g, "");
+  return `+55${cleanPhone}`;
+}
+
 export async function signIn(credentials: RegistrationData) {
+  const formattedCPF = formatCPF(credentials.cpf || "");
+  const formattedPhone = formatPhone(credentials.telefone || "");
+
   const requestBody = {
     email: credentials.email,
     password: credentials.password,
     fullName: credentials.nomeCompleto,
     birthDate: credentials.dataNascimento,
     gender: credentials.genero,
-    phone: credentials.telefone,
-    cpf: credentials.cpf,
+    phone: formattedPhone,
+    cpf: formattedCPF,
   };
 
   try {
