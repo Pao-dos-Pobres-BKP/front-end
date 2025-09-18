@@ -41,10 +41,48 @@ const Home = () => {
         actionLabel="Acessar"
         variant="compact"
         situation="recurring"
-        donorName=""
-        donorEmail=""
-        memberSince=""
-        campaigns={[]}
+      />
+
+      <CampaignCard
+        title="Campanha de Santo Antônio"
+        creatorName="Fundação Pão dos Pobres Santo Antônio"
+        raised={81825.33}
+        goal={90000}
+        actionLabel="Acessar"
+        variant="historic"
+        situation="approved"
+        lastDonation={80}
+      />
+
+      <CampaignCard
+        title="Campanha de Santo Antônio"
+        creatorName="Fundação Pão dos Pobres Santo Antônio"
+        raised={81825.33}
+        goal={90000}
+        actionLabel="Acessar"
+        variant="historic"
+        situation="recurring"
+        lastDonation={80}
+      />
+
+      <CampaignCard
+        title="Campanha de Santo Antônio"
+        creatorName="Fundação Pão dos Pobres Santo Antônio"
+        raised={81825.33}
+        goal={90000}
+        actionLabel="Acessar"
+        variant="list"
+        situation="approved"
+      />
+
+      <CampaignCard
+        title="Campanha de Santo Antônio"
+        creatorName="Fundação Pão dos Pobres Santo Antônio"
+        raised={81825.33}
+        goal={90000}
+        actionLabel="Acessar"
+        variant="list"
+        situation="recurring"
       />
 
       <div className="mt-6 flex gap-3 flex-wrap">
