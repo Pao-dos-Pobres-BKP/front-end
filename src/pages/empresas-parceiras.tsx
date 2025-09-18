@@ -116,13 +116,13 @@ const partners = () => {
           </h2>
           
           <div className="space-y-2 mb-6 text-sm md:text-base">
-            <p className="text-white font-manrope font-bold leading-relaxed">
+            <p className="text-white font-manrope font-regular leading-relaxed">
               Rua da República, 801 - Cidade Baixa - Porto Alegre/RS - CEP 91380-250
             </p>
-            <p className="text-white font-manrope font-bold leading-relaxed">
+            <p className="text-white font-manrope font-regular leading-relaxed">
               Telefones: (51) 3433-6900 | (51) 3433-6902
             </p>
-            <p className="text-white font-manrope font-bold leading-relaxed">
+            <p className="text-white font-manrope font-regular leading-relaxed">
               relacaoinstitucional@paodospobres.com.br
             </p>
           </div>
