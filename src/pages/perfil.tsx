@@ -4,7 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import CampaignCard from "@/components/ui/campaignCard/campaignCard";
 import Input from "@/components/ui/input";
 import exemplo_foto_perfil from "@/assets/exemplo_foto_perfil.jpg";
-import { EditSquare, Plus } from "react-iconly";
+import { EditSquare } from "react-iconly";
 
 import { useState } from "react";
 import EditUserModal from "@/components/ui/edit-user-modal";
@@ -264,10 +264,6 @@ export default function Perfil() {
 
               <button className="px-4 py-2 rounded-lg bg-[#F68537] text-white font-thin hover:bg-orange-600 transition-colors">
                 Pesquisar
-              </button>
-
-              <button className="bg-[#F68537] hover:bg-orange-600 text-white p-2.5 rounded-md shadow-md flex items-center justify-center">
-                <Plus set="light" primaryColor="white" size="small" />
               </button>
             </div>
 
