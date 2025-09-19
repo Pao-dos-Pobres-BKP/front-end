@@ -71,35 +71,38 @@ export default function Perfil() {
       <Navbar />
       <div className="flex justify-center px-6 py-6">
         <div className="w-full max-w-6md bg-white rounded-xl shadow-lg p-4">
-          <div className="flex items-center justify-between bg-white rounded-lg p-4 mb-6">
-            <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white rounded-lg gap-4 p-4 mb-6">
+            <div className="flex items-center gap-4 w-full sm:w-auto">
               <img
                 src={exemplo_foto_perfil}
                 alt="Foto do usuário"
                 className="w-20 h-20 rounded-2xl object-cover"
               />
               <div className="flex flex-col flex-1">
-                <div className="h-7 flex items-center">
-                  <h2 className="text-[27px] font-bold text-[#005172]">
+                <div className="flex items-center">
+                  <h2 className="text-[22px] sm:text-[27px] font-bold text-[#005172]">
                     {dados.nome}
                   </h2>
                 </div>
-                <div className="h-6 flex items-center">
-                  <p className="text-xs font-inter text-[#005172]">
+                <div className="flex items-center">
+                  <p className="text-xs sm:text-sm font-inter text-[#005172]">
                     Membro desde 12 de Agosto de 2023
                   </p>
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+
+            <div className="flex items-center gap-2 w-full sm:w-auto">
               <button
                 onClick={() => setIsLogoutModalOpen(true)}
-                className="px-6 py-2 text-sm border rounded-xl text-[#005172] hover:bg-[#e6f3f5] transition-colors"
+                className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl text-[#005172] hover:bg-[#e6f3f5] transition-colors"
               >
                 Sair da Conta
               </button>
-              <button className="p-2 rounded-md bg-[#005172] text-white hover:bg-[#24434f] flex items-center justify-center"
-                onClick={handleEditarConta}>
+              <button
+                className="p-2 rounded-md bg-[#005172] text-white hover:bg-[#24434f] flex items-center justify-center"
+                onClick={handleEditarConta}
+              >
                 <EditSquare size="medium" />
               </button>
             </div>
@@ -203,7 +206,6 @@ export default function Perfil() {
                     creatorName={campanha.creatorName}
                     raised={campanha.raised}
                     goal={campanha.goal}
-                    actionLabel="Acessar"
                     variant="compact"
                     situation="recurring"
                     className="border border-[#005172] rounded-lg text-sm p-3"
@@ -229,16 +231,10 @@ export default function Perfil() {
                 fullWidth
               />
 
-              <div className="relative">
-                <label
-                  htmlFor="filtro-doacoes"
-                  className="absolute -top-5 left-0 text-xs text-white"
-                >
-                  Filtro
-                </label>
+              <div className="relative w-full md:w-1/3">
                 <select
                   id="filtro-doacoes"
-                  className="appearance-none bg-[#F68537] hover:bg-orange-600 font-thin text-white py-2 pl-3 pr-12 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400 cursor-pointer"
+                  className="w-full appearance-none bg-[#F68537] text-white py-2 pl-3 pr-10 rounded-md shadow-sm focus:outline-none"
                 >
                   <option value="" disabled>
                     Selecione uma data
@@ -253,16 +249,11 @@ export default function Perfil() {
                   stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </div>
 
-              <button className="px-4 py-2 rounded-lg bg-[#F68537] text-white font-thin hover:bg-orange-600 transition-colors">
+              <button className="w-full md:w-auto px-4 py-2 rounded-lg bg-[#F68537] text-white hover:bg-orange-600">
                 Pesquisar
               </button>
             </div>
