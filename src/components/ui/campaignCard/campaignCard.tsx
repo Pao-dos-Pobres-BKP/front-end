@@ -97,6 +97,7 @@ export default function CampaignCard({
                 creatorName={creatorName}
                 title={title}
                 className={className}
+                progressPercent={percent}
             />
         );
     }
