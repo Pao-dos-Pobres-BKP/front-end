@@ -13,7 +13,6 @@ export type CampaignCardProps = {
     goal: number;
     creatorName?: string;
     variant?: "default" | "profile" | "compact" | "historic" | "list" ;
-    actionLabel?: string;
     onAction?: () => void;
     className?: string;
     situation?: "approved" | "pending" | "rejected" | "recurring";

@@ -38,7 +38,6 @@ const Home = () => {
         creatorName="Fundação Pão dos Pobres Santo Antônio"
         raised={81825.33}
         goal={90000}
-        actionLabel="Acessar"
         variant="compact"
         situation="recurring"
       />
@@ -48,7 +47,6 @@ const Home = () => {
         creatorName="Fundação Pão dos Pobres Santo Antônio"
         raised={81825.33}
         goal={90000}
-        actionLabel="Acessar"
         variant="historic"
         situation="approved"
         lastDonation={80}
@@ -59,7 +57,6 @@ const Home = () => {
         creatorName="Fundação Pão dos Pobres Santo Antônio"
         raised={81825.33}
         goal={90000}
-        actionLabel="Acessar"
         variant="historic"
         situation="recurring"
         lastDonation={80}
@@ -70,7 +67,6 @@ const Home = () => {
         creatorName="Fundação Pão dos Pobres Santo Antônio"
         raised={81825.33}
         goal={90000}
-        actionLabel="Acessar"
         variant="list"
         situation="approved"
       />
@@ -80,7 +76,6 @@ const Home = () => {
         creatorName="Fundação Pão dos Pobres Santo Antônio"
         raised={81825.33}
         goal={90000}
-        actionLabel="Acessar"
         variant="list"
         situation="recurring"
       />
