@@ -6,8 +6,9 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import NewsItem from "@/components/ui/news-item";
+import type { newsInformations } from "@/types/news";
 
-const News = () => {
+const News = (cardItens: newsInformations[]) => {
   return (
     <div
       className="bg-[var(--color-components-2)] flex flex-col items-center 
@@ -38,12 +39,13 @@ const News = () => {
         className="w-full max-w"
         opts={{
           align: "start",
+          loop: true,
           
         }}
       >
-        <CarouselContent >
+        <CarouselContent className="-ml-4">
           {Array.from({ length: 10 }).map((_, index) => (
-            <CarouselItem key={index} className=" sm:basis-1 md:basis-1/3 lg:basis-1/5">
+            <CarouselItem key={index} className=" sm:basis-1/3 md:basis-1/4 lg:basis-1/6">
               <NewsItem 
                   id="1" 
                   title="Sample News Titleeeeee " 
@@ -51,7 +53,6 @@ const News = () => {
                 />
             </CarouselItem>
           ))}
-          
         </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />
