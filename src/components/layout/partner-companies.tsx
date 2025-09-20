@@ -8,6 +8,8 @@ import paimLogo from '@/assets/PartnerCompanies/Paim.png';
 import cindapaLogo from '@/assets/PartnerCompanies/Cindapa.png';
 import maisALogo from '@/assets/PartnerCompanies/maisA.png'; 
 import ondawebLogo from '@/assets/PartnerCompanies/OndaWeb.png';
+import {ROUTES} from '@/constant/routes';
+import { Link } from 'react-router-dom';
 import Button from '../ui/button';
 
 const partners = [
@@ -50,16 +52,15 @@ const PartnerCompanies = () => {
       </div>
 
       <div className="flex justify-center mt-6">
-        <Button 
-          variant="secondary" 
-          size="large"
-          className="!text-xl !font-bold"
-           onClick={() => {
-           window.location.href = 'https://www.paodospobres.org.br/seja-parceiro/';
-           }}
-        >
-          Saiba mais 
-        </Button>
+        <Link to= {ROUTES.partners}>
+          <Button 
+            variant="secondary" 
+            size="large"
+            className="!text-xl !font-bold"
+          >
+            Saiba mais 
+          </Button>
+        </Link>
       </div>
     </div>
   );

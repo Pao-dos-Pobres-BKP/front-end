@@ -1,11 +1,4 @@
-import { Tabs } from "@/components/layout/tabs";
-import { Avatar } from "@/components/ui/avatar";
 import Button from "../components/ui/button";
-import { Accordion, AccordionItem } from "@/components/ui/accordion";
-import { AccordionTrigger } from "@/components/ui/accordion";
-import { AccordionContent } from "@/components/ui/accordion";
-import { SearchBar } from "@/components/layout/search-bar";
-import { Footer } from "@/components/layout/footer";
 import CampaignCard from "@/components/ui/campaignCard/campaignCard";
 
 const Home = () => {
