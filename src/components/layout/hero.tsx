@@ -1,10 +1,7 @@
 import * as React from "react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import Button from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-
-type CTA =
-  | { label: string; href: string; onClick?: never; external?: boolean }
-  | { label: string; onClick: () => void; href?: never; external?: boolean }
 
 export type HeroItem = {
   id?: string | number
@@ -235,30 +232,26 @@ export function Hero({
             "absolute inset-0 z-20 flex items-center justify-between px-2 md:px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
           )}
         >
-          <button
+          <Button
             aria-label="Slide anterior"
+            size="icon"
+            variant="secondary"
             onClick={() => go(-1)}
-            className={cn(
-              "pointer-events-auto rounded-full bg-white/85 p-2 shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-white/80 [@media(hover:none)]:opacity-100"
-            )}
+            className="pointer-events-auto rounded-full bg-white/85 shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-white/80 [@media(hover:none)]:opacity-100"
           >
-            <svg viewBox="0 0 24 24" className="h-5 w-5 text-gray-900">
-              <path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </button>
+            <ChevronLeft className="h-5 w-5 text-gray-900" />
+          </Button>
 
-          <button
+          <Button
             aria-label="Próximo slide"
+            size="icon"
+            variant="secondary"
             onClick={() => go(1)}
-            className={cn(
-              "pointer-events-auto rounded-full bg-white/85 p-2 shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-white/80",
-              "[@media(hover:none)]:opacity-100"
-            )}
+            className="pointer-events-auto rounded-full bg-white/85 shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-white/80 [@media(hover:none)]:opacity-100"
           >
-            <svg viewBox="0 0 24 24" className="h-5 w-5 text-gray-900">
-              <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </button>
+            
+            <ChevronRight className="h-5 w-5 text-gray-900" />
+          </Button>
         </div>
       )}
 
