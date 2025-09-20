@@ -1,7 +1,5 @@
 import * as React from "react"
 import Button from "@/components/ui/button"
-import { buttonVariants } from "@/components/ui/button"
-import Link from "@/components/ui/link"
 import { cn } from "@/lib/utils"
 
 type CTA =
@@ -45,14 +43,14 @@ export function Hero({
   showArrows = true,
   showIndicators = true,
 }: HeroProps) {
-  const [index, setIndex] = React.useState(1)
+  const [index, setIndex] = React.useState(0)
   const count = items.length
 
-  // /* FEATURE FUTURA – autoplay/transição: */
-  // React.useEffect(() => {
-  //   const id = setInterval(() => setIndex((i) => (i + 1) % count), 6000)
-  //   return () => clearInterval(id)
-  // }, [count])
+  React.useEffect(() => {
+    if (count <= 1) return
+    const id = window.setInterval(() => setIndex((i) => (i + 1) % count), 6000)
+    return () => window.clearInterval(id)
+  }, [count])
 
   const go = (dir: -1 | 1) => {
     setIndex((i) => {
@@ -63,12 +61,58 @@ export function Hero({
     })
   }
 
+  const startX = React.useRef<number | null>(null)
+  const startY = React.useRef<number | null>(null)
+  const swiping = React.useRef(false)
+
+  const onTouchStart: React.TouchEventHandler = (e) => {
+    const t = e.touches[0]
+    startX.current = t.clientX
+    startY.current = t.clientY
+    swiping.current = false
+  }
+
+  const onTouchMove: React.TouchEventHandler = (e) => {
+    if (startX.current == null || startY.current == null) return
+    const t = e.touches[0]
+    const dx = t.clientX - startX.current
+    const dy = t.clientY - startY.current
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
+      swiping.current = true
+      e.preventDefault()
+    }
+  }
+
+  const onTouchEnd: React.TouchEventHandler = (e) => {
+    if (startX.current == null || startY.current == null) return
+    const t = e.changedTouches[0]
+    const dx = t.clientX - startX.current
+    const dy = t.clientY - startY.current
+    const THRESHOLD = 40
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > THRESHOLD) {
+      if (dx > 0) go(-1)
+      else go(1)
+    }
+    startX.current = null
+    startY.current = null
+    swiping.current = false
+  }
+
+  const onKeyDown: React.KeyboardEventHandler = (e) => {
+    if (e.key === "ArrowLeft") go(-1)
+    if (e.key === "ArrowRight") go(1)
+  }
+
   return (
     <section
       aria-roledescription={count > 1 ? "carousel" : undefined}
+      tabIndex={0}
+      onKeyDown={onKeyDown}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
       className={cn(
-        // tela cheia, sem borda arredondada
-        "relative w-full h-[60svh] min-h-[480px] overflow-hidden bg-black",
+        "relative w-full h-[60svh] min-h-[480px] overflow-hidden bg-black group",
         className,
       )}
     >
@@ -84,7 +128,7 @@ export function Hero({
               aria-roledescription="slide"
               aria-hidden={!visible}
               className={cn(
-                "absolute inset-0",
+                "absolute inset-0 transition-opacity duration-300",
                 visible ? "opacity-100" : "opacity-0 pointer-events-none",
               )}
             >
@@ -104,19 +148,18 @@ export function Hero({
               />
               <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center px-4 py-8 sm:px-6 lg:px-8">
                 <div className="grid w-full gap-4 sm:gap-6 md:grid-cols-12">
-                  {/* Coluna esquerda: título + descrição */}
                   <div className="md:col-span-7 lg:col-span-8 max-w-xl">
                     <h1 className="text-balance max-w-[22ch] sm:max-w-[26ch] lg:max-w-[30ch] text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight text-white drop-shadow">
                       {item.title}
                     </h1>
 
                     {item.description && (
-                      <p
-                        className="mt-3 max-w-2xl text-pretty text-sm/6 sm:text-base/7 md:text-lg/8 text-white px-4 py-2 inline-block bg-[#00D1D3]/90 rounded-lg ">
+                      <p className="mt-3 max-w-2xl text-pretty text-sm/6 sm:text-base/7 md:text-lg/8 text-white px-4 py-2 inline-block bg-[#00D1D3]/90 rounded-lg ">
                         {item.description}
                       </p>
                     )}
                   </div>
+
                   {hasInfo && (
                     <div className="md:col-span-5 lg:col-span-4">
                       <div className="ml-auto max-w-sm rounded-xl bg-[#00D1D3]/70 p-4 backdrop-blur-md shadow-lg">
@@ -172,65 +215,69 @@ export function Hero({
                         <Button
                           size="small"
                           variant="quaternary"
-                          onClick={() =>
-                            window.open(item.buttonLink!)
-                          }
+                          onClick={() => window.open(item.buttonLink!)}
                         >
                           {item.buttonLabel}
                         </Button>
                       </div>
                     </div>
                   )}
-
-
                 </div>
               </div>
             </article>
           )
         })}
       </div>
-      {
-        showArrows && count > 1 && (
-          <>
-            <button
-              aria-label="Slide anterior"
-              onClick={() => go(-1)}
-              className="group absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/85 p-2 shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-white/80 md:left-4"
-            >
-              <svg viewBox="0 0 24 24" className="h-5 w-5 text-gray-900 group-active:translate-x-[-1px] transition">
-                <path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              </svg>
-            </button>
-            <button
-              aria-label="Próximo slide"
-              onClick={() => go(1)}
-              className="group absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/85 p-2 shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-white/80 md:right-4"
-            >
-              <svg viewBox="0 0 24 24" className="h-5 w-5 text-gray-900 group-active:translate-x-[1px] transition">
-                <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              </svg>
-            </button>
-          </>
-        )
-      }
 
-      {
-        showIndicators && count > 1 && (
-          <div className="pointer-events-none absolute bottom-3 left-0 right-0 flex items-center justify-center gap-2 md:bottom-4">
-            {items.map((_, i) => (
-              <button
-                key={i}
-                aria-label={`Ir para o slide ${i + 1}`}
-                onClick={() => setIndex(i)}
-                className={cn(
-                  "pointer-events-auto h-2.5 w-2.5 rounded-full border border-white/70 transition",
-                  i === index ? "bg-white" : "bg-white/20 hover:bg-white/40",
-                )}
-              />
-            ))}
-          </div>
-        )
-      }
-    </section >
+      {showArrows && count > 1 && (
+        <div
+          className={cn(
+            "absolute inset-0 z-20 flex items-center justify-between px-2 md:px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+          )}
+        >
+          <button
+            aria-label="Slide anterior"
+            onClick={() => go(-1)}
+            className={cn(
+              "pointer-events-auto rounded-full bg-white/85 p-2 shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-white/80 [@media(hover:none)]:opacity-100"
+            )}
+          >
+            <svg viewBox="0 0 24 24" className="h-5 w-5 text-gray-900">
+              <path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
+
+          <button
+            aria-label="Próximo slide"
+            onClick={() => go(1)}
+            className={cn(
+              "pointer-events-auto rounded-full bg-white/85 p-2 shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-white/80",
+              "[@media(hover:none)]:opacity-100"
+            )}
+          >
+            <svg viewBox="0 0 24 24" className="h-5 w-5 text-gray-900">
+              <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
+        </div>
+      )}
+
+      {showIndicators && count > 1 && (
+        <div className="hidden sm:pointer-events-none sm:absolute sm:bottom-4 sm:left-0 sm:right-0 sm:z-30 sm:flex sm:items-center sm:justify-center sm:gap-2">
+          {items.map((_, i) => (
+            <button
+              key={i}
+              aria-label={`Ir para o slide ${i + 1}`}
+              onClick={() => setIndex(i)}
+              className={cn(
+                "pointer-events-auto h-2.5 w-2.5 rounded-full border border-white/70 transition",
+                i === index ? "bg-white" : "bg-white/20 hover:bg-white/40",
+              )}
+            />
+          ))}
+        </div>
+      )}
+
+    </section>
   )
 }
