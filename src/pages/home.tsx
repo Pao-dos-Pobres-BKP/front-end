@@ -1,57 +1,46 @@
-import { Tabs } from "@/components/layout/tabs";
-import { Avatar } from "@/components/ui/avatar";
-import Button from "../components/ui/button";
-import { Accordion, AccordionItem } from "@/components/ui/accordion";
-import { AccordionTrigger } from "@/components/ui/accordion";
-import { AccordionContent } from "@/components/ui/accordion";
-import { SearchBar } from "@/components/layout/search-bar";
-import { Footer } from "@/components/layout/footer";
+import { Hero, type HeroItem } from "@/components/layout/hero"
+
+import festaImg from "@/assets/festa-junina-pp.jpg"
+import quadra from "@/assets/quadra-pp.jpg"
+import fundo from "@/assets/fundo-pp.png"
+
+const heroItems: HeroItem[] = [
+  {
+    imageUrl: festaImg,
+    title: "Festa Junina do Pão dos Pobres",
+    description:
+      "Comemoraremos em junho de 2026 a tradicional Festa Junina do Pão dos Pobres para todos que quiserem vir e celebrar com a gente!",
+    location: "Rua da República, 801 - Cidade Baixa, Porto Alegre",
+    date: "20 de junho",
+    time: "10:30",
+    buttonLabel: "Ir para o site",
+    buttonLink: "https://www.paodospobres.org.br/"
+  },
+  {
+    imageUrl: quadra,
+    title: "Todo dia um futuro novo!",
+    description: "Conheça nossos projetos e como você pode ajudar.",
+    location: "Rua da República, 801 - Cidade Baixa, Porto Alegre",
+    date: "20 de junho",
+    time: "10:30",
+    buttonLabel: "Ir para o site",
+    buttonLink: "/doacao "
+  },
+  {
+    imageUrl: fundo,
+    title: "Mais uma imagem!",
+    description: "Uma tela hero mais clean."
+  },
+]
 
 const Home = () => {
   return (
-    <div className="container py-10 flex flex-col gap-4 bg-gray-200 justify-center items-center">
-      {/* <Button variant="primary" size="small" className="">
-        Salvar
-      </Button>
-      <Button variant="secondary" size="medium">
-        Salvar
-      </Button>
-      <Button variant="destructive" size="large">
-        Salvar
-      </Button>
-      <Button variant="confirm" size="large">
-        Salvar
-      </Button>
-      <Button variant="primary" desactive size="large">
-        Salvar
-      </Button>
-
-      <Tabs tabs={["Usuário", "Senha"]}>
-        <div>Conteúdo do Usuário</div>
-        <div>Conteúdo da Senha</div>
-      </Tabs>
-
-      <Tabs tabs={["Usuário", "Senha"]} variant="secondary">
-        <div>Conteúdo do Usuário</div>
-        <div>Conteúdo da Senha</div>
-      </Tabs>
-
-      <Avatar imgUrl="https://github.com/arturbschultz.png" size="small" />
-      <Avatar imgUrl="https://github.com/arturbschultz.png" />
-      <Avatar imgUrl="https://github.com/arturbschultz.png" size="large" />
-
-      <Accordion type="single" collapsible>
-        <AccordionItem value="usuario">
-          <AccordionTrigger>Usuário</AccordionTrigger>
-          <AccordionContent>Conteúdo do Usuário</AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="senha">
-          <AccordionTrigger>Usuário</AccordionTrigger>
-          <AccordionContent>Conteúdo do Usuário</AccordionContent>
-        </AccordionItem>
-      </Accordion> */}
+    <div className="flex flex-col gap-10 bg-gray-200">
+      <Hero
+        items={heroItems}
+      />
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
