@@ -9,6 +9,7 @@ import NewsItem from "@/components/ui/news-item";
 import type { newsInformations } from "@/types/news";
 
 const News = (cardItens: newsInformations[]) => {
+  
   return (
     <div
       className="bg-[var(--color-components-2)] flex flex-col items-center 
@@ -43,9 +44,9 @@ const News = (cardItens: newsInformations[]) => {
           
         }}
       >
-        <CarouselContent className="-ml-4">
+        <CarouselContent className=" max-[23.5rem]:ml-14 max-[22rem]:ml-8">
           {Array.from({ length: 10 }).map((_, index) => (
-            <CarouselItem key={index} className=" sm:basis-1/3 md:basis-1/4 lg:basis-1/6">
+            <CarouselItem key={index} className=" basis-full min-[23.5rem]:basis-1/2 min-[38rem]:basis-1/3  min-[52rem]:basis-1/4  min-[70rem]:basis-1/5 min-[82rem]:basis-1/6 min-[98rem]:basis-1/7">
               <NewsItem 
                   id="1" 
                   title="Sample News Titleeeeee " 
@@ -57,6 +58,7 @@ const News = (cardItens: newsInformations[]) => {
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
+
     </div>
   );
 };
