@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import { UserContext } from "../contexts/UserContext";
-import type { RoleEnum } from "../contexts/UserContext";
 import type { User } from "../contexts/UserContext";
 import type { UserContextType } from "../contexts/UserContext";
 import { jwtDecode } from "jwt-decode";
 import type { JWTTokenPayload } from "../types/JWTTokenPayload";
+import { getAdmin, getDonor } from "@/services/auth"; // Importe as funções
 
 type UserProviderProps = {
   children: ReactNode;
@@ -13,6 +13,7 @@ type UserProviderProps = {
 
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUserState] = useState<User | null>(null);
+
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
@@ -24,18 +25,25 @@ export const UserProvider = ({ children }: UserProviderProps) => {
           localStorage.removeItem("authToken");
           setUserState(null);
         } else {
-          setUserState({
-            id: decoded.id,
-            fullname: decoded.fullname,
-            birthDate: decoded.birthDate,
-            email: decoded.email,
-            root: decoded.root,
-            accessToken: token,
-            role: decoded.role as RoleEnum,
-            gender: decoded.gender,
-            phone: decoded.phone,
-            cpf: decoded.cpf,
-          });
+          const fetchUserData = async () => {
+            try {
+              let userData;
+              if (decoded.role === "DONOR") {
+                userData = await getDonor(decoded.id, token);
+              } else if (decoded.role === "ADMIN") {
+                userData = await getAdmin(decoded.id, token);
+              } else {
+                throw new Error("Role inválida no token.");
+              }
+              setUserState(userData);
+            } catch (error) {
+              console.error("Falha ao buscar dados do usuário:", error);
+              localStorage.removeItem("authToken");
+              setUserState(null);
+            }
+          };
+
+          fetchUserData();
         }
       } catch (err) {
         console.error("Token inválido:", err);
