@@ -7,7 +7,7 @@ import AccessFormFields, { type AccessFormData } from "./shared/AccessFormFields
 
 interface AccessFieldsProps {
   onBack: () => void;
-  onRegister: (data: AccessFormData) => void | Promise<string | boolean>;
+  onRegister: (data: AccessFormData) => void | Promise<string | boolean | undefined>;
   errorApi?: (data: string) => string;
 }
 
