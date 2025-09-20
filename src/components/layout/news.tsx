@@ -7,8 +7,11 @@ import {
 } from "@/components/ui/carousel";
 import NewsItem from "@/components/ui/news-item";
 import type { newsInformations } from "@/types/news";
+import excluir1 from "@/assets/excluir1.jpg";
+import excluir2 from "@/assets/excluir2.png";
+import Autoplay from "embla-carousel-autoplay";
 
-const News = (cardItens: newsInformations[]) => {
+const News = (cardItens?: newsInformations[]) => {
   
   return (
     <div
@@ -43,14 +46,20 @@ const News = (cardItens: newsInformations[]) => {
           loop: true,
           
         }}
+        plugins={[
+          Autoplay({
+            delay: 5000, 
+          }),
+        ]}
       >
         <CarouselContent className=" max-[23.5rem]:ml-14 max-[22rem]:ml-8">
-          {Array.from({ length: 10 }).map((_, index) => (
-            <CarouselItem key={index} className=" basis-full min-[23.5rem]:basis-1/2 min-[38rem]:basis-1/3  min-[52rem]:basis-1/4  min-[70rem]:basis-1/5 min-[82rem]:basis-1/6 min-[98rem]:basis-1/7">
+          {mockedNewsInformations.map((news) => (
+            <CarouselItem className=" basis-full min-[23.5rem]:basis-1/2 min-[38rem]:basis-1/3  min-[52rem]:basis-1/4  min-[70rem]:basis-1/5 min-[82rem]:basis-1/6 min-[98rem]:basis-1/7">
               <NewsItem 
-                  id="1" 
-                  title="Sample News Titleeeeee " 
-                  link="https://example.com" 
+                  id={news.id} 
+                  title={news.title}
+                  link={news.link} 
+                  imageUrl={news.imageUrl}
                 />
             </CarouselItem>
           ))}
@@ -62,5 +71,16 @@ const News = (cardItens: newsInformations[]) => {
     </div>
   );
 };
+
+
+const mockedNewsInformations: newsInformations[] = [
+  { id: "1", title: "Pão dos Pobres celebra 130 anos de história e dedicação", link: "https://example.com", imageUrl: excluir1 },
+  { id: "2", title: "Nova oficina de robótica inspira jovens a criarem o futuro", link: "https://example.com", imageUrl: excluir2 },
+  { id: "3", title: "Campanha do agasalho de 2025 supera todas as metas", link: "https://example.com", imageUrl: excluir1 },
+  { id: "4", title: "Alunos se destacam na feira de ciências com projetos inovadores", link: "https://example.com", imageUrl: excluir2 },
+  { id: "5", title: "Parceria com empresa de tecnologia irá oferecer novos cursos", link: "https://example.com", imageUrl: excluir1 },
+  { id: "6", title: "Tradicional Festa de São João anima a comunidade e arrecada fundos", link: "https://example.com", imageUrl: excluir2 },
+  { id: "7", title: "Inscrições abertas para o concorrido curso de marcenaria", link: "https://example.com", imageUrl: excluir1 },
+];
 
 export default News;
