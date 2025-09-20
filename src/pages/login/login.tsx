@@ -24,10 +24,8 @@ export default function Login() {
   const handleRegister = async (data: AccessFormData) => {
     const finalData = { ...registrationData, ...data };
 
-    console.log("Dados finais para cadastro:", finalData);
     const response = await signIn(finalData as RegistrationData);
     if (response === true) {
-      console.log("Usuário cadastrado com sucesso:", response);
       setCurrentStep("success");
       return true;
     } else {

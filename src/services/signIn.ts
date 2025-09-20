@@ -28,7 +28,6 @@ export async function signIn(credentials: RegistrationData) {
   try {
     const response = await api.post("/donors", requestBody);
     if (response.status === 201) {
-      console.log("Usuário cadastrado com sucesso:", response.data);
       return true;
     }
   } catch (error) {
