@@ -21,11 +21,18 @@ export default function Login() {
     setCurrentStep("access");
   };
 
-  const handleRegister = (data: AccessFormData) => {
+  const handleRegister = async (data: AccessFormData) => {
     const finalData = { ...registrationData, ...data };
+
     console.log("Dados finais para cadastro:", finalData);
-    signIn(finalData as RegistrationData);
-    setCurrentStep("success");
+    const response = await signIn(finalData as RegistrationData);
+    if (response === true) {
+      console.log("Usuário cadastrado com sucesso:", response);
+      setCurrentStep("success");
+      return true;
+    } else {
+      return response;
+    }
   };
 
   const getHeaderConfig = () => {

@@ -7,7 +7,8 @@ import AccessFormFields, { type AccessFormData } from "./shared/AccessFormFields
 
 interface AccessFieldsProps {
   onBack: () => void;
-  onRegister: (data: AccessFormData) => void;
+  onRegister: (data: AccessFormData) => void | Promise<string | boolean>;
+  errorApi?: (data: string) => string;
 }
 
 const initialForm: AccessFormData = {
@@ -57,12 +58,25 @@ export default function AccessFields({ onBack, onRegister }: AccessFieldsProps) 
       return;
     }
     if (!isFormValid) return;
-
     setIsLoading(true);
-    setTimeout(() => {
+    try {
+      const result = await onRegister(form);
+
+      if (typeof result === "string") {
+        setErrors((prev) => ({
+          ...prev,
+          api: result,
+        }));
+      }
+    } catch (error) {
+      setErrors((prev) => ({
+        ...prev,
+        api: "Não foi possível conectar ao servidor. Tente novamente mais tarde...",
+      }));
+      console.error("Erro no cadastro:", error);
+    } finally {
       setIsLoading(false);
-      onRegister(form);
-    }, 1500);
+    }
   };
 
   const steps = [

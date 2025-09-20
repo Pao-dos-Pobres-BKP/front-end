@@ -1,6 +1,6 @@
 import type { RegistrationData } from "../pages/login/login";
 import api from "./api";
-
+import axios from "axios";
 export function formatCPF(cpfValue: string): string {
   const cleanCPF = cpfValue.replace(/\D/g, "");
   return cleanCPF;
@@ -27,14 +27,23 @@ export async function signIn(credentials: RegistrationData) {
 
   try {
     const response = await api.post("/donors", requestBody);
-    console.log("Resposta do servidor:", response);
-    if (response.status >= 200 && response.status < 300) {
-      return response.data;
-    } else {
-      throw new Error("Falha no cadastro. Tente novamente.");
+    if (response.status === 201) {
+      console.log("Usuário cadastrado com sucesso:", response.data);
+      return true;
     }
   } catch (error) {
-    console.error("Erro no cadastro:", error);
-    throw error;
+    if (axios.isAxiosError(error) && error.response) {
+      switch (error.response.status) {
+        case 400:
+          return "Dados inválidos. Verifique as informações fornecidas.";
+        case 409:
+          return "Credenciais já cadastradas.";
+        case 422:
+          return "Erro de validação. Verifique os dados fornecidos.";
+        default:
+          return "Erro desconhecido. Tente novamente mais tarde.";
+      }
+    }
+    return "Erro desconhecido. Tente novamente mais tarde.";
   }
 }
