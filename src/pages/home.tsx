@@ -1,14 +1,10 @@
-import { Tabs } from "@/components/layout/tabs";
-import { Avatar } from "@/components/ui/avatar";
-import Button from "../components/ui/button";
-import { Accordion, AccordionItem } from "@/components/ui/accordion";
-import { AccordionTrigger } from "@/components/ui/accordion";
-import { AccordionContent } from "@/components/ui/accordion";
+import { Newsletter } from "@/components/ui/newsletter";
 
 const Home = () => {
   return (
-    <div className="container py-10 flex flex-col gap-4 bg-gray-200 justify-center items-center">
-      <Button variant="primary" size="small" className="">
+    // <div className="container py-10 flex flex-col gap-4 bg-gray-200 justify-center items-center">
+    <div>
+      {/* <Button variant="primary" size="small" className="">
         Salvar
       </Button>
       <Button variant="secondary" size="medium">
@@ -47,7 +43,9 @@ const Home = () => {
           <AccordionTrigger>Usuário</AccordionTrigger>
           <AccordionContent>Conteúdo do Usuário</AccordionContent>
         </AccordionItem>
-      </Accordion>
+      </Accordion> */}
+
+      <Newsletter />
     </div>
   );
 };
