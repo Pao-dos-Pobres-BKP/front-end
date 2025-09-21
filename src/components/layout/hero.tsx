@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 
 export type HeroItem = {
   id?: string | number
-  imageUrl: unknown
+  imageUrl: string
   title: string
   description?: string
   location?: string
@@ -22,16 +22,6 @@ export type HeroProps = {
   className?: string
   showArrows?: boolean
   showIndicators?: boolean
-}
-
-function resolveSrc(img: unknown): string {
-  if (!img) return ""
-  if (typeof img === "string") return img
-  const anyImg = img as any
-  if (typeof anyImg.src === "string") return anyImg.src
-  if (typeof anyImg.default === "string") return anyImg.default
-  if (typeof anyImg.default?.src === "string") return anyImg.default.src
-  return ""
 }
 
 export function Hero({
@@ -117,7 +107,6 @@ export function Hero({
         {items.map((item, i) => {
           const visible = i === index
           const hasInfo = !!(item.location || item.date || item.time)
-          const src = resolveSrc(item.imageUrl)
 
           return (
             <article
@@ -130,11 +119,12 @@ export function Hero({
               )}
             >
               <img
-                src={src}
+                src={item.imageUrl}
                 alt={item.imageAlt ?? ""}
                 className="absolute inset-0 h-full w-full object-cover"
                 loading={i === 0 ? "eager" : "lazy"}
-                onError={() => console.warn("[Hero] Falha ao carregar imagem:", src)}
+                onError={() =>console.warn("Falha ao carregar imagem:", item.imageUrl)
+                }
               />
               <div
                 className={cn(
@@ -249,7 +239,6 @@ export function Hero({
             onClick={() => go(1)}
             className="pointer-events-auto rounded-full bg-white/85 shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-white/80 [@media(hover:none)]:opacity-100"
           >
-            
             <ChevronRight className="h-5 w-5 text-gray-900" />
           </Button>
         </div>
@@ -270,7 +259,6 @@ export function Hero({
           ))}
         </div>
       )}
-
     </section>
   )
 }
