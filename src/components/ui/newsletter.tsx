@@ -3,6 +3,7 @@ import { useState } from "react";
 import Checkbox from "../layout/checkbox";
 import Button from "./button";
 import Input from "./input";
+import { Modal } from "../layout/modal";
 
 const newsletterSchema = z.object({
   email: z.string().email({ message: "Email inválido" }),
@@ -13,6 +14,7 @@ export const Newsletter = () => {
   const [email, setEmail] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   function handleSubmit() {
     const result = newsletterSchema.safeParse({ email, isChecked });
@@ -23,6 +25,9 @@ export const Newsletter = () => {
     }
 
     setErrorMessage("");
+    setIsModalOpen(true);
+    setEmail("");
+    setIsChecked(false);
   }
 
   return (
@@ -35,16 +40,27 @@ export const Newsletter = () => {
         crianças, adolescentes e jovens em situação de vulnerabilidade.
       </p>
 
-      <div className="flex gap-4">
-        <div className="">
-          <div className="flex flex-col items-start">
+      <div className="flex gap-4 w-full">
+        <div className="w-full ">
+          <div className="flex w-full gap-2 items-center mb-6">
             <Input
               placeholder="Email"
               fullWidth
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="w-full"
             />
-
+            <Button
+              size="extraSmall"
+              disabled={!email || !isChecked}
+              onClick={handleSubmit}
+              variant="quinary"
+              className="whitespace-nowrap"
+            >
+              Inscrever-se
+            </Button>
+          </div>
+          <div className="w-fit">
             <Checkbox
               label="Aceito os termos e condições"
               id="newsletter"
@@ -58,11 +74,21 @@ export const Newsletter = () => {
             </div>
           )}
         </div>
-
-        <Button size="small" disabled={!email || !isChecked} onClick={handleSubmit}>
-          Assinar
-        </Button>
       </div>
+
+      <Modal
+        title="Newsletter assinada!"
+        footer={
+          <>
+            <Button variant="tertiary" size="extraSmall" onClick={() => setIsModalOpen(false)}>
+              Fechar
+            </Button>
+          </>
+        }
+        onOpenChange={setIsModalOpen}
+        open={isModalOpen}
+        message="Agora você receberá e-mails recorrentes com as nossas novidades!"
+      />
     </div>
   );
 };
