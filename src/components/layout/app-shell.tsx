@@ -6,7 +6,8 @@ const AppShell = () => {
   return (
     <div className="min-h-screen flex flex-col w-full">
       <main className="">
-      <Navbar />
+    
+        <Footer />
       <Outlet />
       <Footer />
       </main>
