@@ -8,7 +8,7 @@ export const SearchBar = () => {
   const [value, setValue] = useState("");
   const debouncedValue = useDebounce(value);
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     if (debouncedValue) {
