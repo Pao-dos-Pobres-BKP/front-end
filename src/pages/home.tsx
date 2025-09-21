@@ -1,11 +1,13 @@
 import { Modal } from "@/components/layout/modal";
 import Button from "../components/ui/button";
 import { useState } from "react";
+import News from "@/components/layout/news";
 import CampaignCard from "@/components/ui/campaignCard/campaignCard";
 
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   return (
+    <div>
     <div className="container py-10 flex flex-col gap-6 bg-[var(--color-background)] px-6">
       <h1 className="text-2xl font-bold">Exemplos de CampaignCard</h1>
 
@@ -79,7 +81,8 @@ const Home = () => {
         />
       </div>
     </div>
+    <News></News>
+    </div>
   );
 };
-
-export default Home;
+ export default Home;
