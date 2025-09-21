@@ -1,46 +1,60 @@
+import Button from "../components/ui/button";
+import CampaignCard from "@/components/ui/campaignCard/campaignCard";
+
 const Home = () => {
   return (
-    <div className="container py-10 flex flex-col gap-4 bg-gray-200 justify-center items-center">
-      {/* <Button variant="primary" size="small" className="">
-        Salvar
-      </Button>
-      <Button variant="secondary" size="medium">
-        Salvar
-      </Button>
-      <Button variant="destructive" size="large">
-        Salvar
-      </Button>
-      <Button variant="confirm" size="large">
-        Salvar
-      </Button>
-      <Button variant="primary" desactive size="large">
-        Salvar
-      </Button>
+    <div className="container py-10 flex flex-col gap-6 bg-[var(--color-background)] px-6">
+      <h1 className="text-2xl font-bold">Exemplos de CampaignCard</h1>
 
-      <Tabs tabs={["Usuário", "Senha"]}>
-        <div>Conteúdo do Usuário</div>
-        <div>Conteúdo da Senha</div>
-      </Tabs>
+      <CampaignCard
+        title="Campanha de Santo Antônio"
+        creatorName="Fundação Pão dos Pobres Santo Antônio"
+        raised={81825.33}
+        goal={90000}
+      />
 
-      <Tabs tabs={["Usuário", "Senha"]} variant="secondary">
-        <div>Conteúdo do Usuário</div>
-        <div>Conteúdo da Senha</div>
-      </Tabs>
+      <CampaignCard
+        title="Campanha de Santo Antônio"
+        raised={2000}
+        goal={5000}
+        variant="profile"
+        donorName="Fulano De Tal"
+        donorEmail="email@email.com"
+        donationAmount={50}
+        campaigns={[
+          "Campanha de Santo Antônio",
+          "Campanha de Aniversário 130 anos do Pão",
+          "Campanha de Natal Solidário",
+        ]}
+        memberSince="01/2019"
+        situation="pending"
+      />
 
-      <Avatar imgUrl="https://github.com/arturbschultz.png" size="small" />
-      <Avatar imgUrl="https://github.com/arturbschultz.png" />
-      <Avatar imgUrl="https://github.com/arturbschultz.png" size="large" />
+      <CampaignCard
+        title="Campanha de Santo Antônio"
+        creatorName="Fundação Pão dos Pobres Santo Antônio"
+        raised={81825.33}
+        goal={90000}
+        actionLabel="Acessar"
+        variant="compact"
+        situation="recurring"
+        donorName=""
+        donorEmail=""
+        memberSince=""
+        campaigns={[]}
+      />
 
-      <Accordion type="single" collapsible>
-        <AccordionItem value="usuario">
-          <AccordionTrigger>Usuário</AccordionTrigger>
-          <AccordionContent>Conteúdo do Usuário</AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="senha">
-          <AccordionTrigger>Usuário</AccordionTrigger>
-          <AccordionContent>Conteúdo do Usuário</AccordionContent>
-        </AccordionItem>
-      </Accordion> */}
+      <div className="mt-6 flex gap-3 flex-wrap">
+        <Button variant="primary" size="small">
+          Salvar
+        </Button>
+        <Button variant="secondary" size="medium">
+          Salvar
+        </Button>
+        <Button variant="destructive" size="large">
+          Salvar
+        </Button>
+      </div>
     </div>
   );
 };
