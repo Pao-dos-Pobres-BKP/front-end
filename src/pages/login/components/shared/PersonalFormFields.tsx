@@ -87,7 +87,8 @@ export default function PersonalFormFields({ form, errors, onChange }: PersonalF
       <Input
         id="telefone"
         label="Telefone"
-        placeholder="+55 51 99999-9999"
+        placeholder="(11) 99999-9999"
+        type="tel"
         value={form.telefone}
         onChange={handleInputChange("telefone")}
         fullWidth
