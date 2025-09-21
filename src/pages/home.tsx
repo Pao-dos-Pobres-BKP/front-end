@@ -1,4 +1,3 @@
-import { Outlet } from "react-router-dom";
 import PartnerCompanies from "@/components/layout/partner-companies";
 import News from "@/components/layout/news";
 const Home = () => {

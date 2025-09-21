@@ -11,7 +11,8 @@ import excluir1 from "@/assets/excluir1.jpg";
 import excluir2 from "@/assets/excluir2.png";
 import Autoplay from "embla-carousel-autoplay";
 
-const News = (cardItens?: newsInformations[]) => {
+//const News = (cardItens?: newsInformations[]) => { -> MUDAR QUANDO TIVER INTEGRAÇÃO COM BACKEND
+const News = () => {
   
   return (
     <div
