@@ -4,7 +4,7 @@ import NotFound from "../pages/not-found";
 import AppShell from "../components/layout/app-shell";
 import { ROUTES } from "./routes";
 import Login from "@/pages/login/login";
-import Doacao from "@/pages/doacao";
+import Doacao from "@/pages/doacao/doacao";
 import Campanhas from "@/pages/campanhas";
 import Perfil from "@/pages/perfil";
 import Dashboard from "@/pages/dashboard";
