@@ -52,7 +52,7 @@ const Home = () => {
         </Button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
