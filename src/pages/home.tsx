@@ -1,10 +1,8 @@
-import { Modal } from "@/components/layout/modal";
 import Button from "../components/ui/button";
-import { useState } from "react";
 import CampaignCard from "@/components/ui/campaignCard/campaignCard";
+import { Newsletter } from "@/components/ui/newsletter";
 
 const Home = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <div className="container py-10 flex flex-col gap-6 bg-[var(--color-background)] px-6">
       <h1 className="text-2xl font-bold">Exemplos de CampaignCard</h1>
@@ -60,23 +58,7 @@ const Home = () => {
       </div>
 
       <div>
-        <Button onClick={() => setIsModalOpen(true)}>Abrir Modal</Button>
-        <Modal
-          title="Title"
-          footer={
-            <>
-              <Button variant="tertiary" size="extraSmall" onClick={() => setIsModalOpen(false)}>
-                Voltar
-              </Button>
-              <Button variant="primary" size="extraSmall" onClick={() => setIsModalOpen(false)}>
-                Confirmar
-              </Button>
-            </>
-          }
-          onOpenChange={setIsModalOpen}
-          open={isModalOpen}
-          message="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rem, minus?"
-        />
+        <Newsletter />
       </div>
     </div>
   );
