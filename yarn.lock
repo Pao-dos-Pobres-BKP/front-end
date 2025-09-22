@@ -2967,11 +2967,7 @@ fastq@^1.6.0:
   dependencies:
     reusify "^1.0.4"
 
-<<<<<<< HEAD
 fdir@^6.4.4, fdir@^6.5.0:
-=======
-fdir@^6.4.4, fdir@^6.4.6:
->>>>>>> bafab7cffdb1547f71d8f7cee74e94d3b30829ac
   version "6.5.0"
   resolved "https://registry.npmjs.org/fdir/-/fdir-6.5.0.tgz"
   integrity sha512-tIbYtZbucOs0BRGqPJkshJUYdL+SDH7dVM8gjy+ERp3WAUjLEFJE+02kanyHtwjWOnwrKYBiwAmM0p4kLJAnXg==
@@ -3757,11 +3753,7 @@ lightningcss-win32-arm64-msvc@1.30.1:
 
 lightningcss-win32-x64-msvc@1.30.1:
   version "1.30.1"
-<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/lightningcss-win32-x64-msvc/-/lightningcss-win32-x64-msvc-1.30.1.tgz#fd7dd008ea98494b85d24b4bea016793f2e0e352"
-=======
-  resolved "https://registry.npmjs.org/lightningcss-win32-x64-msvc/-/lightningcss-win32-x64-msvc-1.30.1.tgz"
->>>>>>> bafab7cffdb1547f71d8f7cee74e94d3b30829ac
   integrity sha512-PVqXh48wh4T53F/1CCu8PIPCxLzWyCnn/9T5W1Jpmdy5h9Cwd+0YQS6/LwhHXSafuc61/xg9Lv5OrCby6a++jg==
 
 lightningcss@1.30.1:
