@@ -19,6 +19,8 @@ export const buttonVariants = cva(
           "bg-[var(--color-text-success)] text-[var(--color-background)] hover:text-[var(--color-text-brand)]",
         quaternary:
           "bg-[var(--color-text-special)] hover:bg-[var(--color-text-special-3)] text-[var(--color-background)]",
+        quinary:
+          "bg-[var(--color-text-special-2)] hover:bg-[var(--color-text-special-3)] text-[var(--color-background)]",
       },
       size: {
         extraSmall: "py-2 px-4",
