@@ -1,14 +1,10 @@
-import { Tabs } from "@/components/layout/tabs";
-import { Avatar } from "@/components/ui/avatar";
+import { Modal } from "@/components/layout/modal";
 import Button from "../components/ui/button";
-import { Accordion, AccordionItem } from "@/components/ui/accordion";
-import { AccordionTrigger } from "@/components/ui/accordion";
-import { AccordionContent } from "@/components/ui/accordion";
-import { SearchBar } from "@/components/layout/search-bar";
-import { Footer } from "@/components/layout/footer";
+import { useState } from "react";
 import CampaignCard from "@/components/ui/campaignCard/campaignCard";
 
 const Home = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <div className="container py-10 flex flex-col gap-6 bg-[var(--color-background)] px-6">
       <h1 className="text-2xl font-bold">Exemplos de CampaignCard</h1>
@@ -28,7 +24,11 @@ const Home = () => {
         donorName="Fulano De Tal"
         donorEmail="email@email.com"
         donationAmount={50}
-        campaigns={["Campanha de Santo Antônio", "Campanha de Aniversário 130 anos do Pão", "Campanha de Natal Solidário"]}
+        campaigns={[
+          "Campanha de Santo Antônio",
+          "Campanha de Aniversário 130 anos do Pão",
+          "Campanha de Natal Solidário",
+        ]}
         memberSince="01/2019"
         situation="pending"
       />
@@ -90,6 +90,26 @@ const Home = () => {
         <Button variant="destructive" size="large">
           Salvar
         </Button>
+      </div>
+
+      <div>
+        <Button onClick={() => setIsModalOpen(true)}>Abrir Modal</Button>
+        <Modal
+          title="Title"
+          footer={
+            <>
+              <Button variant="tertiary" size="extraSmall" onClick={() => setIsModalOpen(false)}>
+                Voltar
+              </Button>
+              <Button variant="primary" size="extraSmall" onClick={() => setIsModalOpen(false)}>
+                Confirmar
+              </Button>
+            </>
+          }
+          onOpenChange={setIsModalOpen}
+          open={isModalOpen}
+          message="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rem, minus?"
+        />
       </div>
     </div>
   );
