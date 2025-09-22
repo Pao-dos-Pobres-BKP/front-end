@@ -9,7 +9,7 @@ import ondawebLogo from '@/assets/PartnerCompanies/OndaWeb.png';
 import grupoZaffariLogo from '@/assets/PartnerCompanies/GrupoZaffari.png';
 import sidersulLogo from '@/assets/PartnerCompanies/Sidersul.png';
 import planaltoLogo from '@/assets/PartnerCompanies/Planalto.png';
-import dryStoreLogo from '@/assets/PartnerCompanies/DryStore.png';
+import dryStoreLogo from '@/assets/PartnerCompanies/Drystore.png';
 import banrisulLogo from '@/assets/PartnerCompanies/Banrisul.png';
 import paimLogo from '@/assets/PartnerCompanies/Paim.png';
 import maisALogo from '@/assets/PartnerCompanies/maisA.png';
