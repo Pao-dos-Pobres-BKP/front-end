@@ -36,74 +36,81 @@ export function CampaignCardList(props: CampaignCardListProps) {
     }
   };
 
+  const situationIcons: Record<
+    "approved" | "pending" | "recurring",
+    string
+  > = {
+    approved: blueHeart,
+    pending: orangeHeart,
+    recurring: redHeart,
+  };
+
   return (
     <article
       className={cn(
-        "md:flex flex flex-row w-full bg-white border border-[#e6e8eb] rounded-2xl p-5 items-center justify-between",
+        "flex flex-col md:flex-row w-full bg-white border border-[#e6e8eb] rounded-2xl p-4 md:p-5 items-start md:items-center justify-between gap-3",
         className
       )}
       aria-label={`Card lista ${title}`}
     >
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between w-full gap-2 py-1">
-        <div className="flex items-center justify-center">
-          {(() => {
-            const map: Record<string, string | undefined> = {
-              approved: blueHeart,
-              pending: orangeHeart,
-              recurring: redHeart,
-            };
-            const src = situation ? map[situation] : undefined;
-            return src ? (
-              <div className="h-6 w-6">
-                <img src={src} alt="" className="h-6 w-6" />
-              </div>
-            ) : null;
-          })()}
-          <div className="font-semibold flex flex-col items-start ml-2">
-            <div className="text-[#034d6b] truncate text-xl">{title}</div>
-            <div className="text-sm text-[#f68537] truncate">
-              por {creatorName}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between w-full gap-3">
+        <div className="flex items-center gap-2 flex-shrink-0">
+          {situation && situation !== "rejected" && (
+            <img
+              src={situationIcons[situation]}
+              alt=""
+              className="h-6 w-6 flex-shrink-0"
+            />
+          )}
+          <div className="flex flex-col truncate">
+            <div className="text-[#034d6b] text-xl font-semibold truncate">
+              {title}
             </div>
+            {creatorName && (
+              <div className="text-sm text-[#f68537] truncate">
+                por {creatorName}
+              </div>
+            )}
           </div>
         </div>
-        <div className="flex items-center w-full ml-5 mr-2">
-          <div className="flex flex-col w-full">
-            <div className="flex justify-center md:justify-start items-center gap-1.5 w-full">
-              <div className="text-xl font-bold text-[#034d6b]">
+        <div className="flex items-center w-full gap-3">
+          <div className="flex flex-col flex-1">
+            <div className="flex justify-between items-center gap-1.5 w-full flex-wrap">
+              <div className="text-xl font-bold text-[#034d6b] truncate">
                 {formatCurrency(raised)}
               </div>
               <div className="text-sm text-[#6b7280] truncate">
                 de {formatCurrency(goal)}
               </div>
             </div>
-            <div className="w-full rounded-full overflow-hidden mt-1 justify-center items-center flex">
-              {situation == "approved" || situation == "recurring" ? (
+            <div className="w-full mt-1">
+              {situation === "approved" || situation === "recurring" ? (
                 <Progress value={percent} variant="blue" size="large" />
-              ) : situation == "rejected" ? (
-                <div className="w-50 text-center text-xs font-semibold text-yellow-800 bg-red-400 rounded-full py-0.5 px-2">
+              ) : situation === "rejected" ? (
+                <div className="text-center text-xs font-semibold text-yellow-800 bg-red-400 rounded-full py-0.5 px-2 w-full max-w-[120px]">
                   Rejeitada
                 </div>
               ) : (
-                <div className="w-50 text-center text-xs font-semibold text-white bg-[#F6C337] rounded-full py-0.5 px-2">
+                <div className="text-center text-xs font-semibold text-white bg-[#F6C337] rounded-full py-0.5 px-2 w-full max-w-[140px]">
                   Pendente Aprovação
                 </div>
               )}
             </div>
           </div>
-        </div>
-      </div>
-      <div>
-        <div
-          role="button"
-          tabIndex={0}
-          onClick={onAction}
-          onKeyDown={handleActionKeyDown}
-          className={cn(
-            "inline-flex items-center justify-center text-sm font-semibold rounded-[10px] transition-colors shadow-sm hover:shadow-lg focus:outline-none cursor-pointer w-12 h-12 pl-3.5 pr-3.5",
-            "bg-[#034d6b] hover:bg-[#023a50] text-white hover:text-white" // botão fixo azul
-          )}
-        >
-          <Category set="bold" />
+          <div className="flex-shrink-0">
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={onAction}
+              onKeyDown={handleActionKeyDown}
+              className={cn(
+                "inline-flex items-center justify-center text-sm font-semibold rounded-[10px] transition-colors shadow-sm hover:shadow-lg focus:outline-none cursor-pointer min-w-[44px] h-10 sm:h-11 md:h-12 px-3",
+                "bg-[#034d6b] hover:bg-[#023a50] text-white"
+              )}
+            >
+              <Category set="bold" />
+            </div>
+          </div>
         </div>
       </div>
     </article>
