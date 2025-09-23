@@ -44,7 +44,7 @@ function Navbar() {
             <HomeIcon className="h-5 w-5 fill-current" />
             <strong>Home</strong>
           </NavLink>
-          {isAuthenticated && (
+          {isAuthenticated && user.role == "ADMIN" && (
             <NavLink to="/dashboard" className={getNavLinkClass}>
               <ActivityIcon className="h-5 w-5 fill-current" />
               <strong>Dashboard</strong>
@@ -54,7 +54,7 @@ function Navbar() {
             <StarIcon className="h-5 w-5 fill-current" />
             <strong>Campanhas</strong>
           </NavLink>
-          {isAuthenticated && (
+          {isAuthenticated && user.role == "ADMIN" && (
             <>
               <NavLink to="/comunicados" className={getNavLinkClass}>
                 <DiscoverIcon className="h-5 w-5 fill-current" />

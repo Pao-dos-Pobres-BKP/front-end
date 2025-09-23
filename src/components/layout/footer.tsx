@@ -4,7 +4,7 @@ export function Footer() {
   const date = new Date();
   const year = date.getFullYear();
   return (
-    <div className="bg-[#CCDFE5] px-6 py-8 w-full">
+    <div className="bg-[#CCDFE5] px-6 py-8 w-full break-words">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-4 mb-4">
         <div className="min-h-[120px]">
           <Link to="/">

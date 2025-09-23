@@ -2,8 +2,8 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import cn from "@/utils/cn";
 
-const buttonVariants = cva(
-  "cursor-pointer px-6 py-2 font-semibold rounded-[10px] transition-colors focus:outline-none  focus:ring-offset-2 shadow-sm hover:shadow-lg disabled:opacity-50 disabled:pointer-events-none inline-flex items-center justify-center text-sm",
+export const buttonVariants = cva(
+  "cursor-pointer px-6 py-2 font-semibold rounded-[10px] transition-colors focus:outline-none  focus:ring-offset-2 shadow-sm hover:shadow-lg disabled:opacity-50 disabled:pointer-events-none inline-flex items-center justify-center text-sm [&>svg]:shrink-0 [&>svg]:pointer-events-none [&>svg]:h-5 [&>svg]:w-5",
   {
     variants: {
       variant: {
@@ -19,11 +19,17 @@ const buttonVariants = cva(
           "bg-[var(--color-text-warning)] hover:bg-[var(--color-text-error)] text-[var(--color-background)]",
         confirm:
           "bg-[var(--color-text-success)] text-[var(--color-background)] hover:text-[var(--color-text-brand)]",
+        quaternary:
+          "bg-[var(--color-text-special)] hover:bg-[var(--color-text-special-3)] text-[var(--color-background)]",
+        quinary:
+          "bg-[var(--color-text-special-2)] hover:bg-[var(--color-text-special-3)] text-[var(--color-background)]",
       },
       size: {
+        extraSmall: "py-2 px-4",
         small: "h-12 w-48",
         medium: "h-12 w-60",
         large: "h-12 w-80",
+        icon: "h-10 w-10 rounded-full text-gray-900",
       },
       desactive: {
         true: "opacity-50 pointer-events-none",

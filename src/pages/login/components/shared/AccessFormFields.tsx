@@ -4,6 +4,7 @@ interface AccessFormData {
   email: string;
   password: string;
   confirmPassword: string;
+  api?: string;
 }
 
 interface AccessFormFieldsProps {
@@ -61,6 +62,8 @@ export default function AccessFormFields({
         error={errors.confirmPassword}
         disabled={disabled}
       />
+
+      <p className="text-red-500 mt-2 -mb-4">{errors.api}</p>
     </>
   );
 }
