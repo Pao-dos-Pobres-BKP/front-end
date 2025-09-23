@@ -266,9 +266,9 @@ export default function Perfil() {
                   creatorName={campanha.creatorName}
                   raised={campanha.raised}
                   goal={campanha.goal}
-                  actionLabel="Ver detalhes"
-                  variant="compact"
-                  situation="pending"
+                  variant="historic"
+                  situation="approved"
+                  lastDonation={80}
                   className="border border-[#005172] rounded-lg text-sm p-3"
                 />
               ))}
