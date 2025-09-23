@@ -25,10 +25,10 @@ const partners = [
   { src: ondawebLogo, alt: "Logo OndaWeb" },
 ];
 
-const PartnerCompanies = () => {
+const   PartnerCompanies = () => {
   return (
     <div
-      className="bg-[#06B3C0] flex flex-col items-center 
+      className="bg-[var(--color-components-2)]  flex flex-col items-center 
     px-6 md:px-12 lg:px-24 
     pt-2 md:pt-4 lg:pt-6 
     pb-4 md:pb-6 lg:pb-8 
