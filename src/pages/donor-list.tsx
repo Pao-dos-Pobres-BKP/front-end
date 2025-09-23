@@ -12,7 +12,7 @@ import { PopoverContent } from "@/components/ui/popover";
 import { PopoverTrigger } from "@/components/ui/popover";
 import Input from "@/components/ui/input";
 
-const Home = () => {
+const DonorList = () => {
   return (
     <div className="w-full px-4 sm:px-8 py-10 flex flex-col gap-4 bg-gray-200">
       <div className="flex flex-col sm:flex-row gap-2 w-full items-center">
@@ -525,4 +525,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default DonorList;
