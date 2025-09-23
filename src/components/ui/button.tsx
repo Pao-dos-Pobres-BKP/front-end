@@ -18,7 +18,7 @@ export const buttonVariants = cva(
         confirm:
           "bg-[var(--color-text-success)] text-[var(--color-background)] hover:text-[var(--color-text-brand)]",
         quaternary:
-          "bg-[var(--color-text-special)] hover:bg-[var(--color-text-special-3)] text-[var(--color-background)]",
+          "bg-[var(--color-text-special-2)] text-[var(--color-text-1)] hover:bg-[var(--color-text-1)] hover:text-[var(--color-text-special-2)] border border-[var(--color-border)]",
         quinary:
           "bg-[var(--color-text-special-2)] hover:bg-[var(--color-text-special-3)] text-[var(--color-background)]",
       },
@@ -43,7 +43,7 @@ export const buttonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {}
+  VariantProps<typeof buttonVariants> { }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, desactive = false, ...props }, ref) => {
