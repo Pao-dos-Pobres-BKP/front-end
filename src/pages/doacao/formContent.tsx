@@ -1,7 +1,13 @@
 import Input from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
+import { formatCurrency } from "@/utils/formatCurrency";
+import { useEffect, useState } from "react";
 
 export const FormContent = () => {
+  const [value, setValue] = useState("");
+  useEffect(() => {
+    console.log({ value });
+  }, [value]);
   //valor mockado enquanto não tem integração com o usuário
   const userLogged = false;
   return (
@@ -15,7 +21,12 @@ export const FormContent = () => {
         fullWidth
       />
       {userLogged && <Input placeholder="Frequência" fullWidth />}
-      <Input placeholder="Valor" fullWidth />
+      <Input
+        placeholder="Valor"
+        fullWidth
+        onChange={(e) => setValue(formatCurrency(e.target.value))}
+        value={value}
+      />
       <Select
         placeholder="Tipo de pagamento"
         options={[
