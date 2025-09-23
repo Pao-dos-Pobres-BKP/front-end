@@ -7,10 +7,11 @@ export interface User {
   id: string;
   fullname: string;
   email: string;
-  birthDate: Date;
-  gender: Gender;
-  phone: string;
-  cpf: string;
+  birthDate?: Date;
+  root?: boolean;
+  gender?: Gender;
+  phone?: string;
+  cpf?: string;
   role: RoleEnum;
   accessToken: string;
 }

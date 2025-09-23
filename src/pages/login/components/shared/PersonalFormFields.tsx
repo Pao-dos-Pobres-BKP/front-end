@@ -4,10 +4,9 @@ import { DatePicker } from "@/components/ui/date-picker";
 import { formatCPF, formatPhone } from "@/utils/formatters";
 
 const genderOptions = [
-  { value: "masculino", label: "Masculino" },
-  { value: "feminino", label: "Feminino" },
-  { value: "outro", label: "Outro" },
-  { value: "prefiro_nao_informar", label: "Prefiro não informar" },
+  { value: "MALE", label: "Masculino" },
+  { value: "FEMALE", label: "Feminino" },
+  { value: "OTHER", label: "Outro" },
 ];
 
 interface PersonalFormData {

@@ -7,7 +7,8 @@ import AccessFormFields, { type AccessFormData } from "./shared/AccessFormFields
 
 interface AccessFieldsProps {
   onBack: () => void;
-  onRegister: () => void;
+  onRegister: (data: AccessFormData) => void | Promise<string | boolean | undefined>;
+  errorApi?: (data: string) => string;
 }
 
 const initialForm: AccessFormData = {
@@ -24,7 +25,14 @@ const validationRules = {
   },
   password: (value: string) => {
     if (!value.trim()) return "Senha é obrigatória";
-    if (value.length < 6) return "Senha deve ter pelo menos 6 caracteres";
+    if (value.length < 9) return "Senha deve ter pelo menos 9 caracteres";
+    if (!/[a-z]/.test(value)) return "Senha deve conter pelo menos 1 letra minúscula";
+    if (!/[A-Z]/.test(value)) return "Senha deve conter pelo menos 1 letra maiúscula";
+    if (!/\d/.test(value)) return "Senha deve conter pelo menos 1 número";
+    if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~`]/.test(value)) {
+      return "Senha deve conter pelo menos 1 símbolo (!@#$%^&*...)";
+    }
+
     return null;
   },
   confirmPassword: (value: string) => {
@@ -41,26 +49,34 @@ export default function AccessFields({ onBack, onRegister }: AccessFieldsProps) 
   );
 
   const handleRegister = async () => {
-    // Validação adicional para confirmação de senha
     const isFormValid = validateForm();
-
     if (form.password !== form.confirmPassword) {
-      setErrors((prev: Partial<Record<keyof AccessFormData, string>>) => ({
+      setErrors((prev) => ({
         ...prev,
         confirmPassword: "Senhas não coincidem",
       }));
       return;
     }
-
     if (!isFormValid) return;
-
     setIsLoading(true);
+    try {
+      const result = await onRegister(form);
 
-    // Simulando uma chamada de API
-    setTimeout(() => {
+      if (typeof result === "string") {
+        setErrors((prev) => ({
+          ...prev,
+          api: result,
+        }));
+      }
+    } catch (error) {
+      setErrors((prev) => ({
+        ...prev,
+        api: "Não foi possível conectar ao servidor. Tente novamente mais tarde...",
+      }));
+      console.error("Erro no cadastro:", error);
+    } finally {
       setIsLoading(false);
-      onRegister();
-    }, 1500);
+    }
   };
 
   const steps = [
@@ -71,9 +87,7 @@ export default function AccessFields({ onBack, onRegister }: AccessFieldsProps) 
   return (
     <FormContainer>
       <AccessFormFields form={form} errors={errors} onChange={updateField} disabled={isLoading} />
-
       <StepIndicator steps={steps} />
-
       <FormActions
         primaryAction={{
           label: isLoading ? "Cadastrando..." : "Cadastrar",
