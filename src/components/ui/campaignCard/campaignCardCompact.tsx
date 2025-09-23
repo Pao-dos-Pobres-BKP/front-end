@@ -29,15 +29,22 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
         title,
         className,
         progressPercent: percent = 0,
-        onAction
+        onAction,
     } = props;
 
-    const actionIconSrc = situation === "pending" ? eyeIcon : situation === "approved" ? editIcon : cancelIcon;
-    const actionButtonClass = situation === "approved"
-        ? "bg-[#034d6b] hover:bg-[#023a50] text-white hover:text-white"
-        : situation === "pending"
-            ? "bg-[#F68537] hover:bg-[#e5782e] text-white hover:text-white"
-            : "bg-[#D65E5E] hover:bg-[#c44f4f] text-white hover:text-white";
+    const actionIconSrc =
+        situation === "pending"
+            ? eyeIcon
+            : situation === "approved"
+                ? editIcon
+                : cancelIcon;
+
+    const actionButtonClass =
+        situation === "approved"
+            ? "bg-[#034d6b] hover:bg-[#023a50] text-white hover:text-white"
+            : situation === "pending"
+                ? "bg-[#F68537] hover:bg-[#e5782e] text-white hover:text-white"
+                : "bg-[#D65E5E] hover:bg-[#c44f4f] text-white hover:text-white";
 
     const handleActionKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
         if (e.key === "Enter" || e.key === " ") {
@@ -46,61 +53,82 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
         }
     };
 
+    const situationIcon =
+        situation === "approved"
+            ? blueHeart
+            : situation === "pending"
+                ? orangeHeart
+                : situation === "recurring"
+                    ? redHeart
+                    : null;
+
     return (
         <article
-            className={cn("md:flex flex flex-row w-full bg-white border border-[#e6e8eb] rounded-2xl p-5 items-center justify-between", className)}
+            className={cn(
+                "flex flex-col w-full bg-white border border-[#e6e8eb] rounded-2xl p-5 gap-3",
+                "md:flex-row md:items-center md:justify-between",
+                className
+            )}
             aria-label={`Card compacto ${title}`}
         >
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between w-full gap-2 py-1">
-                <div className="flex items-center justify-center">
-                    {(() => {
-                        const map: Record<string, string | undefined> = {
-                            approved: blueHeart,
-                            pending: orangeHeart,
-                            recurring: redHeart,
-                        };
-                        const src = situation ? map[situation] : undefined;
-                        return src ? (
-                            <div className="h-6 w-6">
-                                <img src={src} alt="" className="h-6 w-6" />
-                            </div>
-                        ) : null;
-                    })()}
-                    <div className="font-semibold flex flex-col items-start ml-2">
-                        <div className="text-[#034d6b] truncate text-xl">{title}</div>
-                        <div className="text-sm text-[#f68537] truncate">por {creatorName}</div>
+            <div className="flex items-center gap-2">
+                {situationIcon && (
+                    <img src={situationIcon} alt="" className="h-6 w-6 flex-shrink-0" />
+                )}
+                <div className="flex flex-col truncate">
+                    <div className="text-[#034d6b] text-xl font-semibold truncate">
+                        {title}
                     </div>
-                </div>
-                <div className="flex items-center w-full ml-5 mr-2">
-                    <div className="flex flex-col w-full">
-                        <div className="flex justify-center md:justify-start items-center gap-1.5 w-full">
-                            <div className="text-xl font-bold text-[#034d6b]">{formatCurrency(raised)}</div>
-                            <div className="text-sm text-[#6b7280] truncate">de {formatCurrency(goal)}</div>
+                    {creatorName && (
+                        <div className="text-sm text-[#f68537] truncate">
+                            por {creatorName}
                         </div>
-                        <div className="w-full rounded-full overflow-hidden mt-1 justify-center items-center flex">
-                            {situation == "approved" || situation == "recurring" ? (
-                                <Progress value={percent} variant="blue" size="large" />
-                            ) : situation == "rejected" ? (
-                                <div className="w-50 text-center text-xs font-semibold text-yellow-800 bg-red-400 rounded-full py-0.5 px-2">Rejeitada</div>
-                            ) : (
-                                <div className="w-50 text-center text-xs font-semibold text-white bg-[#F6C337] rounded-full py-0.5 px-2">Pendente Aprovação</div>
-                            )}
-                        </div>
-                    </div>
+                    )}
                 </div>
             </div>
-            <div>
-                <div
-                    role="button"
-                    tabIndex={0}
-                    onClick={onAction}
-                    onKeyDown={handleActionKeyDown}
-                    className={cn(
-                        "inline-flex items-center justify-center text-sm font-semibold rounded-[10px] transition-colors shadow-sm hover:shadow-lg focus:outline-none cursor-pointer w-12 h-12 pl-3.5 pr-3.5",
-                        actionButtonClass
-                    )}
-                >
-                    <img src={actionIconSrc} alt="" className="h-[21px] w-[21px]" aria-hidden="true" />
+            <div className="flex items-center w-full gap-3">
+                <div className="flex flex-col flex-1 min-w-0">
+                    <div className="flex justify-between items-center gap-1.5 w-full flex-wrap">
+                        <div className="text-lg font-bold text-[#034d6b] truncate">
+                            {formatCurrency(raised)}
+                        </div>
+                        <div className="text-sm text-[#6b7280] truncate">
+                            de {formatCurrency(goal)}
+                        </div>
+                    </div>
+
+                    <div className="w-full mt-1">
+                        {situation === "approved" || situation === "recurring" ? (
+                            <Progress value={percent} variant="blue" size="large" />
+                        ) : situation === "rejected" ? (
+                            <div className="text-center text-xs font-semibold text-yellow-800 bg-red-400 rounded-full py-0.5 px-2 w-full max-w-[120px]">
+                                Rejeitada
+                            </div>
+                        ) : (
+                            <div className="text-center text-xs font-semibold text-white bg-[#F6C337] rounded-full py-0.5 px-2 w-full max-w-[140px]">
+                                Pendente Aprovação
+                            </div>
+                        )}
+                    </div>
+                </div>
+                <div className="flex-shrink-0">
+                    <div
+                        role="button"
+                        tabIndex={0}
+                        onClick={onAction}
+                        onKeyDown={handleActionKeyDown}
+                        className={cn(
+                            "inline-flex items-center justify-center text-sm font-semibold rounded-[10px] transition-colors shadow-sm hover:shadow-lg focus:outline-none cursor-pointer min-w-[44px] h-10 sm:h-11 md:h-12 px-3",
+                            actionButtonClass
+                        )}
+                    >
+                        <img
+                            src={actionIconSrc}
+                            alt=""
+                            className="h-[18px] w-[18px] sm:h-[20px] sm:w-[20px] md:h-[21px] md:w-[21px]"
+                            aria-hidden="true"
+                        />
+                    </div>
                 </div>
             </div>
         </article>
