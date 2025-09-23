@@ -1,11 +1,10 @@
-import { Modal } from "@/components/layout/modal";
 import Button from "../components/ui/button";
 import { useState } from "react";
 import News from "@/components/layout/news";
 import CampaignCard from "@/components/ui/campaignCard/campaignCard";
+import { Newsletter } from "@/components/ui/newsletter";
 
 const Home = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <div>
     <div className="container py-10 flex flex-col gap-6 bg-[var(--color-background)] px-6">
@@ -40,13 +39,46 @@ const Home = () => {
         creatorName="Fundação Pão dos Pobres Santo Antônio"
         raised={81825.33}
         goal={90000}
-        actionLabel="Acessar"
         variant="compact"
         situation="recurring"
-        donorName=""
-        donorEmail=""
-        memberSince=""
-        campaigns={[]}
+      />
+
+      <CampaignCard
+        title="Campanha de Santo Antônio"
+        creatorName="Fundação Pão dos Pobres Santo Antônio"
+        raised={81825.33}
+        goal={90000}
+        variant="historic"
+        situation="approved"
+        lastDonation={80}
+      />
+
+      <CampaignCard
+        title="Campanha de Santo Antônio"
+        creatorName="Fundação Pão dos Pobres Santo Antônio"
+        raised={81825.33}
+        goal={90000}
+        variant="historic"
+        situation="recurring"
+        lastDonation={80}
+      />
+
+      <CampaignCard
+        title="Campanha de Santo Antônio"
+        creatorName="Fundação Pão dos Pobres Santo Antônio"
+        raised={81825.33}
+        goal={90000}
+        variant="list"
+        situation="approved"
+      />
+
+      <CampaignCard
+        title="Campanha de Santo Antônio"
+        creatorName="Fundação Pão dos Pobres Santo Antônio"
+        raised={81825.33}
+        goal={90000}
+        variant="list"
+        situation="recurring"
       />
 
       <div className="mt-6 flex gap-3 flex-wrap">
@@ -62,23 +94,7 @@ const Home = () => {
       </div>
 
       <div>
-        <Button onClick={() => setIsModalOpen(true)}>Abrir Modal</Button>
-        <Modal
-          title="Title"
-          footer={
-            <>
-              <Button variant="tertiary" size="extraSmall" onClick={() => setIsModalOpen(false)}>
-                Voltar
-              </Button>
-              <Button variant="primary" size="extraSmall" onClick={() => setIsModalOpen(false)}>
-                Confirmar
-              </Button>
-            </>
-          }
-          onOpenChange={setIsModalOpen}
-          open={isModalOpen}
-          message="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rem, minus?"
-        />
+        <Newsletter />
       </div>
     </div>
     <News></News>

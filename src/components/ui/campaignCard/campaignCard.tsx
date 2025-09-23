@@ -4,14 +4,15 @@ import { Progress } from "../progress";
 import { CampaignCardProfile } from "./campaignCardProfile";
 import { CampaignCardCompact } from "./campaignCardCompact";
 import blueHeart from "@/assets/blueHeart.svg";
+import { CampaignCardHistoric } from "./campaignCardHistoric";
+import { CampaignCardList } from "./campaignCardList";
 
 export type CampaignCardProps = {
     title: string;
     raised: number;
     goal: number;
     creatorName?: string;
-    variant?: "default" | "profile" | "compact";
-    actionLabel?: string;
+    variant?: "default" | "profile" | "compact" | "historic" | "list" ;
     onAction?: () => void;
     className?: string;
     situation?: "approved" | "pending" | "rejected" | "recurring";
@@ -21,6 +22,7 @@ export type CampaignCardProps = {
     donationAmount?: number;
     memberSince?: string; //'DD/MM/AAAA' or year
     campaigns?: string[];
+    lastDonation?: number;
 };
 
 export default function CampaignCard({
@@ -35,6 +37,7 @@ export default function CampaignCard({
     donationAmount,
     memberSince = "",
     campaigns = [],
+    lastDonation = 0,
     situation
 }: CampaignCardProps) {
     const percent = goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
@@ -59,6 +62,34 @@ export default function CampaignCard({
     if (variant === "compact") {
         return (
             <CampaignCardCompact
+                situation={situation}
+                goal={goal}
+                raised={raised}
+                creatorName={creatorName}
+                title={title}
+                className={className}
+                progressPercent={percent}
+            />
+        );
+    }
+
+    if (variant === "historic") {
+        return (
+            <CampaignCardHistoric
+                situation={situation}
+                goal={goal}
+                raised={raised}
+                creatorName={creatorName}
+                title={title}
+                className={className}
+                lastDonation={lastDonation}
+            />
+        );
+    }
+
+    if (variant === "list") {
+        return (
+            <CampaignCardList
                 situation={situation}
                 goal={goal}
                 raised={raised}

@@ -1,13 +1,17 @@
-import { useState } from "react";
 import clsx from "clsx";
 
-const Checkbox = ({ id, label }: { id: string; label: string }) => {
-  const [checked, setChecked] = useState(false);
+interface CheckboxProps {
+  id: string;
+  label: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+}
 
+const Checkbox = ({ id, label, checked, onChange }: CheckboxProps) => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      setChecked(!checked);
+      onChange?.(checked);
     }
   };
 
@@ -17,7 +21,7 @@ const Checkbox = ({ id, label }: { id: string; label: string }) => {
         id={id}
         type="checkbox"
         checked={checked}
-        onChange={() => setChecked(!checked)}
+        onChange={(e) => onChange(e.target.checked)}
         onKeyDown={handleKeyDown}
         className={clsx(
           "h-4 w-4 rounded border-gray-300 cursor-pointer focus:outline-none focus:ring-2",

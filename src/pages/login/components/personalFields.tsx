@@ -7,7 +7,7 @@ import PersonalFormFields, { type PersonalFormData } from "./shared/PersonalForm
 
 interface PersonalFieldsProps {
   onCancel: () => void;
-  onNext: () => void;
+  onNext: (data: PersonalFormData) => void;
 }
 
 const initialForm: PersonalFormData = {
@@ -42,7 +42,7 @@ export default function PersonalFields({ onCancel, onNext }: PersonalFieldsProps
 
   const handleNext = () => {
     if (validateForm()) {
-      onNext();
+      onNext(form);
     }
   };
 
@@ -54,9 +54,7 @@ export default function PersonalFields({ onCancel, onNext }: PersonalFieldsProps
   return (
     <FormContainer>
       <PersonalFormFields form={form} errors={errors} onChange={updateField} />
-
       <StepIndicator steps={steps} />
-
       <FormActions
         primaryAction={{
           label: "Próximo",

@@ -47,7 +47,6 @@ export default function LoginContent({ onRegisterClick }: { onRegisterClick: () 
     try {
       const user = await login(form);
       setUser(user);
-      console.log(user);
       navigate("/perfil");
     } catch (error) {
       console.error(error);
