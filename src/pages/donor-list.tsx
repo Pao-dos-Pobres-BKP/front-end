@@ -14,7 +14,7 @@ import Input from "@/components/ui/input";
 
 const DonorList = () => {
   return (
-    <div className="w-full px-4 sm:px-8 py-10 flex flex-col gap-4 bg-gray-200">
+    <div className="w-full px-4 sm:px-8 py-10 flex flex-col gap-4 bg-[#2F5361]">
       <div className="flex flex-col sm:flex-row gap-2 w-full items-center">
         <div className="flex-1 w-full">
           <SearchBar />
