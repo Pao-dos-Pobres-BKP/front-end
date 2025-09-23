@@ -13,40 +13,44 @@ import { Link } from 'react-router-dom';
 import Button from '../ui/button';
 
 const partners = [
-  { src: inconfidenciaLogo, alt: 'Logo Inconfidência' },
-  { src: tkeLogo, alt: 'Logo TKE' },
-  { src: pontalLogo, alt: 'Logo Pontal' },
-  { src: jockeyLogo, alt: 'Logo Jockey Club' },
-  { src: cwaLogo, alt: 'Logo CWA' },
-  { src: metaLogo, alt: 'Logo Meta Agência Digital' },
-  { src: paimLogo, alt: 'Logo Paim' },
-  { src: cindapaLogo, alt: 'Logo CINDAPA' },
-  { src: maisALogo, alt: 'Logo maisA' }, 
-  { src: ondawebLogo, alt: 'Logo OndaWeb' },
+  { src: inconfidenciaLogo, alt: "Logo Inconfidência" },
+  { src: tkeLogo, alt: "Logo TKE" },
+  { src: pontalLogo, alt: "Logo Pontal" },
+  { src: jockeyLogo, alt: "Logo Jockey Club" },
+  { src: cwaLogo, alt: "Logo CWA" },
+  { src: metaLogo, alt: "Logo Meta Agência Digital" },
+  { src: paimLogo, alt: "Logo Paim" },
+  { src: cindapaLogo, alt: "Logo CINDAPA" },
+  { src: maisALogo, alt: "Logo maisA" },
+  { src: ondawebLogo, alt: "Logo OndaWeb" },
 ];
 
 const PartnerCompanies = () => {
   return (
-    <div className="bg-[#06B3C0] flex flex-col items-center 
+    <div
+      className="bg-[#06B3C0] flex flex-col items-center 
     px-6 md:px-12 lg:px-24 
     pt-2 md:pt-4 lg:pt-6 
     pb-4 md:pb-6 lg:pb-8 
     gap-6 md:gap-12"
     >
-      <h2 className="
+      <h2
+        className="
       text-[#005172] font-manrope font-bold 
       text-3xl leading-[48px] tracking-[0.5px] 
       self-center md:self-start
       text-center md:text-start"
-      >EMPRESAS PARCEIRAS</h2>
-            
+      >
+        EMPRESAS PARCEIRAS
+      </h2>
+
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-12 align-self stretch;">
         {partners.map((partner, index) => (
           <img
             key={index}
             src={partner.src}
-            alt={partner.alt} 
-            className="w-48 h-48 object-contain max-h-24" 
+            alt={partner.alt}
+            className="w-48 h-48 object-contain max-h-24"
           />
         ))}
       </div>
