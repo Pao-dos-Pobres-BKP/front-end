@@ -6,6 +6,15 @@ import Input from "@/components/ui/input";
 import exemplo_foto_perfil from "@/assets/exemplo_foto_perfil.jpg";
 import { EditSquare } from "react-iconly";
 
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
+
 import { useState } from "react";
 import EditUserModal from "@/components/ui/edit-user-modal";
 import ConfirmLogoutModal from "@/components/ui/confirm-logout-modal";
@@ -14,6 +23,8 @@ import ConfirmLogoutModal from "@/components/ui/confirm-logout-modal";
 export default function Perfil() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const cardsPerPage = 6;
 
   const [dados, setDados] = useState({
     nome: "Fulano de Tal",
@@ -51,8 +62,24 @@ export default function Perfil() {
       raised: 81825.33,
       goal: 90000,
     },
-
   ];
+
+    const campanhasHistorico = [
+      { title: "Campanha A", creatorName: "Fundação 1", raised: 81825.33, goal: 90000 },
+      { title: "Campanha B", creatorName: "Fundação 2", raised: 5000, goal: 10000 },
+      { title: "Campanha C", creatorName: "Fundação 3", raised: 15000, goal: 20000 },
+      { title: "Campanha D", creatorName: "Fundação 4", raised: 2500, goal: 3000 },
+      { title: "Campanha E", creatorName: "Fundação 5", raised: 7000, goal: 10000 },
+      { title: "Campanha F", creatorName: "Fundação 6", raised: 9000, goal: 15000 },
+      { title: "Campanha G", creatorName: "Fundação 7", raised: 1200, goal: 2000 },
+      { title: "Campanha H", creatorName: "Fundação 8", raised: 4500, goal: 5000 },
+      { title: "Campanha I", creatorName: "Fundação 9", raised: 800, goal: 1000 },
+    ];
+
+  const totalPages = Math.ceil(campanhasHistorico.length / cardsPerPage);
+  const indexOfLastCard = currentPage * cardsPerPage;
+  const indexOfFirstCard = indexOfLastCard - cardsPerPage;
+  const currentCards = campanhasHistorico.slice(indexOfFirstCard, indexOfLastCard);
 
   const handleEditarConta = () => {
     setIsModalOpen(true);
@@ -189,7 +216,6 @@ export default function Perfil() {
                     R$ 2.000,00
                   </span>
                 </div>
-
               </div>
             </div>
 
@@ -259,7 +285,7 @@ export default function Perfil() {
             </div>
 
             <div className="flex flex-col gap-3 flex-1">
-              {campanhas.map((campanha, index) => (
+              {currentCards.map((campanha, index) => (
                 <CampaignCard
                   key={index}
                   title={campanha.title}
@@ -275,11 +301,38 @@ export default function Perfil() {
             </div>
 
             <div className="flex justify-center items-center gap-2 mt-6">
-              <button className="px-3 py-1 border rounded-md text-[#005172] hover:bg-gray-100">1</button>
-              <button className="px-3 py-1 border rounded-md text-[#005172] hover:bg-gray-100">2</button>
-              <button className="px-3 py-1 border rounded-md text-[#005172] hover:bg-gray-100">3</button>
-              <span className="px-2">...</span>
-              <button className="px-3 py-1 border rounded-md text-[#005172] hover:bg-gray-100">10</button>
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      onClick={currentPage === 1 ? undefined : () => setCurrentPage(currentPage - 1)}
+                      className={currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""}
+                    >
+                      Anterior
+                    </PaginationPrevious>
+                  </PaginationItem>
+
+                  {Array.from({ length: totalPages }, (_, i) => (
+                    <PaginationItem key={i}>
+                      <PaginationLink
+                        onClick={() => setCurrentPage(i + 1)}
+                        isActive={currentPage === i + 1}
+                      >
+                        {i + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+
+                  <PaginationItem>
+                    <PaginationNext
+                      onClick={currentPage === totalPages ? undefined : () => setCurrentPage(currentPage + 1)}
+                      className={currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""}
+                    >
+                      Próximo
+                    </PaginationNext>
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
             </div>
           </div>
         </div>
