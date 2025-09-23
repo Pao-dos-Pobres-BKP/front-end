@@ -1,5 +1,3 @@
-import Navbar from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
 import { Progress } from "@/components/ui/progress";
 import CampaignCard from "@/components/ui/campaignCard/campaignCard";
 import Input from "@/components/ui/input";
@@ -95,7 +93,6 @@ export default function Perfil() {
 
   return (
     <div className="min-h-screen bg-[#2F5361] font-inter">
-      <Navbar />
       <div className="flex justify-center px-6 py-6">
         <div className="w-full max-w-6md bg-white rounded-xl shadow-lg p-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white rounded-lg gap-4 p-4 mb-6">
@@ -350,7 +347,6 @@ export default function Perfil() {
         onClose={() => setIsLogoutModalOpen(false)}
         onConfirm={handleConfirmLogout}
       />
-      <Footer />
     </div>
   );
 }
