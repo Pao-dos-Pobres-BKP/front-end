@@ -13,6 +13,8 @@ const buttonVariants = cva(
           "bg-[var(--color-background)] hover:bg-[var(--color-components)] border border-[var(--color-border)] text-[var(--color-text-brand)] hover:text-[var(--color-text-1)]",
         tertiary:
           "bg-[var(--color-text-2)] hover:text-[var(--color-text-brand)] text-[var(--color-text-1)]",
+        quaternary:
+         "bg-[var(--color-text-special-2)] text-[var(--color-text-1)] hover:bg-[var(--color-text-1)] hover:text-[var(--color-text-special-2)] border border-[var(--color-border)]",
         destructive:
           "bg-[var(--color-text-warning)] hover:bg-[var(--color-text-error)] text-[var(--color-background)]",
         confirm:
