@@ -41,7 +41,7 @@ const News = () => {
       </h2>
       
       <Carousel
-        className="w-full max-w"
+        className="w-full max-w max-md:overflow-hidden"
         opts={{
           align: "start",
           loop: true,
@@ -53,7 +53,7 @@ const News = () => {
           }),
         ]}
       >
-        <CarouselContent className=" max-[23.5rem]:ml-14 max-[22rem]:ml-8">
+        <CarouselContent className=" max-[23.5rem]:ml-14 max-[22rem]:ml-8 ">
           {mockedNewsInformations.map((news) => (
             <CarouselItem className=" basis-full min-[23.5rem]:basis-1/2 min-[38rem]:basis-1/3  min-[52rem]:basis-1/4  min-[70rem]:basis-1/5 min-[82rem]:basis-1/6 min-[98rem]:basis-1/7">
               <NewsItem 
