@@ -4,7 +4,7 @@ import { Footer } from "./footer";
 
 const AppShell = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col break-words">
       <Navbar />
       <main className="flex-1 w-full">
         <Outlet />
