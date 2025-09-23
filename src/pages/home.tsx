@@ -1,12 +1,6 @@
-import { Tabs } from "@/components/layout/tabs";
-import { Avatar } from "@/components/ui/avatar";
 import Button from "../components/ui/button";
-import { Accordion, AccordionItem } from "@/components/ui/accordion";
-import { AccordionTrigger } from "@/components/ui/accordion";
-import { AccordionContent } from "@/components/ui/accordion";
-import { SearchBar } from "@/components/layout/search-bar";
-import { Footer } from "@/components/layout/footer";
 import CampaignCard from "@/components/ui/campaignCard/campaignCard";
+import { Newsletter } from "@/components/ui/newsletter";
 
 const Home = () => {
   return (
@@ -28,7 +22,11 @@ const Home = () => {
         donorName="Fulano De Tal"
         donorEmail="email@email.com"
         donationAmount={50}
-        campaigns={["Campanha de Santo Antônio", "Campanha de Aniversário 130 anos do Pão", "Campanha de Natal Solidário"]}
+        campaigns={[
+          "Campanha de Santo Antônio",
+          "Campanha de Aniversário 130 anos do Pão",
+          "Campanha de Natal Solidário",
+        ]}
         memberSince="01/2019"
         situation="pending"
       />
@@ -38,13 +36,46 @@ const Home = () => {
         creatorName="Fundação Pão dos Pobres Santo Antônio"
         raised={81825.33}
         goal={90000}
-        actionLabel="Acessar"
         variant="compact"
         situation="recurring"
-        donorName=""
-        donorEmail=""
-        memberSince=""
-        campaigns={[]}
+      />
+
+      <CampaignCard
+        title="Campanha de Santo Antônio"
+        creatorName="Fundação Pão dos Pobres Santo Antônio"
+        raised={81825.33}
+        goal={90000}
+        variant="historic"
+        situation="approved"
+        lastDonation={80}
+      />
+
+      <CampaignCard
+        title="Campanha de Santo Antônio"
+        creatorName="Fundação Pão dos Pobres Santo Antônio"
+        raised={81825.33}
+        goal={90000}
+        variant="historic"
+        situation="recurring"
+        lastDonation={80}
+      />
+
+      <CampaignCard
+        title="Campanha de Santo Antônio"
+        creatorName="Fundação Pão dos Pobres Santo Antônio"
+        raised={81825.33}
+        goal={90000}
+        variant="list"
+        situation="approved"
+      />
+
+      <CampaignCard
+        title="Campanha de Santo Antônio"
+        creatorName="Fundação Pão dos Pobres Santo Antônio"
+        raised={81825.33}
+        goal={90000}
+        variant="list"
+        situation="recurring"
       />
 
       <div className="mt-6 flex gap-3 flex-wrap">
@@ -57,6 +88,10 @@ const Home = () => {
         <Button variant="destructive" size="large">
           Salvar
         </Button>
+      </div>
+
+      <div>
+        <Newsletter />
       </div>
     </div>
   );
