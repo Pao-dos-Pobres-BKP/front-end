@@ -1,5 +1,4 @@
 import Button from "../components/ui/button";
-import { useState } from "react";
 import News from "@/components/layout/news";
 import CampaignCard from "@/components/ui/campaignCard/campaignCard";
 import { Newsletter } from "@/components/ui/newsletter";
