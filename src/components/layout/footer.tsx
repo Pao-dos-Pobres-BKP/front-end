@@ -23,7 +23,7 @@ export function Footer() {
             CEP 90050-321
           </p>
         </div>
-        <div className="min-h-[120px] text-left flex flex-col gap-6">
+        <div className="min-h-[120px] text-left flex flex-col gap-6 truncate">
           <strong className="">Contatos:</strong>
           <p className="font-semibold">
             de Segunda à Sexta das 8h às 12h
