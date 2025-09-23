@@ -13,14 +13,12 @@ export const buttonVariants = cva(
           "bg-[var(--color-background)] hover:bg-[var(--color-components)] border border-[var(--color-border)] text-[var(--color-text-brand)] hover:text-[var(--color-text-1)]",
         tertiary:
           "bg-[var(--color-text-2)] hover:text-[var(--color-text-brand)] text-[var(--color-text-1)]",
-        quaternary:
-          "bg-[var(--color-text-special-2)] text-[var(--color-text-1)] hover:bg-[var(--color-text-1)] hover:text-[var(--color-text-special-2)] border border-[var(--color-border)]",
         destructive:
           "bg-[var(--color-text-warning)] hover:bg-[var(--color-text-error)] text-[var(--color-background)]",
         confirm:
           "bg-[var(--color-text-success)] text-[var(--color-background)] hover:text-[var(--color-text-brand)]",
         quaternary:
-          "bg-[var(--color-text-special)] hover:bg-[var(--color-text-special-3)] text-[var(--color-background)]",
+          "bg-[var(--color-text-special-2)] text-[var(--color-text-1)] hover:bg-[var(--color-text-1)] hover:text-[var(--color-text-special-2)] border border-[var(--color-border)]",
         quinary:
           "bg-[var(--color-text-special-2)] hover:bg-[var(--color-text-special-3)] text-[var(--color-background)]",
       },
@@ -45,7 +43,7 @@ export const buttonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {}
+  VariantProps<typeof buttonVariants> { }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, desactive = false, ...props }, ref) => {
