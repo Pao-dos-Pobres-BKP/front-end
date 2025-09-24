@@ -18,9 +18,12 @@ export const buttonVariants = cva(
         confirm:
           "bg-[var(--color-text-success)] text-[var(--color-background)] hover:text-[var(--color-text-brand)]",
         quaternary:
-          "bg-[var(--color-text-special-2)] text-[var(--color-text-1)] hover:bg-[var(--color-text-1)] hover:text-[var(--color-text-special-2)] border border-[var(--color-border)]",
+          "bg-[var(--color-text-special)] hover:bg-[var(--color-text-special-3)] text-[var(--color-background)]",
         quinary:
           "bg-[var(--color-text-special-2)] hover:bg-[var(--color-text-special-3)] text-[var(--color-background)]",
+        senary:
+          "bg-[var(--color-background)] hover:bg-[var(--color-components)] text-[var(--color-components)] hover:text-[var(--color-text-1)]",
+        
       },
       size: {
         extraSmall: "py-2 px-4",
