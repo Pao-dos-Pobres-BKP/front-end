@@ -1,103 +1,59 @@
-import Button from "../components/ui/button";
-import News from "@/components/layout/news";
-import CampaignCard from "@/components/ui/campaignCard/campaignCard";
-import { Newsletter } from "@/components/ui/newsletter";
+import { Hero, type HeroItem } from "@/components/layout/hero"
+import { Newsletter } from "@/components/ui/newsletter"
+import PartnerCompanies from "@/components/layout/partner-companies"
+import News from "@/components/layout/news"
+import  HowToHelp  from "@/section/how-to-help"
+
+import festaImg from "@/assets/festa-junina-pp.jpg"
+import quadra from "@/assets/quadra-pp.jpg"
+import fundo from "@/assets/fundo-pp.png"
+
+const heroItems: HeroItem[] = [
+  {
+    imageUrl: festaImg,
+    title: "Festa Junina do Pão dos Pobres",
+    description:
+      "Comemoraremos em junho de 2026 a tradicional Festa Junina do Pão dos Pobres para todos que quiserem vir e celebrar com a gente!",
+    location: "Rua da República, 801 - Cidade Baixa, Porto Alegre",
+    date: "20 de junho",
+    time: "10:30",
+    buttonLabel: "Ir para o site",
+    buttonLink: "https://www.paodospobres.org.br/"
+  },
+  {
+    imageUrl: quadra,
+    title: "Todo dia um futuro novo!",
+    description: "Conheça nossos projetos e como você pode ajudar.",
+    location: "Rua da República, 801 - Cidade Baixa, Porto Alegre",
+    date: "20 de junho",
+    time: "10:30",
+    buttonLabel: "Ir para o site",
+    buttonLink: "/doacao "
+  },
+  {
+    imageUrl: fundo,
+    title: "Mais uma imagem!",
+    description: "Uma tela hero mais clean."
+  },
+]
 
 const Home = () => {
   return (
-    <div>
-    <div className="container py-10 flex flex-col gap-6 bg-[var(--color-background)] px-6">
-      <h1 className="text-2xl font-bold">Exemplos de CampaignCard</h1>
-
-      <CampaignCard
-        title="Campanha de Santo Antônio"
-        creatorName="Fundação Pão dos Pobres Santo Antônio"
-        raised={81825.33}
-        goal={90000}
+    <div className="flex flex-col bg-gray-200">
+      <Hero
+        items={heroItems}
       />
-
-      <CampaignCard
-        title="Campanha de Santo Antônio"
-        raised={2000}
-        goal={5000}
-        variant="profile"
-        donorName="Fulano De Tal"
-        donorEmail="email@email.com"
-        donationAmount={50}
-        campaigns={[
-          "Campanha de Santo Antônio",
-          "Campanha de Aniversário 130 anos do Pão",
-          "Campanha de Natal Solidário",
-        ]}
-        memberSince="01/2019"
-        situation="pending"
-      />
-
-      <CampaignCard
-        title="Campanha de Santo Antônio"
-        creatorName="Fundação Pão dos Pobres Santo Antônio"
-        raised={81825.33}
-        goal={90000}
-        variant="compact"
-        situation="recurring"
-      />
-
-      <CampaignCard
-        title="Campanha de Santo Antônio"
-        creatorName="Fundação Pão dos Pobres Santo Antônio"
-        raised={81825.33}
-        goal={90000}
-        variant="historic"
-        situation="approved"
-        lastDonation={80}
-      />
-
-      <CampaignCard
-        title="Campanha de Santo Antônio"
-        creatorName="Fundação Pão dos Pobres Santo Antônio"
-        raised={81825.33}
-        goal={90000}
-        variant="historic"
-        situation="recurring"
-        lastDonation={80}
-      />
-
-      <CampaignCard
-        title="Campanha de Santo Antônio"
-        creatorName="Fundação Pão dos Pobres Santo Antônio"
-        raised={81825.33}
-        goal={90000}
-        variant="list"
-        situation="approved"
-      />
-
-      <CampaignCard
-        title="Campanha de Santo Antônio"
-        creatorName="Fundação Pão dos Pobres Santo Antônio"
-        raised={81825.33}
-        goal={90000}
-        variant="list"
-        situation="recurring"
-      />
-
-      <div className="mt-6 flex gap-3 flex-wrap">
-        <Button variant="primary" size="small">
-          Salvar
-        </Button>
-        <Button variant="secondary" size="medium">
-          Salvar
-        </Button>
-        <Button variant="destructive" size="large">
-          Salvar
-        </Button>
-      </div>
 
       <div>
+        <HowToHelp/>
+        <News/> 
         <Newsletter />
+        <PartnerCompanies />
+
       </div>
     </div>
-    <News></News>
-    </div>
-  );
-};
- export default Home;
+
+  )
+}
+
+export default Home
