@@ -25,7 +25,7 @@ const Link = ({ variant = "blue", children, ...props }: LinkProps) => {
       onKeyDown={handleKeyDown}
       {...props}
       className={clsx(
-        "px-1 py-0.5 rounded cursor-pointer transition-colors underline underline-offset-1 decoration-1 decoration-transparent hover:decoration-current focus:outline-none focus:ring-2",
+        "px-1 py-0.5 rounded cursor-pointer transition-colors underline underline-offset-1 decoration-1 decoration-current focus:outline-none focus:ring-2",
         variants[variant]
       )}
     >

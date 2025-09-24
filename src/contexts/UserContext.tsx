@@ -1,16 +1,17 @@
 import { createContext } from "react";
 
-export type RoleEnum = "ADMIN" | "USER";
+export type RoleEnum = "ADMIN" | "DONOR";
 export type Gender = "MALE" | "FEMALE" | "OTHER";
 
 export interface User {
   id: string;
   fullname: string;
   email: string;
-  birthDate: Date;
-  gender: Gender;
-  phone: string;
-  cpf: string;
+  birthDate?: Date;
+  root?: boolean;
+  gender?: Gender;
+  phone?: string;
+  cpf?: string;
   role: RoleEnum;
   accessToken: string;
 }

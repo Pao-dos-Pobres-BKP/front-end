@@ -1,172 +1,170 @@
-
 import React, { useState, useRef, useEffect } from "react";
-import cn from "../../utils/cn";
+import cn from "@/utils/cn";
 
 interface Option {
-    value: string;
-    label: string;
-    disabled?: boolean;
+  value: string;
+  label: string;
+  disabled?: boolean;
 }
 
-type SelectSize = "small" | "medium" | "large";
+type LabelPosition = "left" | "center" | "right";
 
 interface SelectProps {
-    options: Option[];
-    placeholder?: string;
-    value?: string;
-    onChange?: (value: string) => void;
-    className?: string;
-    size?: SelectSize;
-    disabled?: boolean;
+  options: Option[];
+  placeholder?: string;
+  value?: string;
+  onChange?: (value: string) => void;
+  className?: string;
+  disabled?: boolean;
+  fullWidth?: boolean;
+  label?: string;
+  labelPosition?: LabelPosition;
+  error?: string;
+  id?: string;
 }
 
 export const Select: React.FC<SelectProps> = ({
-    options,
-    placeholder = "Selecione uma opção",
-    value,
-    onChange,
-    className = "",
-    size = "medium",
-    disabled = false,
+  options,
+  placeholder = "Selecione uma opção",
+  value,
+  onChange,
+  className = "",
+  disabled = false,
+  fullWidth = false,
+  label,
+  labelPosition = "left",
+  error,
+  id = "select-1",
 }) => {
-    const [open, setOpen] = useState(false);
-    const [selected, setSelected] = useState<string | undefined>(value);
-    const ref = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState<string | undefined>(value);
+  const ref = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        setSelected(value);
-    }, [value]);
+  const hasError = !!error;
 
-    useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
-            if (ref.current && !ref.current.contains(event.target as Node)) {
-                setOpen(false);
-            }
-        }
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+  useEffect(() => {
+    setSelected(value);
+  }, [value]);
 
-    const handleSelect = (option: Option) => {
-        if (option.disabled) return;
-        setSelected(option.value);
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
         setOpen(false);
-        onChange?.(option.value);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleSelect = (option: Option) => {
+    if (option.disabled) return;
+    setSelected(option.value);
+    setOpen(false);
+    onChange?.(option.value);
+  };
+
+  const selectedLabel = options.find((o) => o.value === selected)?.label;
+
+  const getLabelClasses = () => {
+    const baseClasses = "block mb-1 text-sm font-medium text-[var(--color-components)]";
+
+    const positionClasses = {
+      left: "text-left",
+      center: "text-center",
+      right: "text-right",
     };
 
-    const selectedLabel = options.find(o => o.value === selected)?.label;
+    return cn(baseClasses, positionClasses[labelPosition]);
+  };
 
-    const baseContainer = "relative";
-    const baseButton = "flex items-center justify-between border border-gray-300 rounded-[10px] shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-500 transition duration-150";
-    const baseButtonOpen = "ring-2 ring-primary-500";
-    const baseButtonDisabled = "bg-gray-200 text-gray-400 cursor-not-allowed";
-    const baseIcon = "text-gray-400 transition-transform";
-    const baseIconOpen = "rotate-180";
-    const baseList = "absolute z-10 mt-1 bg-white border border-gray-200 rounded-[10px] shadow-lg max-h-60 overflow-y-auto py-1";
-    const baseOption = "px-4 py-2 cursor-pointer select-none flex items-center text-gray-900 hover:bg-gray-100 transition";
-    const baseOptionSelected = "bg-gray-100 font-semibold";
-    const baseOptionDisabled = "text-gray-300 cursor-not-allowed";
-    const basePlaceholder = "text-gray-400";
-    const baseCheckIcon = "mr-2 text-primary-500";
+  return (
+    <div className="w-full">
+      {label && (
+        <label htmlFor={id} className={getLabelClasses()}>
+          {label}
+        </label>
+      )}
 
-    const selectVariants = {
-        small: {
-            container: cn(baseContainer, "max-w-xs text-sm"),
-            button: cn(baseButton, "px-4 py-2 w-50 h-8"),
-            buttonOpen: baseButtonOpen,
-            buttonDisabled: baseButtonDisabled,
-            icon: cn(baseIcon, "h-4 w-4"),
-            iconOpen: baseIconOpen,
-            list: cn(baseList, "w-50"),
-            option: baseOption,
-            optionSelected: baseOptionSelected,
-            optionDisabled: baseOptionDisabled,
-            placeholder: basePlaceholder,
-            checkIcon: cn(baseCheckIcon, "h-4 w-4"),
-        },
-        medium: {
-            container: cn(baseContainer, "max-w-md w-75 text-base"),
-            button: cn(baseButton, "px-4 py-2 w-75 h-10"),
-            buttonOpen: baseButtonOpen,
-            buttonDisabled: baseButtonDisabled,
-            icon: cn(baseIcon, "h-4 w-4"),
-            iconOpen: baseIconOpen,
-            list: cn(baseList, "w-75"),
-            option: baseOption,
-            optionSelected: baseOptionSelected,
-            optionDisabled: baseOptionDisabled,
-            placeholder: basePlaceholder,
-            checkIcon: cn(baseCheckIcon, "h-4 w-4"),
-        },
-        large: {
-            container: cn(baseContainer, "max-w-lg w-100 text-lg"),
-            button: cn(baseButton, "px-4 py-2 w-100 h-12"),
-            buttonOpen: baseButtonOpen,
-            buttonDisabled: baseButtonDisabled,
-            icon: cn(baseIcon, "h-4 w-4"),
-            iconOpen: baseIconOpen,
-            list: cn(baseList, "w-100"),
-            option: baseOption,
-            optionSelected: baseOptionSelected,
-            optionDisabled: baseOptionDisabled,
-            placeholder: basePlaceholder,
-            checkIcon: cn(baseCheckIcon, "h-4 w-4"),
-        },
-    };
+      <div
+        ref={ref}
+        className={cn(
+          "relative",
+          fullWidth ? "w-full" : "w-80",
+          disabled ? "opacity-50 pointer-events-none" : "opacity-100 pointer-events-auto",
+          className
+        )}
+      >
+        <button
+          type="button"
+          id={id}
+          className={cn(
+            "flex items-center justify-between rounded-lg border border-[var(--color-components)]/30 bg-white px-3 py-2 text-sm text-black shadow-sm outline-none focus:border-[var(--color-components)] focus:ring-1 focus:ring-[var(--color-components)] transition duration-150 w-full",
+            open && "ring-1 ring-[var(--color-components)]",
+            disabled && "bg-gray-200 text-gray-400 cursor-not-allowed",
+            hasError && "border-red-500 focus:border-red-500 focus:ring-red-500"
+          )}
+          onClick={() => !disabled && setOpen((o) => !o)}
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          disabled={disabled}
+        >
+          <span className={selectedLabel ? "text-black" : "text-[var(--color-components)]/50"}>
+            {selectedLabel || placeholder}
+          </span>
+          <svg
+            className={cn(
+              "text-[var(--color-components)]/60 transition-transform h-4 w-4",
+              open && "rotate-180"
+            )}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
 
-    const variant = selectVariants[size];
-
-    return (
-        <div ref={ref} className={cn(variant.container, className, disabled ? "opacity-50 pointer-events-none" : "opacity-100 pointer-events-auto")}>
-            <button
-                type="button"
+        {open && !disabled && (
+          <ul
+            className="absolute z-10 mt-1 w-full bg-white border border-[var(--color-components)]/30 rounded-lg shadow-lg max-h-60 overflow-y-auto py-1"
+            role="listbox"
+          >
+            {options.map((option) => (
+              <li
+                key={option.value}
                 className={cn(
-                    variant.button,
-                    open && variant.buttonOpen,
-                    disabled && variant.buttonDisabled
+                  "px-3 py-2 cursor-pointer select-none flex items-center text-black hover:bg-[var(--color-components)]/10 transition",
+                  option.disabled && "text-gray-300 cursor-not-allowed",
+                  selected === option.value && "bg-[var(--color-components)]/10 font-semibold"
                 )}
-                onClick={() => !disabled && setOpen((o) => !o)}
-                aria-haspopup="listbox"
-                aria-expanded={open}
-                disabled={disabled}
-            >
-                <span className={selectedLabel ? "" : "text-gray-400"}>
-                    {selectedLabel || placeholder}
-                </span>
-                <svg
-                    className={cn(variant.icon, open && variant.iconOpen)}
+                aria-selected={selected === option.value}
+                onClick={() => handleSelect(option)}
+              >
+                {selected === option.value && (
+                  <svg
+                    className="mr-2 h-4 w-4 text-[var(--color-components)]"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
-                >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-            </button>
-            {open && !disabled && (
-                <ul className={variant.list} role="listbox">
-                    {options.map((option) => (
-                        <li
-                            key={option.value}
-                            className={cn(
-                                variant.option,
-                                option.disabled && variant.optionDisabled,
-                                selected === option.value && variant.optionSelected
-                            )}
-                            aria-selected={selected === option.value}
-                            onClick={() => handleSelect(option)}
-                        >
-                            {selected === option.value && (
-                                <svg className={cn(variant.checkIcon, variant.icon)} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                </svg>
-                            )}
-                            {option.label}
-                        </li>
-                    ))}
-                </ul>
-            )}
-        </div>
-    );
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                )}
+                {option.label}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      {hasError && <p className="text-red-600 text-sm text-left mt-1">{error}</p>}
+    </div>
+  );
 };

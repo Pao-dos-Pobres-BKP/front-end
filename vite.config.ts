@@ -28,12 +28,6 @@ export default defineConfig({
       },
     },
   },
-  test: {
-    globals: true,
-    environment: "jsdom",
-    setupFiles: ["./vitest-setup.ts"],
-    include: ["**/*.{test,spec}.{js,jsx,ts,tsx}"],
-  },
   base: "./",
   server: {
     port: 15570,
