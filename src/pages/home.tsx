@@ -1,7 +1,9 @@
 import { Hero, type HeroItem } from "@/components/layout/hero"
-import { Newsletter } from "@/components/ui/newsletter";
+import { Newsletter } from "@/components/ui/newsletter"
 import PartnerCompanies from "@/components/layout/partner-companies"
-import News from "@/components/layout/news";
+import News from "@/components/layout/news"
+import  HowToHelp  from "@/section/how-to-help"
+
 import festaImg from "@/assets/festa-junina-pp.jpg"
 import quadra from "@/assets/quadra-pp.jpg"
 import fundo from "@/assets/fundo-pp.png"
@@ -43,6 +45,7 @@ const Home = () => {
       />
 
       <div>
+        <HowToHelp/>
         <News/> 
         <Newsletter />
         <PartnerCompanies />

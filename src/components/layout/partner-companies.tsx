@@ -6,9 +6,9 @@ import cwaLogo from '@/assets/PartnerCompanies/CWA.png';
 import metaLogo from '@/assets/PartnerCompanies/MetaAgenciaDigital.png';
 import paimLogo from '@/assets/PartnerCompanies/Paim.png';
 import cindapaLogo from '@/assets/PartnerCompanies/Cindapa.png';
-import maisALogo from '@/assets/PartnerCompanies/maisA.png'; 
+import maisALogo from '@/assets/PartnerCompanies/maisA.png';
 import ondawebLogo from '@/assets/PartnerCompanies/OndaWeb.png';
-import {ROUTES} from '@/constant/routes';
+import { ROUTES } from '@/constant/routes';
 import { Link } from 'react-router-dom';
 import Button from '../ui/button';
 
@@ -25,7 +25,7 @@ const partners = [
   { src: ondawebLogo, alt: "Logo OndaWeb" },
 ];
 
-const   PartnerCompanies = () => {
+const PartnerCompanies = () => {
   return (
     <div
       className="bg-[var(--color-components-2)]  flex flex-col items-center 
@@ -56,14 +56,15 @@ const   PartnerCompanies = () => {
       </div>
 
       <div className="flex justify-center mt-6">
-        <Link to= {ROUTES.partners}>
-          <Button 
-            variant="secondary" 
-            size="large"
-            className="!text-xl !font-bold"
+        <Link to={ROUTES.partners}>
+          <Button
+            variant="senary"
+            size="medium"
+            className="whitespace-nowrap"
           >
-            Saiba mais 
+            Saiba mais
           </Button>
+
         </Link>
       </div>
     </div>
