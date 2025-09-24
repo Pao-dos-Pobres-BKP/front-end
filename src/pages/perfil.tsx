@@ -62,16 +62,23 @@ export default function Perfil() {
     },
   ];
 
-    const campanhasHistorico = [
-      { title: "Campanha A", creatorName: "Fundação 1", raised: 81825.33, goal: 90000 },
-      { title: "Campanha B", creatorName: "Fundação 2", raised: 5000, goal: 10000 },
-      { title: "Campanha C", creatorName: "Fundação 3", raised: 15000, goal: 20000 },
-      { title: "Campanha D", creatorName: "Fundação 4", raised: 2500, goal: 3000 },
-      { title: "Campanha E", creatorName: "Fundação 5", raised: 7000, goal: 10000 },
-      { title: "Campanha F", creatorName: "Fundação 6", raised: 9000, goal: 15000 },
-      { title: "Campanha G", creatorName: "Fundação 7", raised: 1200, goal: 2000 },
-      { title: "Campanha H", creatorName: "Fundação 8", raised: 4500, goal: 5000 },
-      { title: "Campanha I", creatorName: "Fundação 9", raised: 800, goal: 1000 },
+  type SituationType = "approved" | "pending" | "rejected" | "recurring";
+  const campanhasHistorico: {
+    title: string;
+    creatorName: string;
+    raised: number;
+    goal: number;
+    situation: SituationType;
+  }[] = [
+      { title: "Campanha de Santo Antônio", creatorName: " Fundação Pão dos Pobres Santo Antônio", raised: 81825.33, goal: 90000, situation: "recurring" },
+      { title: "Campanha de Santo Antônio", creatorName: " Fundação Pão dos Pobres Santo Antônio", raised: 5000, goal: 10000, situation: "recurring" },
+      { title: "Campanha de Santo Antônio", creatorName: " Fundação Pão dos Pobres Santo Antônio", raised: 15000, goal: 20000, situation: "approved" },
+      { title: "Campanha de Santo Antônio", creatorName: " Fundação Pão dos Pobres Santo Antônio", raised: 2500, goal: 3000, situation: "approved" },
+      { title: "Campanha de Santo Antônio", creatorName: " Fundação Pão dos Pobres Santo Antônio", raised: 7000, goal: 10000, situation: "approved" },
+      { title: "Campanha de Santo Antônio", creatorName: " Fundação Pão dos Pobres Santo Antônio", raised: 9000, goal: 15000, situation: "approved" },
+      { title: "Campanha de Santo Antônio", creatorName: " Fundação Pão dos Pobres Santo Antônio", raised: 1200, goal: 2000, situation: "approved" },
+      { title: "Campanha de Santo Antônio", creatorName: " Fundação Pão dos Pobres Santo Antônio", raised: 4500, goal: 5000, situation: "approved" },
+      { title: "Campanha de Santo Antônio", creatorName: " Fundação Pão dos Pobres Santo Antônio", raised: 800, goal: 1000, situation: "approved" },
     ];
 
   const totalPages = Math.ceil(campanhasHistorico.length / cardsPerPage);
@@ -290,7 +297,7 @@ export default function Perfil() {
                   raised={campanha.raised}
                   goal={campanha.goal}
                   variant="historic"
-                  situation="approved"
+                  situation={campanha.situation}
                   lastDonation={80}
                   className="border border-[#005172] rounded-lg text-sm p-3"
                 />
