@@ -10,41 +10,40 @@ import Button from "@/components/ui/button";
 import { Edit } from "lucide-react";
 import { WhatsAppIcon } from "@/icons/whatsappIcon";
 
-type Categoria = { id: string; titulo: string; descricao: string };
+type Category = { id: string; title: string; description: string };
 
-const initialCategorias: Categoria[] = [
+const initialCategories: Category[] = [
     {
       id: "alimentos",
-      titulo: "Alimentos",
-      descricao:
+      title: "Alimentos",
+      description:
         "teste teste teste teste teste teste teste teste teste teste teste teste testeteste teste testeteste teste testeteste teste testeteste teste testeteste teste testeteste teste testeteste teste testeteste teste testeteste teste testeteste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste.",
     },
     {
       id: "roupas",
-      titulo: "Roupas",
-      descricao:
+      title: "Roupas",
+      description:
         "Chamada para roupas.",
     },
     {
       id: "moveis", 
-      titulo: "Móveis",
-      descricao:
+      title: "Móveis",
+      description:
         "Chamada para móveis.",
     },
     {
       id: "empresa",
-      titulo: "Empresa",
-      descricao:
+      title: "Empresa",
+      description:
         "Chamada para empresas.",
     },
     {
       id: "variedades",
-      titulo: "Variedades",
-      descricao:
+      title: "Variedades",
+      description:
         "Chamada para variedades.",
     },
 ];
-
 
 const WhatsAppButton = () => {
   const handleContactClick = () => {
@@ -61,26 +60,29 @@ const WhatsAppButton = () => {
   );
 };
 
+export default function HowToHelpSection() {
 
-//simulando api
-export default function ComoAjudarSection() {
+  //simula api
   const metaCampanha = 1000;
   const arrecadado = 750;
   const percentual = Math.min((arrecadado / metaCampanha) * 100, 100);
 
-  const [categorias, setCategorias] = useState<Categoria[]>(initialCategorias);
+  const [categories, setCategories] = useState<Category[]>(initialCategories);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editText, setEditText] = useState("");
+  
+  const [openAccordionId, setOpenAccordionId] = useState<string | null>(null);
 
-  const handleEdit = (categoria: Categoria) => {
-    setEditingId(categoria.id);
-    setEditText(categoria.descricao);
+  const handleEdit = (category: Category) => {
+    setOpenAccordionId(category.id);
+    setEditingId(category.id);
+    setEditText(category.description);
   };
 
   const handleSave = (id: string) => {
-    setCategorias(
-      categorias.map((cat) =>
-        cat.id === id ? { ...cat, descricao: editText } : cat
+    setCategories(
+      categories.map((cat) =>
+        cat.id === id ? { ...cat, description: editText } : cat
       )
     );
     setEditingId(null);
@@ -101,8 +103,6 @@ export default function ComoAjudarSection() {
       handleCancel();
     }
   };
-
-
 
   return (
     <section className="w-full bg-gradient-to-b from-blue-50 to-blue-100">
@@ -125,8 +125,14 @@ export default function ComoAjudarSection() {
 
         <div className="flex flex-col lg:flex-row gap-16 relative">
           <div className="flex-1 lg:pr-72">
-            <Accordion type="single" collapsible className="space-y-3">
-              {categorias.map((cat) => (
+            <Accordion 
+              type="single" 
+              collapsible 
+              className="space-y-3"
+              value={openAccordionId ?? ""}
+              onValueChange={setOpenAccordionId}
+            >
+              {categories.map((cat) => (
                 <AccordionItem key={cat.id} value={cat.id}>
                   <AccordionTrigger
                     variant="secondary"
@@ -139,12 +145,12 @@ export default function ComoAjudarSection() {
                           <span className="accordion-icon"></span>
                         </span>
                         <span className="text-base text-[#024b5a]">
-                          {cat.titulo}
+                          {cat.title}
                         </span>
                       </div>
                       <button
                         type="button"
-                        aria-label={`Editar ${cat.titulo}`}
+                        aria-label={`Editar ${cat.title}`}
                         onClick={(e) => {
                           e.stopPropagation();
                           handleEdit(cat);
@@ -156,9 +162,9 @@ export default function ComoAjudarSection() {
                     </div>
                   </AccordionTrigger>
                   <AccordionContent variant="secondary">
-                    <div className="relative py-4">
+                    <div className="py-4">
                       {editingId === cat.id ? (
-                        <div className="pr-56">
+                        <div>
                           <textarea
                             value={editText}
                             onChange={(e) => setEditText(e.target.value)}
@@ -171,14 +177,14 @@ export default function ComoAjudarSection() {
                           </small>
                         </div>
                       ) : (
-                        <>
-                          <p className="text-sm leading-relaxed pr-56">
-                            {cat.descricao}
+                        <div className="flex flex-col lg:flex-row lg:items-end gap-4">
+                          <p className="flex-1 text-sm leading-relaxed">
+                            {cat.description}
                           </p>
-                          <div className="absolute bottom-0 right-0 w-52">
+                          <div className="w-full lg:w-52 flex-shrink-0">
                             <WhatsAppButton />
                           </div>
-                        </>
+                        </div>
                       )}
                     </div>
                   </AccordionContent>
@@ -188,7 +194,7 @@ export default function ComoAjudarSection() {
           </div>
           <div className="lg:absolute lg:top-16 lg:right-0 lg:w-52 flex flex-col gap-2 mt-6 lg:mt-0">
             <Button
-              onClick={() => (window.location.href = "/doacoes")} //simula rota doacoes adicionando /doacoes na url atual 
+              onClick={() => (window.location.href = "/doacoes")} //simula rota de /doacoes 
               className="bg-[var(--color-text-special)] text-white w-full hover:bg-[var(--color-text-special)] hover:opacity-95"
             >
               Faça sua doação!
@@ -212,4 +218,4 @@ export default function ComoAjudarSection() {
       `}</style>
     </section>
   );
-} 
+}
