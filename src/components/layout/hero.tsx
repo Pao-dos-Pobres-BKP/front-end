@@ -33,11 +33,30 @@ export function Hero({
   const [index, setIndex] = React.useState(0)
   const count = items.length
 
+  const intervalRef = React.useRef<ReturnType<typeof setInterval> | null>(null)
+  const userActionTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const startAutoplay = React.useCallback(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current)
+    intervalRef.current = setInterval(() => {
+      setIndex((i) => (i + 1) % count)
+    }, 6000)
+  }, [count])
+
+  const resetAutoplay = React.useCallback(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current)
+    if (userActionTimeoutRef.current) clearTimeout(userActionTimeoutRef.current)
+    userActionTimeoutRef.current = setTimeout(startAutoplay, 15000)
+  }, [startAutoplay])
+
   React.useEffect(() => {
     if (count <= 1) return
-    const id = window.setInterval(() => setIndex((i) => (i + 1) % count), 6000)
-    return () => window.clearInterval(id)
-  }, [count])
+    startAutoplay()
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current)
+      if (userActionTimeoutRef.current) clearTimeout(userActionTimeoutRef.current)
+    }
+  }, [count, startAutoplay])
 
   const go = (dir: -1 | 1) => {
     setIndex((i) => {
@@ -46,6 +65,12 @@ export function Hero({
       if (next >= count) return 0
       return next
     })
+    resetAutoplay()
+  }
+
+  const handleIndicatorClick = (newIndex: number) => {
+    setIndex(newIndex)
+    resetAutoplay()
   }
 
   const startX = React.useRef<number | null>(null)
@@ -250,7 +275,7 @@ export function Hero({
             <button
               key={i}
               aria-label={`Ir para o slide ${i + 1}`}
-              onClick={() => setIndex(i)}
+              onClick={() => handleIndicatorClick(i)}
               className={cn(
                 "pointer-events-auto h-2.5 w-2.5 rounded-full border border-white/70 transition",
                 i === index ? "bg-white" : "bg-white/20 hover:bg-white/40",
