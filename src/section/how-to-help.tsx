@@ -17,31 +17,31 @@ const initialCategories: Category[] = [
       id: "alimentos",
       title: "Alimentos",
       description:
-        "teste teste teste teste teste teste teste teste teste teste teste teste testeteste teste testeteste teste testeteste teste testeteste teste testeteste teste testeteste teste testeteste teste testeteste teste testeteste teste testeteste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste.",
+        "Aqui você verá como contribuir com alimentos.",
     },
     {
       id: "roupas",
       title: "Roupas",
       description:
-        "Chamada para roupas.",
+        "Aqui você verá como contribuir com roupas.",
     },
     {
       id: "moveis", 
       title: "Móveis",
       description:
-        "Chamada para móveis.",
+        "Aqui você verá como contribuir com móveis.",
     },
     {
       id: "empresa",
       title: "Empresa",
       description:
-        "Chamada para empresas.",
+        "Aqui você verá como contribuir sendo uma empresa.",
     },
     {
       id: "variedades",
       title: "Variedades",
       description:
-        "Chamada para variedades.",
+        "Aqui você verá como contribuir de outras formas.",
     },
 ];
 

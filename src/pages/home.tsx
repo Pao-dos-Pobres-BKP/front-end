@@ -33,7 +33,7 @@ const heroItems: HeroItem[] = [
   {
     imageUrl: fundo,
     title: "Mais uma imagem!",
-    description: "Uma tela hero mais clean."
+    description: "Você quer se atualizar?\nInscreva-se na nossa newsletter!"
   },
 ]
 
