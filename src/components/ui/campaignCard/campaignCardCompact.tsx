@@ -7,6 +7,8 @@ import redHeart from "@/assets/redHeart.svg";
 import eyeIcon from "@/assets/eyeIcon.svg";
 import editIcon from "@/assets/editIcon.svg";
 import cancelIcon from "@/assets/cancelIcon.svg";
+import { useState } from "react";
+import ConfirmCancelRecurringModal from "../confirm-cancel-recurring-modal";
 
 export type CampaignCardCompactProps = {
     title: string;
@@ -32,6 +34,8 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
         onAction,
     } = props;
 
+    const [showCancelRecurring, setShowCancelRecurring] = useState(false);
+
     const actionIconSrc =
         situation === "pending"
             ? eyeIcon
@@ -53,6 +57,15 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
         }
     };
 
+    const handleActionClick = () => {
+        if (situation === "recurring") {
+            setShowCancelRecurring(true);
+        } else {
+            onAction?.();
+        }
+        // ADICIONAR AQUI AS OUTRAS VARIAÇÕES DE BOTÃO
+    };
+
     const situationIcon =
         situation === "approved"
             ? blueHeart
@@ -63,74 +76,85 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
                     : null;
 
     return (
-        <article
-            className={cn(
-                "flex flex-col w-full bg-white border border-[#e6e8eb] rounded-2xl p-5 gap-3",
-                "md:flex-row md:items-center md:justify-between",
-                className
-            )}
-            aria-label={`Card compacto ${title}`}
-        >
-            <div className="flex items-center gap-2">
-                {situationIcon && (
-                    <img src={situationIcon} alt="" className="h-6 w-6 flex-shrink-0" />
+        <>
+            <article
+                className={cn(
+                    "flex flex-col w-full bg-white border border-[#e6e8eb] rounded-2xl p-5 gap-3",
+                    "md:flex-row md:items-center md:justify-between",
+                    className
                 )}
-                <div className="flex flex-col truncate">
-                    <div className="text-[#034d6b] text-xl font-semibold truncate">
-                        {title}
-                    </div>
-                    {creatorName && (
-                        <div className="text-sm text-[#f68537] truncate">
-                            por {creatorName}
-                        </div>
+                aria-label={`Card compacto ${title}`}
+            >
+                <div className="flex items-center gap-2">
+                    {situationIcon && (
+                        <img src={situationIcon} alt="" className="h-6 w-6 flex-shrink-0" />
                     )}
-                </div>
-            </div>
-            <div className="flex items-center w-full gap-3">
-                <div className="flex flex-col flex-1 min-w-0">
-                    <div className="flex justify-between items-center gap-1.5 w-full flex-wrap">
-                        <div className="text-lg font-bold text-[#034d6b] truncate">
-                            {formatCurrency(raised)}
+                    <div className="flex flex-col truncate">
+                        <div className="text-[#034d6b] text-xl font-semibold truncate">
+                            {title}
                         </div>
-                        <div className="text-sm text-[#6b7280] truncate">
-                            de {formatCurrency(goal)}
-                        </div>
+                        {creatorName && (
+                            <div className="text-sm text-[#f68537] truncate">
+                                por {creatorName}
+                            </div>
+                        )}
                     </div>
+                </div>
+                <div className="flex items-center w-full gap-3">
+                    <div className="flex flex-col flex-1 min-w-0">
+                        <div className="flex justify-between items-center gap-1.5 w-full flex-wrap">
+                            <div className="text-lg font-bold text-[#034d6b] truncate">
+                                {formatCurrency(raised)}
+                            </div>
+                            <div className="text-sm text-[#6b7280] truncate">
+                                de {formatCurrency(goal)}
+                            </div>
+                        </div>
 
-                    <div className="w-full mt-1">
-                        {situation === "approved" || situation === "recurring" ? (
-                            <Progress value={percent} variant="blue" size="large" />
-                        ) : situation === "rejected" ? (
-                            <div className="text-center text-xs font-semibold text-yellow-800 bg-red-400 rounded-full py-0.5 px-2 w-full max-w-[120px]">
-                                Rejeitada
-                            </div>
-                        ) : (
-                            <div className="text-center text-xs font-semibold text-white bg-[#F6C337] rounded-full py-0.5 px-2 w-full max-w-[140px]">
-                                Pendente Aprovação
-                            </div>
-                        )}
+                        <div className="w-full mt-1">
+                            {situation === "approved" || situation === "recurring" ? (
+                                <Progress value={percent} variant="blue" size="large" />
+                            ) : situation === "rejected" ? (
+                                <div className="text-center text-xs font-semibold text-yellow-800 bg-red-400 rounded-full py-0.5 px-2 w-full max-w-[120px]">
+                                    Rejeitada
+                                </div>
+                            ) : (
+                                <div className="text-center text-xs font-semibold text-white bg-[#F6C337] rounded-full py-0.5 px-2 w-full max-w-[140px]">
+                                    Pendente Aprovação
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <div className="flex-shrink-0">
+                        <div
+                            role="button"
+                            tabIndex={0}
+                            onClick={handleActionClick}
+                            onKeyDown={handleActionKeyDown}
+                            className={cn(
+                                "inline-flex items-center justify-center text-sm font-semibold rounded-[10px] transition-colors shadow-sm hover:shadow-lg focus:outline-none cursor-pointer min-w-[44px] h-10 sm:h-11 md:h-12 px-3",
+                                actionButtonClass
+                            )}
+                        >
+                            <img
+                                src={actionIconSrc}
+                                alt=""
+                                className="h-[18px] w-[18px] sm:h-[20px] sm:w-[20px] md:h-[21px] md:w-[21px]"
+                                aria-hidden="true"
+                            />
+                        </div>
                     </div>
                 </div>
-                <div className="flex-shrink-0">
-                    <div
-                        role="button"
-                        tabIndex={0}
-                        onClick={onAction}
-                        onKeyDown={handleActionKeyDown}
-                        className={cn(
-                            "inline-flex items-center justify-center text-sm font-semibold rounded-[10px] transition-colors shadow-sm hover:shadow-lg focus:outline-none cursor-pointer min-w-[44px] h-10 sm:h-11 md:h-12 px-3",
-                            actionButtonClass
-                        )}
-                    >
-                        <img
-                            src={actionIconSrc}
-                            alt=""
-                            className="h-[18px] w-[18px] sm:h-[20px] sm:w-[20px] md:h-[21px] md:w-[21px]"
-                            aria-hidden="true"
-                        />
-                    </div>
-                </div>
-            </div>
-        </article>
+            </article>
+
+            <ConfirmCancelRecurringModal
+                isOpen={showCancelRecurring}
+                onClose={() => setShowCancelRecurring(false)}
+                onConfirm={() => {
+                    setShowCancelRecurring(false);
+                    onAction?.();
+                }}
+            />
+        </>
     );
 }
