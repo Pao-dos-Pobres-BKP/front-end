@@ -1,3 +1,6 @@
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "@/constant/routes";
+
 interface ConfirmLogoutModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -9,7 +12,14 @@ export default function ConfirmLogoutModal({
   onClose,
   onConfirm,
 }: ConfirmLogoutModalProps) {
+  const navigate = useNavigate();
+
   if (!isOpen) return null;
+
+  const handleLogout = () => {
+    onConfirm();
+    navigate(ROUTES.login);
+  };
 
   return (
     <div className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-50 px-2">
@@ -30,7 +40,7 @@ export default function ConfirmLogoutModal({
           </button>
           <button
             className="px-6 py-2 bg-[#026E98] text-white rounded-lg"
-            onClick={onConfirm}
+            onClick={handleLogout}
           >
             Sair
           </button>
