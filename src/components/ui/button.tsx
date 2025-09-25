@@ -2,6 +2,7 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import cn from "@/utils/cn";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const buttonVariants = cva(
   "cursor-pointer px-6 py-2 font-semibold rounded-[10px] transition-colors focus:outline-none  focus:ring-offset-2 shadow-sm hover:shadow-lg disabled:opacity-50 disabled:pointer-events-none inline-flex items-center justify-center text-sm [&>svg]:shrink-0 [&>svg]:pointer-events-none [&>svg]:h-5 [&>svg]:w-5",
   {
@@ -23,7 +24,6 @@ export const buttonVariants = cva(
           "bg-[var(--color-text-special-2)] hover:bg-[var(--color-text-special-3)] text-[var(--color-background)]",
         senary:
           "bg-[var(--color-background)] hover:bg-[var(--color-components)] text-[var(--color-components)] hover:text-[var(--color-text-1)]",
-        
       },
       size: {
         extraSmall: "py-2 px-4",
@@ -46,7 +46,7 @@ export const buttonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-  VariantProps<typeof buttonVariants> { }
+    VariantProps<typeof buttonVariants> {}
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, desactive = false, ...props }, ref) => {
