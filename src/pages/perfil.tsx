@@ -30,7 +30,9 @@ export default function Perfil() {
     genero: "Masculino",
     cpf: "123.456.789-00",
     telefone: "(51) 9 9999-8888",
-    email: "fulanodetal@email.com.br"
+    email: "fulanodetal@email.com.br",
+    totalDonated: 2000,
+    percentageAchieved: 75
   });
 
   //const campanhas: any[] = [];      // para testar quando não tiver campanhas apoiando.
@@ -215,9 +217,9 @@ export default function Perfil() {
                   <span className="text-sm text-[#005172] whitespace-nowrap">
                     Quanto doou até agora:
                   </span>
-                  <Progress value={75} variant="blue" size="medium" className="flex-1" />
+                  <Progress value={dados.percentageAchieved} variant="blue" size="medium" className="flex-1" />
                   <span className="text-sm text-[#005172] whitespace-nowrap">
-                    R$ 2.000,00
+                    {dados.totalDonated.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                   </span>
                 </div>
               </div>
