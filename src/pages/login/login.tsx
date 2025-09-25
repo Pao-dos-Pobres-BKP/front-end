@@ -1,42 +1,96 @@
-import bgLogin from "@/assets/fundo-pp.png";
+import { useState } from "react";
 import LoginContent from "./components/loginContent";
-import logoLogin from "@/assets/logo-pp-login.png";
-import Link from "@/components/ui/link";
+import PersonalFields from "./components/personalFields";
+import AccessFields from "./components/accessFields";
+import SuccessRegistration from "./components/successRegistration";
+import LoginLayout from "./components/loginLayout";
+import { signIn } from "@/services/signIn";
+import type { PersonalFormData } from "./components/shared/PersonalFormFields";
+import type { AccessFormData } from "./components/shared/AccessFormFields";
+
+type FormStep = "login" | "personal" | "access" | "success";
+
+export type RegistrationData = PersonalFormData & AccessFormData;
 
 export default function Login() {
+  const [currentStep, setCurrentStep] = useState<FormStep>("login");
+  const [registrationData, setRegistrationData] = useState<Partial<RegistrationData>>({});
+
+  const handleNextFromPersonal = (data: PersonalFormData) => {
+    setRegistrationData((prev) => ({ ...prev, ...data }));
+    setCurrentStep("access");
+  };
+
+  const handleRegister = async (data: AccessFormData) => {
+    const finalData = { ...registrationData, ...data };
+
+    const response = await signIn(finalData as RegistrationData);
+    if (response === true) {
+      setCurrentStep("success");
+      return true;
+    } else {
+      return response;
+    }
+  };
+
+  const getHeaderConfig = () => {
+    switch (currentStep) {
+      case "login":
+        return {
+          headerText: "Login",
+          headerSubtext: "Preencha os dados abaixo para acessar sua conta.",
+          FooterHref: "/doacao",
+        };
+      case "personal":
+        return {
+          headerText: "Cadastro",
+          headerSubtext: "Preencha seus dados pessoais para continuar.",
+          FooterHref: "/login",
+        };
+      case "access":
+        return {
+          headerText: "Cadastro",
+          headerSubtext: "Crie suas credenciais de acesso.",
+          FooterHref: "/login",
+        };
+      case "success":
+        return {
+          headerText: "Sucesso!",
+          headerSubtext: "Sua conta foi criada com sucesso.",
+        };
+    }
+  };
+
+  const renderCurrentStep = () => {
+    switch (currentStep) {
+      case "login":
+        return <LoginContent onRegisterClick={() => setCurrentStep("personal")} />;
+      case "personal":
+        return (
+          <PersonalFields
+            onCancel={() => setCurrentStep("login")}
+            onNext={handleNextFromPersonal}
+          />
+        );
+      case "access":
+        return (
+          <AccessFields onBack={() => setCurrentStep("personal")} onRegister={handleRegister} />
+        );
+      case "success":
+        return <SuccessRegistration onBackToLogin={() => setCurrentStep("login")} />;
+    }
+  };
+
   return (
-    <div
-      className="w-full min-h-[calc(100vh-4rem)] flex items-center justify-center overflow-y-auto"
-      style={{
-        backgroundImage: `linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 57, 80, 0.6) 66.98%, rgba(0, 81, 114, 0.6) 100%), url(${bgLogin})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        backgroundAttachment: "fixed",
-      }}
-    >
-      <div className="flex items-center justify-center min-h-full px-4 py-4">
-        <main
-          className="
-            w-full max-w-[400px]
-            bg-[#D2D2D2E0] backdrop-blur
-            shadow-2xl
-            py-4 px-3 sm:py-6 sm:px-5
-            rounded-xl
-          "
-          aria-label="Card de Login"
+    <LoginLayout {...getHeaderConfig()}>
+      <div className="relative overflow-hidden">
+        <div
+          key={currentStep}
+          className="animate-in slide-in-from-right-5 fade-in duration-300 ease-in-out"
         >
-          <div className="flex flex-col items-center gap-2 my-2">
-            <img src={logoLogin} alt="Pão dos Pobres" className="h-8 sm:h-10" />
-            <h1 className="text-2xl sm:text-3xl font-bold text-sky-900">Login</h1>
-            <p className="text-xs sm:text-sm text-sky-900/80 text-center font-bold">
-              Preencha os dados abaixo para acessar sua conta.
-            </p>
-          </div>
-          <LoginContent />
-          <Link href="/doacao">Fazer doação anônima</Link>
-        </main>
+          {renderCurrentStep()}
+        </div>
       </div>
-    </div>
+    </LoginLayout>
   );
 }

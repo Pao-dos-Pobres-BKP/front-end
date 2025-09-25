@@ -8,6 +8,8 @@ import Doacao from "@/pages/doacao";
 import Campanhas from "@/pages/campanhas";
 import Perfil from "@/pages/perfil";
 import Dashboard from "@/pages/dashboard";
+import DonorList from "@/pages/donor-list";
+import Partners from "@/pages/empresas-parceiras";
 
 const Navigation = () => {
   return (
@@ -20,6 +22,8 @@ const Navigation = () => {
           <Route path={ROUTES.campanhas} element={<Campanhas />} />
           <Route path={ROUTES.perfil} element={<Perfil />} />
           <Route path={ROUTES.dashboard} element={<Dashboard />} />
+          <Route path={ROUTES.donorList} element={<DonorList />} />
+          <Route path={ROUTES.partners} element={<Partners/>} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

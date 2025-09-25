@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "./navbar";
+import { Footer } from "./footer";
 
 const AppShell = () => {
   return (
@@ -8,6 +9,7 @@ const AppShell = () => {
       <main className="flex-1 w-full">
         <Outlet />
       </main>
+      <Footer />
     </div>
   );
 };

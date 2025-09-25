@@ -27,7 +27,7 @@ async function getToken(credentials: LoginInput): Promise<LoginResponse> {
   return data;
 }
 
-async function getDonor(id: string, accessToken: string): Promise<User> {
+export async function getDonor(id: string, accessToken: string): Promise<User> {
   const { data } = await api.get(`/donors/${id}`);
   const user: User = {
     id: data.id,
@@ -43,7 +43,15 @@ async function getDonor(id: string, accessToken: string): Promise<User> {
   return user;
 }
 
-async function getAdmin(id: string, accessToken: string): Promise<User> {
+export async function getAdmin(id: string, accessToken: string): Promise<User> {
   const { data } = await api.get(`/admin/${id}`);
-  return { ...data, accessToken };
+  const user: User = {
+    id: data.id,
+    email: data.email,
+    fullname: data.fullName,
+    root: data.root,
+    accessToken: accessToken,
+    role: "ADMIN",
+  };
+  return user;
 }
