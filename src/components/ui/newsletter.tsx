@@ -38,7 +38,7 @@ export const Newsletter = () => {
       <p className="text-center max-w-[800px] mx-auto font-bold md:leading-[150%]">
         A newsletter do Pão dos Pobres é um canal de conexão entre você e nossas ações. Nela,
         compartilhamos histórias de transformação, resultados de impacto, campanhas em andamento e
-        formas de participar. Assine e acompanhe de perto como sua ajuda faz a diferença na vida de
+        formas de participar. Assine e acompanhe de perto como a sua ajuda faz diferença na vida de
         crianças, adolescentes e jovens em situação de vulnerabilidade.
       </p>
       <div className="flex flex-col items-center w-full max-w-md gap-4 mx-auto">

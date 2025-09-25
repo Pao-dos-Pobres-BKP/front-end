@@ -113,7 +113,7 @@ export default function HowToHelpSection() {
 
         <div className="space-y-2">
           <h3 className="text-lg font-semibold text-[#024b5a] text-left">
-            Campanha 130 anos do pão
+            Campanha 130 anos do Pão
           </h3>
           <Progress value={Math.round(percentual)} variant="blue" />
           <div className="flex justify-end">
