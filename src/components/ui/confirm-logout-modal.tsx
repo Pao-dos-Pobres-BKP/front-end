@@ -12,9 +12,11 @@ export default function ConfirmLogoutModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-50">
-      <div className="bg-white w-full max-w-md rounded-xl p-6 shadow-lg">
-        <h2 className="text-xl font-bold text-[#005172] mb-4">Você deseja sair da sua conta?</h2>
+    <div className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-50 px-2">
+      <div className="bg-white w-full max-w-md rounded-xl p-6 shadow-lg mx-4 sm:mx-0">
+        <h2 className="text-xl font-bold text-[#005172] mb-4">
+          Você deseja sair da sua conta?
+        </h2>
         <p className="text-sm text-gray-700 mb-6">
           Você será deslogado e retornará à página principal.
         </p>

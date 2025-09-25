@@ -36,13 +36,13 @@ export default function EditUserModal({ isOpen, onClose, onSave, initialData }: 
     };
 
     return (
-        <div className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-50">
-            <div className="bg-white w-full max-w-lg rounded-xl p-6 shadow-lg">
+        <div className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-50 px-2">
+            <div className="bg-white w-full max-w-lg rounded-xl p-6 shadow-lg mx-4 sm:mx-0">
                 <h2 className="text-2xl font-bold text-[#005172] mb-4">Editar Perfil</h2>
 
                 <div className="flex items-center gap-4 mb-4">
                     <img src="https://via.placeholder.com/60" alt="foto de perfil" className="w-16 h-16 rounded-full object-cover" />
-                    <button className="px-3 py-1 text-sm border rounded-lg">IMG_0431 ✕</button> {/* falta arrumar, se é que vai ser mesmo possivel do usuário trocar a foto*/}
+                    <button className="px-3 py-1 text-sm border rounded-lg">IMG_0431 ✕</button> {/* falta melhorar isso aqui */}
                 </div>
                 <label className="text-sm font-medium text-[#005172]">
                     Nome

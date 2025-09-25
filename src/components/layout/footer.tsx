@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import LogoIcon from "@/assets/Logo.svg?react";
 
 export function Footer() {
   const date = new Date();
@@ -8,7 +9,7 @@ export function Footer() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-4 mb-4">
         <div className="min-h-[120px]">
           <Link to="/">
-            <img width={178} src="src/assets/Logo.svg" />
+            <LogoIcon className="h-12 w-auto fill-current text-[var(--color-components)]" />
           </Link>
         </div>
         <div className="min-h-[120px] text-left flex flex-col gap-6">
