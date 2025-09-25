@@ -1,16 +1,17 @@
 import cn from "@/utils/cn";
 import * as React from "react";
-import { Eye, EyeOff } from "lucide-react";
 
 type LabelPosition = "left" | "center" | "right";
 
-type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+type InputProps = React.ComponentProps<"input"> & {
   fullWidth?: boolean;
   label?: string;
   labelPosition?: LabelPosition;
   labelText?: string;
   helperText?: React.ReactNode;
   error?: string;
+  RightIcon?: React.ReactNode;
+  onClickRightIcon?: VoidFunction;
 };
 
 const Input = ({
@@ -22,21 +23,16 @@ const Input = ({
   helperText,
   error,
   id = "input-1",
-  type,
+  RightIcon,
+  onClickRightIcon,
   ...props
 }: InputProps) => {
-  const [showPassword, setShowPassword] = React.useState(false);
   const hasError = !!error;
   const hasHelperText =
     helperText !== undefined && !(typeof helperText === "string" && helperText.trim().length === 0);
   const displayLabel = labelText || label;
-  const isPasswordInput = type === "password";
 
   const descriptorId = hasError ? `${id}-error` : hasHelperText ? `${id}-helper` : undefined;
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
 
   const getLabelClasses = () => {
     const baseClasses = "block mb-1 text-sm font-medium text-[var(--color-components)]";
@@ -61,27 +57,27 @@ const Input = ({
       <div className="relative">
         <input
           id={id}
-          type={isPasswordInput && showPassword ? "text" : type}
           aria-invalid={hasError}
           aria-describedby={descriptorId}
           className={cn(
-            "rounded-lg border border-[var(--color-components)]/30 bg-white px-3 py-2 text-sm text-black shadow-sm outline-none placeholder:text-[var(--color-components)]/50 focus:border-[var(--color-components)] focus:ring-1 focus:ring-[var(--color-components)]",
+            "rounded-[6px] border border-[var(--color-components)]/30 bg-white px-3 py-2 text-sm text-black shadow-sm outline-none placeholder:text-[var(--color-components)]/50 focus:border-[var(--color-components)] focus:ring-1 focus:ring-[var(--color-components)]",
             fullWidth ? "w-full" : "w-80",
             hasError && "border-red-500 focus:border-red-500 focus:ring-red-500",
-            isPasswordInput && "pr-10",
             className
           )}
           {...props}
         />
 
-        {isPasswordInput && (
+        {RightIcon && (
           <button
             type="button"
-            onClick={togglePasswordVisibility}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-components)]/60 hover:text-[var(--color-components)] focus:outline-none focus:text-[var(--color-components)] transition-colors"
-            aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+            className={cn(
+              "absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-components)]/60 hover:text-[var(--color-components)] focus:outline-none focus:text-[var(--color-components)] transition-colors",
+              onClickRightIcon && "cursor-pointer"
+            )}
+            onClick={onClickRightIcon}
           >
-            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            {RightIcon}
           </button>
         )}
       </div>
