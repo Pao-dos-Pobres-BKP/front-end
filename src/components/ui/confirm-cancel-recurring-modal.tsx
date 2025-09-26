@@ -31,7 +31,7 @@ export default function ConfirmCancelRecurringModal({
             Cancelar
           </button>
           <button
-            className="px-6 py-2 bg-[#D65E5E] text-white rounded-lg"
+            className="px-6 py-2 bg-[#026E98] text-white rounded-lg"
             onClick={onConfirm}
           >
             Continuar
