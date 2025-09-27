@@ -19,7 +19,7 @@ const DonorList = () => {
         <div className="flex-1 w-full">
           <SearchBar />
         </div>
-        <Button variant="quaternary" size="small">
+        <Button variant="quinary" size="extraSmall">
           Pesquisar
         </Button>
       </div>
