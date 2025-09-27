@@ -42,7 +42,7 @@ export const Newsletter = () => {
         crianças, adolescentes e jovens em situação de vulnerabilidade.
       </p>
       <div className="flex flex-col items-center w-full max-w-md gap-4 mx-auto">
-        <div className="flex w-full gap-2 items-center">
+        <div className="flex flex-col sm:flex-row sm:gap-2 w-full gap-4 items-center">
           <Input
             placeholder="Email"
             fullWidth
@@ -51,7 +51,7 @@ export const Newsletter = () => {
             className="h-12 w-full"
           />
           <Button
-            size="extraSmall"
+            size="small"
             disabled={!email || !isChecked}
             onClick={handleSubmit}
             variant="quinary"
