@@ -63,23 +63,13 @@ export function CampaignCardHistoric(props: CampaignCardHistoricProps) {
         <>
           <div className="flex sm:hidden flex-row items-center justify-between w-full gap-2">
             {situation && (
-              <div
-                className={cn(
-                  "text-base font-semibold text-left",
-                  gradientTextClass
-                )}
-              >
+              <div className={cn("text-base font-semibold text-left", gradientTextClass)}>
                 {situationLabels[situation]}
               </div>
             )}
 
             {lastDonation !== undefined && (
-              <div
-                className={cn(
-                  "text-xl font-semibold text-right",
-                  gradientTextClass
-                )}
-              >
+              <div className={cn("text-xl font-semibold text-right", gradientTextClass)}>
                 +{formatCurrency(lastDonation)}
               </div>
             )}

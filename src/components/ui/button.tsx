@@ -4,29 +4,24 @@ import cn from "@/utils/cn";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const buttonVariants = cva(
-  "cursor-pointer px-6 py-2 font-semibold rounded-[10px] transition-colors focus:outline-none  focus:ring-offset-2 shadow-sm hover:shadow-lg disabled:opacity-50 disabled:pointer-events-none inline-flex items-center justify-center text-sm [&>svg]:shrink-0 [&>svg]:pointer-events-none [&>svg]:h-5 [&>svg]:w-5",
+  "cursor-pointer px-6 py-2 transition-all duration-300 ease-in-out font-semibold rounded-[10px] focus:outline-none focus:ring-offset-2 shadow-sm hover:shadow-md hover:opacity-90 disabled:opacity-50 disabled:pointer-events-none inline-flex items-center justify-center text-sm [&>svg]:shrink-0 [&>svg]:pointer-events-none [&>svg]:h-5 [&>svg]:w-5",
   {
     variants: {
       variant: {
-        primary:
-          "bg-[var(--color-components)] text-[var(--color-text-1)] hover:text-[var(--color-text-brand)]",
+        primary: "bg-[var(--color-components)] text-[var(--color-text-1)]",
         secondary:
-          "bg-[var(--color-background)] hover:bg-[var(--color-components)] border border-[var(--color-border)] text-[var(--color-text-brand)] hover:text-[var(--color-text-1)]",
-        tertiary:
-          "bg-[var(--color-text-2)] hover:text-[var(--color-text-brand)] text-[var(--color-text-1)]",
-        destructive:
-          "bg-[var(--color-text-warning)] hover:bg-[var(--color-text-error)] text-[var(--color-background)]",
-        confirm:
-          "bg-[var(--color-text-success)] text-[var(--color-background)] hover:text-[var(--color-text-brand)]",
-        quaternary:
-          "bg-[var(--color-text-special)] hover:bg-[var(--color-text-special-3)] text-[var(--color-background)]",
-        quinary:
-          "bg-[var(--color-text-special-2)] hover:bg-[var(--color-text-special-3)] text-[var(--color-background)]",
+          "bg-[var(--color-background)] border border-[var(--color-border)] text-[var(--color-text-brand)]",
+        tertiary: "bg-[var(--color-text-2)] text-[var(--color-text-1)]",
+        destructive: "bg-[var(--color-text-warning)] text-[var(--color-background)]",
+        confirm: "bg-[var(--color-text-success)] text-[var(--color-background)]",
+        quaternary: "bg-[var(--color-text-special)] text-[var(--color-background)]",
+        quinary: "bg-[var(--color-text-special-2)] text-[var(--color-background)]",
         senary:
-          "bg-[var(--color-background)] hover:bg-[var(--color-components)] text-[var(--color-components)] hover:text-[var(--color-text-1)]",
+          "bg-[var(--color-background)] border border-[var(--color-border)] text-[var(--color-text-3)]",
+        septenary: "bg-[var(--color-text-1)] border-none text-[var(--color-text-3)]",
       },
       size: {
-        extraSmall: "py-2 px-4",
+        extraSmall: "h-10 w-32",
         small: "h-12 w-48",
         medium: "h-12 w-60",
         large: "h-12 w-80",
