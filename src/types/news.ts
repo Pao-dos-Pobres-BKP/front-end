@@ -1,7 +1,6 @@
-
-export interface newsInformations{
-    id: string;
-    title: string;
-    imageUrl?: string;
-    link: string;
+export interface newsInformations {
+  id: string;
+  title: string;
+  imageUrl?: string;
+  link: string;
 }
