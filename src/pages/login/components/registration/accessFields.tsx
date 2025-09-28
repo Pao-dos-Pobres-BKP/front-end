@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useFormValidation } from "@/hooks/useFormValidation";
-import FormContainer from "./shared/FormContainer";
-import FormActions from "./shared/FormActions";
-import StepIndicator from "./shared/StepIndicator";
-import AccessFormFields, { type AccessFormData } from "./shared/AccessFormFields";
+import FormContainer from "../shared/FormContainer";
+import FormActions from "../shared/FormActions";
+import StepIndicator from "../shared/StepIndicator";
+import AccessFormFields, { type AccessFormData } from "./AccessFormFields";
 
 interface AccessFieldsProps {
   onBack: () => void;
