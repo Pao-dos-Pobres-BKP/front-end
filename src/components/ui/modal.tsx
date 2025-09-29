@@ -94,23 +94,26 @@ const Modal = ({ isOpen, onClose, variant, onConfirm, onRetry }: ModalProps) => 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div 
-        className="absolute inset-0 bg-black bg-opacity-50 transition-opacity"
+        className="absolute inset-0 bg-black/20 backdrop-blur-[2px] transition-opacity"
         onClick={onClose}
       />
       
       <div className="
-        relative bg-white rounded-md border border-slate-300
+        relative bg-white rounded-lg border border-slate-300
         inline-flex flex-col items-start
         max-w-md w-full mx-4 
         p-6 gap-4
+        shadow-lg
       ">
-        <div className="mb-6">
+        <div className="w-full">
           <h3 className="
             text-slate-900 font-inter
             text-lg font-semibold leading-7
+            mb-2
           ">
             {config.title}
           </h3>
+          
           <p className="
             text-slate-500 font-inter
             text-sm font-normal leading-5
@@ -119,12 +122,12 @@ const Modal = ({ isOpen, onClose, variant, onConfirm, onRetry }: ModalProps) => 
           </p>
         </div>
 
-        <div className="flex justify-end space-x-3">
+        <div className="flex justify-end gap-3 w-full mt-2">
           {config.actions.map((action, index) => (
             <Button
               key={index}
               variant={action.variant}
-              size="medium"
+              size="extraSmall"
               onClick={() => handleActionClick(action.action)}
             >
               {action.label}
