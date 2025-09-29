@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { Modal } from "@/components/ui/modal";    // use o mesmo tipo de export que você já tem
+import { Modal } from "@/components/ui/modal";
 import { Progress } from "@/components/ui/progress";
 import Button from "@/components/ui/button";
 import Link from "@/components/ui/link";
 import fundo from "@/assets/fundo-pp.png";
-
-
 
 type CampaignModalProps = {
   open: boolean;
@@ -28,11 +26,7 @@ export default function CampaignModal({ open, onOpenChange }: CampaignModalProps
       message=""
       footer={
         <div className="w-full -mt-4">
-          <img
-            src={fundo}
-            alt={title}
-            className="w-full h-40 object-cover rounded-md mb-3"
-          />
+          <img src={fundo} alt={title} className="w-full h-40 object-cover rounded-md mb-3" />
 
           <p className="text-[13px] leading-relaxed text-[var(--color-text-2)] mb-4">
             {description}
@@ -48,7 +42,7 @@ export default function CampaignModal({ open, onOpenChange }: CampaignModalProps
           {!isCollaborator ? (
             <div className="mt-4">
               <Button
-                variant='quaternary'
+                variant="quaternary"
                 size="large"
                 className="w-full"
                 onClick={() => setIsCollaborator(true)}
