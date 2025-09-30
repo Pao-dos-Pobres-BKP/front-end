@@ -15,7 +15,6 @@ export function CampaignCardProfileCompact({
   onAction,
   className,
 }: CampaignCardProfileCompactProps) {
-
   const roleConfig = {
     donor: { label: "Doador", bg: "bg-[#24A254]" },
     admin: { label: "Administrador", bg: "bg-[#F68537]" },
@@ -31,12 +30,12 @@ export function CampaignCardProfileCompact({
   return (
     <article
       className={cn(
-        "flex flex-col sm:flex-row w-full bg-white border border-[#e6e8eb] rounded-2xl p-4 sm:p-5 items-center justify-between gap-3 sm:gap-0",
+        "flex flex-row w-full bg-white border border-[#e6e8eb] rounded-2xl p-4 sm:p-5 items-center",
         className
       )}
       aria-label={`Card perfil compacto ${profileName}`}
     >
-      <div className="flex items-center min-w-0 w-full sm:w-auto">
+      <div className="flex items-center min-w-0 flex-shrink-0">
         <div className="h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0">
           <img
             src={fulano_de_tal_profile_pic}
@@ -44,41 +43,17 @@ export function CampaignCardProfileCompact({
             className="h-full w-full rounded-full object-cover"
           />
         </div>
-        <div className="font-semibold flex flex-col items-start ml-4 min-w-0 flex-1">
+        <div className="font-semibold flex flex-col items-start ml-4 min-w-0">
           <div className="text-[#034d6b] truncate text-base sm:text-2xl">
             {profileName}
           </div>
         </div>
       </div>
 
-      <div className="flex sm:hidden items-center justify-between w-full gap-3">
+      <div className="flex-1 flex justify-center">
         <div
           className={cn(
-            "text-sm sm:text-base font-semibold text-white rounded-full px-3 py-1",
-            roleConfig.bg
-          )}
-        >
-          {roleConfig.label}
-        </div>
-        <div
-          role="button"
-          tabIndex={0}
-          onClick={onAction}
-          onKeyDown={handleActionKeyDown}
-          className={cn(
-            "inline-flex items-center justify-center text-sm font-semibold rounded-[10px] transition-colors shadow-sm hover:shadow-lg focus:outline-none cursor-pointer min-w-[44px] h-10 px-3",
-            "bg-[#034d6b] hover:bg-[#023a50] text-white"
-          )}
-        >
-          <Category set="bold" />
-        </div>
-      </div>
-
-
-      <div className="hidden sm:flex items-center flex-1 justify-center">
-        <div
-          className={cn(
-            "text-sm sm:text-base font-semibold text-white rounded-full px-2 py-0.5",
+            "text-xs sm:text-sm md:text-base font-semibold text-white rounded-lg px-2 sm:px-3 py-0.5 sm:py-1 whitespace-nowrap",
             roleConfig.bg
           )}
         >
@@ -92,7 +67,8 @@ export function CampaignCardProfileCompact({
         onClick={onAction}
         onKeyDown={handleActionKeyDown}
         className={cn(
-          "hidden sm:inline-flex items-center justify-center text-sm font-semibold rounded-[10px] transition-colors shadow-sm hover:shadow-lg focus:outline-none cursor-pointer min-w-[44px] h-11 md:h-12 px-3",
+          "inline-flex items-center justify-center text-sm font-semibold rounded-[10px] transition-colors shadow-sm hover:shadow-lg focus:outline-none cursor-pointer flex-shrink-0",
+          "min-w-[40px] h-9 sm:min-w-[44px] sm:h-11 md:h-12 px-2 sm:px-3",
           "bg-[#034d6b] hover:bg-[#023a50] text-white"
         )}
       >
