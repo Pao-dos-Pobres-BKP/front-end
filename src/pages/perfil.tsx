@@ -117,7 +117,7 @@ export default function Perfil() {
                     {dados.nome}
                   </h2>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center mt-2">
                   <p className="text-xs sm:text-sm font-inter text-[#005172]">
                     Membro desde 12 de Agosto de 2023
                   </p>
