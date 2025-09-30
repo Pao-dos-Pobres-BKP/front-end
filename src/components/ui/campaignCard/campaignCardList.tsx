@@ -67,7 +67,16 @@ export function CampaignCardList(props: CampaignCardListProps) {
               {title}
             </div>
             {creatorName && (
-              <div className="text-sm text-[#f68537] truncate">
+              <div
+                className={cn(
+                  "text-xs sm:text-sm truncate",
+                  situation === "recurring"
+                    ? "bg-gradient-to-b from-[#FF4A4A] to-[#FF8787] bg-clip-text text-transparent"
+                    : situation === "approved"
+                      ? "bg-gradient-to-b from-[#456DFF] to-[#AABCFF] bg-clip-text text-transparent"
+                      : "text-[#034d6b]"
+                )}
+              >
                 por {creatorName}
               </div>
             )}
