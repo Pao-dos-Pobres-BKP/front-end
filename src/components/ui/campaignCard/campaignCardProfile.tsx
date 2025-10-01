@@ -77,35 +77,6 @@ export function CampaignCardProfile({
                 {donorEmail ?? "email@email.com"}
               </div>
             </div>
-    const [detailsOpen, setDetailsOpen] = useState(false);
-    return (
-        <article className={cn("w-full bg-white border border-[#e6e8eb] rounded-2xl", className)} role="group" aria-label={`Perfil do doador ${donorName ?? ""}`}>
-            <div>
-                <div
-                    className="flex gap-4 cursor-pointer relative p-4 items-center"
-                    onClick={() => setDetailsOpen((v) => !v)}
-                    id="profile-card-header"
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            setDetailsOpen((v) => !v);
-                        }
-                    }}
-                    aria-expanded={detailsOpen}
-                    aria-controls="profile-card-details"
-                >
-                    <div>
-                        <div className="h-12 w-12 rounded-full bg-[#00d1d3] flex items-center justify-center text-white font-semibold" aria-hidden>
-                            {donorName ? donorName.split(" ").map(s => s[0]).slice(0, 2).join("") : "U"}
-                        </div>
-                    </div>
-                    <div className="flex items-center justify-between gap-4 w-full">
-                        <div>
-                            <div className="text-left font-semibold text-[#034d6b]">{donorName ?? "Fulano De Tal"}</div>
-                            <div className="text-sm font-semibold text-[#6b7280]">{donorEmail ?? "email@email.com"}</div>
-                        </div>
 
             <div className="text-right">
               <div className="text-left text-lg font-bold text-[#034d6b]">
