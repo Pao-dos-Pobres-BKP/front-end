@@ -13,7 +13,7 @@ export default function ConfirmCancelRecurringModal({
 
   return (
     <div className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-50 px-2">
-      <div className="bg-white w-full max-w-md rounded-xl p-6 shadow-lg mx-4 sm:mx-0">
+      <div className="bg-white w-full max-w-md rounded-xl p-6 shadow-lg mx-4 sm:mx-0 text-left">
         <h2 className="text-xl font-bold text-[#005172] mb-4">
           Você deseja cancelar sua recorrência?
         </h2>
