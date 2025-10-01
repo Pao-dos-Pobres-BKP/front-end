@@ -11,15 +11,18 @@ interface EditUserModalProps {
         cpf: string;
         telefone: string;
         email: string;
+        foto?: string;
     };
 }
 
 export default function EditUserModal({ isOpen, onClose, onSave, initialData }: EditUserModalProps) {
     const [formData, setFormData] = useState(initialData);
+    const [previewFoto, setPreviewFoto] = useState(initialData.foto || "https://via.placeholder.com/60");
 
     useEffect(() => {
         if (isOpen) {
             setFormData(initialData);
+            setPreviewFoto(initialData.foto || "https://via.placeholder.com/60");
         }
     }, [isOpen, initialData]);
 
@@ -28,6 +31,20 @@ export default function EditUserModal({ isOpen, onClose, onSave, initialData }: 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+    };
+
+    const handleFotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const url = URL.createObjectURL(file);
+            setPreviewFoto(url);
+            setFormData({ ...formData, foto: url });
+        }
+    };
+
+    const handleFotoRemover = () => {
+        setPreviewFoto("https://via.placeholder.com/60");
+        setFormData({ ...formData, foto: "" });
     };
 
     const handleConfirmar = () => {
@@ -40,9 +57,34 @@ export default function EditUserModal({ isOpen, onClose, onSave, initialData }: 
             <div className="bg-white w-full max-w-lg rounded-xl p-6 shadow-lg mx-4 sm:mx-0">
                 <h2 className="text-2xl font-bold text-[#005172] mb-4">Editar Perfil</h2>
 
-                <div className="flex items-center gap-4 mb-4">
-                    <img src="https://via.placeholder.com/60" alt="foto de perfil" className="w-16 h-16 rounded-full object-cover" />
-                    <button className="px-3 py-1 text-sm border rounded-lg">IMG_0431 ✕</button> {/* falta melhorar isso aqui */}
+                <div className="flex items-center gap-4 mb-6">
+                    <img
+                        src={previewFoto}
+                        alt="foto de perfil"
+                        className="w-16 h-16 rounded-full object-cover border"
+                    />
+                    <div className="flex items-center gap-2">
+                        <label className="text-sm font-medium text-[#005172] cursor-pointer">
+                            <span className="px-3 py-1 border rounded-lg hover:bg-gray-100">
+                                Alterar Foto
+                            </span>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleFotoChange}
+                                className="hidden"
+                            />
+                        </label>
+                        {previewFoto !== "https://via.placeholder.com/60" && (
+                            <button
+                                type="button"
+                                onClick={handleFotoRemover}
+                                className="px-3 py-1 border border-red-500 text-red-500 rounded-lg text-sm hover:bg-red-50"
+                            >
+                                Remover Foto
+                            </button>
+                        )}
+                    </div>
                 </div>
                 <label className="text-sm font-medium text-[#005172]">
                     Nome

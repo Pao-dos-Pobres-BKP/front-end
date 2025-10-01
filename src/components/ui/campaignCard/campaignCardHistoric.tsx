@@ -60,7 +60,18 @@ export function CampaignCardHistoric(props: CampaignCardHistoricProps) {
         <div className="font-semibold flex flex-col items-start ml-2 min-w-0 flex-1 truncate">
           <div className="text-[#034d6b] truncate text-base sm:text-xl">{title}</div>
           {creatorName && (
-            <div className="text-xs sm:text-sm text-[#f68537] truncate">por {creatorName}</div>
+            <div
+              className={cn(
+                "text-xs sm:text-sm truncate",
+                situation === "recurring"
+                  ? "bg-gradient-to-b from-[#FF4A4A] to-[#FF8787] bg-clip-text text-transparent"
+                  : situation === "approved"
+                    ? "bg-gradient-to-b from-[#456DFF] to-[#AABCFF] bg-clip-text text-transparent"
+                    : "text-[#034d6b]"
+              )}
+            >
+              por {creatorName}
+            </div>
           )}
         </div>
       </div>

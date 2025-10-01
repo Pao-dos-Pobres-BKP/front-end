@@ -1,9 +1,9 @@
 import { useFormValidation } from "@/hooks/useFormValidation";
 import { isValidCPF, isValidPhone } from "@/utils/formatters";
-import FormContainer from "./shared/FormContainer";
-import FormActions from "./shared/FormActions";
-import StepIndicator from "./shared/StepIndicator";
-import PersonalFormFields, { type PersonalFormData } from "./shared/PersonalFormFields";
+import FormContainer from "../shared/FormContainer";
+import FormActions from "../shared/FormActions";
+import StepIndicator from "../shared/StepIndicator";
+import PersonalFormFields, { type PersonalFormData } from "./PersonalFormFields";
 
 interface PersonalFieldsProps {
   onCancel: () => void;

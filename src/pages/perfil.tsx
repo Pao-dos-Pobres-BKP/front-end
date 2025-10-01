@@ -32,7 +32,8 @@ export default function Perfil() {
     telefone: "(51) 9 9999-8888",
     email: "fulanodetal@email.com.br",
     totalDonated: 2000,
-    percentageAchieved: 75
+    percentageAchieved: 75,
+    foto: exemplo_foto_perfil,
   });
 
   //const campanhas: any[] = [];      // para testar quando não tiver campanhas apoiando.
@@ -107,7 +108,7 @@ export default function Perfil() {
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white rounded-lg gap-4 p-4 mb-6">
             <div className="flex items-center gap-4 w-full sm:w-auto">
               <img
-                src={exemplo_foto_perfil}
+                src={dados.foto || "https://via.placeholder.com/80"}
                 alt="Foto do usuário"
                 className="w-20 h-20 rounded-2xl object-cover"
               />
@@ -117,7 +118,7 @@ export default function Perfil() {
                     {dados.nome}
                   </h2>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center mt-2">
                   <p className="text-xs sm:text-sm font-inter text-[#005172]">
                     Membro desde 12 de Agosto de 2023
                   </p>
@@ -144,72 +145,46 @@ export default function Perfil() {
           <div className="flex flex-col md:flex-row gap-8">
             <div className="md:w-0.5/3 flex flex-col gap-4">
               <div className="bg-white rounded-lg p-6 flex-1 min-h-[420px]">
-
                 <div className="flex flex-col space-y-10">
-
                   <div className="flex items-center gap-2">
-                    <label className=" text-sm font-medium text-[#005172] text-left">
-                      Data de Nascimento
+                    <label className="text-sm font-medium text-[#005172] text-left">
+                      Data de Nascimento:
                     </label>
-                    <input
-                      type="text"
-                      value={dados.nascimento}
-                      className={`w-60 px-3 py-2 border rounded-xl 
-                        : "bg-white text-[#94A3B8] border-[#CBD5E1] cursor-not-allowed"
-                        }`}
-                    />
+                    <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
+                      {dados.nascimento}
+                    </span>
                   </div>
-
                   <div className="flex items-center gap-2">
-                    <label className=" text-sm font-medium text-[#005172] text-left">
-                      Gênero
+                    <label className="text-sm font-medium text-[#005172] text-left">
+                      Gênero:
                     </label>
-                    <input
-                      type="text"
-                      value={dados.genero}
-                      className={`w-60 px-3 py-2 border rounded-xl 
-                        : "bg-white text-[#94A3B8] border-[#CBD5E1] cursor-not-allowed"
-                        }`}
-                    />
+                    <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
+                      {dados.genero}
+                    </span>
                   </div>
-
                   <div className="flex items-center gap-2">
-                    <label className=" text-sm font-medium text-[#005172] text-left">
-                      CPF
+                    <label className="text-sm font-medium text-[#005172] text-left">
+                      CPF:
                     </label>
-                    <input
-                      type="text"
-                      value={dados.cpf}
-                      className={`w-60 px-3 py-2 border rounded-xl 
-                        : "bg-white text-[#94A3B8] border-[#CBD5E1] cursor-not-allowed"
-                        }`}
-                    />
+                    <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
+                      {dados.cpf}
+                    </span>
                   </div>
-
                   <div className="flex items-center gap-2">
-                    <label className=" text-sm font-medium text-[#005172] text-left">
-                      Telefone
+                    <label className="text-sm font-medium text-[#005172] text-left">
+                      Telefone:
                     </label>
-                    <input
-                      type="text"
-                      value={dados.telefone}
-                      className={`w-60 px-3 py-2 border rounded-xl 
-                        : "bg-white text-[#94A3B8] border-[#CBD5E1] cursor-not-allowed"
-                        }`}
-                    />
+                    <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
+                      {dados.telefone}
+                    </span>
                   </div>
-
                   <div className="flex items-center gap-2">
-                    <label className=" text-sm font-medium text-[#005172] text-left">
-                      E-mail
+                    <label className="text-sm font-medium text-[#005172] text-left">
+                      E-mail:
                     </label>
-                    <input
-                      type="text"
-                      value={dados.email}
-                      className={`w-60 px-3 py-2 border rounded-xl 
-                        : "bg-white text-[#94A3B8] border-[#CBD5E1] cursor-not-allowed"
-                        }`}
-                    />
+                    <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
+                      {dados.email}
+                    </span>
                   </div>
                 </div>
 

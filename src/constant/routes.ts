@@ -5,6 +5,6 @@ export const ROUTES = {
   campanhas: "/campanhas",
   perfil: "/perfil",
   dashboard: "/dashboard",
-  donorList: "/lista-doadores",
+  donorList: "/doadores",
   partners: "/empresas-parceiras",
 } as const;

@@ -11,51 +11,46 @@ import { useState } from "react";
 import ConfirmCancelRecurringModal from "../confirm-cancel-recurring-modal";
 
 export type CampaignCardCompactProps = {
-    title: string;
-    raised: number;
-    goal: number;
-    creatorName?: string;
-    onAction?: () => void;
-    className?: string;
-    situation?: "approved" | "pending" | "rejected" | "recurring";
-    progressPercent?: number;
+  title: string;
+  raised: number;
+  goal: number;
+  creatorName?: string;
+  onAction?: () => void;
+  className?: string;
+  situation?: "approved" | "pending" | "rejected" | "recurring";
+  progressPercent?: number;
 };
 
-
 export function CampaignCardCompact(props: CampaignCardCompactProps) {
-    const {
-        situation,
-        goal,
-        raised,
-        creatorName,
-        title,
-        className,
-        progressPercent: percent = 0,
-        onAction,
-    } = props;
+  const {
+    situation,
+    goal,
+    raised,
+    creatorName,
+    title,
+    className,
+    progressPercent: percent = 0,
+    onAction,
+  } = props;
 
     const [showCancelRecurring, setShowCancelRecurring] = useState(false);
 
-    const actionIconSrc =
-        situation === "pending"
-            ? eyeIcon
-            : situation === "approved"
-                ? editIcon
-                : cancelIcon;
+  const actionIconSrc =
+    situation === "pending" ? eyeIcon : situation === "approved" ? editIcon : cancelIcon;
 
-    const actionButtonClass =
-        situation === "approved"
-            ? "bg-[#034d6b] hover:bg-[#023a50] text-white hover:text-white"
-            : situation === "pending"
-                ? "bg-[#F68537] hover:bg-[#e5782e] text-white hover:text-white"
-                : "bg-[#D65E5E] hover:bg-[#c44f4f] text-white hover:text-white";
+  const actionButtonClass =
+    situation === "approved"
+      ? "bg-[#034d6b] hover:bg-[#023a50] text-white hover:text-white"
+      : situation === "pending"
+        ? "bg-[#F68537] hover:bg-[#e5782e] text-white hover:text-white"
+        : "bg-[#D65E5E] hover:bg-[#c44f4f] text-white hover:text-white";
 
-    const handleActionKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-        if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            onAction?.();
-        }
-    };
+  const handleActionKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onAction?.();
+    }
+  };
 
     const handleActionClick = () => {
         if (situation === "recurring") {
@@ -66,14 +61,14 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
         // ADICIONAR AQUI AS OUTRAS VARIAÇÕES DE BOTÃO
     };
 
-    const situationIcon =
-        situation === "approved"
-            ? blueHeart
-            : situation === "pending"
-                ? orangeHeart
-                : situation === "recurring"
-                    ? redHeart
-                    : null;
+  const situationIcon =
+    situation === "approved"
+      ? blueHeart
+      : situation === "pending"
+        ? orangeHeart
+        : situation === "recurring"
+          ? redHeart
+          : null;
 
     return (
         <>
