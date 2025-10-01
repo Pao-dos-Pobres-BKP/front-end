@@ -16,8 +16,8 @@ export function CampaignCardProfileCompact({
   className,
 }: CampaignCardProfileCompactProps) {
   const roleConfig = {
-    donor: { label: "Doador", bg: "bg-[#24A254]" },
-    admin: { label: "Administrador", bg: "bg-[#F68537]" },
+    donor: { long: "Doador", short: "Doador", bg: "bg-[var(--color-text-success)]" },
+    admin: { long: "Administrador", short: "Admin", bg: "bg-[var(--color-text-special-2)]" },
   }[role];
 
   const handleActionKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -57,7 +57,8 @@ export function CampaignCardProfileCompact({
             roleConfig.bg
           )}
         >
-          {roleConfig.label}
+          <span className="sm:hidden">{roleConfig.short}</span>
+          <span className="hidden sm:inline">{roleConfig.long}</span>
         </div>
       </div>
 
