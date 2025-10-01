@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -23,7 +23,7 @@ const Doacao = () => {
   const [paymentStatus, setPaymentStatus] = useState<
     "Pendente" | "Confirmado" | "Negado" | "Cancelado"
   >("Pendente");
-  const [paymentId, ] = useState<string | null>(null);
+  const [paymentId] = useState<string | null>(null);
   // const [paymentId, setPaymentId] = useState<string | null>(null);
   const [timer, setTimer] = useState(600);
   const [isCampaignConfirmed, setIsCampaignConfirmed] = useState(false);
@@ -42,7 +42,7 @@ const Doacao = () => {
   useEffect(() => {
     if (currentStep === "item-4" && step3Value === "Pix" && !paymentId && !isCreatingPayment) {
       console.log("Iniciando pagamento Pix automaticamente...");
-      createPaymentInApi("Pix");
+      createPaymentInApi();
     }
   }, [currentStep, step3Value, paymentId, isCreatingPayment]);
 
@@ -115,9 +115,9 @@ const Doacao = () => {
     */
   }, [paymentId]);
 
-  // ===== SIMULAÇÃO DE PAGAMENTP =====
+  // ===== SIMULAÇÃO DE PAGAMENTO =====
 
-  const simulatePaymentConfirmation = () => {
+  const simulatePaymentConfirmation = useCallback(() => {
     console.log("Simulando processamento do pagamento...");
     if (step3Value === "Crédito") setPaymentSubStep("pending");
 
@@ -127,7 +127,7 @@ const Doacao = () => {
       setIsStep4Confirmed(true);
       setCurrentStep("");
     }, 3000);
-  };
+  }, [step3Value]);
 
   useEffect(() => {
     if (
@@ -139,7 +139,7 @@ const Doacao = () => {
       setIsCreatingPayment(true);
       simulatePaymentConfirmation();
     }
-  }, [currentStep, step3Value]);
+  }, [currentStep, step3Value, isCreatingPayment, isStep4Confirmed, simulatePaymentConfirmation]);
 
   const handleConfirmCampaign = () => {
     if (selectedCampaign) {
@@ -191,7 +191,7 @@ const Doacao = () => {
     // await createPaymentInApi("Crédito");
   };
 
-  const createPaymentInApi = async (_method: string) => {
+  const createPaymentInApi = async () => {
     /*
   const createPaymentInApi = async (method: string) => {
     setIsCreatingPayment(true);

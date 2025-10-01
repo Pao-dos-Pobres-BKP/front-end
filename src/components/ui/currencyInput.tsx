@@ -46,7 +46,11 @@ const CurrencyInput = ({ value, onValueChange, error }: CurrencyInputProps) => {
         <Button
           variant="secondary"
           size="icon"
-          onClick={() => alert("O valor é preenchido automaticamente da direita para a esquerda, começando pelos centavos.")}
+          onClick={() =>
+            alert(
+              "O valor é preenchido automaticamente da direita para a esquerda, começando pelos centavos."
+            )
+          }
         >
           <Info />
         </Button>

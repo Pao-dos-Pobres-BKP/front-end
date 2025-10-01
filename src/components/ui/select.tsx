@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import cn from "@/utils/cn";
 
 interface Option {
@@ -42,10 +42,13 @@ export const Select: React.FC<SelectProps> = ({
   const [selected, setSelected] = useState<string | undefined>(value);
   const ref = useRef<HTMLDivElement>(null);
 
-  const setOpenState = (newOpenState: boolean) => {
-    setOpen(newOpenState);
-    onOpenChange?.(newOpenState);
-  };
+  const setOpenState = useCallback(
+    (newOpenState: boolean) => {
+      setOpen(newOpenState);
+      onOpenChange?.(newOpenState);
+    },
+    [onOpenChange]
+  );
 
   const hasError = !!error;
 
@@ -63,7 +66,7 @@ export const Select: React.FC<SelectProps> = ({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [setOpenState]);
 
   const handleSelect = (option: Option) => {
     if (option.disabled) return;

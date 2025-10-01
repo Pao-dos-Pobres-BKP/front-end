@@ -30,17 +30,17 @@ type CarouselProps = React.HTMLAttributes<HTMLDivElement> & {
 const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
   ({ opts, className, children, ...props }, ref) => {
     const [emblaRef, emblaApi] = useEmblaCarousel({
-      align: "start", 
+      align: "start",
       dragFree: true,
       ...opts,
     });
-    
+
     const [canScrollPrev, setCanScrollPrev] = React.useState(false);
     const [canScrollNext, setCanScrollNext] = React.useState(false);
 
     const scrollPrev = React.useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
     const scrollNext = React.useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
-    
+
     React.useEffect(() => {
       if (!emblaApi) return;
       const onSelect = () => {
@@ -57,7 +57,16 @@ const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
     }, [emblaApi]);
 
     return (
-      <CarouselContext.Provider value={{ carouselRef: emblaRef, api: emblaApi, scrollPrev, scrollNext, canScrollPrev, canScrollNext }}>
+      <CarouselContext.Provider
+        value={{
+          carouselRef: emblaRef,
+          api: emblaApi,
+          scrollPrev,
+          scrollNext,
+          canScrollPrev,
+          canScrollNext,
+        }}
+      >
         <div ref={ref} className={cn("relative group", className)} {...props}>
           {children}
         </div>
@@ -82,36 +91,31 @@ CarouselContent.displayName = "CarouselContent";
 
 const CarouselItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cn("shrink-0", className)}
-        {...props}
-      />
-    );
+    return <div ref={ref} className={cn("shrink-0", className)} {...props} />;
   }
 );
 CarouselItem.displayName = "CarouselItem";
 
-const CarouselPrevious = React.forwardRef<HTMLButtonElement, React.HTMLAttributes<HTMLButtonElement>>(
-  ({ className, ...props }, ref) => {
-    const { scrollPrev, canScrollPrev } = useCarousel();
-    return (
-      <button
-        ref={ref}
-        onClick={scrollPrev}
-        disabled={!canScrollPrev}
-        className={cn(
-          "absolute left-4 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 p-2 shadow-md transition-opacity duration-300 disabled:opacity-0 group-hover:opacity-100 opacity-0",
-          className
-        )}
-        {...props}
-      >
-        <ChevronLeft className="h-6 w-6 text-gray-800" />
-      </button>
-    );
-  }
-);
+const CarouselPrevious = React.forwardRef<
+  HTMLButtonElement,
+  React.HTMLAttributes<HTMLButtonElement>
+>(({ className, ...props }, ref) => {
+  const { scrollPrev, canScrollPrev } = useCarousel();
+  return (
+    <button
+      ref={ref}
+      onClick={scrollPrev}
+      disabled={!canScrollPrev}
+      className={cn(
+        "absolute left-4 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 p-2 shadow-md transition-opacity duration-300 disabled:opacity-0 group-hover:opacity-100 opacity-0",
+        className
+      )}
+      {...props}
+    >
+      <ChevronLeft className="h-6 w-6 text-gray-800" />
+    </button>
+  );
+});
 CarouselPrevious.displayName = "CarouselPrevious";
 
 const CarouselNext = React.forwardRef<HTMLButtonElement, React.HTMLAttributes<HTMLButtonElement>>(

@@ -48,11 +48,7 @@ const News = () => {
         <CarouselContent>
           {mockedNewsInformations.map((news) => (
             <CarouselItem key={news.id}>
-              <NewsItem 
-                  imageUrl={news.imageUrl}
-                  title={news.title}
-                  link={news.link}
-                />
+              <NewsItem imageUrl={news.imageUrl} title={news.title} link={news.link} />
             </CarouselItem>
           ))}
         </CarouselContent>

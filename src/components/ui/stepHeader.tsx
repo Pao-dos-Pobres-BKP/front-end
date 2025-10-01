@@ -13,7 +13,6 @@ const StepHeader = ({
   isActive,
   valueType = "currency",
 }: StepHeaderProps) => {
-
   const getStatusClasses = (statusValue?: string) => {
     switch (statusValue) {
       case "Confirmado":
@@ -28,7 +27,7 @@ const StepHeader = ({
         return "border-gray-300 bg-white/50 text-gray-700";
     }
   };
-  
+
   const formattedValue = (() => {
     if (!value) return "";
     if (valueType === "currency") {
@@ -56,11 +55,13 @@ const StepHeader = ({
       </div>
 
       {value && (
-        <span className={`ml-4 rounded-full border px-3 py-1 text-sm font-medium transition-colors duration-300 ${
-            valueType === 'status'
-                ? getStatusClasses(value)
-                : 'border-gray-300 bg-white/50 text-gray-700'
-        }`}>
+        <span
+          className={`ml-4 rounded-full border px-3 py-1 text-sm font-medium transition-colors duration-300 ${
+            valueType === "status"
+              ? getStatusClasses(value)
+              : "border-gray-300 bg-white/50 text-gray-700"
+          }`}
+        >
           {formattedValue}
         </span>
       )}
