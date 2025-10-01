@@ -32,7 +32,8 @@ export default function Perfil() {
     telefone: "(51) 9 9999-8888",
     email: "fulanodetal@email.com.br",
     totalDonated: 2000,
-    percentageAchieved: 75
+    percentageAchieved: 75,
+    foto: exemplo_foto_perfil,
   });
 
   //const campanhas: any[] = [];      // para testar quando não tiver campanhas apoiando.
@@ -107,7 +108,7 @@ export default function Perfil() {
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white rounded-lg gap-4 p-4 mb-6">
             <div className="flex items-center gap-4 w-full sm:w-auto">
               <img
-                src={exemplo_foto_perfil}
+                src={dados.foto || "https://via.placeholder.com/80"}
                 alt="Foto do usuário"
                 className="w-20 h-20 rounded-2xl object-cover"
               />
