@@ -1,4 +1,3 @@
-
 export interface newsInformations{
     id: string;
     title: string;

@@ -194,7 +194,7 @@ export default function HowToHelpSection() {
           </div>
           <div className="lg:absolute lg:top-16 lg:right-0 lg:w-52 flex flex-col gap-2 mt-6 lg:mt-0">
             <Button
-              onClick={() => (window.location.href = "/doacoes")} //simula rota de /doacoes 
+              onClick={() => (window.location.href = "/doacao")} //simula rota de /doacoes 
               className="bg-[var(--color-text-special)] text-white w-full hover:bg-[var(--color-text-special)] hover:opacity-95"
             >
               Faça sua doação!
