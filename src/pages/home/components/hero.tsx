@@ -1,119 +1,114 @@
-import * as React from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import Button from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import Button from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export type HeroItem = {
-  id?: string | number
-  imageUrl: string
-  title: string
-  description?: string
-  location?: string
-  date?: string
-  time?: string
-  imageAlt?: string
-  buttonLabel?: string
-  buttonLink?: string
-  overlayClassName?: string
-}
+  id?: string | number;
+  imageUrl: string;
+  title: string;
+  description?: string;
+  location?: string;
+  date?: string;
+  time?: string;
+  imageAlt?: string;
+  buttonLabel?: string;
+  buttonLink?: string;
+  overlayClassName?: string;
+};
 
 export type HeroProps = {
-  items: HeroItem[]
-  className?: string
-  showArrows?: boolean
-  showIndicators?: boolean
-}
+  items: HeroItem[];
+  className?: string;
+  showArrows?: boolean;
+  showIndicators?: boolean;
+};
 
-export function Hero({
-  items,
-  className,
-  showArrows = true,
-  showIndicators = true,
-}: HeroProps) {
-  const [index, setIndex] = React.useState(0)
-  const count = items.length
+export function Hero({ items, className, showArrows = true, showIndicators = true }: HeroProps) {
+  const [index, setIndex] = React.useState(0);
+  const count = items.length;
 
-  const intervalRef = React.useRef<ReturnType<typeof setInterval> | null>(null)
-  const userActionTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+  const intervalRef = React.useRef<ReturnType<typeof setInterval> | null>(null);
+  const userActionTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const startAutoplay = React.useCallback(() => {
-    if (intervalRef.current) clearInterval(intervalRef.current)
+    if (intervalRef.current) clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => {
-      setIndex((i) => (i + 1) % count)
-    }, 6000)
-  }, [count])
+      setIndex((i) => (i + 1) % count);
+    }, 6000);
+  }, [count]);
 
   const resetAutoplay = React.useCallback(() => {
-    if (intervalRef.current) clearInterval(intervalRef.current)
-    if (userActionTimeoutRef.current) clearTimeout(userActionTimeoutRef.current)
-    userActionTimeoutRef.current = setTimeout(startAutoplay, 15000)
-  }, [startAutoplay])
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    if (userActionTimeoutRef.current) clearTimeout(userActionTimeoutRef.current);
+    userActionTimeoutRef.current = setTimeout(startAutoplay, 15000);
+  }, [startAutoplay]);
 
   React.useEffect(() => {
-    if (count <= 1) return
-    startAutoplay()
+    if (count <= 1) return;
+    startAutoplay();
     return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current)
-      if (userActionTimeoutRef.current) clearTimeout(userActionTimeoutRef.current)
-    }
-  }, [count, startAutoplay])
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (userActionTimeoutRef.current) clearTimeout(userActionTimeoutRef.current);
+    };
+  }, [count, startAutoplay]);
 
   const go = (dir: -1 | 1) => {
     setIndex((i) => {
-      const next = i + dir
-      if (next < 0) return count - 1
-      if (next >= count) return 0
-      return next
-    })
-    resetAutoplay()
-  }
+      const next = i + dir;
+      if (next < 0) return count - 1;
+      if (next >= count) return 0;
+      return next;
+    });
+    resetAutoplay();
+  };
 
   const handleIndicatorClick = (newIndex: number) => {
-    setIndex(newIndex)
-    resetAutoplay()
-  }
+    setIndex(newIndex);
+    resetAutoplay();
+  };
 
-  const startX = React.useRef<number | null>(null)
-  const startY = React.useRef<number | null>(null)
-  const swiping = React.useRef(false)
+  const startX = React.useRef<number | null>(null);
+  const startY = React.useRef<number | null>(null);
+  const swiping = React.useRef(false);
 
   const onTouchStart: React.TouchEventHandler = (e) => {
-    const t = e.touches[0]
-    startX.current = t.clientX
-    startY.current = t.clientY
-    swiping.current = false
-  }
+    const t = e.touches[0];
+    startX.current = t.clientX;
+    startY.current = t.clientY;
+    swiping.current = false;
+  };
 
   const onTouchMove: React.TouchEventHandler = (e) => {
-    if (startX.current == null || startY.current == null) return
-    const t = e.touches[0]
-    const dx = t.clientX - startX.current
-    const dy = t.clientY - startY.current
+    if (startX.current == null || startY.current == null) return;
+    const t = e.touches[0];
+    const dx = t.clientX - startX.current;
+    const dy = t.clientY - startY.current;
     if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
-      swiping.current = true
-      e.preventDefault()
+      swiping.current = true;
+      e.preventDefault();
     }
-  }
+  };
 
   const onTouchEnd: React.TouchEventHandler = (e) => {
-    if (startX.current == null || startY.current == null) return
-    const t = e.changedTouches[0]
-    const dx = t.clientX - startX.current
-    const dy = t.clientY - startY.current
-    const THRESHOLD = 40
+    if (startX.current == null || startY.current == null) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - startX.current;
+    const dy = t.clientY - startY.current;
+    const THRESHOLD = 40;
     if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > THRESHOLD) {
-      if (dx > 0) go(-1)
-      else go(1)
+      if (dx > 0) go(-1);
+      else go(1);
     }
-    startX.current = null
-    startY.current = null
-    swiping.current = false
-  }
+    startX.current = null;
+    startY.current = null;
+    swiping.current = false;
+  };
 
   const onKeyDown: React.KeyboardEventHandler = (e) => {
-    if (e.key === "ArrowLeft") go(-1)
-    if (e.key === "ArrowRight") go(1)
-  }
+    if (e.key === "ArrowLeft") go(-1);
+    if (e.key === "ArrowRight") go(1);
+  };
 
   return (
     <section
@@ -125,13 +120,13 @@ export function Hero({
       onTouchEnd={onTouchEnd}
       className={cn(
         "relative w-full h-[60svh] min-h-[480px] overflow-hidden bg-black group",
-        className,
+        className
       )}
     >
       <div className="absolute inset-0">
         {items.map((item, i) => {
-          const visible = i === index
-          const hasInfo = !!(item.location || item.date || item.time)
+          const visible = i === index;
+          const hasInfo = !!(item.location || item.date || item.time);
 
           return (
             <article
@@ -140,7 +135,7 @@ export function Hero({
               aria-hidden={!visible}
               className={cn(
                 "absolute inset-0 transition-opacity duration-300",
-                visible ? "opacity-100" : "opacity-0 pointer-events-none",
+                visible ? "opacity-100" : "opacity-0 pointer-events-none"
               )}
             >
               <img
@@ -148,13 +143,12 @@ export function Hero({
                 alt={item.imageAlt ?? ""}
                 className="absolute inset-0 h-full w-full object-cover"
                 loading={i === 0 ? "eager" : "lazy"}
-                onError={() =>console.warn("Falha ao carregar imagem:", item.imageUrl)
-                }
+                onError={() => console.warn("Falha ao carregar imagem:", item.imageUrl)}
               />
               <div
                 className={cn(
                   "absolute inset-0 bg-gradient-to-b from-black/55 via-black/40 to-black/60",
-                  item.overlayClassName,
+                  item.overlayClassName
                 )}
                 aria-hidden
               />
@@ -180,8 +174,14 @@ export function Hero({
                             <div>
                               <div className="flex items-center gap-2">
                                 <span aria-hidden className="inline-block h-5 w-5">
-                                  <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current">
-                                    <path d="M12 21s7-6.17 7-11a7 7 0 1 0-14 0c0 4.83 7 11 7 11Z" strokeWidth="1.5" />
+                                  <svg
+                                    viewBox="0 0 24 24"
+                                    className="h-5 w-5 fill-none stroke-current"
+                                  >
+                                    <path
+                                      d="M12 21s7-6.17 7-11a7 7 0 1 0-14 0c0 4.83 7 11 7 11Z"
+                                      strokeWidth="1.5"
+                                    />
                                     <circle cx="12" cy="10" r="2.5" strokeWidth="1.5" />
                                   </svg>
                                 </span>
@@ -195,8 +195,18 @@ export function Hero({
                             <div>
                               <div className="flex items-center gap-2">
                                 <span aria-hidden className="inline-block h-5 w-5">
-                                  <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current">
-                                    <rect x="3" y="4" width="18" height="18" rx="2" strokeWidth="1.5" />
+                                  <svg
+                                    viewBox="0 0 24 24"
+                                    className="h-5 w-5 fill-none stroke-current"
+                                  >
+                                    <rect
+                                      x="3"
+                                      y="4"
+                                      width="18"
+                                      height="18"
+                                      rx="2"
+                                      strokeWidth="1.5"
+                                    />
                                     <path d="M8 2v4M16 2v4M3 10h18" strokeWidth="1.5" />
                                   </svg>
                                 </span>
@@ -210,7 +220,10 @@ export function Hero({
                             <div>
                               <div className="flex items-center gap-2">
                                 <span aria-hidden className="inline-block h-5 w-5">
-                                  <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current">
+                                  <svg
+                                    viewBox="0 0 24 24"
+                                    className="h-5 w-5 fill-none stroke-current"
+                                  >
                                     <circle cx="12" cy="12" r="9" strokeWidth="1.5" />
                                     <path d="M12 7v5l3 2" strokeWidth="1.5" />
                                   </svg>
@@ -237,7 +250,7 @@ export function Hero({
                 </div>
               </div>
             </article>
-          )
+          );
         })}
       </div>
 
@@ -278,12 +291,12 @@ export function Hero({
               onClick={() => handleIndicatorClick(i)}
               className={cn(
                 "pointer-events-auto h-2.5 w-2.5 rounded-full border border-white/70 transition",
-                i === index ? "bg-white" : "bg-white/20 hover:bg-white/40",
+                i === index ? "bg-white" : "bg-white/20 hover:bg-white/40"
               )}
             />
           ))}
         </div>
       )}
     </section>
-  )
+  );
 }

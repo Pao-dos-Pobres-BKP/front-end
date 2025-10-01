@@ -1,7 +1,7 @@
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
 import { AccordionTrigger } from "@/components/ui/accordion";
 import { AccordionContent } from "@/components/ui/accordion";
-import { SearchBar } from "@/components/layout/search-bar";
+import { SearchBar } from "@/components/ui/search-bar";
 import Button from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
@@ -19,7 +19,7 @@ const DonorList = () => {
         <div className="flex-1 w-full">
           <SearchBar />
         </div>
-        <Button variant="quaternary" size="small">
+        <Button variant="quinary" size="extraSmall">
           Pesquisar
         </Button>
       </div>

@@ -1,12 +1,12 @@
 import { useState } from "react";
-import LoginContent from "./components/loginContent";
-import PersonalFields from "./components/personalFields";
-import AccessFields from "./components/accessFields";
+import LoginContent from "./components/login/loginContent";
+import PersonalFields from "./components/registration/personalFields";
+import AccessFields from "./components/registration/accessFields";
 import SuccessRegistration from "./components/successRegistration";
 import LoginLayout from "./components/loginLayout";
 import { signIn } from "@/services/signIn";
-import type { PersonalFormData } from "./components/shared/PersonalFormFields";
-import type { AccessFormData } from "./components/shared/AccessFormFields";
+import type { PersonalFormData } from "./components/registration/PersonalFormFields";
+import type { AccessFormData } from "./components/registration/AccessFormFields";
 
 type FormStep = "login" | "personal" | "access" | "success";
 
