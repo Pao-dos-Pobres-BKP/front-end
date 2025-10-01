@@ -10,7 +10,7 @@ import maisALogo from "@/assets/PartnerCompanies/maisA.png";
 import ondawebLogo from "@/assets/PartnerCompanies/OndaWeb.png";
 import { ROUTES } from "@/constant/routes";
 import { Link } from "react-router-dom";
-import Button from "../ui/button";
+import Button from "@/components/ui/button";
 
 const partners = [
   { src: inconfidenciaLogo, alt: "Logo Inconfidência" },

@@ -1,8 +1,8 @@
-import { Hero, type HeroItem } from "@/components/layout/hero";
-import { Newsletter } from "@/components/ui/newsletter";
-import PartnerCompanies from "@/components/layout/partner-companies";
-import News from "@/components/layout/news";
-import HowToHelp from "@/section/how-to-help";
+import { Hero, type HeroItem } from "@/pages/home/components/hero";
+import { Newsletter } from "@/pages/home/components/newsletter";
+import PartnerCompanies from "@/pages/home/components/partner-companies";
+import News from "@/pages/home/components/news";
+import HowToHelp from "@/pages/home/components/how-to-help";
 
 import festaImg from "@/assets/festa-junina-pp.jpg";
 import quadra from "@/assets/quadra-pp.jpg";

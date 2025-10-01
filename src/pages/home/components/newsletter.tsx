@@ -1,9 +1,9 @@
 import { z } from "zod";
 import { useState } from "react";
-import Checkbox from "../layout/checkbox";
-import Button from "./button";
-import Input from "./input";
-import { Modal } from "../layout/modal";
+import Checkbox from "@/components/ui/checkbox";
+import Button from "@/components/ui/button";
+import Input from "@/components/ui/input";
+import { Modal } from "@/components/ui/modal";
 
 const newsletterSchema = z.object({
   email: z.string().email({ message: "Email inválido" }),
@@ -40,7 +40,7 @@ export const Newsletter = () => {
         crianças, adolescentes e jovens em situação de vulnerabilidade.
       </p>
       <div className="flex flex-col items-center w-full max-w-md gap-4 mx-auto">
-        <div className="flex w-full gap-2 items-center">
+        <div className="flex flex-col sm:flex-row sm:gap-2 w-full gap-4 items-center">
           <Input
             placeholder="Email"
             fullWidth
@@ -49,7 +49,7 @@ export const Newsletter = () => {
             className="h-12 w-full"
           />
           <Button
-            size="extraSmall"
+            size="small"
             disabled={!email || !isChecked}
             onClick={handleSubmit}
             variant="quinary"
