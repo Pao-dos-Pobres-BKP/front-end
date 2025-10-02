@@ -3,7 +3,9 @@ import { useState } from "react";
 import Checkbox from "@/components/ui/checkbox";
 import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
-{/*modal*/}
+{
+  /*modal*/
+}
 
 const newsletterSchema = z.object({
   email: z.string().email({ message: "Email inválido" }),
@@ -14,7 +16,6 @@ export const Newsletter = () => {
   const [email, setEmail] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  {/*const [isModalOpen, setIsModalOpen] = useState(false);*/}
 
   function handleSubmit() {
     const result = newsletterSchema.safeParse({ email, isChecked });
@@ -25,7 +26,6 @@ export const Newsletter = () => {
     }
 
     setErrorMessage("");
-    setIsModalOpen(true);
     setEmail("");
     setIsChecked(false);
   }
