@@ -42,20 +42,24 @@ export default function EditUserModal({ isOpen, onClose, onSave, initialData }: 
         }
     };
 
-    const handleFotoRemover = () => {
+    const handleFotoRemove = () => {
         setPreviewFoto("https://via.placeholder.com/60");
         setFormData({ ...formData, foto: "" });
     };
 
-    const handleConfirmar = () => {
+    const handleConfirm = () => {
         onSave(formData);
         onClose();
     };
 
+    const handleConfirmDeleteAcount = () => {
+        alert("modal de apagar conta")
+    }
+
     return (
         <div className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-50 px-2">
             <div className="bg-white w-full max-w-lg rounded-xl p-6 shadow-lg mx-4 sm:mx-0">
-                <h2 className="text-2xl font-bold text-[#005172] mb-4">Editar Perfil</h2>
+                <h2 className="block text-left text-2xl font-bold text-[#005172] mb-4">Editar Perfil</h2>
 
                 <div className="flex items-center gap-4 mb-6">
                     <img
@@ -78,7 +82,7 @@ export default function EditUserModal({ isOpen, onClose, onSave, initialData }: 
                         {previewFoto !== "https://via.placeholder.com/60" && (
                             <button
                                 type="button"
-                                onClick={handleFotoRemover}
+                                onClick={handleFotoRemove}
                                 className="px-3 py-1 border border-red-500 text-red-500 rounded-lg text-sm hover:bg-red-50"
                             >
                                 Remover Foto
@@ -87,7 +91,7 @@ export default function EditUserModal({ isOpen, onClose, onSave, initialData }: 
                     </div>
                 </div>
                 <div className="mb-4">
-                    <label className="text-sm font-medium text-[#005172]">
+                    <label className="block text-left text-sm font-medium text-[#005172]">
                         Nome
                         <input
                             name="nome"
@@ -100,7 +104,7 @@ export default function EditUserModal({ isOpen, onClose, onSave, initialData }: 
                 </div>
 
                 <div className="mb-4">
-                    <label className="text-sm font-medium text-[#005172]">
+                    <label className="block text-left text-sm font-medium text-[#005172]">
                         Data de Nascimento
                         <input
                             name="nascimento"
@@ -113,7 +117,7 @@ export default function EditUserModal({ isOpen, onClose, onSave, initialData }: 
                 </div>
 
                 <div className="mb-4">
-                    <label className="text-sm font-medium text-[#005172]">
+                    <label className="block text-left text-sm font-medium text-[#005172]">
                         Gênero
                         <select
                             name="genero"
@@ -129,7 +133,7 @@ export default function EditUserModal({ isOpen, onClose, onSave, initialData }: 
                 </div>
 
                 <div className="mb-4">
-                    <label className="text-sm font-medium text-[#005172]">
+                    <label className="block text-left text-sm font-medium text-[#005172]">
                         CPF
                         <input
                             name="cpf"
@@ -140,9 +144,9 @@ export default function EditUserModal({ isOpen, onClose, onSave, initialData }: 
                         />
                     </label>
                 </div>
-                
+
                 <div className="mb-4">
-                    <label className="text-sm font-medium text-[#005172]">
+                    <label className="block text-left text-sm font-medium text-[#005172]">
                         Telefone
                         <input
                             name="telefone"
@@ -155,7 +159,7 @@ export default function EditUserModal({ isOpen, onClose, onSave, initialData }: 
                 </div>
 
                 <div className="mb-4">
-                    <label className="text-sm font-medium text-[#005172]">
+                    <label className="block text-left text-sm font-medium text-[#005172]">
                         E-mail
                         <input
                             name="email"
@@ -167,15 +171,24 @@ export default function EditUserModal({ isOpen, onClose, onSave, initialData }: 
                     </label>
                 </div>
 
-                <div className="flex justify-end gap-4 mt-6">
+                <div className="flex justify-center gap-4 mt-6">
                     <button className="px-6 py-2 bg-gray-300 rounded-lg" onClick={onClose}>
                         Cancelar
                     </button>
                     <button
                         className="px-6 py-2 bg-[#005172] text-white rounded-lg"
-                        onClick={handleConfirmar}
+                        onClick={handleConfirm}
                     >
                         Confirmar
+                    </button>
+                </div>
+                <div className="flex flex-col items-center mt-4">
+                    <button
+                        type="button"
+                        onClick={() => handleConfirmDeleteAcount()}
+                        className="text-[#D65E5E] text-sm underline hover:text-red-600"
+                    >
+                        Apagar minha conta
                     </button>
                 </div>
             </div>
