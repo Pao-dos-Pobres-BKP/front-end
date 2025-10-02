@@ -9,16 +9,15 @@ import NewsItem from "@/components/ui/news-item";
 import type { newsInformations } from "@/types/news";
 import excluir1 from "@/assets/excluir1.jpg";
 import excluir2 from "@/assets/excluir2.png";
-import Autoplay from "embla-carousel-autoplay";
 
-//const News = (cardItens?: newsInformations[]) => { -> MUDAR QUANDO TIVER INTEGRAÇÃO COM BACKEND
 const News = () => {
   return (
     <div
       className="bg-[var(--color-components-2)] flex flex-col items-center 
     px-6 md:px-12 lg:px-24 
     pt-2 md:pt-4 lg:pt-6 
-    gap-10 h-80 w-full"
+    pb-6 md:pb-12 lg:pb-24
+    gap-10 h-full w-full"
     >
       <h2
         className="
@@ -40,21 +39,16 @@ const News = () => {
       </h2>
 
       <Carousel
-        className="w-full max-w max-md:overflow-hidden"
+        className="w-full"
         opts={{
           align: "start",
           loop: true,
         }}
-        plugins={[
-          Autoplay({
-            delay: 5000,
-          }),
-        ]}
       >
-        <CarouselContent className=" max-[23.5rem]:ml-14 max-[22rem]:ml-8 ">
+        <CarouselContent>
           {mockedNewsInformations.map((news) => (
-            <CarouselItem className=" basis-full min-[23.5rem]:basis-1/2 min-[38rem]:basis-1/3  min-[52rem]:basis-1/4  min-[70rem]:basis-1/5 min-[82rem]:basis-1/6 min-[98rem]:basis-1/7">
-              <NewsItem id={news.id} title={news.title} link={news.link} imageUrl={news.imageUrl} />
+            <CarouselItem key={news.id}>
+              <NewsItem imageUrl={news.imageUrl} title={news.title} link={news.link} />
             </CarouselItem>
           ))}
         </CarouselContent>
