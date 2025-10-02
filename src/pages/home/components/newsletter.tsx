@@ -1,9 +1,9 @@
 import { z } from "zod";
 import { useState } from "react";
-import Checkbox from "../layout/checkbox";
-import Button from "./button";
-import Input from "./input";
-import { Modal } from "../layout/modal";
+import Checkbox from "@/components/ui/checkbox";
+import Button from "@/components/ui/button";
+import Input from "@/components/ui/input";
+import { Modal } from "@/components/ui/modal";
 
 const newsletterSchema = z.object({
   email: z.string().email({ message: "Email inválido" }),
