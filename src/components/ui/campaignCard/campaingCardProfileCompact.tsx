@@ -44,9 +44,7 @@ export function CampaignCardProfileCompact({
           />
         </div>
         <div className="font-semibold flex flex-col items-start ml-4 min-w-0">
-          <div className="text-[#034d6b] truncate text-base sm:text-2xl">
-            {profileName}
-          </div>
+          <div className="text-[#034d6b] truncate text-base sm:text-2xl">{profileName}</div>
         </div>
       </div>
 
