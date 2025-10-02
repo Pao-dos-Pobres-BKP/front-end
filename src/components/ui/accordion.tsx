@@ -11,7 +11,7 @@ const Accordion = React.forwardRef<
   <AccordionPrimitive.Root
     ref={ref}
     className={cn(
-      "border-[var(--color-border)] rounded-[10px] overflow-hidden divide-y divide-[var(--color-border)] divide-white",
+      "border-[var(--color-border)] rounded-[10px] divide-y divide-[var(--color-border)] divide-white",
       className
     )}
     {...props}
@@ -55,7 +55,7 @@ const accordionVariants = cva(
 );
 
 const accordionContentVariants = cva(
-  "px-5 py-3 text-sm overflow-hidden " +
+  "px-5 py-3 text-sm " +
     "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
   {
     variants: {

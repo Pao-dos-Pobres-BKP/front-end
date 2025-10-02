@@ -6,17 +6,19 @@ import { CampaignCardCompact } from "./campaignCardCompact";
 import blueHeart from "@/assets/blueHeart.svg";
 import { CampaignCardHistoric } from "./campaignCardHistoric";
 import { CampaignCardList } from "./campaignCardList";
+import { CampaignCardProfileCompact } from "./campaingCardProfileCompact";
 
 export type CampaignCardProps = {
-  title: string;
-  raised: number;
-  goal: number;
+  title?: string;
+  raised?: number;
+  goal?: number;
   creatorName?: string;
-  variant?: "default" | "profile" | "compact" | "historic" | "list";
+  variant?: "default" | "profile" | "compact" | "historic" | "list" | "profile_compact";
   onAction?: () => void;
   className?: string;
   situation?: "approved" | "pending" | "rejected" | "recurring";
   // profile (opcionais)
+  role?: "donor" | "admin";
   donorName?: string;
   donorEmail?: string;
   donationAmount?: number;
@@ -26,9 +28,9 @@ export type CampaignCardProps = {
 };
 
 export default function CampaignCard({
-  title,
-  raised,
-  goal,
+  title = "",
+  raised = 0,
+  goal = 0,
   creatorName,
   variant = "default",
   className,
@@ -39,6 +41,7 @@ export default function CampaignCard({
   campaigns = [],
   lastDonation = 0,
   situation,
+  role,
 }: CampaignCardProps) {
   const percent = goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
 
@@ -97,6 +100,16 @@ export default function CampaignCard({
         title={title}
         className={className}
         progressPercent={percent}
+      />
+    );
+  }
+
+  if (variant === "profile_compact") {
+    return (
+      <CampaignCardProfileCompact
+        profileName={donorName ?? "Usuário"}
+        role={role ?? "donor"}
+        className={className}
       />
     );
   }

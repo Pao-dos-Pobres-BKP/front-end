@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import cn from "@/utils/cn";
 
 interface Option {
@@ -21,6 +21,7 @@ interface SelectProps {
   labelPosition?: LabelPosition;
   error?: string;
   id?: string;
+  onOpenChange?: (isOpen: boolean) => void;
 }
 
 export const Select: React.FC<SelectProps> = ({
@@ -35,10 +36,19 @@ export const Select: React.FC<SelectProps> = ({
   labelPosition = "left",
   error,
   id = "select-1",
+  onOpenChange,
 }) => {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<string | undefined>(value);
   const ref = useRef<HTMLDivElement>(null);
+
+  const setOpenState = useCallback(
+    (newOpenState: boolean) => {
+      setOpen(newOpenState);
+      onOpenChange?.(newOpenState);
+    },
+    [onOpenChange]
+  );
 
   const hasError = !!error;
 
@@ -49,19 +59,19 @@ export const Select: React.FC<SelectProps> = ({
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (ref.current && !ref.current.contains(event.target as Node)) {
-        setOpen(false);
+        setOpenState(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [setOpenState]);
 
   const handleSelect = (option: Option) => {
     if (option.disabled) return;
     setSelected(option.value);
-    setOpen(false);
+    setOpenState(false);
     onChange?.(option.value);
   };
 
@@ -80,7 +90,7 @@ export const Select: React.FC<SelectProps> = ({
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full overflow-visible">
       {label && (
         <label htmlFor={id} className={getLabelClasses()}>
           {label}
@@ -105,7 +115,7 @@ export const Select: React.FC<SelectProps> = ({
             disabled && "bg-gray-200 text-gray-400 cursor-not-allowed",
             hasError && "border-red-500 focus:border-red-500 focus:ring-red-500"
           )}
-          onClick={() => !disabled && setOpen((o) => !o)}
+          onClick={() => !disabled && setOpenState(!open)}
           aria-haspopup="listbox"
           aria-expanded={open}
           disabled={disabled}
@@ -128,7 +138,7 @@ export const Select: React.FC<SelectProps> = ({
 
         {open && !disabled && (
           <ul
-            className="absolute z-10 mt-1 w-full bg-white border border-[var(--color-components)]/30 rounded-lg shadow-lg max-h-60 overflow-y-auto py-1"
+            className="absolute z-50 mt-1 w-full bg-white border border-[var(--color-components)]/30 rounded-lg shadow-lg max-h-60 overflow-y-auto py-1"
             role="listbox"
           >
             {options.map((option) => (
