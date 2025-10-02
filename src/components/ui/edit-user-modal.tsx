@@ -86,74 +86,86 @@ export default function EditUserModal({ isOpen, onClose, onSave, initialData }: 
                         )}
                     </div>
                 </div>
-                <label className="text-sm font-medium text-[#005172]">
-                    Nome
-                    <input
-                        name="nome"
-                        type="text"
-                        value={formData.nome}
-                        onChange={handleChange}
-                        className="w-full px-3 py-2 border rounded-lg"
-                    />
-                </label>
+                <div className="mb-4">
+                    <label className="text-sm font-medium text-[#005172]">
+                        Nome
+                        <input
+                            name="nome"
+                            type="text"
+                            value={formData.nome}
+                            onChange={handleChange}
+                            className="w-full px-3 py-2 border rounded-lg"
+                        />
+                    </label>
+                </div>
 
-                <label className="text-sm font-medium text-[#005172]">
-                    Data de Nascimento
-                    <input
-                        name="nascimento"
-                        type="text"
-                        value={formData.nascimento}
-                        onChange={handleChange}
-                        className="w-full px-3 py-2 border rounded-lg"
-                    />
-                </label>
+                <div className="mb-4">
+                    <label className="text-sm font-medium text-[#005172]">
+                        Data de Nascimento
+                        <input
+                            name="nascimento"
+                            type="text"
+                            value={formData.nascimento}
+                            onChange={handleChange}
+                            className="w-full px-3 py-2 border rounded-lg"
+                        />
+                    </label>
+                </div>
 
-                <label className="text-sm font-medium text-[#005172]">
-                    Gênero
-                    <select
-                        name="genero"
-                        value={formData.genero}
-                        onChange={handleChange}
-                        className="w-full px-3 py-2 border rounded-lg"
-                    >
-                        <option>Masculino</option>
-                        <option>Feminino</option>
-                        <option>Outro</option>
-                    </select>
-                </label>
+                <div className="mb-4">
+                    <label className="text-sm font-medium text-[#005172]">
+                        Gênero
+                        <select
+                            name="genero"
+                            value={formData.genero}
+                            onChange={handleChange}
+                            className="w-full px-3 py-2 border rounded-lg"
+                        >
+                            <option>Masculino</option>
+                            <option>Feminino</option>
+                            <option>Outro</option>
+                        </select>
+                    </label>
+                </div>
 
-                <label className="text-sm font-medium text-[#005172]">
-                    CPF
-                    <input
-                        name="cpf"
-                        type="text"
-                        value={formData.cpf}
-                        onChange={handleChange}
-                        className="w-full px-3 py-2 border rounded-lg"
-                    />
-                </label>
+                <div className="mb-4">
+                    <label className="text-sm font-medium text-[#005172]">
+                        CPF
+                        <input
+                            name="cpf"
+                            type="text"
+                            value={formData.cpf}
+                            onChange={handleChange}
+                            className="w-full px-3 py-2 border rounded-lg"
+                        />
+                    </label>
+                </div>
+                
+                <div className="mb-4">
+                    <label className="text-sm font-medium text-[#005172]">
+                        Telefone
+                        <input
+                            name="telefone"
+                            type="text"
+                            value={formData.telefone}
+                            onChange={handleChange}
+                            className="w-full px-3 py-2 border rounded-lg"
+                        />
+                    </label>
+                </div>
 
-                <label className="text-sm font-medium text-[#005172]">
-                    Telefone
-                    <input
-                        name="telefone"
-                        type="text"
-                        value={formData.telefone}
-                        onChange={handleChange}
-                        className="w-full px-3 py-2 border rounded-lg"
-                    />
-                </label>
-
-                <label className="text-sm font-medium text-[#005172]">
-                    E-mail
-                    <input
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="w-full px-3 py-2 border rounded-lg"
-                    />
-                </label>
+                <div className="mb-4">
+                    <label className="text-sm font-medium text-[#005172]">
+                        E-mail
+                        <input
+                            name="email"
+                            type="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            className="w-full px-3 py-2 border rounded-lg"
+                        />
+                    </label>
+                </div>
 
                 <div className="flex justify-end gap-4 mt-6">
                     <button className="px-6 py-2 bg-gray-300 rounded-lg" onClick={onClose}>
