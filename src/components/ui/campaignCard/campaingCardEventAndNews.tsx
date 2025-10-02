@@ -38,12 +38,12 @@ export function CampaignCardEventAndNews({
                 <img
                     src={excluir2}
                     alt="Imagem de fundo"
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-cover opacity-90"
                     style={{
-                        WebkitMaskImage: "linear-gradient(to right, black 80%, transparent 100%)",
+                        WebkitMaskImage: "linear-gradient(to right, black 50%, transparent 95%)",
                         WebkitMaskRepeat: "no-repeat",
                         WebkitMaskSize: "100% 100%",
-                        maskImage: "linear-gradient(to right, black 80%, transparent 100%)",
+                        maskImage: "linear-gradient(to right, black 50%, transparent 95%)",
                         maskRepeat: "no-repeat",
                         maskSize: "100% 100%",
                     }}
