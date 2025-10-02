@@ -7,18 +7,21 @@ import blueHeart from "@/assets/blueHeart.svg";
 import { CampaignCardHistoric } from "./campaignCardHistoric";
 import { CampaignCardList } from "./campaignCardList";
 import { CampaignCardProfileCompact } from "./campaingCardProfileCompact";
+import { CampaignCardEventAndNews } from "./campaingCardEventAndNews";
 
 export type CampaignCardProps = {
   title?: string;
   raised?: number;
   goal?: number;
   creatorName?: string;
-  variant?: "default" | "profile" | "compact" | "historic" | "list" | "profile_compact";
+  variant?: "default" | "profile" | "compact" | "historic" | "list" | "profile_compact" | "event_news";
   onAction?: () => void;
   className?: string;
   situation?: "approved" | "pending" | "rejected" | "recurring";
+  type?: "event" | "news";          // para "event_news"
+  date?: string
   // profile (opcionais)
-  role?: "donor" | "admin";
+  role?: "donor" | "admin";         // para "profile_compact"
   donorName?: string;
   donorEmail?: string;
   donationAmount?: number;
@@ -41,6 +44,8 @@ export default function CampaignCard({
   campaigns = [],
   lastDonation = 0,
   situation,
+  type,
+  date,
   role,
 }: CampaignCardProps) {
   const percent = goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
@@ -113,6 +118,17 @@ export default function CampaignCard({
       />
     );
   }
+
+  if (variant === "event_news") {
+  return (
+    <CampaignCardEventAndNews
+      title={title}
+      date={date ?? ""}
+      type={type ?? "news"}
+      className={className}
+    />
+  );
+}
 
   return (
     <article
