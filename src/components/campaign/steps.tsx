@@ -67,20 +67,20 @@ export const FormStep: React.FC<FormStepProps> = ({ form, onChange, onImageSelec
     return (
         <div>
             <div className="flex flex-col gap-4">
-                <Input id="campaign-title" label="Título" placeholder="Título" fullWidth value={form.title} onChange={(e) => onChange('title', e.target.value)} />
+                <Input id="campaign-title" label="Título*" placeholder="Título" fullWidth value={form.title} onChange={(e) => onChange('title', e.target.value)} />
                 <div>
-                    <label className="text-sm font-medium text-[var(--color-components)] mb-1 block">Descrição</label>
+                    <label className="text-sm font-medium text-[var(--color-components)] mb-1 block">Descrição*</label>
                     <textarea
-                        placeholder="Descrição"
+                        placeholder="Descreva a motivação da sua campanha"
                         value={form.description}
                         onChange={(e) => onChange('description', e.target.value)}
-                        className="w-full h-40 rounded-md border border-[var(--color-components)]/30 p-3 text-sm bg-white text-black resize-none outline-none"
+                        className="w-full h-40 rounded-md border border-[var(--color-components)]/30 p-3 text-sm bg-white text-black resize-none outline-none placeholder:text-gray-400"
                     />
-                    <div className="text-xs text-gray-500 mt-1">{form.description.length}/200</div>
+                    <div className={(form.description.length < 10 || form.description.length > 200) ? "text-xs text-red-500 mt-1" : "text-xs text-gray-500 mt-1"}>{form.description.length}/200</div>
                 </div>
                 <Input
                     id="campaign-target"
-                    label="Valor Pretendido"
+                    label="Valor Pretendido*"
                     placeholder="R$ 00,00"
                     fullWidth
                     value={form.targetValue}
@@ -98,6 +98,7 @@ export const FormStep: React.FC<FormStepProps> = ({ form, onChange, onImageSelec
                             <>📷 Anexar Imagem</>
                         )}
                     </button>
+                    <p hidden={true}>Por favor, insira um título</p>
                     <input ref={inputRef} type="file" className="hidden" accept="image/*" onChange={handleFile} />
                 </div>
             </div>
@@ -107,7 +108,7 @@ export const FormStep: React.FC<FormStepProps> = ({ form, onChange, onImageSelec
                         Voltar
                     </Button>
                 )}
-                <Button variant="primary" size="extraSmall" onClick={onNext}>
+                <Button variant="primary" size="extraSmall" onClick={(form.title && form.description && form.targetValue) ? () => onNext?.() : () => alert("teste")} disabled={!(form.title && form.description && form.targetValue)}>
                     Salvar
                 </Button>
             </div>
