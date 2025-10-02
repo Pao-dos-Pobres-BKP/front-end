@@ -3,7 +3,7 @@ import { useState } from "react";
 import Checkbox from "@/components/ui/checkbox";
 import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
-import { Modal } from "@/components/ui/modal";
+{/*modal*/}
 
 const newsletterSchema = z.object({
   email: z.string().email({ message: "Email inválido" }),
@@ -14,7 +14,7 @@ export const Newsletter = () => {
   const [email, setEmail] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  {/*const [isModalOpen, setIsModalOpen] = useState(false);*/}
 
   function handleSubmit() {
     const result = newsletterSchema.safeParse({ email, isChecked });
@@ -69,17 +69,7 @@ export const Newsletter = () => {
         {errorMessage && <span className="text-red-500 text-sm">{errorMessage}</span>}
       </div>
 
-      <Modal
-        title="Newsletter assinada!"
-        footer={
-          <Button variant="tertiary" size="extraSmall" onClick={() => setIsModalOpen(false)}>
-            Fechar
-          </Button>
-        }
-        onOpenChange={setIsModalOpen}
-        open={isModalOpen}
-        message="Agora você receberá e-mails recorrentes com as nossas novidades!"
-      />
+      {/* Modal de confirmação */}
     </div>
   );
 };
