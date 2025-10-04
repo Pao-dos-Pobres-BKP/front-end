@@ -89,6 +89,8 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
                         onChange={handleChange}
                         onImageSelect={handleImage}
                         onNext={() => { const ok = validateForm(); if (ok) setStep(2); }}
+                        stepOverride={1}
+                        totalStepsOverride={2}
                     />
                 )}
                 {step === 2 && (
@@ -98,6 +100,8 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
                         onBack={() => setStep(1)}
                         onSubmit={handleSubmit}
                         confirmLabel="Criar"
+                        stepOverride={2}
+                        totalStepsOverride={2}
                     />
                 )}
             </DialogContent>

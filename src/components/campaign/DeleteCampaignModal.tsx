@@ -34,6 +34,8 @@ export const DeleteCampaignModal: React.FC<DeleteCampaignModalProps> = ({ open, 
                     onSubmit={handleDelete}
                     confirmLabel="Excluir"
                     destructive
+                    stepOverride={1}
+                    totalStepsOverride={1}
                 />
             </DialogContent>
         </Dialog>

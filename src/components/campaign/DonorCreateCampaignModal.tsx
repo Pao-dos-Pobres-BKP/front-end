@@ -102,6 +102,8 @@ export const DonorCreateCampaignModal: React.FC<DonorCreateCampaignModalProps> =
                             const ok = validateForm();
                             if (ok) setStep(3);
                         }}
+                        stepOverride={2}
+                        totalStepsOverride={3}
                     />
                 )}
                 {step === 3 && (
@@ -111,6 +113,8 @@ export const DonorCreateCampaignModal: React.FC<DonorCreateCampaignModalProps> =
                         onBack={() => setStep(2)}
                         onSubmit={handleSubmit}
                         confirmLabel="Solicitar"
+                        stepOverride={3}
+                        totalStepsOverride={3}
                     />
                 )}
             </DialogContent>

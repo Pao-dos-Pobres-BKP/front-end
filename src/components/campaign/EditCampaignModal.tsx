@@ -100,10 +100,13 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({ open, onOp
                             form={form}
                             onChange={handleChange}
                             onImageSelect={handleImage}
+                            onBack={() => { resetAll(); onOpenChange(false); }}
                             onNext={() => { const ok = validateForm(); if (ok) setStep(2); }}
+                            stepOverride={1}
+                            totalStepsOverride={2}
                         />
                         <div className="mt-4 text-center">
-                            <button type="button" onClick={onDeleteRequest} className="text-sm text-red-600 underline">Excluir esta campanha</button>
+                            <button type="button" onClick={onDeleteRequest} className="text-sm text-red-600 hover:cursor-pointer underline">Excluir esta campanha</button>
                         </div>
                     </>
                 )}
@@ -114,6 +117,8 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({ open, onOp
                         onBack={() => setStep(1)}
                         onSubmit={handleSubmit}
                         confirmLabel="Salvar"
+                        stepOverride={2}
+                        totalStepsOverride={2}
                     />
                 )}
             </DialogContent>

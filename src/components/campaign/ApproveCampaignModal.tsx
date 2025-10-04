@@ -59,6 +59,8 @@ export const ApproveCampaignModal: React.FC<ApproveCampaignModalProps> = ({ open
                         onBack={() => setStep(1)}
                         onSubmit={handleSubmit}
                         confirmLabel={approveFlag ? 'Aprovar' : 'Rejeitar'}
+                        stepOverride={2}
+                        totalStepsOverride={2}
                     />
                 )}
             </DialogContent>

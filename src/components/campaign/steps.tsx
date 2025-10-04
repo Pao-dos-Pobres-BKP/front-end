@@ -49,14 +49,17 @@ interface FormStepProps extends StepProps {
     form: {
         title: string;
         description: string;
-        targetValue: string; // masked currency string
+        targetValue: string;
         imageName?: string | null;
     };
     onChange: (field: string, value: string) => void;
     onImageSelect: (file: File | null) => void;
+    hideActions?: boolean; // quando true não renderiza botões internos
+    stepOverride?: number;
+    totalStepsOverride?: number;
 }
 
-export const FormStep: React.FC<FormStepProps> = ({ form, onChange, onImageSelect, onBack, onNext }) => {
+export const FormStep: React.FC<FormStepProps> = ({ form, onChange, onImageSelect, onBack, onNext, hideActions, stepOverride, totalStepsOverride }) => {
     const inputRef = React.useRef<HTMLInputElement | null>(null);
 
     function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
@@ -93,7 +96,7 @@ export const FormStep: React.FC<FormStepProps> = ({ form, onChange, onImageSelec
                         className="w-full h-16 border border-[var(--color-components)]/50 rounded-md flex items-center justify-center gap-2 text-sm text-[var(--color-components)] hover:bg-[var(--color-components)] hover:text-white transition-colors"
                     >
                         {form.imageName ? (
-                            <span>{form.imageName} ×</span>
+                            <span>{form.imageName}</span>
                         ) : (
                             <>📷 Anexar Imagem</>
                         )}
@@ -102,17 +105,22 @@ export const FormStep: React.FC<FormStepProps> = ({ form, onChange, onImageSelec
                     <input ref={inputRef} type="file" className="hidden" accept="image/*" onChange={handleFile} />
                 </div>
             </div>
-            <div className="flex justify-center gap-4 mt-6">
-                {onBack && (
-                    <Button variant="tertiary" size="extraSmall" onClick={onBack}>
-                        Voltar
-                    </Button>
-                )}
-                <Button variant="primary" size="extraSmall" onClick={(form.title && form.description && form.targetValue) ? () => onNext?.() : () => alert("teste")} disabled={!(form.title && form.description && form.targetValue)}>
-                    Salvar
-                </Button>
-            </div>
-            <StepIndicators step={2} total={3} />
+            {!hideActions && (
+                <div className="flex flex-col items-center mt-6">
+                    <div className="flex justify-center gap-4 w-full">
+                        {onBack && (
+                            <Button variant="tertiary" size="extraSmall" onClick={onBack}>
+                                Voltar
+                            </Button>
+                        )}
+                        <Button variant="primary" size="extraSmall" onClick={(form.title && form.description && form.targetValue) ? () => onNext?.() : undefined} disabled={!(form.title && form.description && form.targetValue)}>
+                            Salvar
+                        </Button>
+                    </div>
+                    <StepIndicators step={stepOverride ?? 2} total={totalStepsOverride ?? 3} />
+                </div>
+            )}
+            {hideActions && <StepIndicators step={stepOverride ?? 2} total={totalStepsOverride ?? 3} />}
         </div>
     );
 };
@@ -122,9 +130,11 @@ interface PasswordStepProps extends StepProps {
     password: string;
     confirmLabel?: string;
     destructive?: boolean;
+    stepOverride?: number;
+    totalStepsOverride?: number;
 }
 
-export const PasswordStep: React.FC<PasswordStepProps> = ({ password, onChange, onBack, onSubmit, confirmLabel = 'Confirmar', destructive }) => {
+export const PasswordStep: React.FC<PasswordStepProps> = ({ password, onChange, onBack, onSubmit, confirmLabel = 'Confirmar', destructive, stepOverride, totalStepsOverride }) => {
     return (
         <div>
             <div className="flex flex-col gap-4">
@@ -134,7 +144,7 @@ export const PasswordStep: React.FC<PasswordStepProps> = ({ password, onChange, 
                 {onBack && <Button variant="tertiary" size="extraSmall" onClick={onBack}>Voltar</Button>}
                 <Button variant={destructive ? 'destructive' : 'primary'} size="extraSmall" onClick={onSubmit}>{confirmLabel}</Button>
             </div>
-            <StepIndicators step={3} total={3} />
+            <StepIndicators step={stepOverride ?? 3} total={totalStepsOverride ?? 3} />
         </div>
     );
 };
