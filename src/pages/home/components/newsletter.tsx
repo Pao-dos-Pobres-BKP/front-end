@@ -3,9 +3,7 @@ import { useState } from "react";
 import Checkbox from "@/components/ui/checkbox";
 import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
-{
-  /*modal*/
-}
+import Modal from "@/components/ui/modal";
 
 const newsletterSchema = z.object({
   email: z.string().email({ message: "Email inválido" }),
@@ -16,18 +14,26 @@ export const Newsletter = () => {
   const [email, setEmail] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalVariant, setModalVariant] = useState<"newsletter-success" | "newsletter-error">(
+    "newsletter-success"
+  );
 
   function handleSubmit() {
     const result = newsletterSchema.safeParse({ email, isChecked });
 
     if (!result.success) {
       setErrorMessage(result.error.issues[0].message);
+      setModalVariant("newsletter-error");
+      setIsModalOpen(true);
       return;
     }
 
     setErrorMessage("");
     setEmail("");
     setIsChecked(false);
+    setModalVariant("newsletter-success");
+    setIsModalOpen(true);
   }
 
   return (
@@ -69,7 +75,11 @@ export const Newsletter = () => {
         {errorMessage && <span className="text-red-500 text-sm">{errorMessage}</span>}
       </div>
 
-      {/* Modal de confirmação */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        variant={modalVariant}
+      />
     </div>
   );
 };
