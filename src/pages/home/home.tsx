@@ -3,7 +3,6 @@ import { Newsletter } from "@/pages/home/components/newsletter";
 import PartnerCompanies from "@/pages/home/components/partner-companies";
 import News from "@/pages/home/components/news";
 import HowToHelp from "@/pages/home/components/how-to-help";
-import CampaignModalsSandbox from "@/pages/home/components/campaign-modals-sandbox";
 
 import festaImg from "@/assets/festa-junina-pp.jpg";
 import quadra from "@/assets/quadra-pp.jpg";
@@ -48,7 +47,6 @@ const Home = () => {
         <News />
         <Newsletter />
         <PartnerCompanies />
-        {import.meta.env.DEV && <CampaignModalsSandbox />}
       </div>
     </div>
   );
