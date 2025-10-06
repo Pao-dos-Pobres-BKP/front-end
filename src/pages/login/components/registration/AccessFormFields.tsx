@@ -31,7 +31,7 @@ const PasswordRequirements = ({ password }: { password: string }) => {
           return (
             <li
               key={req.label}
-              className={`text-sm transition-colors ${isValid ? 'text-green-600' : 'text-red-600'}`}
+              className={`text-sm transition-colors ${isValid ? "text-green-600" : "text-red-600"}`}
             >
               {req.label}
             </li>

@@ -27,7 +27,7 @@ const validationRules = {
   password: (value: string) => {
     if (!value.trim()) return "Senha é obrigatória";
 
-    const isPasswordValid = passwordRequirements.every(requirement => requirement.test(value));
+    const isPasswordValid = passwordRequirements.every((requirement) => requirement.test(value));
 
     if (!isPasswordValid) {
       return "A senha não atende a todos os requisitos.";
@@ -63,8 +63,8 @@ export default function AccessFields({ onBack, onRegister }: AccessFieldsProps) 
       const result = await onRegister(form);
 
       if (typeof result === "string") {
-        setErrors((prev) => ({ 
-          ...prev, 
+        setErrors((prev) => ({
+          ...prev,
           api: result,
         }));
       }
