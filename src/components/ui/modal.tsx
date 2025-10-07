@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import Button from "./button";
-import camera from "../../assets/camera.svg";
+import camera from "@/assets/camera.svg";
 import { cn } from "@/lib/utils";
 
 type ModalVariant =
@@ -89,14 +89,14 @@ function ModalOverlay(props: { onClick: () => void }) {
   );
 }
 
-function ModalActions(props: { actions: typeof modalConfig.logout.actions; handleActionClick: (action: string) => void }) {
+function ModalActions(props: { actions: typeof modalConfig.logout.actions; handleActionClick: (action: string) => void; centered?: boolean }) {
   return (
-    <div className="flex justify-end gap-3 w-full mt-2">
+    <div className={cn("flex gap-3 w-full mt-2", props.centered ? "justify-center" : "justify-end")}>
       {props.actions.map(function (action, index) {
         return (
           <Button
             key={index}
-            variant={action.variant as any}
+            variant={action.variant as "primary" | "senary" | "destructive"}
             size="extraSmall"
             onClick={function () {
               props.handleActionClick(action.action);
@@ -189,7 +189,7 @@ export default function Modal(props: ModalProps) {
       <div
         className={cn(
           "relative bg-white rounded-lg border border-slate-300 shadow-lg",
-          isAvatarModal ? "flex flex-col items-center justify-between w-[400px] h-[500px] p-8" : "inline-flex flex-col items-start max-w-md w-full mx-4 p-6 gap-4"
+          isAvatarModal ? "flex flex-col items-center justify-between w-[400px] max-h-[90vh] h-auto min-h-[500px] p-8 mx-4" : "inline-flex flex-col items-start max-w-md w-full mx-4 p-6 gap-4"
         )}
       >
         <h3 className={cn("text-slate-900 font-inter text-lg font-semibold leading-7 text-center", !isAvatarModal ? "mb-2" : "")}>
@@ -202,7 +202,7 @@ export default function Modal(props: ModalProps) {
 
         {isAvatarModal && <AvatarPicker avatarUrl={avatarUrl} onAvatarSelect={onAvatarSelect} />}
 
-        <ModalActions actions={config.actions} handleActionClick={handleActionClick} />
+        <ModalActions actions={config.actions} handleActionClick={handleActionClick} centered={isAvatarModal} />
       </div>
     </div>
   );
