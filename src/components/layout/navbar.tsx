@@ -109,10 +109,9 @@ function Navbar() {
         <div className="fixed inset-0 z-50 flex justify-end">
           <div className="absolute inset-0 bg-black/40" onClick={() => setIsOpen(false)}></div>
           <div className="relative w-64 bg-[var(--color-components-2)] h-full shadow-lg p-6 flex flex-col gap-4">
-            <button onClick={() => setIsOpen(false)} className="absolute top-4 right-4">
+            <button onClick={() => setIsOpen(false)} className="flex justify-end">
               <X className="h-6 w-6 text-[var(--color-components)]" />
             </button>
-
             {isAuthenticated && (
               <div className="flex flex-col gap-3 text-left">
                 <div className="flex gap-3 text-left mb-2 max-w-45">
