@@ -7,14 +7,14 @@ Frontend da aplicação Pão dos Pobres, desenvolvido com React, TypeScript, Vit
 Antes de começar, certifique-se de ter instalado em sua máquina:
 
 - **Node.js** (versão 18 ou superior) - [Download aqui](https://nodejs.org/)
-- **npm** (vem com o Node.js) ou **yarn** como gerenciador de pacotes
+- **yarn** como gerenciador de pacotes
 - **Git** para controle de versão
 
 Para verificar se possui as versões corretas instaladas:
 
 ```bash
 node --version  # deve retornar v18.x.x ou superior
-npm --version   # deve retornar uma versão recente
+yarn --version   # deve retornar uma versão recente
 ```
 
 ## Como rodar o projeto
@@ -29,13 +29,13 @@ npm --version   # deve retornar uma versão recente
 2. **Instale as dependências:**
 
    ```bash
-   npm install
+   yarn
    ```
 
 3. **Rode o projeto em modo desenvolvimento:**
 
    ```bash
-   npm run dev
+   yarn dev
    ```
 
    O projeto estará disponível em `http://localhost:15570`
@@ -43,12 +43,12 @@ npm --version   # deve retornar uma versão recente
 4. **Para build de produção:**
 
    ```bash
-   npm run build
+   yarn build
    ```
 
 5. **Para visualizar o build de produção:**
    ```bash
-   npm run preview
+   yarn preview
    ```
 
 ## Estrutura de Pastas e Arquivos
@@ -80,11 +80,11 @@ npm --version   # deve retornar uma versão recente
 
 ## Scripts Disponíveis
 
-- `npm run dev` - Inicia o servidor de desenvolvimento
-- `npm run build` - Gera build de produção
-- `npm run preview` - Visualiza o build de produção localmente
-- `npm run lint` - Executa verificação de código com ESLint
-- `npm run format` - Formata o código com Prettier
+- `yarn dev` - Inicia o servidor de desenvolvimento
+- `yarn build` - Gera build de produção
+- `yarn preview` - Visualiza o build de produção localmente
+- `yarn lint` - Executa verificação de código com ESLint
+- `yarn format` - Formata o código com Prettier
 
 ## Desenvolvimento
 
