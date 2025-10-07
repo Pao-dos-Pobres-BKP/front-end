@@ -93,12 +93,17 @@ export const FormStep: React.FC<FormStepProps> = ({ form, onChange, onImageSelec
                     <button
                         type="button"
                         onClick={() => inputRef.current?.click()}
-                        className="w-full h-16 border border-[var(--color-components)]/50 rounded-md flex items-center justify-center gap-2 text-sm text-[var(--color-components)] hover:bg-[var(--color-components)] hover:text-white transition-colors"
+                        className="w-full h-16 border border-[var(--color-components)]/50 rounded-lg flex items-center justify-center gap-2 text-sm text-[var(--color-components)] hover:cursor-pointer"
                     >
                         {form.imageName ? (
                             <span>{form.imageName}</span>
                         ) : (
-                            <>📷 Anexar Imagem</>
+                            <>
+                              <div className='flex gap-1 items-center'>
+                                <img src="src/assets/imageIcon.svg" />
+                              Anexar Imagem
+                              </div>
+                            </>
                         )}
                     </button>
                     <p hidden={true}>Por favor, insira um título</p>
@@ -168,7 +173,7 @@ export const ReviewApproveStep: React.FC<ReviewProps & { onReject: () => void; o
             </div>
             <Input fullWidth label="Valor Pretendido" value={formatCurrency(campaign.targetValue || 0)} readOnly />
             {campaign.image?.name && (
-                <div className="w-full h-16 rounded-md border border-dashed border-[var(--color-components)] flex items-center justify-center text-white bg-[var(--color-components)] text-sm">{campaign.image.name} ×</div>
+                <div className="w-full h-16 rounded-lg border border-dashed border-[var(--color-components)] flex items-center justify-center text-white bg-[var(--color-components)] text-sm">{campaign.image.name} ×</div>
             )}
             <div className="flex justify-center gap-4 mt-4">
                 <Button variant="tertiary" size="extraSmall" onClick={onReject}>Rejeitar</Button>
