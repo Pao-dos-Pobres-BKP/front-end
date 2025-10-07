@@ -1,43 +1,30 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+
+export interface User {
+  nome: string;
+  nascimento: string;
+  genero: string;
+  cpf: string;
+  telefone: string;
+  email: string;
+  foto?: string;
+}
 
 interface EditUserModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (dados: unknown) => void;
-  initialData: {
-    nome: string;
-    nascimento: string;
-    genero: string;
-    cpf: string;
-    telefone: string;
-    email: string;
-    foto?: string;
-  };
+  onSave: (dados: User) => void;
 }
 
-export default function EditUserModal({
-  isOpen,
-  onClose,
-  onSave,
-  initialData,
-}: EditUserModalProps) {
-  const [formData, setFormData] = useState(initialData);
-  const [previewFoto, setPreviewFoto] = useState(
-    initialData.foto || "https://via.placeholder.com/60"
-  );
-
-  useEffect(() => {
-    if (isOpen) {
-      setFormData(initialData);
-      setPreviewFoto(initialData.foto || "https://via.placeholder.com/60");
-    }
-  }, [isOpen, initialData]);
+export default function EditUserModal({ isOpen, onClose, onSave }: EditUserModalProps) {
+  const [formData, setFormData] = useState<User>();
+  const [previewFoto, setPreviewFoto] = useState("https://via.placeholder.com/60");
 
   if (!isOpen) return null;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [name]: value } as User);
   };
 
   const handleFotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,17 +32,17 @@ export default function EditUserModal({
     if (file) {
       const url = URL.createObjectURL(file);
       setPreviewFoto(url);
-      setFormData({ ...formData, foto: url });
+      setFormData({ foto: url, ...formData } as User);
     }
   };
 
   const handleFotoRemover = () => {
     setPreviewFoto("https://via.placeholder.com/60");
-    setFormData({ ...formData, foto: "" });
+    setFormData({ foto: "", ...formData } as User);
   };
 
   const handleConfirmar = () => {
-    onSave(formData);
+    onSave(formData as User);
     onClose();
   };
 
@@ -92,7 +79,7 @@ export default function EditUserModal({
             <input
               name="nome"
               type="text"
-              value={formData.nome}
+              value={formData?.nome}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-lg"
             />
@@ -105,7 +92,7 @@ export default function EditUserModal({
             <input
               name="nascimento"
               type="text"
-              value={formData.nascimento}
+              value={formData?.nascimento}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-lg"
             />
@@ -117,7 +104,7 @@ export default function EditUserModal({
             Gênero
             <select
               name="genero"
-              value={formData.genero}
+              value={formData?.genero}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-lg"
             >
@@ -134,7 +121,7 @@ export default function EditUserModal({
             <input
               name="cpf"
               type="text"
-              value={formData.cpf}
+              value={formData?.cpf}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-lg"
             />
@@ -147,7 +134,7 @@ export default function EditUserModal({
             <input
               name="telefone"
               type="text"
-              value={formData.telefone}
+              value={formData?.telefone}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-lg"
             />
@@ -160,7 +147,7 @@ export default function EditUserModal({
             <input
               name="email"
               type="email"
-              value={formData.email}
+              value={formData?.email}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-lg"
             />
