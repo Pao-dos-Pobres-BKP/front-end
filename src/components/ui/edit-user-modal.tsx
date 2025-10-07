@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import ConfirmDeleteAccountModal from "./confirm-delete-account";
 
 interface EditUserModalProps {
     isOpen: boolean;
@@ -18,6 +19,8 @@ interface EditUserModalProps {
 export default function EditUserModal({ isOpen, onClose, onSave, initialData }: EditUserModalProps) {
     const [formData, setFormData] = useState(initialData);
     const [previewFoto, setPreviewFoto] = useState(initialData.foto || "https://via.placeholder.com/60");
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+
 
     useEffect(() => {
         if (isOpen) {
@@ -52,9 +55,6 @@ export default function EditUserModal({ isOpen, onClose, onSave, initialData }: 
         onClose();
     };
 
-    const handleConfirmDeleteAcount = () => {
-        alert("modal de apagar conta")
-    }
 
     return (
         <div className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-50 px-2">
@@ -197,13 +197,21 @@ export default function EditUserModal({ isOpen, onClose, onSave, initialData }: 
                 <div className="flex flex-col items-center mt-4">
                     <button
                         type="button"
-                        onClick={() => handleConfirmDeleteAcount()}
+                        onClick={() => setShowDeleteModal(true)}
                         className="text-[#D65E5E] text-sm underline hover:text-red-600"
                     >
                         Apagar minha conta
                     </button>
                 </div>
             </div>
+            <ConfirmDeleteAccountModal
+                isOpen={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                onConfirm={() => {
+                    // lógica de exclusão da conta
+                    setShowDeleteModal(false);
+                }}
+            />
         </div>
     );
 }
