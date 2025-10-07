@@ -14,7 +14,7 @@ const heroItems: HeroItem[] = [
     title: "Festa Junina do Pão dos Pobres",
     description:
       "Comemoraremos em junho de 2026 a tradicional Festa Junina do Pão dos Pobres para todos que quiserem vir e celebrar com a gente!",
-    location: "Rua da República, 801 - Cidade Baixa, Porto Alegre",
+    location: "Rua da República, 801 - Cidade Baixa, Porto Alegre.",
     date: "20 de junho",
     time: "10:30",
     buttonLabel: "Ir para o site",
