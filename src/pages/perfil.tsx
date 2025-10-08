@@ -83,70 +83,70 @@ export default function Perfil() {
     goal: number;
     situation: SituationType;
   }[] = [
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 81825.33,
-        goal: 90000,
-        situation: "recurring",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 5000,
-        goal: 10000,
-        situation: "recurring",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 15000,
-        goal: 20000,
-        situation: "approved",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 2500,
-        goal: 3000,
-        situation: "approved",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 7000,
-        goal: 10000,
-        situation: "approved",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 9000,
-        goal: 15000,
-        situation: "approved",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 1200,
-        goal: 2000,
-        situation: "approved",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 4500,
-        goal: 5000,
-        situation: "approved",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 800,
-        goal: 1000,
-        situation: "approved",
-      },
-    ];
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 81825.33,
+      goal: 90000,
+      situation: "recurring",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 5000,
+      goal: 10000,
+      situation: "recurring",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 15000,
+      goal: 20000,
+      situation: "approved",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 2500,
+      goal: 3000,
+      situation: "approved",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 7000,
+      goal: 10000,
+      situation: "approved",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 9000,
+      goal: 15000,
+      situation: "approved",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 1200,
+      goal: 2000,
+      situation: "approved",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 4500,
+      goal: 5000,
+      situation: "approved",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 800,
+      goal: 1000,
+      situation: "approved",
+    },
+  ];
 
   const totalPages = Math.ceil(campanhasHistorico.length / cardsPerPage);
   const indexOfLastCard = currentPage * cardsPerPage;
@@ -158,12 +158,11 @@ export default function Perfil() {
   };
 
   const handleSalvarPerfil = (novosDados: Partial<User>) => {
-  setDados((prev) => ({
-    ...prev,
-    ...novosDados,
-  }));
-};
-
+    setDados((prev) => ({
+      ...prev,
+      ...novosDados,
+    }));
+  };
 
   const handleConfirmLogout = () => {
     setIsLogoutModalOpen(false);
@@ -219,9 +218,7 @@ export default function Perfil() {
                       Data de Nascimento:
                     </label>
                     <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
-                      {dados.birthDate
-                        ? dados.birthDate.toLocaleDateString("pt-BR")
-                        : "—"}
+                      {dados.birthDate ? dados.birthDate.toLocaleDateString("pt-BR") : "—"}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
