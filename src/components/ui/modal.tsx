@@ -63,6 +63,7 @@ const modalConfig = {
       { label: "Excluir", variant: "destructive" as const, action: "confirm" },
     ],
   },
+
 };
 
 const Modal = ({ isOpen, onClose, variant, onConfirm, onRetry }: ModalProps) => {
