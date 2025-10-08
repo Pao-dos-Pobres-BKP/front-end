@@ -1,13 +1,11 @@
 import { useState } from "react";
+import type { User } from "@/contexts/UserContext";
 
-export interface User {
-  nome: string;
-  nascimento: string;
-  genero: string;
-  cpf: string;
-  telefone: string;
-  email: string;
-  foto?: string;
+interface EditUserModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (dados: User) => void;
+  initialData: User;
 }
 
 interface EditUserModalProps {
@@ -79,7 +77,7 @@ export default function EditUserModal({ isOpen, onClose, onSave }: EditUserModal
             <input
               name="nome"
               type="text"
-              value={formData?.nome}
+              value={formData?.fullname}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-lg"
             />
@@ -92,7 +90,7 @@ export default function EditUserModal({ isOpen, onClose, onSave }: EditUserModal
             <input
               name="nascimento"
               type="text"
-              value={formData?.nascimento}
+              value={formData?.birthDate ? formData.birthDate.toLocaleDateString("pt-BR") : ""}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-lg"
             />
@@ -104,7 +102,7 @@ export default function EditUserModal({ isOpen, onClose, onSave }: EditUserModal
             Gênero
             <select
               name="genero"
-              value={formData?.genero}
+              value={formData?.gender}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-lg"
             >
@@ -134,7 +132,7 @@ export default function EditUserModal({ isOpen, onClose, onSave }: EditUserModal
             <input
               name="telefone"
               type="text"
-              value={formData?.telefone}
+              value={formData?.phone}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-lg"
             />
