@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 interface EditNewsModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (dados: any) => void;
+  onSave: (dados: unknown) => void;
   initialData: {
     title: string;
     date: string;

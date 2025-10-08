@@ -2,11 +2,12 @@
 import { useEffect } from "react";
 import Button from "./button";
 
+
 type ModalVariant =
-    "delete-news";
-    "maximum-news"
-    "delete-event";
-    "maximum-events";
+  |  "delete-news"
+  |  "maximum-news"
+  |  "delete-event"
+  |  "maximum-events";
 
 
 interface ModalProps {
@@ -14,7 +15,6 @@ interface ModalProps {
   onClose: () => void;
   variant: ModalVariant;
   onConfirm?: () => void;
-  onRetry?: () => void;
 }
 
 const modalConfig = {
@@ -57,7 +57,7 @@ const modalConfig = {
   },
 };
 
-const NewsEventModals = ({ isOpen, onClose, variant, onConfirm, onRetry }: ModalProps) => {
+const NewsEventModals = ({ isOpen, onClose, variant, onConfirm }: ModalProps) => {
   const config = modalConfig[variant];
 
   useEffect(() => {
@@ -85,8 +85,6 @@ const NewsEventModals = ({ isOpen, onClose, variant, onConfirm, onRetry }: Modal
       case "close": onClose();
         break;
       case "confirm": onConfirm?.();
-        break;
-      case "retry": onRetry?.();
         break;
       default:
         onClose();
