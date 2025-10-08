@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Button from "./button";
 import camera from "@/assets/camera.svg";
 import { cn } from "@/lib/utils";
@@ -19,7 +19,7 @@ interface ModalProps {
   onConfirm?: () => void;
   onRetry?: () => void;
   avatarUrl?: string;
-  onAvatarSelect?: () => void;
+  onAvatarSelect?: (file: File) => void;
 }
 
 type ModalConfig = Record<ModalVariant, { title: string; description: string; actions: { label: string; variant: string; action: string }[] }>;
@@ -110,16 +110,37 @@ function ModalActions(props: { actions: typeof modalConfig.logout.actions; handl
   );
 }
 
-function AvatarPicker(props: { avatarUrl?: string; onAvatarSelect?: () => void }) {
+function AvatarPicker(props: { avatarUrl?: string; onAvatarSelect?: (file: File) => void }) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  function handleButtonClick() {
+    fileInputRef.current?.click();
+  }
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (file && props.onAvatarSelect) {
+      props.onAvatarSelect(file);
+    }
+  }
+
   if (props.avatarUrl) {
     return (
       <div className="flex items-center justify-center flex-1 relative">
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="hidden"
+        />
         <div className="w-[220px] h-[220px] rounded-full overflow-hidden border-4 border-slate-200 relative group">
           <img src={props.avatarUrl} alt="Avatar preview" className="w-full h-full object-cover" />
           {props.onAvatarSelect && (
             <button
-              onClick={props.onAvatarSelect}
+              onClick={handleButtonClick}
               className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+              type="button"
             >
               <img src={camera} alt="Camera icon" className="h-12 w-12 text-white opacity-80" />
             </button>
@@ -131,10 +152,18 @@ function AvatarPicker(props: { avatarUrl?: string; onAvatarSelect?: () => void }
 
   return (
     <div className="flex items-center justify-center flex-1 relative">
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+        className="hidden"
+      />
       <div className="w-[220px] h-[220px] rounded-full overflow-hidden border-4 border-slate-200">
         <button
-          onClick={props.onAvatarSelect}
+          onClick={handleButtonClick}
           className="w-full h-full flex items-center justify-center bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors"
+          type="button"
         >
           <img src={camera} alt="Camera icon" className="h-12 w-12" />
         </button>
