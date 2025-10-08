@@ -17,13 +17,9 @@ import { useState } from "react";
 import EditUserModal from "@/components/ui/edit-user-modal";
 import ConfirmLogoutModal from "@/components/ui/confirm-logout-modal";
 
-export interface User {
-  nome: string;
-  nascimento: string;
-  genero: string;
-  cpf: string;
-  telefone: string;
-  email: string;
+import type { User } from "@/contexts/UserContext";
+
+interface ProfileUser extends User {
   totalDonated: number;
   percentageAchieved: number;
   foto: string;
@@ -35,12 +31,15 @@ export default function Perfil() {
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 6;
 
-  const [dados, setDados] = useState<User>({
-    nome: "Fulano de Tal",
-    nascimento: "12 de Agosto de 1971",
-    genero: "Masculino",
+  const [dados, setDados] = useState<ProfileUser>({
+    id: "1",
+    role: "DONOR",
+    accessToken: "fake-token-123",
+    fullname: "Fulano de Tal",
+    birthDate: new Date("1971-08-12"),
+    gender: "MALE",
     cpf: "123.456.789-00",
-    telefone: "(51) 9 9999-8888",
+    phone: "(51) 9 9999-8888",
     email: "fulanodetal@email.com.br",
     totalDonated: 2000,
     percentageAchieved: 75,
@@ -84,70 +83,70 @@ export default function Perfil() {
     goal: number;
     situation: SituationType;
   }[] = [
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 81825.33,
-      goal: 90000,
-      situation: "recurring",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 5000,
-      goal: 10000,
-      situation: "recurring",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 15000,
-      goal: 20000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 2500,
-      goal: 3000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 7000,
-      goal: 10000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 9000,
-      goal: 15000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 1200,
-      goal: 2000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 4500,
-      goal: 5000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 800,
-      goal: 1000,
-      situation: "approved",
-    },
-  ];
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 81825.33,
+        goal: 90000,
+        situation: "recurring",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 5000,
+        goal: 10000,
+        situation: "recurring",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 15000,
+        goal: 20000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 2500,
+        goal: 3000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 7000,
+        goal: 10000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 9000,
+        goal: 15000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 1200,
+        goal: 2000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 4500,
+        goal: 5000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 800,
+        goal: 1000,
+        situation: "approved",
+      },
+    ];
 
   const totalPages = Math.ceil(campanhasHistorico.length / cardsPerPage);
   const indexOfLastCard = currentPage * cardsPerPage;
@@ -158,9 +157,13 @@ export default function Perfil() {
     setIsModalOpen(true);
   };
 
-  const handleSalvarPerfil = (novosDados: User) => {
-    setDados(novosDados);
-  };
+  const handleSalvarPerfil = (novosDados: Partial<User>) => {
+  setDados((prev) => ({
+    ...prev,
+    ...novosDados,
+  }));
+};
+
 
   const handleConfirmLogout = () => {
     setIsLogoutModalOpen(false);
@@ -180,7 +183,7 @@ export default function Perfil() {
               <div className="flex flex-col flex-1">
                 <div className="flex items-center">
                   <h2 className="text-[22px] sm:text-[27px] font-bold text-[#005172]">
-                    {dados.nome}
+                    {dados.fullname}
                   </h2>
                 </div>
                 <div className="flex items-center mt-2">
@@ -216,13 +219,19 @@ export default function Perfil() {
                       Data de Nascimento:
                     </label>
                     <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
-                      {dados.nascimento}
+                      {dados.birthDate
+                        ? dados.birthDate.toLocaleDateString("pt-BR")
+                        : "—"}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <label className="text-sm font-medium text-[#005172] text-left">Gênero:</label>
                     <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
-                      {dados.genero}
+                      {{
+                        MALE: "Masculino",
+                        FEMALE: "Feminino",
+                        OTHER: "Outro",
+                      }[dados.gender as "MALE" | "FEMALE" | "OTHER"] ?? "—"}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -236,7 +245,7 @@ export default function Perfil() {
                       Telefone:
                     </label>
                     <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
-                      {dados.telefone}
+                      {dados.phone}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
