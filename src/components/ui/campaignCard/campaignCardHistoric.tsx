@@ -91,12 +91,7 @@ export function CampaignCardHistoric(props: CampaignCardHistoricProps) {
       {(situation || lastDonation !== undefined) && (
         <div className="sm:hidden grid grid-cols-2 gap-2 w-full col-span-1">
           {situation && (
-            <div
-              className={cn(
-                "text-base font-semibold text-left col-span-1",
-                gradientTextClass
-              )}
-            >
+            <div className={cn("text-base font-semibold text-left col-span-1", gradientTextClass)}>
               {situationLabels[situation]}
             </div>
           )}

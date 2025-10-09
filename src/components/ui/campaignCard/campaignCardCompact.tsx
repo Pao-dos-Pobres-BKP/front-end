@@ -81,17 +81,11 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
         aria-label={`Card compacto ${title}`}
       >
         <div className="flex items-center gap-2">
-          {situationIcon && (
-            <img src={situationIcon} alt="" className="h-6 w-6 flex-shrink-0" />
-          )}
+          {situationIcon && <img src={situationIcon} alt="" className="h-6 w-6 flex-shrink-0" />}
           <div className="flex flex-col truncate">
-            <div className="text-[#034d6b] text-xl font-semibold truncate">
-              {title}
-            </div>
+            <div className="text-[#034d6b] text-xl font-semibold truncate">{title}</div>
             {creatorName && (
-              <div className="text-sm text-[#f68537] truncate">
-                por {creatorName}
-              </div>
+              <div className="text-sm text-[#f68537] truncate">por {creatorName}</div>
             )}
           </div>
         </div>
@@ -101,9 +95,7 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
               <div className="text-lg font-bold text-[#034d6b] truncate">
                 {formatCurrency(raised)}
               </div>
-              <div className="text-sm text-[#6b7280] truncate">
-                de {formatCurrency(goal)}
-              </div>
+              <div className="text-sm text-[#6b7280] truncate">de {formatCurrency(goal)}</div>
             </div>
 
             <div className="w-full mt-1">
