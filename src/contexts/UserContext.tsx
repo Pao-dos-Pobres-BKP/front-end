@@ -14,6 +14,7 @@ export interface User {
   cpf?: string;
   role: RoleEnum;
   accessToken: string;
+  foto?: string;
 }
 
 export interface UserContextType {

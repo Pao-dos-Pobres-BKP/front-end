@@ -22,7 +22,6 @@ import type { User } from "@/contexts/UserContext";
 interface ProfileUser extends User {
   totalDonated: number;
   percentageAchieved: number;
-  foto: string;
 }
 
 export default function Perfil() {
@@ -157,11 +156,8 @@ export default function Perfil() {
     setIsModalOpen(true);
   };
 
-  const handleSalvarPerfil = (novosDados: Partial<User>) => {
-    setDados((prev) => ({
-      ...prev,
-      ...novosDados,
-    }));
+  const handleSalvarPerfil = (updatedUser: User) => {  // Ajustado para receber User completo e atualizar tudo
+    setDados((prev) => ({ ...prev, ...updatedUser }));  // Merge com campos extras como totalDonated
   };
 
   const handleConfirmLogout = () => {
