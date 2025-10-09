@@ -75,11 +75,7 @@ export const Newsletter = () => {
         {errorMessage && <span className="text-red-500 text-sm">{errorMessage}</span>}
       </div>
 
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        variant={modalVariant}
-      />
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} variant={modalVariant} />
     </div>
   );
 };
