@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import type { User } from "@/contexts/UserContext";
+import type { User, Gender } from "@/contexts/UserContext";
 import ConfirmDeleteAccountModal from "./confirm-delete-account";
 import { DatePicker } from "./date-picker";
 import Input from "./input";
-//import { Select } from "./select";
+import { Select } from "./select";
 
 interface EditUserModalProps {
   isOpen: boolean;
@@ -36,6 +36,10 @@ export default function EditUserModal({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleGenderChange = (value: string) => {
+      setFormData((prev) => ({ ...prev, gender: value as Gender }));
   };
 
   const handleFotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -110,36 +114,19 @@ export default function EditUserModal({
         </div>
 
         <div className="mb-4">
-          <label className="block text-left text-sm font-medium text-[#005172]">
-            Gênero
-            <div className="relative">
-              <select
-                name="gender"
-                value={formData.gender || ""}
-                onChange={handleChange}
-                className="w-full px-3 py-2 pr-10 border rounded-lg appearance-none"
-              >
-                <option value="MALE">Masculino</option>
-                <option value="FEMALE">Feminino</option>
-                <option value="OTHER">Outro</option>
-              </select>
-              <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-                <svg
-                  className="w-4 h-4 text-gray-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </div>
-            </div>
-          </label>
+          <Select
+            id="gender"
+            label="Gênero"
+            options={[
+              { value: "MALE", label: "Masculino" },
+              { value: "FEMALE", label: "Feminino" },
+              { value: "OTHER", label: "Outro" },
+            ]}
+            value={formData.gender || ""}
+            onChange={handleGenderChange}
+            fullWidth
+            placeholder="Selecione um gênero"
+          />
         </div>
 
         <div className="mb-4">
