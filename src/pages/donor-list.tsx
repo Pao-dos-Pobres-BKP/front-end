@@ -11,6 +11,9 @@ import { Popover } from "@/components/ui/popover";
 import { PopoverContent } from "@/components/ui/popover";
 import { PopoverTrigger } from "@/components/ui/popover";
 import Input from "@/components/ui/input";
+import CreateNewsEventModal from "@/components/ui/CreateNewsEventModal";
+
+
 
 const DonorList = () => {
   return (
@@ -22,6 +25,7 @@ const DonorList = () => {
         <Button variant="quinary" size="extraSmall">
           Pesquisar
         </Button>
+
       </div>
 
       <Accordion type="single" collapsible className="w-full">
@@ -522,6 +526,7 @@ const DonorList = () => {
         </AccordionItem>
       </Accordion>
     </div>
+
   );
 };
 

@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 import { Pagination, PaginationContent, PaginationItem } from "@/components/ui/pagination";
 import Calendar from "@/assets/Calendar.svg";
 import Paper from "@/assets/Paper.svg";
+import Image from "@/assets/Image.svg"
 
-interface NewModalProps {
+interface CreateNewsEventModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (dados: unknown) => void;
@@ -19,15 +20,17 @@ interface NewModalProps {
   };
 }
 
-export default function NewModal({ isOpen, onClose, onSave, initialData }: NewModalProps) {
+export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialData }: CreateNewsEventModalProps) {
   const [formData, setFormData] = useState(initialData);
   const [currentPage, setCurrentPage] = useState<"evento" | "noticia">("evento");
   const [step, setStep] = useState<"tipo" | "form">("tipo");
+  const [previewFoto, setPreviewFoto] = useState(initialData.foto || "https://via.placeholder.com/60");
 
   useEffect(() => {
     if (isOpen) {
       setFormData(initialData);
       setStep("tipo");
+      setPreviewFoto(initialData.foto || "https://via.placeholder.com/60");
     }
   }, [isOpen, initialData]);
 
@@ -42,8 +45,15 @@ export default function NewModal({ isOpen, onClose, onSave, initialData }: NewMo
     const file = e.target.files?.[0];
     if (file) {
       const url = URL.createObjectURL(file);
+      setPreviewFoto(url); // ✅ Atualiza o preview
       setFormData({ ...formData, foto: url });
     }
+  };
+
+
+  const handleFotoRemover = () => {
+    setPreviewFoto("https://via.placeholder.com/60");
+    setFormData({ ...formData, foto: "" });
   };
 
   const handleConfirmar = () => {
@@ -115,8 +125,12 @@ export default function NewModal({ isOpen, onClose, onSave, initialData }: NewMo
                       onChange={handleChange}
                       className="w-full px-3 py-2 border rounded-lg"
                       placeholder="Descrição"
+                      maxLength={200}
                     />
                   </label>
+                  <p className="text-xs text-gray-500 text-left mt-1">
+                    {formData.description?.length}/200
+                </p>
                 </div>
 
                 <div className="mb-4 text-left">
@@ -206,13 +220,35 @@ export default function NewModal({ isOpen, onClose, onSave, initialData }: NewMo
               </label>
             </div>
 
-            <div className="flex items-center gap-2 justify-center m-6">
-              <label className="text-sm font-medium text-[#005172] cursor-pointer">
-                <span className="px-3 py-1 border rounded-lg hover:bg-gray-100">
-                  Anexar imagem
-                </span>
-                <input type="file" accept="image/*" onChange={handleFotoChange} className="hidden" />
-              </label>
+
+            <div className="items-center justify-center w-full">
+              {formData.foto && formData.foto !== "https://via.placeholder.com/60" ? (
+                <div className="flex items-center justify-between bg-[#005172] text-white rounded-lg px-4 py-2 mt-3 cursor-pointer">
+                  <span className="text-sm truncate max-w-[80%]">
+                    {formData.foto.split("/").pop()?.split("\\").pop()}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={handleFotoRemover}
+                    className="ml-2 text-white text-lg font-bold hover:text-red-300"
+                  >
+                    ×
+                  </button>
+                </div>
+              ) : (
+                <label className="text-sm font-medium text-[#005172] cursor-pointer">
+                  <span className="flex justify-center gap-2 px-3 py-2 border rounded-lg hover:bg-gray-100">
+                    <img src={Image} className="w-4 h-4" />
+                    Anexar Imagem
+                  </span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFotoChange}
+                    className="hidden"
+                  />
+                </label>
+              )}
             </div>
 
             <div className="flex justify-center gap-4 mt-6">

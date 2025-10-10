@@ -57,7 +57,7 @@ const modalConfig = {
   },
 };
 
-const NewsEventModals = ({ isOpen, onClose, variant, onConfirm }: ModalProps) => {
+const ConfirmNewsEventModals = ({ isOpen, onClose, variant, onConfirm }: ModalProps) => {
   const config = modalConfig[variant];
 
   useEffect(() => {
@@ -136,4 +136,4 @@ const NewsEventModals = ({ isOpen, onClose, variant, onConfirm }: ModalProps) =>
   );
 };
 
-export default NewsEventModals;
+export default ConfirmNewsEventModals;

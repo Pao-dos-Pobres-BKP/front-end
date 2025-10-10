@@ -4,7 +4,6 @@ export const ROUTES = {
   doacao: "/doacao",
   campanhas: "/campanhas",
   perfil: "/perfil",
-  perfilAdmin: "/perfilAdmin",
   dashboard: "/dashboard",
   donorList: "/doadores",
   partners: "/empresas-parceiras",
