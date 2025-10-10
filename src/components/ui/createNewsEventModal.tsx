@@ -24,13 +24,11 @@ export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialD
   const [formData, setFormData] = useState(initialData);
   const [currentPage, setCurrentPage] = useState<"evento" | "noticia">("evento");
   const [step, setStep] = useState<"tipo" | "form">("tipo");
-  const [previewFoto, setPreviewFoto] = useState(initialData.foto || "https://via.placeholder.com/60");
 
   useEffect(() => {
     if (isOpen) {
       setFormData(initialData);
       setStep("tipo");
-      setPreviewFoto(initialData.foto || "https://via.placeholder.com/60");
     }
   }, [isOpen, initialData]);
 
@@ -45,14 +43,11 @@ export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialD
     const file = e.target.files?.[0];
     if (file) {
       const url = URL.createObjectURL(file);
-      setPreviewFoto(url); // ✅ Atualiza o preview
       setFormData({ ...formData, foto: url });
     }
   };
 
-
   const handleFotoRemover = () => {
-    setPreviewFoto("https://via.placeholder.com/60");
     setFormData({ ...formData, foto: "" });
   };
 

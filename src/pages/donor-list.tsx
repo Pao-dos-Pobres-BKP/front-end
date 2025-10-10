@@ -11,7 +11,6 @@ import { Popover } from "@/components/ui/popover";
 import { PopoverContent } from "@/components/ui/popover";
 import { PopoverTrigger } from "@/components/ui/popover";
 import Input from "@/components/ui/input";
-import CreateNewsEventModal from "@/components/ui/CreateNewsEventModal";
 
 
 
