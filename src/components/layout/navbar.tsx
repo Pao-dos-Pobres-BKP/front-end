@@ -58,7 +58,7 @@ function Navbar() {
           <strong>Campanhas</strong>
         </NavLink>
       </div>
-      {isAuthenticated && "ADMIN" == "ADMIN" && (
+      {isAuthenticated && user.role == "ADMIN" && (
         <div className="hidden lg:flex flex-shrink-0">
           <NavLink to="/comunicados" className={getNavLinkClass}>
             <DiscoverIcon className="h-5 w-5 fill-current" />
