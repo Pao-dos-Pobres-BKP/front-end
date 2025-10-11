@@ -6,8 +6,8 @@ export function DropdownLimited({
   value,
   onChange,
   options,
-  maxVisibleItems = 12,
-  widthClass = "w-30",
+  maxVisibleItems = 10,
+  widthClass = "w-35",
 }: {
   value: number;
   onChange: (v: number) => void;
@@ -24,8 +24,8 @@ export function DropdownLimited({
       if (!rootRef.current) return;
       if (!rootRef.current.contains(e.target as Node)) setOpen(false);
     };
-    document.addEventListener("mousedown", onDoc);
-    return () => document.removeEventListener("mousedown", onDoc);
+    document.addEventListener("click", onDoc);
+    return () => document.removeEventListener("click", onDoc);
   }, []);
 
   const current = options.find((o) => o.value === value);
@@ -52,16 +52,25 @@ export function DropdownLimited({
           role="listbox"
           className="absolute z-50 mt-1 w-full rounded-md border bg-white shadow-md overflow-auto"
           style={{ maxHeight: maxH }}
+          onMouseDown={(e) => e.stopPropagation()}
+          onPointerDownCapture={(e) => e.stopPropagation()}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") setOpen(false);
+          }}
         >
           {options.map((opt) => (
             <button
               key={opt.value}
+              type="button"
               role="option"
               aria-selected={opt.value === value}
-              onClick={() => {
+              onMouseDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 onChange(opt.value);
                 setOpen(false);
               }}
+              onClick={(e) => e.preventDefault()}
               className={cn(
                 "w-full text-left px-3 py-2 text-sm hover:bg-gray-100",
                 "tabular-nums",

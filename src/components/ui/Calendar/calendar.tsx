@@ -33,7 +33,7 @@ function Calendar({
       locale={ptBR}
       showOutsideDays={showOutsideDays}
       className={cn(
-        "bg-background group/calendar p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
+        "bg-background group/calendar p-3 [--cell-size:2.25rem] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
         String.raw`rtl:**:[.rdp-button_next>svg]:rotate-180`,
         String.raw`rtl:**:[.rdp-button_previous>svg]:rotate-180`,
         className
@@ -104,10 +104,7 @@ function Calendar({
         range_start: cn("rounded-l-md bg-accent", defaultClassNames.range_start),
         range_middle: cn("rounded-none", defaultClassNames.range_middle),
         range_end: cn("rounded-r-md bg-accent", defaultClassNames.range_end),
-        today: cn(
-          "bg-accent text-accent-foreground rounded-md data-[selected=true]:rounded-none",
-          defaultClassNames.today
-        ),
+        today: cn("rounded-md ring-1 ring-slate-300", defaultClassNames.today),
         outside: cn(
           "text-muted-foreground opacity-40 hover:opacity-60 aria-selected:text-muted-foreground",
           defaultClassNames.outside
@@ -131,7 +128,7 @@ function Calendar({
 
           return <ChevronDownIcon className={cn("size-4", className)} {...props} />;
         },
-        DayButton: (p) => <CalendarDayButton {...p} buttonVariant={buttonVariant} />,
+        DayButton: (p) => <CalendarDayButton {...p} />,
         WeekNumber: ({ children, ...props }) => {
           return (
             <td {...props}>
@@ -154,48 +151,49 @@ function CalendarDayButton({
   className,
   day,
   modifiers,
-  buttonVariant = "secondary",
   ...props
-}: React.ComponentProps<typeof DayButton> & {
-  buttonVariant?: React.ComponentProps<typeof Button>["variant"];
-}) {
+}: React.ComponentProps<typeof DayButton>) {
   const defaultClassNames = getDefaultClassNames();
-
   const ref = React.useRef<HTMLButtonElement>(null);
+
   React.useEffect(() => {
     if (modifiers.focused) ref.current?.focus();
   }, [modifiers.focused]);
 
   return (
-    <Button
+    <button
       ref={ref}
-      variant={buttonVariant}
+      type="button"
       className={cn(
-        "flex aspect-square size-auto w-full min-w-(--cell-size) p-0",
-        "bg-transparent border border-slate-300 text-black",
-        "hover:bg-gray-200 hover:text-black",
-        "data-[selected-single=true]:bg-white data-[selected-single=true]:text-black data-[selected-single=true]:border-[#CBD5E1]",
-        "data-[range-middle=true]:bg-accent data-[range-middle=true]:text-accent-foreground",
-        "data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground",
-        "data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground",
-        "group-data-[focused=true]/day:border-[#CBD5E1] group-data-[focused=true]/day:ring-[#000] group-data-[focused=true]/day:ring-1",
-        "data-[range-end=true]:rounded-md data-[range-end=true]:rounded-r-md data-[range-middle=true]:rounded-none data-[range-start=true]:rounded-md data-[range-start=true]:rounded-l-md",
-        "[&>span]:text-xs [&>span]:opacity-70",
+        "relative w-full min-w-(--cell-size) aspect-square p-0",
+        "flex items-center justify-center",
+        "bg-transparent border-0 shadow-none outline-none",
+        "focus-visible:ring-0",
         defaultClassNames.day,
         className
       )}
-      data-day={day.date.toLocaleDateString()}
       data-selected-single={
-        modifiers.selected &&
-        !modifiers.range_start &&
-        !modifiers.range_end &&
-        !modifiers.range_middle
+        modifiers.selected && !modifiers.range_start && !modifiers.range_end && !modifiers.range_middle
       }
       data-range-start={modifiers.range_start}
       data-range-end={modifiers.range_end}
       data-range-middle={modifiers.range_middle}
       {...props}
-    />
+    >
+      <span
+        className={cn(
+          "inline-flex items-center justify-center rounded-full leading-none",
+          "size-[calc(var(--cell-size)-.5rem)]",
+          "text-[0.8125rem] font-medium text-black",
+          "bg-transparent",
+          "hover:ring-1 hover:ring-slate-300 hover:bg-gray-100",
+          "group-data-[focused=true]/day:ring-1 group-data-[focused=true]/day:ring-black/20",
+          modifiers.selected && "bg-[var(--color-components)] text-white ring-0 hover:text-black"
+        )}
+      >
+        {day.date.getDate()}
+      </span>
+    </button>
   );
 }
 
