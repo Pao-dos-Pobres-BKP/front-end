@@ -1,6 +1,6 @@
 import Input from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
-import { DatePicker } from "@/components/ui/date-picker";
+import { DatePicker } from "@/components/ui/Calendar/date-picker";
 import { formatCPF, formatPhone } from "@/utils/formatters";
 
 const genderOptions = [

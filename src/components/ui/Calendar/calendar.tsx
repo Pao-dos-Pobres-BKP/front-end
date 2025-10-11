@@ -1,6 +1,11 @@
 import * as React from "react";
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { DayButton, DayPicker, getDefaultClassNames } from "react-day-picker";
+import { DropdownLimited } from "@/components/ui/Calendar/calendar-dropdown";
+
+import { format as dfFormat } from "date-fns";
+import { ptBR } from "date-fns/locale";
+
 
 import { cn } from "@/lib/utils";
 import Button from "@/components/ui/button";
@@ -18,12 +23,14 @@ function Calendar({
   buttonVariant?: React.ComponentProps<typeof Button>["variant"];
 }) {
   const defaultClassNames = getDefaultClassNames();
+  const capitalize = (s: string) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
 
   const navBtnBase =
     "h-7 w-7 p-0 select-none rounded-md bg-transparent hover:bg-slate-100 text-black";
 
   return (
     <DayPicker
+      locale={ptBR}
       showOutsideDays={showOutsideDays}
       className={cn(
         "bg-background group/calendar p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
@@ -33,8 +40,16 @@ function Calendar({
       )}
       captionLayout={captionLayout}
       formatters={{
-        formatMonthDropdown: (date) => date.toLocaleString("default", { month: "short" }),
-        ...formatters,
+        formatCaption: (date) => {
+          const month = dfFormat(date, "LLLL", { locale: ptBR });
+          const year = dfFormat(date, "yyyy", { locale: ptBR });
+          return `${capitalize(month)} ${year}`;
+        },
+
+        formatMonthDropdown: (date) => {
+          const month = dfFormat(date, "LLLL", { locale: ptBR });
+          return capitalize(month);
+        },
       }}
       classNames={{
         root: cn("w-fit", defaultClassNames.root),
@@ -94,7 +109,7 @@ function Calendar({
           defaultClassNames.today
         ),
         outside: cn(
-          "text-muted-foreground aria-selected:text-muted-foreground",
+          "text-muted-foreground opacity-40 hover:opacity-60 aria-selected:text-muted-foreground",
           defaultClassNames.outside
         ),
         disabled: cn("text-muted-foreground opacity-50", defaultClassNames.disabled),
@@ -127,6 +142,8 @@ function Calendar({
           );
         },
         ...components,
+        Dropdown: (p: any) => <DropdownLimited {...p} maxVisibleItems={10} />,
+
       }}
       {...props}
     />
