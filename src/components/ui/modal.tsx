@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import type { ReactNode } from "react";
 
@@ -119,8 +118,7 @@ function Modal({
 
   if (!visible) return null;
 
-  const cfg: PresetConfig | null =
-    variant && variant !== "custom" ? modalConfig[variant] : null;
+  const cfg: PresetConfig | null = variant && variant !== "custom" ? modalConfig[variant] : null;
 
   const resolvedTitle = title ?? cfg?.title ?? "";
   const resolvedDescription = description ?? cfg?.description ?? "";
