@@ -6,22 +6,18 @@ import { DropdownLimited } from "@/components/ui/Calendar/calendar-dropdown";
 import { format as dfFormat } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
+import type { DropdownProps } from "react-day-picker";
 
 import { cn } from "@/lib/utils";
-import Button from "@/components/ui/button";
 
 function Calendar({
   className,
   classNames,
   showOutsideDays = true,
   captionLayout = "label",
-  buttonVariant = "secondary",
-  formatters,
   components,
   ...props
-}: React.ComponentProps<typeof DayPicker> & {
-  buttonVariant?: React.ComponentProps<typeof Button>["variant"];
-}) {
+}: React.ComponentProps<typeof DayPicker>) {
   const defaultClassNames = getDefaultClassNames();
   const capitalize = (s: string) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
 
@@ -140,7 +136,6 @@ function Calendar({
         },
         ...components,
         Dropdown: (p: any) => <DropdownLimited {...p} maxVisibleItems={10} />,
-
       }}
       {...props}
     />
@@ -173,7 +168,10 @@ function CalendarDayButton({
         className
       )}
       data-selected-single={
-        modifiers.selected && !modifiers.range_start && !modifiers.range_end && !modifiers.range_middle
+        modifiers.selected &&
+        !modifiers.range_start &&
+        !modifiers.range_end &&
+        !modifiers.range_middle
       }
       data-range-start={modifiers.range_start}
       data-range-end={modifiers.range_end}
