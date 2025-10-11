@@ -36,10 +36,11 @@ export default function CampaignModal({ open, onOpenChange, campaign }: Campaign
 
   return (
     <Modal
-      open={open}
-      onOpenChange={onOpenChange}
+      variant="custom"
+      isOpen={open}
+      onClose={() => onOpenChange(false)}
       title={campaign.title}
-      message=""
+      description=""
       footer={
         <div className="w-full -mt-4">
           <img
