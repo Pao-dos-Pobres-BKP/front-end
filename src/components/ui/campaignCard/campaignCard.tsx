@@ -19,7 +19,7 @@ export type CampaignCardProps = {
   className?: string;
   situation?: "approved" | "pending" | "rejected" | "recurring";
   type?: "event" | "news";          // para "event_news"
-  date?: string
+  date?: Date
   // profile (opcionais)
   role?: "donor" | "admin";         // para "profile_compact"
   donorName?: string;
@@ -123,7 +123,7 @@ export default function CampaignCard({
   return (
     <CampaignCardEventAndNews
       title={title}
-      date={date ?? ""}
+      date={date as Date}
       type={type ?? "news"}
       className={className}
     />
