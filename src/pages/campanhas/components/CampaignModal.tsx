@@ -5,39 +5,61 @@ import Button from "@/components/ui/button";
 import Link from "@/components/ui/link";
 import fundo from "@/assets/fundo-pp.png";
 
+type CampaignData = {
+  id: string;
+  title: string;
+  description: string;
+  imageUrl: string | null;
+  createdBy: string;
+  targetAmount: number;
+  currentAmount: number;
+  achievementPercentage: number;
+  status: "ACTIVE" | "INACTIVE" | "COMPLETED";
+};
+
 type CampaignModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  campaign: CampaignData;
 };
 
-export default function CampaignModal({ open, onOpenChange }: CampaignModalProps) {
+export default function CampaignModal({ open, onOpenChange, campaign }: CampaignModalProps) {
   const [isCollaborator, setIsCollaborator] = useState(false);
 
-  const title = "Feira de Novidades Pão dos Pobres";
-  const description =
-    "Serão compradas novas máquinas para uso interno da fundação em função da Feira de Novidades e precisaremos de um orçamento de 8 mil reais para consegui-los. Toda ajuda é bem-vinda!";
-  const progressValue = 75;
+  const formattedTargetAmount = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    minimumFractionDigits: 2,
+  }).format(campaign.targetAmount);
+
+  const imageUrl = campaign.imageUrl || fundo;
 
   return (
     <Modal
       open={open}
       onOpenChange={onOpenChange}
-      title={title}
+      title={campaign.title}
       message=""
       footer={
         <div className="w-full -mt-4">
-          <img src={fundo} alt={title} className="w-full h-40 object-cover rounded-md mb-3" />
+          <img
+            src={imageUrl}
+            alt={campaign.title}
+            className="w-full h-40 object-cover rounded-md mb-3"
+          />
 
           <p className="text-[13px] leading-relaxed text-[var(--color-text-2)] mb-4">
-            {description}
+            {campaign.description}
           </p>
 
           <div className="flex items-center justify-between text-[12px] mb-2">
-            <span className="text-[#0F172A] font-medium">Objetivo: R$ 8.000,00</span>
-            <span className="text-[var(--color-text-3)]">{progressValue}% atingida</span>
+            <span className="text-[#0F172A] font-medium">Objetivo: {formattedTargetAmount}</span>
+            <span className="text-[var(--color-text-3)]">
+              {campaign.achievementPercentage}% atingida
+            </span>
           </div>
 
-          <Progress value={progressValue} variant="blue" size="full" />
+          <Progress value={campaign.achievementPercentage} variant="blue" size="full" />
 
           {!isCollaborator ? (
             <div className="mt-4">
