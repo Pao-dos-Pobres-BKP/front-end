@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "./button";
 import camera from "@/assets/camera.svg";
 import { cn } from "@/lib/utils";
@@ -20,6 +20,7 @@ interface ModalProps {
   onRetry?: () => void;
   avatarUrl?: string;
   onAvatarSelect?: (file: File) => void;
+  donorId?: string;
 }
 
 type ModalConfig = Record<ModalVariant, { title: string; description: string; actions: { label: string; variant: string; action: string }[] }>;
@@ -110,7 +111,11 @@ function ModalActions(props: { actions: typeof modalConfig.logout.actions; handl
   );
 }
 
-function AvatarPicker(props: { avatarUrl?: string; onAvatarSelect?: (file: File) => void }) {
+function AvatarPicker(props: { 
+  avatarUrl?: string; 
+  onAvatarSelect?: (file: File) => void;
+  previewUrl: string | null;
+}) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   function handleButtonClick() {
@@ -124,7 +129,9 @@ function AvatarPicker(props: { avatarUrl?: string; onAvatarSelect?: (file: File)
     }
   }
 
-  if (props.avatarUrl) {
+  const displayUrl = props.previewUrl || props.avatarUrl;
+
+  if (displayUrl) {
     return (
       <div className="flex items-center justify-center flex-1 relative">
         <input
@@ -135,7 +142,7 @@ function AvatarPicker(props: { avatarUrl?: string; onAvatarSelect?: (file: File)
           className="hidden"
         />
         <div className="w-[220px] h-[220px] rounded-full overflow-hidden border-4 border-slate-200 relative group">
-          <img src={props.avatarUrl} alt="Avatar preview" className="w-full h-full object-cover" />
+          <img src={displayUrl} alt="Avatar preview" className="w-full h-full object-cover" />
           {props.onAvatarSelect && (
             <button
               onClick={handleButtonClick}
@@ -173,9 +180,12 @@ function AvatarPicker(props: { avatarUrl?: string; onAvatarSelect?: (file: File)
 }
 
 export default function Modal(props: ModalProps) {
-  const { isOpen, onClose, variant, onConfirm, onRetry, avatarUrl, onAvatarSelect } = props;
+  const { isOpen, onClose, variant, onConfirm, onRetry, avatarUrl, onAvatarSelect, donorId } = props;
   const config = modalConfig[variant];
   const isAvatarModal = variant === "avatar-change";
+  
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(function () {
     function handleEscape(e: KeyboardEvent) {
@@ -193,7 +203,53 @@ export default function Modal(props: ModalProps) {
     };
   }, [isOpen, onClose]);
 
+  useEffect(function () {
+    if (!isOpen) {
+      setSelectedFile(null);
+      setPreviewUrl(null);
+    }
+  }, [isOpen]);
+
+  useEffect(function () {
+    return function () {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
+
   if (!isOpen) return null;
+
+  function handleAvatarFileSelect(file: File) {
+    setSelectedFile(file);
+    
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
+    const newPreviewUrl = URL.createObjectURL(file);
+    setPreviewUrl(newPreviewUrl);
+    
+    if (onAvatarSelect) {
+      onAvatarSelect(file);
+    }
+  }
+
+  async function uploadAvatar() {
+    if (!selectedFile || !donorId) return;
+
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    const response = await fetch(`/donors/${donorId}/avatar`, {
+      method: "POST",
+      body: formData,
+    });
+
+    if (response.ok) {
+      onConfirm?.();
+      onClose();
+    }
+  }
 
   function handleActionClick(action: string) {
     switch (action) {
@@ -201,7 +257,11 @@ export default function Modal(props: ModalProps) {
         onClose();
         break;
       case "confirm":
-        onConfirm?.();
+        if (isAvatarModal && selectedFile) {
+          uploadAvatar();
+        } else {
+          onConfirm?.();
+        }
         break;
       case "retry":
         onRetry?.();
@@ -229,7 +289,13 @@ export default function Modal(props: ModalProps) {
           <p className="text-slate-500 font-inter text-sm font-normal leading-5">{config.description}</p>
         )}
 
-        {isAvatarModal && <AvatarPicker avatarUrl={avatarUrl} onAvatarSelect={onAvatarSelect} />}
+        {isAvatarModal && (
+          <AvatarPicker 
+            avatarUrl={avatarUrl} 
+            onAvatarSelect={handleAvatarFileSelect}
+            previewUrl={previewUrl}
+          />
+        )}
 
         <ModalActions actions={config.actions} handleActionClick={handleActionClick} centered={isAvatarModal} />
       </div>
