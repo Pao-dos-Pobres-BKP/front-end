@@ -81,7 +81,10 @@ function Calendar({
           defaultClassNames.weekday
         ),
         week: cn("flex w-full mt-2 gap-2", defaultClassNames.week),
-        week_number_header: cn("select-none w-[var(--cell-size)]", defaultClassNames.week_number_header),
+        week_number_header: cn(
+          "select-none w-[var(--cell-size)]",
+          defaultClassNames.week_number_header
+        ),
         week_number: cn(
           "text-[0.8rem] select-none text-muted-foreground",
           defaultClassNames.week_number
