@@ -1,45 +1,50 @@
 import Button from "@/components/ui/button";
 import CampaignCard from "@/components/ui/campaignCard/campaignCard";
 import Input from "@/components/ui/input";
-import Plus from "@/assets/Plus.svg"; 
+import Plus from "@/assets/Plus.svg";
 import { DatePicker } from "@/components/ui/date-picker";
 import { useState } from "react";
-import { useUser } from "@/hooks/useUser";
+//import { useUser } from "@/hooks/useUser";
 import type { CampaignCardCompactProps } from "@/components/ui/campaignCard/campaignCardCompact";
 
 const Campanhas = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { user } = useUser();
-  
-  
+  const [, setIsModalOpen] = useState(false);
+  //const { user } = useUser();
+
   /*
   const fetchCampaigns = async () => {
    //BATER NA API AQUI
   }
    */
-  
+
   return (
     <div className="bg-[var(--color-bg-campaingn)] p-8 min-h-screen flex flex-col gap-6">
       <section className="flex justify-center items-center gap-4">
-        <Input placeholder="Pesquisar campanhas" className=" w-full"/>
+        <Input placeholder="Pesquisar campanhas" className=" w-full" />
         <div>
-          <DatePicker className="bg-[var(--color-text-special-2)] text-white"/>
+          <DatePicker className="bg-[var(--color-text-special-2)] text-white" />
         </div>
-        <Button variant="quinary" className=" transition-colors" size="campaign">Pesquisar</Button>
-        <div role="button" className="min-h-10 min-w-10 bg-[var(--color-text-special-2)] flex items-center justify-center rounded-[10px] cursor-pointer transition-colors shadow-sm hover:shadow-md" onClick={() => setIsModalOpen(true)}>
-          <img src={Plus} alt="Plus Icon" className="h-4 w-4" /> 
+        <Button variant="quinary" className=" transition-colors" size="campaign">
+          Pesquisar
+        </Button>
+        <div
+          role="button"
+          className="min-h-10 min-w-10 bg-[var(--color-text-special-2)] flex items-center justify-center rounded-[10px] cursor-pointer transition-colors shadow-sm hover:shadow-md"
+          onClick={() => setIsModalOpen(true)}
+        >
+          <img src={Plus} alt="Plus Icon" className="h-4 w-4" />
         </div>
       </section>
-      
+
       <div className="flex flex-col gap-3">
         {campaigns.map((campaign, index) => (
           <CampaignCard
-        key={index}
-        title={campaign.title}
-        raised={campaign.raised}
-        goal={campaign.goal}
-        creatorName={campaign.creatorName}
-        situation={campaign.situation}
+            key={index}
+            title={campaign.title}
+            raised={campaign.raised}
+            goal={campaign.goal}
+            creatorName={campaign.creatorName}
+            situation={campaign.situation}
           />
         ))}
       </div>
@@ -48,7 +53,6 @@ const Campanhas = () => {
 };
 
 export default Campanhas;
-
 
 const campaigns: CampaignCardCompactProps[] = [
   {
@@ -172,4 +176,3 @@ const campaigns: CampaignCardCompactProps[] = [
     progressPercent: 62,
   },
 ];
-
