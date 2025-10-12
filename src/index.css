@@ -13,13 +13,14 @@
   --color-components-2: #00d1d3;
   --color-brand-light: #026e98;
   --color-brand-dark: #034d6b;
+  --color-bg-campaingn: #2f5361;
 
   --color-text-1: #efefef;
-  --color-text-2: #64748B;
-  --color-text-3: #0F172A;
+  --color-text-2: #64748b;
+  --color-text-3: #0f172a;
   --color-text-brand: #00d1d3;
   --color-text-special: #bd48c9;
-  --color-text-contact: #207C43;
+  --color-text-contact: #207c43;
   --color-text-special: #b907cd;
   --color-text-success: #24a254;
   --color-text-success-2: #70b10f;
@@ -27,7 +28,6 @@
   --color-text-error: #f74343ea;
   --color-text-special-2: #f68537;
   --color-text-special-3: #9805a8;
-
 
   --font-family-primary: "Manrope", sans-serif;
 

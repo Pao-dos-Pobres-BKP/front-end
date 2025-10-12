@@ -28,20 +28,20 @@ export type CampaignCardProps = {
 };
 
 export default function CampaignCard({
-  title = "",
-  raised = 0,
-  goal = 0,
-  creatorName,
-  variant = "default",
+  title = "Testandoo",
+  raised = 30,
+  goal = 90,
+  creatorName =' João Silva',
+  variant = "compact",
   className,
-  donorName = "",
-  donorEmail = "",
-  donationAmount,
+  donorName = "OPAAAA",
+  donorEmail = "bekirsch@gmail.com",
+  donationAmount=0,
   memberSince = "",
   campaigns = [],
-  lastDonation = 0,
-  situation,
-  role,
+  lastDonation = 3,
+  situation = "approved",
+  role = "donor",
 }: CampaignCardProps) {
   const percent = goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
 

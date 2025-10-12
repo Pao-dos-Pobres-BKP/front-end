@@ -26,6 +26,7 @@ export const buttonVariants = cva(
         medium: "h-12 w-60",
         large: "h-12 w-80",
         icon: "h-10 w-10 rounded-full text-gray-900",
+        campaign: "h-9.5  text-white",
       },
       desactive: {
         true: "opacity-50 pointer-events-none",
