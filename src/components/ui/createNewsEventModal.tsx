@@ -4,12 +4,15 @@ import { Pagination, PaginationContent, PaginationItem } from "@/components/ui/p
 import Calendar from "@/assets/Calendar.svg";
 import Paper from "@/assets/Paper.svg";
 import Image from "@/assets/Image.svg"
+import Input from "./input"
+import { DatePicker } from "./date-picker";
 
 interface CreateNewsEventModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (dados: unknown) => void;
   initialData: {
+    Date: any;
     title: string;
     description?: string;
     adress?: string;
@@ -30,7 +33,7 @@ export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialD
       setFormData(initialData);
       setStep("tipo");
     }
-  }, [isOpen, initialData]);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -99,7 +102,7 @@ export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialD
                 <div className="mb-4 text-left">
                   <label className="text-sm font-medium text-[#005172]">
                     Título
-                    <input
+                    <Input
                       name="title"
                       type="text"
                       value={formData.title}
@@ -113,7 +116,7 @@ export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialD
                 <div className="mb-4 text-left">
                   <label className="text-sm font-medium text-[#005172]">
                     Descrição
-                    <input
+                    <Input
                       name="description"
                       type="text"
                       value={formData.description}
@@ -125,13 +128,13 @@ export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialD
                   </label>
                   <p className="text-xs text-gray-500 text-left mt-1">
                     {formData.description?.length}/200
-                </p>
+                  </p>
                 </div>
 
                 <div className="mb-4 text-left">
                   <label className="text-sm font-medium text-[#005172]">
                     Localização
-                    <input
+                    <Input
                       name="adress"
                       type="text"
                       value={formData.adress}
@@ -143,22 +146,23 @@ export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialD
                 </div>
 
                 <div className="mb-4 text-left">
-                  <label className="text-sm font-medium text-[#005172]">
-                    Data
-                    <input
-                      name="date"
-                      type="date"
-                      value={formData.date}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 border rounded-lg"
-                    />
-                  </label>
+                  <DatePicker
+                    label="Data"
+                    value={formData.Date ? new Date(formData.Date) : undefined}
+                    onChange={(date) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        Date: date ?? undefined,
+                      }))
+                    }
+                    fullWidth
+                  />
                 </div>
 
                 <div className="mb-4 text-left">
                   <label className="text-sm font-medium text-[#005172]">
                     Hora
-                    <input
+                    <Input
                       name="hour"
                       type="time"
                       value={formData.hour}
@@ -175,7 +179,7 @@ export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialD
                 <div className="mb-4 text-left">
                   <label className="text-sm font-medium text-[#005172]">
                     Título
-                    <input
+                    <Input
                       name="title"
                       type="text"
                       value={formData.title}
@@ -187,16 +191,17 @@ export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialD
                 </div>
 
                 <div className="mb-4 text-left">
-                  <label className="text-sm font-medium text-[#005172]">
-                    Data
-                    <input
-                      name="date"
-                      type="date"
-                      value={formData.date}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 border rounded-lg"
-                    />
-                  </label>
+                   <DatePicker
+                    label="Data"
+                    value={formData.Date ? new Date(formData.Date) : undefined}
+                    onChange={(date) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        Date: date ?? undefined,
+                      }))
+                    }
+                    fullWidth
+                  />
                 </div>
               </>
             )}
@@ -204,7 +209,7 @@ export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialD
             <div className="mb-4 text-left">
               <label className="text-sm font-medium text-[#005172]">
                 Link para site principal do Pão dos Pobres
-                <input
+                <Input
                   name="link"
                   type="text"
                   value={formData.link}
@@ -236,7 +241,7 @@ export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialD
                     <img src={Image} className="w-4 h-4" />
                     Anexar Imagem
                   </span>
-                  <input
+                  <Input
                     type="file"
                     accept="image/*"
                     onChange={handleFotoChange}

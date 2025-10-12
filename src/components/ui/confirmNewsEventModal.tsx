@@ -15,6 +15,7 @@ interface ModalProps {
   onClose: () => void;
   variant: ModalVariant;
   onConfirm?: () => void;
+  itemTitle?: string;
 }
 
 const modalConfig = {
@@ -22,7 +23,7 @@ const modalConfig = {
   "delete-news": {
     title: "Você deseja excluir esta notícia?",
     description:
-      "Você estará excluindo a notícia 'Pão dos pobres Comemora 130 anos de Atividade'. Deseja continuar com esta ação?",
+      'Você estará excluindo a notícia "{title}". Deseja continuar com esta ação?',
     actions: [
       { label: "Cancelar", variant: "tertiary" as const, action: "close" },
       { label: "Excluir", variant: "primary" as const, action: "confirm" },
@@ -40,7 +41,7 @@ const modalConfig = {
    "delete-event": {
     title: "Você deseja excluir este evento?",
     description:
-      "Você estará excluindo o evento 'Festa Junina do Pão dos pobres!'. Deseja continuar com esta ação?",
+      'Você estará excluindo o evento "{title}". Deseja continuar com esta ação?',
     actions: [
       { label: "Cancelar", variant: "tertiary" as const, action: "close" },
       { label: "Excluir", variant: "primary" as const, action: "confirm" },
@@ -57,8 +58,13 @@ const modalConfig = {
   },
 };
 
-const ConfirmNewsEventModals = ({ isOpen, onClose, variant, onConfirm }: ModalProps) => {
+const ConfirmNewsEventModals = ({ isOpen, onClose, variant, onConfirm, itemTitle}: ModalProps) => {
   const config = modalConfig[variant];
+
+    const description = config.description.replace(
+    /\{title\}/g,
+    itemTitle || ""
+  );
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -90,6 +96,7 @@ const ConfirmNewsEventModals = ({ isOpen, onClose, variant, onConfirm }: ModalPr
         onClose();
     }
   };
+
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
