@@ -38,12 +38,6 @@ export default function SettingUserModal({ isOpen, onClose, onSave, initialData 
 
     if (!isOpen) return null;
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
-
-
     const handleConfirmar = () => {
         onSave(formData);
         onClose();

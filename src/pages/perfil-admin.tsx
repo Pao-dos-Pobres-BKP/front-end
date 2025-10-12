@@ -33,7 +33,7 @@ const mockTargetData = {
   email: "ciclano@email.com.br",
   totalDonated: 500,
   percentageAchieved: 25,
-  foto: "https://via.placeholder.com/80?text=DOADOR",
+  foto: exemplo_foto_perfil,
 };
 
 
@@ -126,7 +126,7 @@ export default function PerfilAdmin() {
           >
             Alternar para: {isViewingOwnProfile ? "Visão de Gestão (Outro Usuário)" : "Visão Própria"}
           </button>
-          {/* Final do Botão de Teste */}
+          {/* Final doBotão de Teste */}
 
 
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white rounded-lg gap-4 p-4 mb-6">
