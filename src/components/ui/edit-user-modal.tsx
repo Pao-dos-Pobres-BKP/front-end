@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import type { User, Gender } from "@/contexts/UserContext";
-import ConfirmDeleteAccountModal from "./confirm-delete-account";
+import Modal from "@/components/ui/modal";
 import { DatePicker } from "./date-picker";
 import Input from "./input";
 import { Select } from "./select";
@@ -19,15 +19,15 @@ export default function EditUserModal({
   initialData,
 }: EditUserModalProps) {
   const [formData, setFormData] = useState<User>(initialData);
-  const [previewFoto, setPreviewFoto] = useState(
-    initialData.foto || "https://via.placeholder.com/60"
+  const [previewPhoto, setPreviewPhoto] = useState(
+    initialData.photo || "https://via.placeholder.com/60"
   );
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
       setFormData(initialData);
-      setPreviewFoto(initialData.foto || "https://via.placeholder.com/60");
+      setPreviewPhoto(initialData.photo || "https://via.placeholder.com/60");
     }
   }, [isOpen, initialData]);
 
@@ -42,18 +42,18 @@ export default function EditUserModal({
       setFormData((prev) => ({ ...prev, gender: value as Gender }));
   };
 
-  const handleFotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const url = URL.createObjectURL(file);
-      setPreviewFoto(url);
-      setFormData((prev) => ({ ...prev, foto: url }));
+      setPreviewPhoto(url);
+      setFormData((prev) => ({ ...prev, photo: url }));
     }
   };
 
-  const handleFotoRemove = () => {
-    setPreviewFoto("https://via.placeholder.com/60");
-    setFormData((prev) => ({ ...prev, foto: "" }));
+  const handlePhotoRemove = () => {
+    setPreviewPhoto("https://via.placeholder.com/60");
+    setFormData((prev) => ({ ...prev, photo: "" }));
   };
 
   const handleConfirm = () => {
@@ -68,19 +68,19 @@ export default function EditUserModal({
 
         <div className="flex items-center gap-4 mb-6">
           <img
-            src={previewFoto}
+            src={previewPhoto}
             alt="foto de perfil"
             className="w-16 h-16 rounded-full object-cover border"
           />
           <div className="flex items-center gap-2">
             <label className="text-sm font-medium text-[#005172] cursor-pointer">
               <span className="px-3 py-1 border rounded-lg hover:bg-gray-100">Alterar Foto</span>
-              <input type="file" accept="image/*" onChange={handleFotoChange} className="hidden" />
+              <input type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
             </label>
-            {previewFoto !== "https://via.placeholder.com/60" && (
+            {previewPhoto !== "https://via.placeholder.com/60" && (
               <button
                 type="button"
-                onClick={handleFotoRemove}
+                onClick={handlePhotoRemove}
                 className="px-3 py-1 border border-red-500 text-red-500 rounded-lg text-sm hover:bg-red-50"
               >
                 Remover Foto
@@ -182,11 +182,11 @@ export default function EditUserModal({
         </div>
       </div>
 
-      <ConfirmDeleteAccountModal
+      <Modal
         isOpen={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
+        variant="delete-account"
         onConfirm={() => {
-          // lógica de exclusão da conta
           setShowDeleteModal(false);
         }}
       />
