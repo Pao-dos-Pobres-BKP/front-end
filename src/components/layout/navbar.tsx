@@ -29,7 +29,7 @@ function Navbar() {
 
   return (
     <nav
-      className={`bg-[var(--color-components-2)] sticky top-0 w-full z-${Z_INDEX.NAVBAR} ${NAVBAR_HEIGHT_CLASS} flex items-center shadow-md px-8`}
+      className={`bg-[var(--color-components-2)] sticky top-0 w-full z-${Z_INDEX.NAVBAR} ${NAVBAR_HEIGHT_CLASS} flex items-center justify-between shadow-md px-8`}
     >
       <div className="flex-shrink-0">
         <Link to="/">
@@ -38,37 +38,42 @@ function Navbar() {
       </div>
 
       {/*DESKTOP*/}
-      <div className="flex-grow flex justify-center">
-        <div className="hidden lg:flex items-center gap-4">
-          <NavLink to="/" className={getNavLinkClass}>
-            <HomeIcon className="h-5 w-5 fill-current" />
-            <strong>Home</strong>
-          </NavLink>
-          {isAuthenticated && user.role == "ADMIN" && (
-            <NavLink to="/dashboard" className={getNavLinkClass}>
-              <ActivityIcon className="h-5 w-5 fill-current" />
-              <strong>Dashboard</strong>
-            </NavLink>
-          )}
-          <NavLink to="/campanhas" className={getNavLinkClass}>
-            <StarIcon className="h-5 w-5 fill-current" />
-            <strong>Campanhas</strong>
-          </NavLink>
-          {isAuthenticated && user.role == "ADMIN" && (
-            <>
-              <NavLink to="/comunicados" className={getNavLinkClass}>
-                <DiscoverIcon className="h-5 w-5 fill-current" />
-                <strong>Comunicados</strong>
-              </NavLink>
-              <NavLink to="/doadores" className={getNavLinkClass}>
-                <UserIcon className="h-5 w-5 fill-current" />
-                <strong>Doadores</strong>
-              </NavLink>
-            </>
-          )}
-        </div>
+      <div className="hidden lg:flex flex-shrink-0">
+        <NavLink to="/" className={getNavLinkClass}>
+          <HomeIcon className="h-5 w-5 fill-current" />
+          <strong>Home</strong>
+        </NavLink>
       </div>
-
+      {isAuthenticated && user.role == "ADMIN" && (
+        <div className="hidden lg:flex flex-shrink-0">
+          <NavLink to="/dashboard" className={getNavLinkClass}>
+            <ActivityIcon className="h-5 w-5 fill-current" />
+            <strong>Dashboard</strong>
+          </NavLink>
+        </div>
+      )}
+      <div className="hidden lg:flex flex-shrink-0">
+        <NavLink to="/campanhas" className={getNavLinkClass}>
+          <StarIcon className="h-5 w-5 fill-current" />
+          <strong>Campanhas</strong>
+        </NavLink>
+      </div>
+      {isAuthenticated && user.role == "ADMIN" && (
+        <div className="hidden lg:flex flex-shrink-0">
+          <NavLink to="/comunicados" className={getNavLinkClass}>
+            <DiscoverIcon className="h-5 w-5 fill-current" />
+            <strong>Comunicados</strong>
+          </NavLink>
+        </div>
+      )}
+      {isAuthenticated && user.role == "ADMIN" && (
+        <div>
+          <NavLink to="/doadores" className={getNavLinkClass}>
+            <UserIcon className="h-5 w-5 fill-current" />
+            <strong>Doadores</strong>
+          </NavLink>
+        </div>
+      )}
       <div className="flex-shrink-0">
         {/*DESKTOP*/}
         <div className="hidden lg:flex items-center">
@@ -104,10 +109,9 @@ function Navbar() {
         <div className="fixed inset-0 z-50 flex justify-end">
           <div className="absolute inset-0 bg-black/40" onClick={() => setIsOpen(false)}></div>
           <div className="relative w-64 bg-[var(--color-components-2)] h-full shadow-lg p-6 flex flex-col gap-4">
-            <button onClick={() => setIsOpen(false)} className="absolute top-4 right-4">
+            <button onClick={() => setIsOpen(false)} className="flex justify-end">
               <X className="h-6 w-6 text-[var(--color-components)]" />
             </button>
-
             {isAuthenticated && (
               <div className="flex flex-col gap-3 text-left">
                 <div className="flex gap-3 text-left mb-2 max-w-45">
