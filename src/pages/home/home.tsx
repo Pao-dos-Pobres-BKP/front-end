@@ -1,12 +1,12 @@
-import { Hero, type HeroItem } from "@/components/layout/hero"
-import { Newsletter } from "@/components/ui/newsletter"
-import PartnerCompanies from "@/components/layout/partner-companies"
-import News from "@/components/layout/news"
-import HowToHelp from "@/section/how-to-help"
+import { Hero, type HeroItem } from "@/pages/home/components/hero";
+import { Newsletter } from "@/pages/home/components/newsletter";
+import PartnerCompanies from "@/pages/home/components/partner-companies";
+import News from "@/pages/home/components/news";
+import HowToHelp from "@/pages/home/components/how-to-help";
 
-import festaImg from "@/assets/festa-junina-pp.jpg"
-import quadra from "@/assets/quadra-pp.jpg"
-import fundo from "@/assets/fundo-pp.png"
+import festaImg from "@/assets/festa-junina-pp.jpg";
+import quadra from "@/assets/quadra-pp.jpg";
+import fundo from "@/assets/fundo-pp.png";
 
 const heroItems: HeroItem[] = [
   {
@@ -18,7 +18,7 @@ const heroItems: HeroItem[] = [
     date: "20 de junho",
     time: "10:30",
     buttonLabel: "Ir para o site",
-    buttonLink: "https://www.paodospobres.org.br/"
+    buttonLink: "https://www.paodospobres.org.br/",
   },
   {
     imageUrl: quadra,
@@ -28,32 +28,28 @@ const heroItems: HeroItem[] = [
     date: "20 de junho",
     time: "10:30",
     buttonLabel: "Ir para o site",
-    buttonLink: "/doacao "
+    buttonLink: "/doacao ",
   },
   {
     imageUrl: fundo,
     title: "Mais uma imagem!",
-    description: "Você quer se atualizar?\nInscreva-se na nossa newsletter!"
+    description: "Você quer se atualizar?\nInscreva-se na nossa newsletter!",
   },
-]
+];
 
 const Home = () => {
   return (
     <div className="flex flex-col bg-gray-200">
-      <Hero
-        items={heroItems}
-      />
+      <Hero items={heroItems} />
 
       <div>
         <HowToHelp />
         <News />
         <Newsletter />
         <PartnerCompanies />
-
       </div>
     </div>
+  );
+};
 
-  )
-}
-
-export default Home
+export default Home;

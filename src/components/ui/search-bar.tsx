@@ -2,7 +2,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Search } from "lucide-react";
-import Input from "../ui/input";
+import Input from "./input";
 
 export const SearchBar = () => {
   const [value, setValue] = useState("");

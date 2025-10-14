@@ -36,10 +36,7 @@ export function CampaignCardList(props: CampaignCardListProps) {
     }
   };
 
-  const situationIcons: Record<
-    "approved" | "pending" | "recurring",
-    string
-  > = {
+  const situationIcons: Record<"approved" | "pending" | "recurring", string> = {
     approved: blueHeart,
     pending: orangeHeart,
     recurring: redHeart,
@@ -56,18 +53,21 @@ export function CampaignCardList(props: CampaignCardListProps) {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between w-full gap-3">
         <div className="flex items-center gap-2 flex-shrink-0">
           {situation && situation !== "rejected" && (
-            <img
-              src={situationIcons[situation]}
-              alt=""
-              className="h-6 w-6 flex-shrink-0"
-            />
+            <img src={situationIcons[situation]} alt="" className="h-6 w-6 flex-shrink-0" />
           )}
           <div className="flex flex-col truncate">
-            <div className="text-[#034d6b] text-xl font-semibold truncate">
-              {title}
-            </div>
+            <div className="text-[#034d6b] text-xl font-semibold truncate">{title}</div>
             {creatorName && (
-              <div className="text-sm text-[#f68537] truncate">
+              <div
+                className={cn(
+                  "text-xs sm:text-sm truncate",
+                  situation === "recurring"
+                    ? "bg-gradient-to-b from-[#FF4A4A] to-[#FF8787] bg-clip-text text-transparent"
+                    : situation === "approved"
+                      ? "bg-gradient-to-b from-[#456DFF] to-[#AABCFF] bg-clip-text text-transparent"
+                      : "text-[#034d6b]"
+                )}
+              >
                 por {creatorName}
               </div>
             )}
@@ -79,9 +79,7 @@ export function CampaignCardList(props: CampaignCardListProps) {
               <div className="text-xl font-bold text-[#034d6b] truncate">
                 {formatCurrency(raised)}
               </div>
-              <div className="text-sm text-[#6b7280] truncate">
-                de {formatCurrency(goal)}
-              </div>
+              <div className="text-sm text-[#6b7280] truncate">de {formatCurrency(goal)}</div>
             </div>
             <div className="w-full mt-1">
               {situation === "approved" || situation === "recurring" ? (

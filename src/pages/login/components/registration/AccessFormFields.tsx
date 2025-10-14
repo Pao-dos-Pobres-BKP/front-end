@@ -1,4 +1,6 @@
 import Input from "@/components/ui/input";
+import React from "react";
+import { passwordRequirements } from "@/schemas/auth";
 
 interface AccessFormData {
   email: string;
@@ -13,6 +15,32 @@ interface AccessFormFieldsProps {
   onChange: (field: keyof AccessFormData, value: string) => void;
   disabled?: boolean;
 }
+
+const PasswordRequirements = ({ password }: { password: string }) => {
+  const requirements = passwordRequirements;
+
+  if (!password) {
+    return null;
+  }
+
+  return (
+    <div className="-mt-2 mb-4 text-left">
+      <ul className="space-y-1">
+        {requirements.map((req) => {
+          const isValid = req.test(password);
+          return (
+            <li
+              key={req.label}
+              className={`text-sm transition-colors ${isValid ? "text-green-600" : "text-red-600"}`}
+            >
+              {req.label}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+};
 
 export default function AccessFormFields({
   form,
@@ -50,6 +78,8 @@ export default function AccessFormFields({
         error={errors.password}
         disabled={disabled}
       />
+
+      <PasswordRequirements password={form.password} />
 
       <Input
         id="confirmPassword"

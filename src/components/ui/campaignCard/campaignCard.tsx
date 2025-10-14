@@ -6,17 +6,22 @@ import { CampaignCardCompact } from "./campaignCardCompact";
 import blueHeart from "@/assets/blueHeart.svg";
 import { CampaignCardHistoric } from "./campaignCardHistoric";
 import { CampaignCardList } from "./campaignCardList";
+import { CampaignCardProfileCompact } from "./campaingCardProfileCompact";
+import { CampaignCardEventAndNews } from "./campaingCardEventAndNews";
 
 export type CampaignCardProps = {
-  title: string;
-  raised: number;
-  goal: number;
+  title?: string;
+  raised?: number;
+  goal?: number;
   creatorName?: string;
-  variant?: "default" | "profile" | "compact" | "historic" | "list";
+  variant?: "default" | "profile" | "compact" | "historic" | "list" | "profile_compact" | "event_news";
   onAction?: () => void;
   className?: string;
   situation?: "approved" | "pending" | "rejected" | "recurring";
+  type?: "event" | "news";          // para "event_news"
+  date?: Date
   // profile (opcionais)
+  role?: "donor" | "admin";         // para "profile_compact"
   donorName?: string;
   donorEmail?: string;
   donationAmount?: number;
@@ -26,9 +31,9 @@ export type CampaignCardProps = {
 };
 
 export default function CampaignCard({
-  title,
-  raised,
-  goal,
+  title = "",
+  raised = 0,
+  goal = 0,
   creatorName,
   variant = "default",
   className,
@@ -39,6 +44,9 @@ export default function CampaignCard({
   campaigns = [],
   lastDonation = 0,
   situation,
+  type,
+  date,
+  role,
 }: CampaignCardProps) {
   const percent = goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
 
@@ -100,6 +108,27 @@ export default function CampaignCard({
       />
     );
   }
+
+  if (variant === "profile_compact") {
+    return (
+      <CampaignCardProfileCompact
+        profileName={donorName ?? "Usuário"}
+        role={role ?? "donor"}
+        className={className}
+      />
+    );
+  }
+
+  if (variant === "event_news") {
+  return (
+    <CampaignCardEventAndNews
+      title={title}
+      date={date as Date}
+      type={type ?? "news"}
+      className={className}
+    />
+  );
+}
 
   return (
     <article
