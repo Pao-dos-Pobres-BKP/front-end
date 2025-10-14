@@ -1,5 +1,6 @@
 import CampaignCard from "@/components/ui/campaignCard/campaignCard";
 import Input from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
 import {
   Pagination,
@@ -186,11 +187,17 @@ export default function DonorList() {
       </div>
       <div className="flex justify-center items-center gap-2 mt-6">
         <Pagination>
-          <PaginationContent className="text-white">
+          <PaginationContent>
             <PaginationItem>
               <PaginationPrevious
+                size="sm"
                 onClick={currentPage === 1 ? undefined : () => setCurrentPage(currentPage - 1)}
-                className={currentPage === 1 ? "opacity-30 cursor-not-allowed" : ""}
+                className={cn(
+                  "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
+                  currentPage === 1
+                    ? "bg-white text-[#F68537] border-[#F68537] opacity-50 cursor-not-allowed"
+                    : "bg-[#F68537] text-white border-[#F68537]"
+                )}
               >
                 Anterior
               </PaginationPrevious>
@@ -199,8 +206,13 @@ export default function DonorList() {
             {Array.from({ length: totalPages }, (_, i) => (
               <PaginationItem key={i}>
                 <PaginationLink
+                  size="icon"
                   onClick={() => setCurrentPage(i + 1)}
                   isActive={currentPage === i + 1}
+                  className={`px-3 py-1 border rounded-full transition-colors ${currentPage === i + 1
+                      ? "bg-white text-[#F68537] border-[#F68537]"
+                      : "bg-[#F68537] text-white border-[#F68537]"
+                    }`}
                 >
                   {i + 1}
                 </PaginationLink>
@@ -209,10 +221,14 @@ export default function DonorList() {
 
             <PaginationItem>
               <PaginationNext
-                onClick={
-                  currentPage === totalPages ? undefined : () => setCurrentPage(currentPage + 1)
-                }
-                className={currentPage === totalPages ? "opacity-30 cursor-not-allowed" : ""}
+                size="sm"
+                onClick={currentPage === totalPages ? undefined : () => setCurrentPage(currentPage + 1)}
+                className={cn(
+                  "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
+                  currentPage === totalPages
+                    ? "bg-white text-[#F68537] border-[#F68537] opacity-50 cursor-not-allowed"
+                    : "bg-[#F68537] text-white border-[#F68537]"
+                )}
               >
                 Próximo
               </PaginationNext>

@@ -3,6 +3,7 @@ import CampaignCard from "@/components/ui/campaignCard/campaignCard";
 import Input from "@/components/ui/input";
 import exemplo_foto_perfil from "@/assets/exemplo_foto_perfil.jpg";
 import { EditSquare } from "react-iconly";
+import { cn } from "@/lib/utils";
 
 import {
   Pagination,
@@ -83,70 +84,155 @@ export default function Perfil() {
     goal: number;
     situation: SituationType;
   }[] = [
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 81825.33,
-      goal: 90000,
-      situation: "recurring",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 5000,
-      goal: 10000,
-      situation: "recurring",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 15000,
-      goal: 20000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 2500,
-      goal: 3000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 7000,
-      goal: 10000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 9000,
-      goal: 15000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 1200,
-      goal: 2000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 4500,
-      goal: 5000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 800,
-      goal: 1000,
-      situation: "approved",
-    },
-  ];
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 81825.33,
+        goal: 90000,
+        situation: "recurring",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 5000,
+        goal: 10000,
+        situation: "recurring",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 15000,
+        goal: 20000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 2500,
+        goal: 3000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 7000,
+        goal: 10000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 9000,
+        goal: 15000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 1200,
+        goal: 2000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 4500,
+        goal: 5000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 800,
+        goal: 1000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 800,
+        goal: 1000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 800,
+        goal: 1000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 800,
+        goal: 1000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 800,
+        goal: 1000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 800,
+        goal: 1000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 800,
+        goal: 1000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 800,
+        goal: 1000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 800,
+        goal: 1000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 800,
+        goal: 1000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 800,
+        goal: 1000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 800,
+        goal: 1000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 800,
+        goal: 1000,
+        situation: "approved",
+      },
+
+    ];
 
   const totalPages = Math.ceil(campanhasHistorico.length / cardsPerPage);
   const indexOfLastCard = currentPage * cardsPerPage;
@@ -357,10 +443,14 @@ export default function Perfil() {
                 <PaginationContent>
                   <PaginationItem>
                     <PaginationPrevious
-                      onClick={
-                        currentPage === 1 ? undefined : () => setCurrentPage(currentPage - 1)
-                      }
-                      className={currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""}
+                      size="sm"
+                      onClick={currentPage === 1 ? undefined : () => setCurrentPage(currentPage - 1)}
+                      className={cn(
+                        "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
+                        currentPage === 1
+                          ? "bg-white text-[#F68537] border-[#F68537] cursor-not-allowed"
+                          : "bg-[#F68537] text-white border-[#F68537]"
+                      )}
                     >
                       Anterior
                     </PaginationPrevious>
@@ -369,8 +459,13 @@ export default function Perfil() {
                   {Array.from({ length: totalPages }, (_, i) => (
                     <PaginationItem key={i}>
                       <PaginationLink
+                        size="icon"
                         onClick={() => setCurrentPage(i + 1)}
                         isActive={currentPage === i + 1}
+                        className={`px-3 py-1 border rounded-full transition-colors ${currentPage === i + 1
+                            ? "bg-white text-[#F68537] border-[#F68537]"
+                            : "bg-[#F68537] text-white border-[#F68537]"
+                          }`}
                       >
                         {i + 1}
                       </PaginationLink>
@@ -379,12 +474,14 @@ export default function Perfil() {
 
                   <PaginationItem>
                     <PaginationNext
-                      onClick={
+                      size="sm"
+                      onClick={currentPage === totalPages ? undefined : () => setCurrentPage(currentPage + 1)}
+                      className={cn(
+                        "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
                         currentPage === totalPages
-                          ? undefined
-                          : () => setCurrentPage(currentPage + 1)
-                      }
-                      className={currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""}
+                          ? "bg-white text-[#F68537] border-[#F68537] cursor-not-allowed"
+                          : "bg-[#F68537] text-white border-[#F68537]"
+                      )}
                     >
                       Próximo
                     </PaginationNext>
