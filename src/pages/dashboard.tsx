@@ -63,9 +63,9 @@ function Dashboard() {
   }, [timeRangeTab]);
 
   const handleClearFilters = () => {
-    setTimeRangeTab('mensal');
-    setSectorFilter('');
-    setMetricFilter('');
+    setTimeRangeTab("mensal");
+    setSectorFilter("");
+    setMetricFilter("");
     setDatePeriod(undefined);
   };
 
