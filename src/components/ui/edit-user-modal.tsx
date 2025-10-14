@@ -39,7 +39,7 @@ export default function EditUserModal({
   };
 
   const handleGenderChange = (value: string) => {
-      setFormData((prev) => ({ ...prev, gender: value as Gender }));
+    setFormData((prev) => ({ ...prev, gender: value as Gender }));
   };
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,7 +81,7 @@ export default function EditUserModal({
               <button
                 type="button"
                 onClick={handlePhotoRemove}
-                className="px-3 py-1 border border-red-500 text-red-500 rounded-lg text-sm hover:bg-red-50"
+                className="px-3 py-1 border border-red-500 text-red-500 rounded-lg text-sm hover:bg-gray-400 cursor-pointer"
               >
                 Remover Foto
               </button>
@@ -164,10 +164,17 @@ export default function EditUserModal({
         </div>
 
         <div className="flex justify-center gap-4 mt-6">
-          <button className="px-6 py-2 bg-gray-300 rounded-lg" onClick={onClose}>
+          <button
+            className="px-6 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 cursor-pointer transition-colors duration-200"
+            onClick={onClose}
+          >
             Cancelar
           </button>
-          <button className="px-6 py-2 bg-[#005172] text-white rounded-lg" onClick={handleConfirm}>
+
+          <button
+            className="px-6 py-2 bg-[#005172] text-white rounded-lg hover:bg-[#006b91] cursor-pointer transition-colors duration-200"
+            onClick={handleConfirm}
+          >
             Confirmar
           </button>
         </div>
@@ -175,7 +182,7 @@ export default function EditUserModal({
           <button
             type="button"
             onClick={() => setShowDeleteModal(true)}
-            className="text-[#D65E5E] text-sm underline hover:text-red-600"
+            className="text-[#D65E5E] text-sm underline hover:text-red-600 hover:bg-gray-400 cursor-pointer"
           >
             Apagar minha conta
           </button>
