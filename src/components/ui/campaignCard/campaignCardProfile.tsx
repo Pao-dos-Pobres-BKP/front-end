@@ -126,7 +126,7 @@ export function CampaignCardProfile({
                   <div>Membro desde: {memberSince ?? "DD/MM/AAAA"}</div>
                   <div>
                     <Button variant="secondary" size="small">
-                      Adicionar Dados
+                      Página de Perfil
                     </Button>
                   </div>
                 </div>
