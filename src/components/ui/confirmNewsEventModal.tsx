@@ -2,21 +2,22 @@
 import { useEffect } from "react";
 import Button from "./button";
 
+type ModalProps =
+  | {
+      isOpen: boolean;
+      onClose: () => void;
+      variant: "delete-news" | "delete-event";
+      onConfirm?: () => void;
+      itemTitle: string;
+    }
+  | {
+      isOpen: boolean;
+      onClose: () => void;
+      variant: "maximum-news" | "maximum-events";
+      onConfirm?: () => void;
+      itemTitle?: never;
+    };
 
-type ModalVariant =
-  |  "delete-news"
-  |  "maximum-news"
-  |  "delete-event"
-  |  "maximum-events";
-
-
-interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  variant: ModalVariant;
-  onConfirm?: () => void;
-  itemTitle?: string;
-}
 
 const modalConfig = {
 
@@ -58,7 +59,7 @@ const modalConfig = {
   },
 };
 
-const ConfirmNewsEventModals = ({ isOpen, onClose, variant, onConfirm, itemTitle}: ModalProps) => {
+const ConfirmNewsEventModal = ({ isOpen, onClose, variant, onConfirm, itemTitle}: ModalProps) => {
   const config = modalConfig[variant];
 
     const description = config.description.replace(
@@ -119,7 +120,7 @@ const ConfirmNewsEventModals = ({ isOpen, onClose, variant, onConfirm, itemTitle
           <p
             className=" text-slate-500 font-inter text-sm font-normal leading-5"
           >
-            {config.description}
+            {description}
           </p>
         </div>
 
@@ -143,4 +144,4 @@ const ConfirmNewsEventModals = ({ isOpen, onClose, variant, onConfirm, itemTitle
   );
 };
 
-export default ConfirmNewsEventModals;
+export default ConfirmNewsEventModal;

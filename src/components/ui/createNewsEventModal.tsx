@@ -1,10 +1,10 @@
-//Modal para a criação de nova notíca ou novo evento
+// Modal para a criação de nova notíca ou novo evento
 import { useState, useEffect } from "react";
 import { Pagination, PaginationContent, PaginationItem } from "@/components/ui/pagination";
 import Calendar from "@/assets/Calendar.svg";
 import Paper from "@/assets/Paper.svg";
-import Image from "@/assets/Image.svg"
-import Input from "./input"
+import Image from "@/assets/Image.svg";
+import Input from "./input";
 import { DatePicker } from "./date-picker";
 
 interface CreateNewsEventModalProps {
@@ -12,11 +12,10 @@ interface CreateNewsEventModalProps {
   onClose: () => void;
   onSave: (dados: unknown) => void;
   initialData: {
-    Date: any;
+    date: Date;
     title: string;
     description?: string;
     adress?: string;
-    date: string;
     hour?: string;
     link: string;
     foto?: string;
@@ -30,10 +29,13 @@ export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialD
 
   useEffect(() => {
     if (isOpen) {
-      setFormData(initialData);
+      setFormData({
+        ...initialData,
+        date: initialData.date instanceof Date ? initialData.date : new Date(initialData.date),
+      });
       setStep("tipo");
     }
-  }, [isOpen]);
+  }, [isOpen, initialData]);
 
   if (!isOpen) return null;
 
@@ -42,7 +44,7 @@ export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialD
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleFotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const url = URL.createObjectURL(file);
@@ -50,16 +52,16 @@ export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialD
     }
   };
 
-  const handleFotoRemover = () => {
+  const handleRemovePhoto = () => {
     setFormData({ ...formData, foto: "" });
   };
 
-  const handleConfirmar = () => {
+  const handleConfirm = () => {
     onSave(formData);
     onClose();
   };
 
-  const handleEscolhaTipo = (tipo: "evento" | "noticia") => {
+  const handleSelectType = (tipo: "evento" | "noticia") => {
     setCurrentPage(tipo);
     setStep("form");
   };
@@ -73,7 +75,7 @@ export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialD
 
             <div className="flex justify-center gap-8 mb-6">
               <button
-                onClick={() => handleEscolhaTipo("evento")}
+                onClick={() => handleSelectType("evento")}
                 className="flex flex-col items-center p-4 border rounded-lg hover:border-[#005172] transition"
               >
                 <img src={Calendar} alt="Ícone de Evento" className="w-8 h-8 mb-2" />
@@ -81,7 +83,7 @@ export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialD
               </button>
 
               <button
-                onClick={() => handleEscolhaTipo("noticia")}
+                onClick={() => handleSelectType("noticia")}
                 className="flex flex-col items-center p-4 border rounded-lg hover:border-[#005172] transition"
               >
                 <img src={Paper} alt="Ícone de Notícia" className="w-8 h-8 mb-2" />
@@ -127,7 +129,7 @@ export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialD
                     />
                   </label>
                   <p className="text-xs text-gray-500 text-left mt-1">
-                    {formData.description?.length}/200
+                    {formData.description?.length || 0}/200
                   </p>
                 </div>
 
@@ -148,11 +150,11 @@ export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialD
                 <div className="mb-4 text-left">
                   <DatePicker
                     label="Data"
-                    value={formData.Date ? new Date(formData.Date) : undefined}
+                    value={formData.date}
                     onChange={(date) =>
                       setFormData((prev) => ({
                         ...prev,
-                        Date: date ?? undefined,
+                        date: date ?? new Date(),
                       }))
                     }
                     fullWidth
@@ -165,7 +167,7 @@ export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialD
                     <Input
                       name="hour"
                       type="time"
-                      value={formData.hour}
+                      value={formData.hour || ""}
                       onChange={handleChange}
                       className="w-full px-3 py-2 border rounded-lg"
                     />
@@ -191,13 +193,13 @@ export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialD
                 </div>
 
                 <div className="mb-4 text-left">
-                   <DatePicker
+                  <DatePicker
                     label="Data"
-                    value={formData.Date ? new Date(formData.Date) : undefined}
+                    value={formData.date}
                     onChange={(date) =>
                       setFormData((prev) => ({
                         ...prev,
-                        Date: date ?? undefined,
+                        date: date ?? new Date(),
                       }))
                     }
                     fullWidth
@@ -221,30 +223,30 @@ export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialD
             </div>
 
 
-            <div className="items-center justify-center w-full">
+            <div className="flex items-center justify-center w-full mb-6 mt-6">
               {formData.foto && formData.foto !== "https://via.placeholder.com/60" ? (
-                <div className="flex items-center justify-between bg-[#005172] text-white rounded-lg px-4 py-2 mt-3 cursor-pointer">
+                <div className="flex items-center justify-between bg-[#005172] text-white rounded-xl px-4 py-3 cursor-pointer w-full h-12">
                   <span className="text-sm truncate max-w-[80%]">
                     {formData.foto.split("/").pop()?.split("\\").pop()}
                   </span>
                   <button
                     type="button"
-                    onClick={handleFotoRemover}
+                    onClick={handleRemovePhoto}
                     className="ml-2 text-white text-lg font-bold hover:text-red-300"
                   >
                     ×
                   </button>
                 </div>
               ) : (
-                <label className="text-sm font-medium text-[#005172] cursor-pointer">
-                  <span className="flex justify-center gap-2 px-3 py-2 border rounded-lg hover:bg-gray-100">
-                    <img src={Image} className="w-4 h-4" />
+                <label className="text-sm font-medium text-[#005172] cursor-pointer w-full">
+                  <span className="flex justify-center items-center gap-2 px-4 py-3 border border-[#005172] rounded-xl hover:bg-gray-100 w-full h-12">
+                    <img src={Image} className="w-5 h-5" />
                     Anexar Imagem
                   </span>
                   <Input
                     type="file"
                     accept="image/*"
-                    onChange={handleFotoChange}
+                    onChange={handlePhotoChange}
                     className="hidden"
                   />
                 </label>
@@ -255,7 +257,10 @@ export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialD
               <button className="px-6 py-2 bg-gray-300 rounded-lg" onClick={onClose}>
                 Cancelar
               </button>
-              <button className="px-6 py-2 bg-[#005172] text-white rounded-lg" onClick={handleConfirmar}>
+              <button
+                className="px-6 py-2 bg-[#005172] text-white rounded-lg"
+                onClick={handleConfirm}
+              >
                 Salvar
               </button>
             </div>

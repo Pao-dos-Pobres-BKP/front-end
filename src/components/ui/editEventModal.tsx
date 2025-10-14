@@ -1,33 +1,33 @@
-//Modal para a edição de um evento
 import { useState, useEffect } from "react";
-import Image from "@/assets/Image.svg"
+import Image from "@/assets/Image.svg";
 import { DatePicker } from "./date-picker";
 import Input from "./input";
 
 interface EditEventModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (dados: unknown) => void;
+  onSave: (data: unknown) => void;
   initialData: {
-    birthDate: any;
+    date: Date;
     title: string;
     description?: string;
-    adress?: string;
-    date: string;
+    address?: string;
     hour?: string;
     link: string;
-    foto?: string;
+    photo?: string;
   };
 }
 
 export default function EditEventModal({ isOpen, onClose, onSave, initialData }: EditEventModalProps) {
   const [formData, setFormData] = useState(initialData);
-  const [previewFoto, setPreviewFoto] = useState(initialData.foto || "https://via.placeholder.com/60");
+  const [, setPreviewPhoto] = useState(
+    initialData.photo || "https://via.placeholder.com/60"
+  );
 
   useEffect(() => {
     if (isOpen) {
       setFormData(initialData);
-      setPreviewFoto(previewFoto);
+      setPreviewPhoto(initialData.photo || "https://via.placeholder.com/60");
     }
   }, [isOpen, initialData]);
 
@@ -38,20 +38,21 @@ export default function EditEventModal({ isOpen, onClose, onSave, initialData }:
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleFotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const url = URL.createObjectURL(file);
-      setFormData({ ...formData, foto: url });
+      setFormData({ ...formData, photo: url });
+      setPreviewPhoto(url);
     }
   };
 
-  const handleFotoRemover = () => {
-    setPreviewFoto("https://via.placeholder.com/60");
-    setFormData({ ...formData, foto: "" });
+  const handlePhotoRemove = () => {
+    setPreviewPhoto("https://via.placeholder.com/60");
+    setFormData({ ...formData, photo: "" });
   };
 
-  const handleConfirmar = () => {
+  const handleConfirm = () => {
     onSave(formData);
     onClose();
   };
@@ -91,7 +92,7 @@ export default function EditEventModal({ isOpen, onClose, onSave, initialData }:
             />
           </label>
           <p className="text-xs text-gray-500 text-left mt-1">
-            {formData.description?.length}/200
+            {formData.description?.length || 0}/200
           </p>
         </div>
 
@@ -102,7 +103,7 @@ export default function EditEventModal({ isOpen, onClose, onSave, initialData }:
             <Input
               name="adress"
               type="text"
-              value={formData.adress}
+              value={formData.address}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-lg"
               placeholder="Localização"
@@ -113,11 +114,11 @@ export default function EditEventModal({ isOpen, onClose, onSave, initialData }:
         <div className="mb-4 text-left">
           <DatePicker
             label="Data"
-            value={formData.birthDate ? new Date(formData.birthDate) : undefined}
+            value={formData.date}
             onChange={(date) =>
               setFormData((prev) => ({
                 ...prev,
-                birthDate: date ?? undefined,
+                date: date ?? new Date(),
               }))
             }
             fullWidth
@@ -150,30 +151,30 @@ export default function EditEventModal({ isOpen, onClose, onSave, initialData }:
         </div>
 
 
-        <div className="items-center justify-center w-full">
-          {formData.foto && formData.foto !== "https://via.placeholder.com/60" ? (
-            <div className="flex items-center justify-between bg-[#005172] text-white rounded-lg px-4 py-2 mt-3 cursor-pointer">
+        <div className="flex items-center justify-center w-full mb-6 mt-6">
+          {formData.photo && formData.photo !== "https://via.placeholder.com/60" ? (
+            <div className="flex items-center justify-between bg-[#005172] text-white rounded-xl px-4 py-3 cursor-pointer w-full h-12">
               <span className="text-sm truncate max-w-[80%]">
-                {formData.foto.split("/").pop()?.split("\\").pop()}
+                {formData.photo.split("/").pop()?.split("\\").pop()}
               </span>
               <button
                 type="button"
-                onClick={handleFotoRemover}
+                onClick={handlePhotoRemove}
                 className="ml-2 text-white text-lg font-bold hover:text-red-300"
               >
                 ×
               </button>
             </div>
           ) : (
-            <label className="text-sm font-medium text-[#005172] cursor-pointer">
-              <span className="flex justify-center gap-2 px-3 py-2 border rounded-lg hover:bg-gray-100">
-                <img src={Image} className="w-4 h-4" />
+            <label className="text-sm font-medium text-[#005172] cursor-pointer w-full">
+              <span className="flex justify-center items-center gap-2 px-4 py-3 border border-[#005172] rounded-xl hover:bg-gray-100 w-full h-12">
+                <img src={Image} className="w-5 h-5" />
                 Anexar Imagem
               </span>
               <Input
                 type="file"
                 accept="image/*"
-                onChange={handleFotoChange}
+                onChange={handlePhotoChange}
                 className="hidden"
               />
             </label>
@@ -184,7 +185,10 @@ export default function EditEventModal({ isOpen, onClose, onSave, initialData }:
           <button className="px-6 py-2 bg-gray-300 rounded-lg" onClick={onClose}>
             Cancelar
           </button>
-          <button className="px-6 py-2 bg-[#005172] text-white rounded-lg" onClick={handleConfirmar}>
+          <button
+            className="px-6 py-2 bg-[#005172] text-white rounded-lg"
+            onClick={handleConfirm}
+          >
             Salvar
           </button>
         </div>

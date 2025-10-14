@@ -1,26 +1,35 @@
-//Modal para a edição de uma notícia
 import { useState, useEffect } from "react";
-import Image from "@/assets/Image.svg"
+import Image from "@/assets/Image.svg";
+import { DatePicker } from "./date-picker";
+import Input from "./input";
 
 interface EditNewsModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (dados: unknown) => void;
+  onSave: (data: unknown) => void;
   initialData: {
     title: string;
-    date: string;
+    date: Date;
     link: string;
-    foto?: string;
-
+    photo?: string;
   };
 }
 
-export default function EditNewsModal({ isOpen, onClose, onSave, initialData }: EditNewsModalProps) {
+export default function EditNewsModal({
+  isOpen,
+  onClose,
+  onSave,
+  initialData,
+}: EditNewsModalProps) {
   const [formData, setFormData] = useState(initialData);
+  const [, setPreviewPhoto] = useState(
+    initialData.photo || "https://via.placeholder.com/60"
+  );
 
   useEffect(() => {
     if (isOpen) {
       setFormData(initialData);
+      setPreviewPhoto(initialData.photo || "https://via.placeholder.com/60");
     }
   }, [isOpen, initialData]);
 
@@ -31,15 +40,21 @@ export default function EditNewsModal({ isOpen, onClose, onSave, initialData }: 
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleFotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const url = URL.createObjectURL(file);
-      setFormData({ ...formData, foto: url });
+      setFormData({ ...formData, photo: url });
+      setPreviewPhoto(url);
     }
   };
 
-  const handleConfirmar = () => {
+  const handlePhotoRemove = () => {
+    setPreviewPhoto("https://via.placeholder.com/60");
+    setFormData({ ...formData, photo: "" });
+  };
+
+  const handleConfirm = () => {
     onSave(formData);
     onClose();
   };
@@ -49,12 +64,12 @@ export default function EditNewsModal({ isOpen, onClose, onSave, initialData }: 
     <div className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-50 px-2">
       <div className="bg-white w-full max-w-lg rounded-xl p-6 shadow-lg mx-4 sm:mx-0">
         <h2 className="text-2xl font-bold text-[#005172] mb-4 text-left">
-          Editar evento
+          Editar notícia
         </h2>
         <div className="mb-4 text-left">
           <label className="text-sm font-medium text-[#005172]">
             Título
-            <input
+            <Input
               name="title"
               type="text"
               value={formData.title}
@@ -67,23 +82,24 @@ export default function EditNewsModal({ isOpen, onClose, onSave, initialData }: 
 
 
         <div className="mb-4 text-left">
-          <label className="text-sm font-medium text-[#005172]">
-            Data
-            <input
-              name="date"
-              type="date"
-              value={formData.date}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-lg"
-            />
-          </label>
+          <DatePicker
+            label="Data"
+            value={formData.date}
+            onChange={(date) =>
+              setFormData((prev) => ({
+                ...prev,
+                date: date ?? new Date(),
+              }))
+            }
+            fullWidth
+          />
         </div>
 
 
         <div className="mb-4 text-left">
           <label className="text-sm font-medium text-[#005172]">
             Link para site principal do Pão dos Pobres
-            <input
+            <Input
               name="link"
               type="text"
               value={formData.link}
@@ -93,24 +109,44 @@ export default function EditNewsModal({ isOpen, onClose, onSave, initialData }: 
             />
           </label>
         </div>
-        <label className="text-sm font-medium text-[#005172] cursor-pointer">
-          <span className="flex justify-center gap-2 px-3 py-2 border rounded-lg hover:bg-gray-100">
-            <img src={Image} className="w-4 h-4" />
-            Anexar Imagem
-          </span>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFotoChange}
-            className="hidden"
-          />
-        </label>
+        <div className="flex items-center justify-center w-full mb-6 mt-6">
+          {formData.photo && formData.photo !== "https://via.placeholder.com/60" ? (
+            <div className="flex items-center justify-between bg-[#005172] text-white rounded-xl px-4 py-3 cursor-pointer w-full h-12">
+              <span className="text-sm truncate max-w-[80%]">
+                {formData.photo.split("/").pop()?.split("\\").pop()}
+              </span>
+              <button
+                type="button"
+                onClick={handlePhotoRemove}
+                className="ml-2 text-white text-lg font-bold hover:text-red-300"
+              >
+                ×
+              </button>
+            </div>
+          ) : (
+            <label className="text-sm font-medium text-[#005172] cursor-pointer w-full">
+              <span className="flex justify-center items-center gap-2 px-4 py-3 border border-[#005172] rounded-xl hover:bg-gray-100 w-full h-12">
+                <img src={Image} className="w-5 h-5" />
+                Anexar Imagem
+              </span>
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={handlePhotoChange}
+                className="hidden"
+              />
+            </label>
+          )}
+        </div>
 
         <div className="flex justify-center gap-4 mt-6">
           <button className="px-6 py-2 bg-gray-300 rounded-lg" onClick={onClose}>
             Cancelar
           </button>
-          <button className="px-6 py-2 bg-[#005172] text-white rounded-lg" onClick={handleConfirmar}>
+          <button
+            className="px-6 py-2 bg-[#005172] text-white rounded-lg"
+            onClick={handleConfirm}
+          >
             Salvar
           </button>
         </div>
