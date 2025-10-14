@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import type { User, Gender } from "@/contexts/UserContext";
 import Modal from "@/components/ui/modal";
-import { DatePicker } from "./date-picker";
 import Input from "./input";
 import { Select } from "./select";
+import { DatePicker } from "./Calendar/date-picker";
 
 interface EditUserModalProps {
   isOpen: boolean;
