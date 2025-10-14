@@ -7,35 +7,6 @@ import { useHome } from "./useHome";
 import { News } from "./components/news";
 import { heroAdapter } from "./utils/heroAdapter";
 
-// const heroItems: HeroItem[] = [
-//   {
-//     imageUrl: festaImg,
-//     title: "Festa Junina do Pão dos Pobres",
-//     description:
-//       "Comemoraremos em junho de 2026 a tradicional Festa Junina do Pão dos Pobres para todos que quiserem vir e celebrar com a gente!",
-//     location: "Rua da República, 801 - Cidade Baixa, Porto Alegre",
-//     date: "21 de junho",
-//     time: "10:30",
-//     buttonLabel: "Ir para o site",
-//     buttonLink: "https://www.paodospobres.org.br/",
-//   },
-//   {
-//     imageUrl: quadra,
-//     title: "Todo dia um futuro novo!",
-//     description: "Conheça nossos projetos e como você pode ajudar.",
-//     location: "Rua da República, 801 - Cidade Baixa, Porto Alegre",
-//     date: "20 de junho",
-//     time: "10:30",
-//     buttonLabel: "Ir para o site",
-//     buttonLink: "/doacao ",
-//   },
-//   {
-//     imageUrl: fundo,
-//     title: "Mais uma imagem!",
-//     description: "Você quer se atualizar?\nInscreva-se na nossa newsletter!",
-//   },
-// ];
-
 const Home = () => {
   const { latestNews, lastEvents } = useHome();
 
