@@ -355,7 +355,7 @@ export default function Perfil() {
 
             <div className="flex justify-center items-center gap-2 mt-6">
               <Pagination>
-                <PaginationContent>
+                <PaginationContent className="gap-2">
                   <PaginationItem>
                     <PaginationPrevious
                       size="sm"
