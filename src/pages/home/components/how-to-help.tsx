@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Accordion,
   AccordionItem,
@@ -9,6 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import Button from "@/components/ui/button";
 import { Edit } from "lucide-react";
 import { WhatsAppIcon } from "@/icons/whatsappIcon";
+import { useUser } from "@/hooks/useUser";
 
 type Category = { id: string; title: string; description: string };
 
@@ -60,6 +61,9 @@ export default function HowToHelpSection() {
   const metaCampanha = 1000;
   const arrecadado = 750;
   const percentual = Math.min((arrecadado / metaCampanha) * 100, 100);
+  const { user } = useUser();
+
+  const userIsAdmin = useMemo(() => user?.role === "ADMIN", [user]);
 
   const [categories, setCategories] = useState<Category[]>(initialCategories);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -132,17 +136,19 @@ export default function HowToHelpSection() {
                         </span>
                         <span className="text-base text-[#024b5a]">{cat.title}</span>
                       </div>
-                      <button
-                        type="button"
-                        aria-label={`Editar ${cat.title}`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEdit(cat);
-                        }}
-                        className="p-2 rounded-md hover:bg-gray-100 mr-4"
-                      >
-                        <Edit className="w-4 h-4 text-gray-600" />
-                      </button>
+                      {userIsAdmin && (
+                        <button
+                          type="button"
+                          aria-label={`Editar ${cat.title}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEdit(cat);
+                          }}
+                          className="p-2 rounded-md hover:bg-gray-100 mr-4"
+                        >
+                          <Edit className="w-4 h-4 text-gray-600" />
+                        </button>
+                      )}
                     </div>
                   </AccordionTrigger>
                   <AccordionContent variant="secondary">
