@@ -31,7 +31,7 @@ export function CampaignCardProfile({
   campaigns = [],
   progressPercent: percent = 0,
 }: CampaignCardProfileProps) {
-  const [detailsOpen, setDetailsOpen] = useState(true);
+  const [detailsOpen, setDetailsOpen] = useState(false);
   return (
     <article
       className={cn("w-full bg-white border border-[#e6e8eb] rounded-2xl", className)}
