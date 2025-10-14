@@ -1,89 +1,95 @@
-  name: CI/CD
+name: CI/CD
 
-  on:
-    push:
-      branches: ["main", "master"]
-    workflow_dispatch: {}
+on:
+  push:
+    branches: ["main", "master"]
+  workflow_dispatch: {}
 
-  env:
-    DOCKER_BUILDKIT: "1"
-    AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-    AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
-    ECR_REPO: ${{ vars.ECR_REPO }}
-    VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
-    ECR_URL: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_DEFAULT_REGION }}.amazonaws.com
-    IMAGE: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_DEFAULT_REGION }}.amazonaws.com/${{ vars.ECR_REPO }}
+env:
+  DOCKER_BUILDKIT: "1"
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+  AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
+  ECR_REPO: ${{ vars.ECR_REPO }}
+  VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+  ECR_URL: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_DEFAULT_REGION }}.amazonaws.com
+  IMAGE: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_DEFAULT_REGION }}.amazonaws.com/${{ vars.ECR_REPO }}
 
-  jobs:
-    local_test_build:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v4
-        - name: Setup Node.js 20
-          uses: actions/setup-node@v4
-          with:
-            node-version: 20
-            cache: yarn
-        - name: Install deps
-          run: yarn install --frozen-lockfile
-        - name: Build
-          run: yarn build
-          env:
-            VITE_API_BASE_URL: ${{ env.VITE_API_BASE_URL }}
+jobs:
+  local_test_build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+      - name: Install deps
+        run: yarn install --frozen-lockfile
+      - name: Build
+        run: yarn build
+        env:
+          VITE_API_BASE_URL: ${{ env.VITE_API_BASE_URL }}
 
-    build_and_push:
-      runs-on: ubuntu-latest
-      needs: local_test_build
-      permissions:
-        contents: read
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v4
-        - name: Configure AWS credentials
-          uses: aws-actions/configure-aws-credentials@v4
-          with:
-            aws-region: ${{ env.AWS_DEFAULT_REGION }}
-            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        - name: Login to Amazon ECR
-          uses: aws-actions/amazon-ecr-login@v2
-        - name: Housekeeping
-          run: |
-            docker system prune -af || true
-            docker builder prune -af || true
-            docker image prune -af || true
-        - name: Compute short SHA
-          id: meta
-          run: echo "sha7=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
-        - name: Echo build arg
-          run: echo "VITE_API_BASE_URL=${VITE_API_BASE_URL}"
-        - name: Build image
-          run: |
-            docker build \
-              --build-arg VITE_API_BASE_URL="${VITE_API_BASE_URL}" \
-              --build-arg VITE_BASE_PATH="/fe/" \
-              -t "${IMAGE}:${{ steps.meta.outputs.sha7 }}" \
-              -t "${IMAGE}:latest" \
-              -f Dockerfile .
-        - name: Push image
-          run: docker push "${IMAGE}:${{ steps.meta.outputs.sha7 }}"
+  build_and_push:
+    runs-on: ubuntu-latest
+    needs: local_test_build
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_DEFAULT_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+      - name: Housekeeping
+        run: |
+          docker system prune -af || true
+          docker builder prune -af || true
+          docker image prune -af || true
+      - name: Compute short SHA
+        id: meta
+        run: echo "sha7=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+      - name: Echo build arg
+        run: echo "VITE_API_BASE_URL=${VITE_API_BASE_URL}"
+      - name: Build image
+        run: |
+          docker build \
+            --build-arg VITE_API_BASE_URL="${VITE_API_BASE_URL}" \
+            --build-arg VITE_BASE_PATH="/fe/" \
+            -t "${IMAGE}:${{ steps.meta.outputs.sha7 }}" \
+            -t "${IMAGE}:latest" \
+            -f Dockerfile .
+      - name: Push image
+        run: docker push "${IMAGE}:${{ steps.meta.outputs.sha7 }}"
 
-    deploy_to_ec2:
-      runs-on: ubuntu-latest
-      needs: build_and_push
-      steps:
-        - name: Compute image ref
-          id: meta
-          run: echo "image_ref=${IMAGE}:${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
-        - name: Deploy via SSH
-          uses: appleboy/ssh-action@v1.1.0
-          with:
-            host: ${{ secrets.SSH_HOST }}
-            username: ${{ secrets.SSH_USER }}
-            key: ${{ secrets.SSH_EC2_PRIVATE_KEY }}
-            script_stop: true
-            script: |
-              aws ecr get-login-password --region "${AWS_DEFAULT_REGION}" | sudo docker login --username AWS --password-stdin "${ECR_URL}"
-              sudo docker pull "${{ steps.meta.outputs.image_ref }}"
-              sudo docker service update --with-registry-auth --image "${{ steps.meta.outputs.image_ref }}" --env-add VITE_API_BASE_URL="${VITE_API_BASE_URL}" "${{ vars.SERVICE_NAME }}"
+  deploy_to_ec2:
+    runs-on: ubuntu-latest
+    needs: build_and_push
+    steps:
+      - name: Compute image ref
+        id: meta
+        run: echo "image_ref=${IMAGE}:${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_EC2_PRIVATE_KEY }}
+          script_stop: true
+          script: |
+            REGION="${{ env.AWS_DEFAULT_REGION }}"
+            ECR_URL="${{ env.ECR_URL }}"
+            IMAGE_REF="${{ steps.meta.outputs.image_ref }}"
+            SERVICE="${{ vars.SERVICE_NAME }}"
+            API_BASE="${{ env.VITE_API_BASE_URL }}"
+
+            aws ecr get-login-password --region "$REGION" | sudo docker login --username AWS --password-stdin "$ECR_URL"
+            sudo docker pull "$IMAGE_REF"
+            sudo docker service update --with-registry-auth --image "$IMAGE_REF" --env-add VITE_API_BASE_URL="$API_BASE" "$SERVICE"
