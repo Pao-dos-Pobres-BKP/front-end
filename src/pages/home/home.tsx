@@ -1,12 +1,13 @@
 import { Hero, type HeroItem } from "@/pages/home/components/hero";
 import { Newsletter } from "@/pages/home/components/newsletter";
 import PartnerCompanies from "@/pages/home/components/partner-companies";
-import News from "@/pages/home/components/news";
 import HowToHelp from "@/pages/home/components/how-to-help";
 
 import festaImg from "@/assets/festa-junina-pp.jpg";
 import quadra from "@/assets/quadra-pp.jpg";
 import fundo from "@/assets/fundo-pp.png";
+import { useHome } from "./useHome";
+import { News } from "./components/news";
 
 const heroItems: HeroItem[] = [
   {
@@ -38,13 +39,15 @@ const heroItems: HeroItem[] = [
 ];
 
 const Home = () => {
+  const { latestNews } = useHome();
+
   return (
     <div className="flex flex-col bg-gray-200">
       <Hero items={heroItems} />
 
       <div>
         <HowToHelp />
-        <News />
+        <News news={latestNews} />
         <Newsletter />
         <PartnerCompanies />
       </div>

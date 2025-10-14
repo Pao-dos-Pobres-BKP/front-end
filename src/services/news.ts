@@ -1,7 +1,7 @@
 import api from "./api";
 import type { PageableResponse } from "./types";
 
-type NewsResponse = {
+export type NewsAPI = {
   id: string;
   title: string;
   description: string;
@@ -10,9 +10,9 @@ type NewsResponse = {
   url: string;
 };
 
-export async function getNews(): Promise<PageableResponse<NewsResponse>> {
+export async function getNews(): Promise<PageableResponse<NewsAPI>> {
   try {
-    const response = await api.get<PageableResponse<NewsResponse>>("/news");
+    const response = await api.get<PageableResponse<NewsAPI>>("/news");
 
     return response.data;
   } catch (error) {
