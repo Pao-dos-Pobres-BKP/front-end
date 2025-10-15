@@ -4,7 +4,6 @@ import { MetricCard } from "@/components/ui/metric-card";
 import { Tabs } from "@/components/ui/tabs";
 import { Select } from "@/components/ui/select";
 import Button from "@/components/ui/button";
-import { Footer } from "@/components/layout/footer";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DatePicker } from "@/components/ui/Calendar/date-picker";
 
@@ -64,9 +63,9 @@ function Dashboard() {
   }, [timeRangeTab]);
 
   const handleClearFilters = () => {
-    setTimeRangeTab('mensal');
-    setSectorFilter('');
-    setMetricFilter('');
+    setTimeRangeTab("mensal");
+    setSectorFilter("");
+    setMetricFilter("");
     setDatePeriod(undefined);
   };
 
@@ -181,7 +180,6 @@ function Dashboard() {
           </div>
         </section>
       </main>
-      <Footer />
     </div>
   );
 }

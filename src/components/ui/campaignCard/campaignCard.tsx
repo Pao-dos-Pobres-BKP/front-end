@@ -14,14 +14,21 @@ export type CampaignCardProps = {
   raised?: number;
   goal?: number;
   creatorName?: string;
-  variant?: "default" | "profile" | "compact" | "historic" | "list" | "profile_compact" | "event_news";
+  variant?:
+    | "default"
+    | "profile"
+    | "compact"
+    | "historic"
+    | "list"
+    | "profile_compact"
+    | "event_news";
   onAction?: () => void;
   className?: string;
   situation?: "approved" | "pending" | "rejected" | "recurring";
-  type?: "event" | "news";          // para "event_news"
-  date?: Date
+  type?: "event" | "news"; // para "event_news"
+  date?: Date;
   // profile (opcionais)
-  role?: "donor" | "admin";         // para "profile_compact"
+  role?: "donor" | "admin"; // para "profile_compact"
   donorName?: string;
   donorEmail?: string;
   donationAmount?: number;
@@ -120,15 +127,15 @@ export default function CampaignCard({
   }
 
   if (variant === "event_news") {
-  return (
-    <CampaignCardEventAndNews
-      title={title}
-      date={date as Date}
-      type={type ?? "news"}
-      className={className}
-    />
-  );
-}
+    return (
+      <CampaignCardEventAndNews
+        title={title}
+        date={date as Date}
+        type={type ?? "news"}
+        className={className}
+      />
+    );
+  }
 
   return (
     <article
