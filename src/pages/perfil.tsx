@@ -26,7 +26,7 @@ interface ProfileUser extends User {
 }
 
 export default function Perfil() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 6;
@@ -154,7 +154,7 @@ export default function Perfil() {
   const currentCards = campanhasHistorico.slice(indexOfFirstCard, indexOfLastCard);
 
   const handleEditarConta = () => {
-    setIsModalOpen(true);
+    setIsEditModalOpen(true);
   };
 
   const handleSalvarPerfil = (novosDados: Partial<User>) => {
@@ -296,109 +296,112 @@ export default function Perfil() {
               )}
             </div>
           </div>
+          {dados.role === "DONOR" && (
+            <>
+              <hr className="border-t border-[#266D88CC] mx-50 my-8" />
+              <h2 className="text-2xl font-bold text-[#005172] mt-2 mb-4">Histórico de Doações</h2>
 
-          <hr className="border-t border-[#266D88CC] mx-50 my-8" />
-          <h2 className="text-2xl font-bold text-[#005172] mt-2 mb-4">Histórico de Doações</h2>
+              <div className="mt-2 bg-white rounded-lg p-6 min-h-[580px] flex flex-col">
+                <div className="flex flex-col md:flex-row gap-3 items-center mb-6 w-full">
+                  <Input placeholder="Buscar..." fullWidth />
 
-          <div className="mt-2 bg-white rounded-lg p-6 min-h-[580px] flex flex-col">
-            <div className="flex flex-col md:flex-row gap-3 items-center mb-6 w-full">
-              <Input placeholder="Buscar..." fullWidth />
-
-              <div className="relative w-full md:w-1/3">
-                <select
-                  id="filtro-doacoes"
-                  className="w-full appearance-none bg-[#F68537] text-white py-2 pl-3 pr-10 rounded-md shadow-sm focus:outline-none"
-                >
-                  <option value="" disabled>
-                    Selecione uma data
-                  </option>
-                  <option value="30">Últimos 30 dias</option>
-                  <option value="60">Últimos 60 dias</option>
-                  <option value="120">Últimos 120 dias</option>
-                </select>
-                <svg
-                  className="w-4 h-4 text-white absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </div>
-
-              <button className="w-full md:w-auto px-4 py-2 rounded-lg bg-[#F68537] text-white hover:bg-orange-600">
-                Pesquisar
-              </button>
-            </div>
-
-            <div className="flex flex-col gap-3 flex-1">
-              {currentCards.map((campanha, index) => (
-                <CampaignCard
-                  key={index}
-                  title={campanha.title}
-                  creatorName={campanha.creatorName}
-                  raised={campanha.raised}
-                  goal={campanha.goal}
-                  variant="historic"
-                  situation={campanha.situation}
-                  lastDonation={80}
-                  className="border border-[#005172] rounded-lg text-sm p-3"
-                />
-              ))}
-            </div>
-
-            <div className="flex justify-center items-center gap-2 mt-6">
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious
-                      onClick={
-                        currentPage === 1 ? undefined : () => setCurrentPage(currentPage - 1)
-                      }
-                      className={currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""}
+                  <div className="relative w-full md:w-1/3">
+                    <select
+                      id="filtro-doacoes"
+                      className="w-full appearance-none bg-[#F68537] text-white py-2 pl-3 pr-10 rounded-md shadow-sm focus:outline-none"
                     >
-                      Anterior
-                    </PaginationPrevious>
-                  </PaginationItem>
+                      <option value="" disabled>
+                        Selecione uma data
+                      </option>
+                      <option value="30">Últimos 30 dias</option>
+                      <option value="60">Últimos 60 dias</option>
+                      <option value="120">Últimos 120 dias</option>
+                    </select>
+                    <svg
+                      className="w-4 h-4 text-white absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </div>
 
-                  {Array.from({ length: totalPages }, (_, i) => (
-                    <PaginationItem key={i}>
-                      <PaginationLink
-                        onClick={() => setCurrentPage(i + 1)}
-                        isActive={currentPage === i + 1}
-                      >
-                        {i + 1}
-                      </PaginationLink>
-                    </PaginationItem>
+                  <button className="w-full md:w-auto px-4 py-2 rounded-lg bg-[#F68537] text-white hover:bg-orange-600">
+                    Pesquisar
+                  </button>
+                </div>
+
+                <div className="flex flex-col gap-3 flex-1">
+                  {currentCards.map((campanha, index) => (
+                    <CampaignCard
+                      key={index}
+                      title={campanha.title}
+                      creatorName={campanha.creatorName}
+                      raised={campanha.raised}
+                      goal={campanha.goal}
+                      variant="historic"
+                      situation={campanha.situation}
+                      lastDonation={80}
+                      className="border border-[#005172] rounded-lg text-sm p-3"
+                    />
                   ))}
+                </div>
 
-                  <PaginationItem>
-                    <PaginationNext
-                      onClick={
-                        currentPage === totalPages
-                          ? undefined
-                          : () => setCurrentPage(currentPage + 1)
-                      }
-                      className={currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""}
-                    >
-                      Próximo
-                    </PaginationNext>
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </div>
-          </div>
+                <div className="flex justify-center items-center gap-2 mt-6">
+                  <Pagination>
+                    <PaginationContent>
+                      <PaginationItem>
+                        <PaginationPrevious
+                          onClick={
+                            currentPage === 1 ? undefined : () => setCurrentPage(currentPage - 1)
+                          }
+                          className={currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""}
+                        >
+                          Anterior
+                        </PaginationPrevious>
+                      </PaginationItem>
+
+                      {Array.from({ length: totalPages }, (_, i) => (
+                        <PaginationItem key={i}>
+                          <PaginationLink
+                            onClick={() => setCurrentPage(i + 1)}
+                            isActive={currentPage === i + 1}
+                          >
+                            {i + 1}
+                          </PaginationLink>
+                        </PaginationItem>
+                      ))}
+
+                      <PaginationItem>
+                        <PaginationNext
+                          onClick={
+                            currentPage === totalPages
+                              ? undefined
+                              : () => setCurrentPage(currentPage + 1)
+                          }
+                          className={currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""}
+                        >
+                          Próximo
+                        </PaginationNext>
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
       <EditUserModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
         onSave={handleSalvarPerfil}
         initialData={dados}
       />
