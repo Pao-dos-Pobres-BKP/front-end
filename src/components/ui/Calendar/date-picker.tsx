@@ -5,7 +5,7 @@ import { ptBR } from "date-fns/locale";
 import { Calendar as CalendarIcon, ChevronDownIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { Calendar } from "@/components/ui/calendar";
+import { Calendar } from "@/components/ui/Calendar/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 type LabelPosition = "left" | "center" | "right";
@@ -86,6 +86,7 @@ export function DatePicker({
             <Calendar
               mode="single"
               selected={value}
+              showOutsideDays={true}
               onSelect={onChange}
               autoFocus
               locale={ptBR}
