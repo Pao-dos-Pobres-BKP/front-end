@@ -209,15 +209,15 @@ export default function Perfil() {
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-8">
-            <div className="md:w-0.5/3 flex flex-col gap-4">
+          <div className="flex flex-col lg:flex-row gap-8">
+            <div className="lg:w-1/3 flex flex-col gap-4">
               <div className="bg-white rounded-lg p-6 flex-1 min-h-[420px]">
                 <div className="flex flex-col space-y-10">
                   <div className="flex items-center gap-2">
-                    <label className="text-sm font-medium text-[#005172] text-left">
-                      Data de Nascimento:
+                    <label className="text-sm font-medium text-[#005172] text-left whitespace-nowrap">
+                      Data de Nascimento
                     </label>
-                    <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
+                    <span className="flex-1 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
                       {dados.birthDate ? dados.birthDate.toLocaleDateString("pt-BR") : "—"}
                     </span>
                   </div>
@@ -232,8 +232,8 @@ export default function Perfil() {
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <label className="text-sm font-medium text-[#005172] text-left">CPF:</label>
-                    <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
+                    <label className="text-sm font-medium text-[#005172] text-left whitespace-nowrap">CPF:</label>
+                    <span className="flex-1 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
                       {dados.cpf}
                     </span>
                   </div>
@@ -241,13 +241,13 @@ export default function Perfil() {
                     <label className="text-sm font-medium text-[#005172] text-left">
                       Telefone:
                     </label>
-                    <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
+                    <span className="flex-1 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
                       {dados.phone}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <label className="text-sm font-medium text-[#005172] text-left">E-mail:</label>
-                    <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
+                    <label className="text-sm font-medium text-[#005172] text-left whitespace-nowrap">E-mail:</label>
+                    <span className="flex-1 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
                       {dados.email}
                     </span>
                   </div>
@@ -301,10 +301,10 @@ export default function Perfil() {
           <h2 className="text-2xl font-bold text-[#005172] mt-2 mb-4">Histórico de Doações</h2>
 
           <div className="mt-2 bg-white rounded-lg p-6 min-h-[580px] flex flex-col">
-            <div className="flex flex-col md:flex-row gap-3 items-center mb-6 w-full">
+            <div className="flex flex-col lg:flex-row gap-3 items-center mb-6 w-full">
               <Input placeholder="Buscar..." fullWidth />
 
-              <div className="relative w-full md:w-1/3">
+              <div className="relative w-full lg:w-1/3">
                 <select
                   id="filtro-doacoes"
                   className="w-full appearance-none bg-[#F68537] text-white py-2 pl-3 pr-10 rounded-md shadow-sm focus:outline-none"
@@ -331,7 +331,7 @@ export default function Perfil() {
                 </svg>
               </div>
 
-              <button className="w-full md:w-auto px-4 py-2 rounded-lg bg-[#F68537] text-white hover:bg-orange-600">
+              <button className="w-full lg:w-auto px-4 py-2 rounded-lg bg-[#F68537] text-white hover:bg-orange-600">
                 Pesquisar
               </button>
             </div>
