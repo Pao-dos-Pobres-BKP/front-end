@@ -7,5 +7,5 @@ export const ROUTES = {
   dashboard: "/dashboard",
   donorList: "/doadores",
   partners: "/empresas-parceiras",
-  newsEvents: "/news-events"
+  newsEvents: "/news-events",
 } as const;
