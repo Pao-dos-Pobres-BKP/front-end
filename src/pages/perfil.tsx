@@ -1,4 +1,3 @@
-import { Progress } from "@/components/ui/progress";
 import CampaignCard from "@/components/ui/campaignCard/campaignCard";
 import Input from "@/components/ui/input";
 import exemplo_foto_perfil from "@/assets/exemplo_foto_perfil.jpg";
@@ -249,29 +248,13 @@ export default function Perfil() {
                     </span>
                   </div>
                 </div>
-
-                <div className="mt-10 flex items-center gap-2">
-                  <span className="text-sm text-[#005172] whitespace-nowrap">
-                    Quanto doou até agora:
-                  </span>
-                  <Progress
-                    value={dados.percentageAchieved}
-                    variant="blue"
-                    size="medium"
-                    className="flex-1"
-                  />
-                  <span className="text-sm text-[#005172] whitespace-nowrap">
-                    {dados.totalDonated.toLocaleString("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    })}
-                  </span>
-                </div>
               </div>
             </div>
 
             <div className="flex-1 flex flex-col gap-3 items-start">
-              <h3 className="text-sm font-semibold text-[#005172]">Campanhas que apoia</h3>
+              <h3 className="text-sm font-semibold text-[#005172]">
+                {dados.role === "DONOR" ? "Campanhas que apoia" : "Minhas campanhas"}
+              </h3>
 
               {campanhas.length > 0 ? (
                 campanhas.map((campanha, index) => (
@@ -282,13 +265,15 @@ export default function Perfil() {
                     raised={campanha.raised}
                     goal={campanha.goal}
                     variant="compact"
-                    situation="recurring"
+                    situation={dados.role === "DONOR" ? "recurring" : "approved"}
                     className="border border-[#005172] rounded-lg text-sm p-3"
                   />
                 ))
               ) : (
                 <div className="w-full mx-auto py-8 rounded-lg bg-blue-100 text-[#005172] text-center font-medium border border-[#005172] rounded-lg">
-                  Você ainda não apoia nenhuma campanha.
+                  {dados.role === "DONOR"
+                    ? "Você ainda não apoia nenhuma campanha."
+                    : "Você não possui nenhuma campanha."}
                 </div>
               )}
             </div>
@@ -402,23 +387,23 @@ export default function Perfil() {
                   </Pagination>
                 </div>
               </div>
-                          </>
+            </>
           )}
-          </div>
         </div>
-
-        <EditUserModal
-          isOpen={isEditModalOpen}
-          onClose={() => setIsEditModalOpen(false)}
-          onSave={handleSalvarPerfil}
-          initialData={dados}
-        />
-
-        <ConfirmLogoutModal
-          isOpen={isLogoutModalOpen}
-          onClose={() => setIsLogoutModalOpen(false)}
-          onConfirm={handleConfirmLogout}
-        />
       </div>
-      );
+
+      <EditUserModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        onSave={handleSalvarPerfil}
+        initialData={dados}
+      />
+
+      <ConfirmLogoutModal
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+        onConfirm={handleConfirmLogout}
+      />
+    </div>
+  );
 }
