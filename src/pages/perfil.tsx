@@ -1,3 +1,5 @@
+// trocar "dados.role" por "currentUser?.role" e descomentar as linhas de useUser (24 e 37) na hora de integrar
+
 import CampaignCard from "@/components/ui/campaignCard/campaignCard";
 import Input from "@/components/ui/input";
 import exemplo_foto_perfil from "@/assets/exemplo_foto_perfil.jpg";
@@ -19,7 +21,7 @@ import ConfirmLogoutModal from "@/components/ui/confirm-logout-modal";
 
 import type { User } from "@/contexts/UserContext";
 import CreateAdminModal from "@/components/ui/create-admin-modal";
-import { useUser } from "@/hooks/useUser";
+//import { useUser } from "@/hooks/useUser";
 
 interface ProfileUser extends User {
   totalDonated: number;
@@ -32,11 +34,11 @@ export default function Perfil() {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 6;
-  const currentUser = useUser().user;
+  //const currentUser = useUser().user;
 
   const [dados, setDados] = useState<ProfileUser>({
     id: "1",
-    role: "DONOR",
+    role: "DONOR", // Trocar para "ADMIN" para testar visão de admin
     accessToken: "fake-token-123",
     fullname: "Fulano de Tal",
     birthDate: new Date("1971-08-12"),
@@ -198,7 +200,7 @@ export default function Perfil() {
             </div>
 
             <div className="flex items-center gap-2 w-full sm:w-auto">
-              {currentUser?.role === "ADMIN" && (
+              {dados.role === "ADMIN" && ( 
                 <button
                   onClick={handleOpenCreateAdminModal}
                   className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl bg-[#005172] text-white hover:bg-[#24434f] transition-colors"
