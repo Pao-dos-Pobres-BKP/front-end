@@ -22,9 +22,7 @@ export default function EditNewsModal({
   initialData,
 }: EditNewsModalProps) {
   const [formData, setFormData] = useState(initialData);
-  const [, setPreviewPhoto] = useState(
-    initialData.photo || "https://via.placeholder.com/60"
-  );
+  const [, setPreviewPhoto] = useState(initialData.photo || "https://via.placeholder.com/60");
 
   useEffect(() => {
     if (isOpen) {
@@ -59,13 +57,10 @@ export default function EditNewsModal({
     onClose();
   };
 
-
   return (
     <div className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-50 px-2">
       <div className="bg-white w-full max-w-lg rounded-xl p-6 shadow-lg mx-4 sm:mx-0">
-        <h2 className="text-2xl font-bold text-[#005172] mb-4 text-left">
-          Editar notícia
-        </h2>
+        <h2 className="text-2xl font-bold text-[#005172] mb-4 text-left">Editar notícia</h2>
         <div className="mb-4 text-left">
           <label className="text-sm font-medium text-[#005172]">
             Título
@@ -80,7 +75,6 @@ export default function EditNewsModal({
           </label>
         </div>
 
-
         <div className="mb-4 text-left">
           <DatePicker
             label="Data"
@@ -94,7 +88,6 @@ export default function EditNewsModal({
             fullWidth
           />
         </div>
-
 
         <div className="mb-4 text-left">
           <label className="text-sm font-medium text-[#005172]">
@@ -129,12 +122,7 @@ export default function EditNewsModal({
                 <img src={Image} className="w-5 h-5" />
                 Anexar Imagem
               </span>
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={handlePhotoChange}
-                className="hidden"
-              />
+              <Input type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
             </label>
           )}
         </div>
@@ -143,10 +131,7 @@ export default function EditNewsModal({
           <button className="px-6 py-2 bg-gray-300 rounded-lg" onClick={onClose}>
             Cancelar
           </button>
-          <button
-            className="px-6 py-2 bg-[#005172] text-white rounded-lg"
-            onClick={handleConfirm}
-          >
+          <button className="px-6 py-2 bg-[#005172] text-white rounded-lg" onClick={handleConfirm}>
             Salvar
           </button>
         </div>

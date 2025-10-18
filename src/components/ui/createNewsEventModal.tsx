@@ -22,7 +22,12 @@ interface CreateNewsEventModalProps {
   };
 }
 
-export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialData }: CreateNewsEventModalProps) {
+export default function CreateNewsEventModal({
+  isOpen,
+  onClose,
+  onSave,
+  initialData,
+}: CreateNewsEventModalProps) {
   const [formData, setFormData] = useState(initialData);
   const [currentPage, setCurrentPage] = useState<"evento" | "noticia">("evento");
   const [step, setStep] = useState<"tipo" | "form">("tipo");
@@ -221,7 +226,6 @@ export default function CreateNewsEventModal({ isOpen, onClose, onSave, initialD
                 />
               </label>
             </div>
-
 
             <div className="flex items-center justify-center w-full mb-6 mt-6">
               {formData.foto && formData.foto !== "https://via.placeholder.com/60" ? (

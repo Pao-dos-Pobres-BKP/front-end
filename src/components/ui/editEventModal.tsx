@@ -18,11 +18,14 @@ interface EditEventModalProps {
   };
 }
 
-export default function EditEventModal({ isOpen, onClose, onSave, initialData }: EditEventModalProps) {
+export default function EditEventModal({
+  isOpen,
+  onClose,
+  onSave,
+  initialData,
+}: EditEventModalProps) {
   const [formData, setFormData] = useState(initialData);
-  const [, setPreviewPhoto] = useState(
-    initialData.photo || "https://via.placeholder.com/60"
-  );
+  const [, setPreviewPhoto] = useState(initialData.photo || "https://via.placeholder.com/60");
 
   useEffect(() => {
     if (isOpen) {
@@ -57,13 +60,10 @@ export default function EditEventModal({ isOpen, onClose, onSave, initialData }:
     onClose();
   };
 
-
   return (
     <div className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-50 px-2">
       <div className="bg-white w-full max-w-lg rounded-xl p-6 shadow-lg mx-4 sm:mx-0">
-        <h2 className="text-2xl font-bold text-[#005172] mb-4 text-left">
-          Editar evento
-        </h2>
+        <h2 className="text-2xl font-bold text-[#005172] mb-4 text-left">Editar evento</h2>
         <div className="mb-4 text-left">
           <label className="text-sm font-medium text-[#005172]">
             Título
@@ -95,7 +95,6 @@ export default function EditEventModal({ isOpen, onClose, onSave, initialData }:
             {formData.description?.length || 0}/200
           </p>
         </div>
-
 
         <div className="mb-4 text-left">
           <label className="text-sm font-medium text-[#005172]">
@@ -150,7 +149,6 @@ export default function EditEventModal({ isOpen, onClose, onSave, initialData }:
           </label>
         </div>
 
-
         <div className="flex items-center justify-center w-full mb-6 mt-6">
           {formData.photo && formData.photo !== "https://via.placeholder.com/60" ? (
             <div className="flex items-center justify-between bg-[#005172] text-white rounded-xl px-4 py-3 cursor-pointer w-full h-12">
@@ -171,12 +169,7 @@ export default function EditEventModal({ isOpen, onClose, onSave, initialData }:
                 <img src={Image} className="w-5 h-5" />
                 Anexar Imagem
               </span>
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={handlePhotoChange}
-                className="hidden"
-              />
+              <Input type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
             </label>
           )}
         </div>
@@ -185,10 +178,7 @@ export default function EditEventModal({ isOpen, onClose, onSave, initialData }:
           <button className="px-6 py-2 bg-gray-300 rounded-lg" onClick={onClose}>
             Cancelar
           </button>
-          <button
-            className="px-6 py-2 bg-[#005172] text-white rounded-lg"
-            onClick={handleConfirm}
-          >
+          <button className="px-6 py-2 bg-[#005172] text-white rounded-lg" onClick={handleConfirm}>
             Salvar
           </button>
         </div>
