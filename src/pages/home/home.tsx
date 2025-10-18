@@ -1,5 +1,5 @@
 import { Hero } from "@/pages/home/components/hero";
-import { Newsletter } from "@/pages/home/components/newsletter";
+import { Newsletter } from "@/pages/home/components/newsletter/newsletter";
 import PartnerCompanies from "@/pages/home/components/partner-companies";
 import HowToHelp from "@/pages/home/components/how-to-help";
 
