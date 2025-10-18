@@ -10,6 +10,7 @@ import Perfil from "@/pages/perfil";
 import Dashboard from "@/pages/dashboard";
 import DonorList from "@/pages/donor-list";
 import Partners from "@/pages/empresas-parceiras";
+import PerfilAdmin from "@/pages/perfil-admin";
 
 const Navigation = () => {
   return (
@@ -21,6 +22,7 @@ const Navigation = () => {
           <Route path={ROUTES.doacao} element={<Doacao />} />
           <Route path={ROUTES.campanhas} element={<Campanhas />} />
           <Route path={ROUTES.perfil} element={<Perfil />} />
+          <Route path={ROUTES.perfilAdmin} element={<PerfilAdmin />} />
           <Route path={ROUTES.dashboard} element={<Dashboard />} />
           <Route path={ROUTES.donorList} element={<DonorList />} />
           <Route path={ROUTES.partners} element={<Partners />} />
