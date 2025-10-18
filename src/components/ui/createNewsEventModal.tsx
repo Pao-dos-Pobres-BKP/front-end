@@ -5,7 +5,7 @@ import Calendar from "@/assets/Calendar.svg";
 import Paper from "@/assets/Paper.svg";
 import Image from "@/assets/Image.svg";
 import Input from "./input";
-import { DatePicker } from "./date-picker";
+import { DatePicker } from "./Calendar/date-picker";
 
 interface CreateNewsEventModalProps {
   isOpen: boolean;
