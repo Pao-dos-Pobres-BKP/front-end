@@ -71,6 +71,7 @@ const modalConfig: Record<ModalVariant, PresetConfig> = {
       { label: "Excluir", variant: "destructive", action: "confirm" },
     ],
   },
+
 };
 
 type BaseProps = {

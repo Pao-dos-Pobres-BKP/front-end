@@ -173,6 +173,7 @@ export default function Perfil() {
     setIsLogoutModalOpen(false);
   };
 
+
   return (
     <div className="min-h-screen bg-[#2F5361] font-inter">
       <div className="flex justify-center px-6 py-6">
@@ -444,6 +445,7 @@ export default function Perfil() {
         onClose={() => setIsLogoutModalOpen(false)}
         onConfirm={handleConfirmLogout}
       />
+      
     </div>
   );
 }
