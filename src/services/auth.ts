@@ -10,6 +10,7 @@ export interface LoginResponse {
 
 export const login = async (credentials: LoginInput): Promise<User> => {
   const { accessToken } = await getToken(credentials);
+  localStorage.setItem("authToken", accessToken);
   const payload = JSON.parse(atob(accessToken.split(".")[1]));
   const { id, role } = payload;
 
