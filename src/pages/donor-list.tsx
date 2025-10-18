@@ -209,10 +209,11 @@ export default function DonorList() {
                   size="icon"
                   onClick={() => setCurrentPage(i + 1)}
                   isActive={currentPage === i + 1}
-                  className={`px-3 py-1 border rounded-full transition-colors ${currentPage === i + 1
+                  className={`px-3 py-1 border rounded-full transition-colors ${
+                    currentPage === i + 1
                       ? "bg-white text-[#F68537] border-[#F68537]"
                       : "bg-[#F68537] text-white border-[#F68537]"
-                    }`}
+                  }`}
                 >
                   {i + 1}
                 </PaginationLink>
@@ -222,7 +223,9 @@ export default function DonorList() {
             <PaginationItem>
               <PaginationNext
                 size="sm"
-                onClick={currentPage === totalPages ? undefined : () => setCurrentPage(currentPage + 1)}
+                onClick={
+                  currentPage === totalPages ? undefined : () => setCurrentPage(currentPage + 1)
+                }
                 className={cn(
                   "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
                   currentPage === totalPages

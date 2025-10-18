@@ -1,4 +1,4 @@
-//Modais da tela de notícias e eventos 
+//Modais da tela de notícias e eventos
 import { useEffect } from "react";
 import Button from "./button";
 
@@ -18,13 +18,10 @@ type ModalProps =
       itemTitle?: never;
     };
 
-
 const modalConfig = {
-
   "delete-news": {
     title: "Você deseja excluir esta notícia?",
-    description:
-      'Você estará excluindo a notícia "{title}". Deseja continuar com esta ação?',
+    description: 'Você estará excluindo a notícia "{title}". Deseja continuar com esta ação?',
     actions: [
       { label: "Cancelar", variant: "tertiary" as const, action: "close" },
       { label: "Excluir", variant: "primary" as const, action: "confirm" },
@@ -39,10 +36,9 @@ const modalConfig = {
       { label: "Continuar", variant: "primary" as const, action: "confirm" },
     ],
   },
-   "delete-event": {
+  "delete-event": {
     title: "Você deseja excluir este evento?",
-    description:
-      'Você estará excluindo o evento "{title}". Deseja continuar com esta ação?',
+    description: 'Você estará excluindo o evento "{title}". Deseja continuar com esta ação?',
     actions: [
       { label: "Cancelar", variant: "tertiary" as const, action: "close" },
       { label: "Excluir", variant: "primary" as const, action: "confirm" },
@@ -59,13 +55,10 @@ const modalConfig = {
   },
 };
 
-const ConfirmNewsEventModal = ({ isOpen, onClose, variant, onConfirm, itemTitle}: ModalProps) => {
+const ConfirmNewsEventModal = ({ isOpen, onClose, variant, onConfirm, itemTitle }: ModalProps) => {
   const config = modalConfig[variant];
 
-    const description = config.description.replace(
-    /\{title\}/g,
-    itemTitle || ""
-  );
+  const description = config.description.replace(/\{title\}/g, itemTitle || "");
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -89,15 +82,16 @@ const ConfirmNewsEventModal = ({ isOpen, onClose, variant, onConfirm, itemTitle}
 
   const handleActionClick = (action: string) => {
     switch (action) {
-      case "close": onClose();
+      case "close":
+        onClose();
         break;
-      case "confirm": onConfirm?.();
+      case "confirm":
+        onConfirm?.();
         break;
       default:
         onClose();
     }
   };
-
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -111,17 +105,11 @@ const ConfirmNewsEventModal = ({ isOpen, onClose, variant, onConfirm, itemTitle}
         max-w-md w-full mx-4 p-6 gap-4 shadow-lg text-left"
       >
         <div className="w-full">
-          <h3
-            className="text-slate-900 font-inter text-lg font-semibold leading-7 mb-2"
-          >
+          <h3 className="text-slate-900 font-inter text-lg font-semibold leading-7 mb-2">
             {config.title}
           </h3>
 
-          <p
-            className=" text-slate-500 font-inter text-sm font-normal leading-5"
-          >
-            {description}
-          </p>
+          <p className=" text-slate-500 font-inter text-sm font-normal leading-5">{description}</p>
         </div>
 
         <div className="flex justify-end gap-4 w-full mt-4">
@@ -129,11 +117,11 @@ const ConfirmNewsEventModal = ({ isOpen, onClose, variant, onConfirm, itemTitle}
             <Button
               key={index}
               variant={action.variant}
-              size="extraSmall" 
+              size="extraSmall"
               onClick={() => handleActionClick(action.action)}
               className={`${
                 action.variant === "primary" ? "text-white" : "text-[#005172]"
-              } w-1/2 py-2 text-center rounded-lg justify-center` }
+              } w-1/2 py-2 text-center rounded-lg justify-center`}
             >
               {action.label}
             </Button>
