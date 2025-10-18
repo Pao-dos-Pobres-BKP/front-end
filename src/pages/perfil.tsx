@@ -1,8 +1,15 @@
-// trocar "dados.role" por "currentUser?.role" e descomentar as linhas de useUser (24 e 37) na hora de integrar
+// trocar "dados.role" por "currentUser?.role" e descomentar as linhas de useUser (5 e 38) na hora de integrar
 
+import { useState } from "react";
+//import { useParams } from "react-router-dom";
+//import { useUser } from "@/hooks/useUser";
 import CampaignCard from "@/components/ui/campaignCard/campaignCard";
-import Input from "@/components/ui/input";
+import ConfirmDeleteUserModal from "@/components/ui/confirm-delete-user-modal";
+import ConfirmLogoutModal from "@/components/ui/confirm-logout-modal";
+import CreateAdminModal from "@/components/ui/create-admin-modal";
+import EditUserModal from "@/components/ui/edit-user-modal";
 import exemplo_foto_perfil from "@/assets/exemplo_foto_perfil.jpg";
+import Input from "@/components/ui/input";
 import { EditSquare } from "react-iconly";
 import { cn } from "@/lib/utils";
 
@@ -15,28 +22,22 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-import { useState } from "react";
-import EditUserModal from "@/components/ui/edit-user-modal";
-import ConfirmLogoutModal from "@/components/ui/confirm-logout-modal";
-
 import type { User } from "@/contexts/UserContext";
-import CreateAdminModal from "@/components/ui/create-admin-modal";
-//import { useUser } from "@/hooks/useUser";
-
-interface ProfileUser extends User {
-  totalDonated: number;
-  percentageAchieved: number;
-}
 
 export default function Perfil() {
+  //const { id } = useParams();
+
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isCreateAdminModalOpen, setIsCreateAdminModalOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [isDeleteUserModalOpen, setIsDeleteUserModalOpen] = useState(false);
+
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 6;
+
   //const currentUser = useUser().user;
 
-  const [dados, setDados] = useState<ProfileUser>({
+  const [dados, setDados] = useState<User>({
     id: "1",
     role: "DONOR", // Trocar para "ADMIN" para testar visão de admin
     accessToken: "fake-token-123",
@@ -46,8 +47,6 @@ export default function Perfil() {
     cpf: "123.456.789-00",
     phone: "(51) 9 9999-8888",
     email: "fulanodetal@email.com.br",
-    totalDonated: 2000,
-    percentageAchieved: 75,
     photo: exemplo_foto_perfil,
   });
 
@@ -158,7 +157,14 @@ export default function Perfil() {
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
   const currentCards = campanhasHistorico.slice(indexOfFirstCard, indexOfLastCard);
 
-  const handleEditarConta = () => {
+  const isViewingOtherUser = dados.id !== dados.id; //mockado
+  //const isViewingOtherUser = id && id !== currentUser?.id;
+  const isAdmin = dados.role === "ADMIN";
+
+  const showExcluirPerfil = isAdmin && isViewingOtherUser;
+  const showAjustesESair = !(isViewingOtherUser);
+
+  const handleEditAccount = () => {
     setIsEditModalOpen(true);
   };
 
@@ -166,12 +172,16 @@ export default function Perfil() {
     setIsCreateAdminModalOpen(true);
   };
 
-  const handleSalvarPerfil = (updatedUser: User) => {
+  const handleSaveProfile = (updatedUser: User) => {
     setDados((prev) => ({ ...prev, ...updatedUser }));
   };
 
   const handleConfirmLogout = () => {
     setIsLogoutModalOpen(false);
+  };
+
+  const handleDeleteUser = () => {
+    setIsDeleteUserModalOpen(false);
   };
 
   return (
@@ -200,23 +210,36 @@ export default function Perfil() {
             </div>
 
             <div className="flex items-center gap-2 w-full sm:w-auto">
-              {dados.role === "ADMIN" && ( 
+              {showAjustesESair && (
+                <>
+                  {dados.role === "ADMIN" && (
+                    <button
+                      onClick={handleOpenCreateAdminModal}
+                      className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl bg-[#005172] text-white hover:bg-[#24434f] transition-colors"
+                    >
+                      Ajustes
+                    </button>
+                  )}
+                  <button
+                    onClick={() => setIsLogoutModalOpen(true)}
+                    className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl text-[#005172] hover:bg-[#e6f3f5] transition-colors"
+                  >
+                    Sair da Conta
+                  </button>
+                </>
+              )}
+              {showExcluirPerfil && (
                 <button
-                  onClick={handleOpenCreateAdminModal}
-                  className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl bg-[#005172] text-white hover:bg-[#24434f] transition-colors"
+                  onClick={() => setIsDeleteUserModalOpen(true)}
+                  className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl bg-red-600 text-white hover:bg-red-700 transition-colors"
                 >
-                  Ajustes
+                  Excluir perfil
                 </button>
               )}
-              <button
-                onClick={() => setIsLogoutModalOpen(true)}
-                className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl text-[#005172] hover:bg-[#e6f3f5] transition-colors"
-              >
-                Sair da Conta
-              </button>
+
               <button
                 className="p-2 rounded-md bg-[#005172] text-white hover:bg-[#24434f] flex items-center justify-center"
-                onClick={handleEditarConta}
+                onClick={handleEditAccount}
               >
                 <EditSquare size="medium" />
               </button>
@@ -252,9 +275,7 @@ export default function Perfil() {
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <label className="text-sm font-medium text-[#005172] text-left">
-                      Telefone:
-                    </label>
+                    <label className="text-sm font-medium text-[#005172] text-left">Telefone:</label>
                     <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
                       {dados.phone}
                     </span>
@@ -380,8 +401,8 @@ export default function Perfil() {
                             onClick={() => setCurrentPage(i + 1)}
                             isActive={currentPage === i + 1}
                             className={`px-3 py-1 border rounded-full transition-colors ${currentPage === i + 1
-                                ? "bg-white text-[#F68537] border-[#F68537]"
-                                : "bg-[#F68537] text-white border-[#F68537]"
+                              ? "bg-white text-[#F68537] border-[#F68537]"
+                              : "bg-[#F68537] text-white border-[#F68537]"
                               }`}
                           >
                             {i + 1}
@@ -424,7 +445,7 @@ export default function Perfil() {
       <EditUserModal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
-        onSave={handleSalvarPerfil}
+        onSave={handleSaveProfile}
         initialData={dados}
       />
 
@@ -432,6 +453,12 @@ export default function Perfil() {
         isOpen={isLogoutModalOpen}
         onClose={() => setIsLogoutModalOpen(false)}
         onConfirm={handleConfirmLogout}
+      />
+
+      <ConfirmDeleteUserModal
+        isOpen={isDeleteUserModalOpen}
+        onClose={() => setIsDeleteUserModalOpen(false)}
+        onConfirm={handleDeleteUser}
       />
     </div>
   );
