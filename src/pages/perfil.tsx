@@ -17,9 +17,9 @@ import {
 import { useState } from "react";
 import EditUserModal from "@/components/ui/edit-user-modal";
 import ConfirmLogoutModal from "@/components/ui/confirm-logout-modal";
+import ProfileSettingsModal from "@/components/ui/profile-settings";
 
 import type { User } from "@/contexts/UserContext";
-import CreateAdminModal from "@/components/ui/create-admin-modal";
 import { useUser } from "@/hooks/useUser";
 
 interface ProfileUser extends User {
@@ -29,7 +29,7 @@ interface ProfileUser extends User {
 
 export default function Perfil() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isCreateAdminModalOpen, setIsCreateAdminModalOpen] = useState(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 6;
@@ -87,70 +87,70 @@ export default function Perfil() {
     goal: number;
     situation: SituationType;
   }[] = [
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 81825.33,
-      goal: 90000,
-      situation: "recurring",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 5000,
-      goal: 10000,
-      situation: "recurring",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 15000,
-      goal: 20000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 2500,
-      goal: 3000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 7000,
-      goal: 10000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 9000,
-      goal: 15000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 1200,
-      goal: 2000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 4500,
-      goal: 5000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 800,
-      goal: 1000,
-      situation: "approved",
-    },
-  ];
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 81825.33,
+        goal: 90000,
+        situation: "recurring",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 5000,
+        goal: 10000,
+        situation: "recurring",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 15000,
+        goal: 20000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 2500,
+        goal: 3000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 7000,
+        goal: 10000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 9000,
+        goal: 15000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 1200,
+        goal: 2000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 4500,
+        goal: 5000,
+        situation: "approved",
+      },
+      {
+        title: "Campanha de Santo Antônio",
+        creatorName: " Fundação Pão dos Pobres Santo Antônio",
+        raised: 800,
+        goal: 1000,
+        situation: "approved",
+      },
+    ];
 
   const totalPages = Math.ceil(campanhasHistorico.length / cardsPerPage);
   const indexOfLastCard = currentPage * cardsPerPage;
@@ -161,8 +161,8 @@ export default function Perfil() {
     setIsEditModalOpen(true);
   };
 
-  const handleOpenCreateAdminModal = () => {
-    setIsCreateAdminModalOpen(true);
+  const handleOpenSettingsModal = () => {
+    setIsSettingsModalOpen(true);
   };
 
   const handleSalvarPerfil = (updatedUser: User) => {
@@ -200,12 +200,14 @@ export default function Perfil() {
 
             <div className="flex items-center gap-2 w-full sm:w-auto">
               {currentUser?.role === "ADMIN" && (
-                <button
-                  onClick={handleOpenCreateAdminModal}
-                  className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl bg-[#005172] text-white hover:bg-[#24434f] transition-colors"
-                >
-                  Ajustes
-                </button>
+                <>
+                  <button
+                    onClick={handleOpenSettingsModal}
+                    className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl bg-[#005172] text-white hover:bg-[#24434f] transition-colors"
+                  >
+                    Ajustes
+                  </button>
+                </>
               )}
               <button
                 onClick={() => setIsLogoutModalOpen(true)}
@@ -391,11 +393,10 @@ export default function Perfil() {
                         size="icon"
                         onClick={() => setCurrentPage(i + 1)}
                         isActive={currentPage === i + 1}
-                        className={`px-3 py-1 border rounded-full transition-colors ${
-                          currentPage === i + 1
-                            ? "bg-white text-[#F68537] border-[#F68537]"
-                            : "bg-[#F68537] text-white border-[#F68537]"
-                        }`}
+                        className={`px-3 py-1 border rounded-full transition-colors ${currentPage === i + 1
+                          ? "bg-white text-[#F68537] border-[#F68537]"
+                          : "bg-[#F68537] text-white border-[#F68537]"
+                          }`}
                       >
                         {i + 1}
                       </PaginationLink>
@@ -427,9 +428,33 @@ export default function Perfil() {
         </div>
       </div>
 
-      <CreateAdminModal
-        isModalOpen={isCreateAdminModalOpen}
-        onClose={() => setIsCreateAdminModalOpen(false)}
+
+
+      {/** Modal de Ajustes de Perfil (somente admin) */}
+      <ProfileSettingsModal
+        isOpen={isSettingsModalOpen}
+        onClose={() => setIsSettingsModalOpen(false)}
+        onSave={(formData) => {
+          setDados((prev) => ({
+            ...prev,
+            fullname: formData?.nome ?? prev.fullname,
+            birthDate: formData?.nascimento ? new Date(formData.nascimento) : prev.birthDate,
+            gender: (formData?.genero as User["gender"]) ?? prev.gender,
+            cpf: formData?.cpf ?? prev.cpf,
+            phone: formData?.telefone ?? prev.phone,
+            email: formData?.email ?? prev.email,
+            photo: formData?.foto ?? prev.photo,
+          }));
+        }}
+        initialData={{
+          nome: dados.fullname,
+          nascimento: dados.birthDate ? dados.birthDate.toISOString().slice(0, 10) : "",
+          genero: dados.gender ?? "",
+          cpf: dados.cpf ?? "",
+          telefone: dados.phone ?? "",
+          email: dados.email ?? "",
+          foto: dados.photo,
+        }}
       />
 
       <EditUserModal
