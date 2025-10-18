@@ -10,36 +10,8 @@ import Button from "@/components/ui/button";
 import { Edit } from "lucide-react";
 import { WhatsAppIcon } from "@/icons/whatsappIcon";
 import { useUser } from "@/hooks/useUser";
-
-type Category = { id: string; title: string; description: string };
-
-const initialCategories: Category[] = [
-  {
-    id: "alimentos",
-    title: "Alimentos",
-    description: "Aqui você verá como contribuir com alimentos.",
-  },
-  {
-    id: "roupas",
-    title: "Roupas",
-    description: "Aqui você verá como contribuir com roupas.",
-  },
-  {
-    id: "moveis",
-    title: "Móveis",
-    description: "Aqui você verá como contribuir com móveis.",
-  },
-  {
-    id: "empresa",
-    title: "Empresa",
-    description: "Aqui você verá como contribuir sendo uma empresa.",
-  },
-  {
-    id: "variedades",
-    title: "Variedades",
-    description: "Aqui você verá como contribuir de outras formas.",
-  },
-];
+import { useHowToHelp } from "./useHowToHelp";
+import type { HowToHelpAPI } from "@/services/how-to-help";
 
 const WhatsAppButton = () => {
   const handleContactClick = () => {
@@ -62,38 +34,36 @@ export default function HowToHelpSection() {
   const arrecadado = 750;
   const percentual = Math.min((arrecadado / metaCampanha) * 100, 100);
   const { user } = useUser();
+  const { howToHelpList, updateHowToHelp } = useHowToHelp();
 
   const userIsAdmin = useMemo(() => user?.role === "ADMIN", [user]);
 
-  const [categories, setCategories] = useState<Category[]>(initialCategories);
-  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<string>("");
   const [editText, setEditText] = useState("");
 
   const [openAccordionId, setOpenAccordionId] = useState<string | null>(null);
 
-  const handleEdit = (category: Category) => {
-    setOpenAccordionId(category.id);
-    setEditingId(category.id);
-    setEditText(category.description);
+  const handleEdit = (howToHelp: HowToHelpAPI) => {
+    setOpenAccordionId(howToHelp.id);
+    setEditingId(howToHelp.id);
+    setEditText(howToHelp.description);
   };
 
-  const handleSave = (id: string) => {
-    setCategories(
-      categories.map((cat) => (cat.id === id ? { ...cat, description: editText } : cat))
-    );
-    setEditingId(null);
+  const handleSave = async () => {
+    await updateHowToHelp(editingId, editText);
+    setEditingId("");
     setEditText("");
   };
 
   const handleCancel = () => {
-    setEditingId(null);
+    setEditingId("");
     setEditText("");
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>, id: string) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
-      handleSave(id);
+      handleSave();
     }
     if (event.key === "Escape") {
       handleCancel();
@@ -126,23 +96,23 @@ export default function HowToHelpSection() {
               value={openAccordionId ?? ""}
               onValueChange={setOpenAccordionId}
             >
-              {categories.map((cat) => (
-                <AccordionItem key={cat.id} value={cat.id}>
+              {howToHelpList.map((howToHelp) => (
+                <AccordionItem key={howToHelp.id} value={howToHelp.id}>
                   <AccordionTrigger variant="secondary" size="large" className="[&>svg]:hidden">
                     <div className="flex items-center justify-between w-full">
                       <div className="flex items-center gap-3">
                         <span className="text-[#024b5a] font-medium text-lg">
                           <span className="accordion-icon"></span>
                         </span>
-                        <span className="text-base text-[#024b5a]">{cat.title}</span>
+                        <span className="text-base text-[#024b5a]">{howToHelp.title}</span>
                       </div>
                       {userIsAdmin && (
                         <button
                           type="button"
-                          aria-label={`Editar ${cat.title}`}
+                          aria-label={`Editar ${howToHelp.title}`}
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleEdit(cat);
+                            handleEdit(howToHelp);
                           }}
                           className="p-2 rounded-md hover:bg-gray-100 mr-4"
                         >
@@ -153,12 +123,12 @@ export default function HowToHelpSection() {
                   </AccordionTrigger>
                   <AccordionContent variant="secondary">
                     <div className="py-4">
-                      {editingId === cat.id ? (
+                      {editingId === howToHelp.id ? (
                         <div>
                           <textarea
                             value={editText}
                             onChange={(e) => setEditText(e.target.value)}
-                            onKeyDown={(e) => handleKeyDown(e, cat.id)}
+                            onKeyDown={(e) => handleKeyDown(e)}
                             className="w-full p-2 border border-gray-300 rounded-md min-h-[120px]"
                             autoFocus
                           />
@@ -168,7 +138,7 @@ export default function HowToHelpSection() {
                         </div>
                       ) : (
                         <div className="flex flex-col lg:flex-row lg:items-end gap-4">
-                          <p className="flex-1 text-sm leading-relaxed">{cat.description}</p>
+                          <p className="flex-1 text-sm leading-relaxed">{howToHelp.description}</p>
                           <div className="w-full lg:w-52 flex-shrink-0">
                             <WhatsAppButton />
                           </div>

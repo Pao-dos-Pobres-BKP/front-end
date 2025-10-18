@@ -1,6 +1,6 @@
 import api from "./api";
 
-type HowToHelpAPI = {
+export type HowToHelpAPI = {
   id: string;
   title: string;
   description: string;

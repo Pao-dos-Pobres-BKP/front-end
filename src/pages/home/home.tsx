@@ -1,7 +1,7 @@
 import { Hero } from "@/pages/home/components/hero";
 import { Newsletter } from "@/pages/home/components/newsletter/newsletter";
 import PartnerCompanies from "@/pages/home/components/partner-companies";
-import HowToHelp from "@/pages/home/components/how-to-help";
+import HowToHelp from "@/pages/home/components/how-to-help/how-to-help";
 
 import { useHome } from "./useHome";
 import { News } from "./components/news";
