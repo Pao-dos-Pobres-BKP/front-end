@@ -4,7 +4,6 @@ import PlusIcon from "@/assets/Plus.svg";
 import { Tabs } from "@/components/ui/tabs";
 import { CampaignCardEventAndNews } from "@/components/ui/campaignCard/campaingCardEventAndNews";
 
-
 import {
   Pagination,
   PaginationContent,
@@ -15,10 +14,8 @@ import {
 } from "@/components/ui/pagination";
 import { useState } from "react";
 
-
 export default function NewsEvents() {
-
-  const eventsAndNews = [
+  const mockEventsAndNews = [
     {
       title: "Campanha de Doação de Roupas",
       date: new Date(2025, 8, 15),
@@ -32,364 +29,63 @@ export default function NewsEvents() {
     {
       title: "Mutirão de Arrecadação de Alimentos",
       date: new Date(2025, 10, 3),
+      type: "news" as const,
+    },
+    {
+      title: "Mutirão de Arrecadação de Alimentos",
+      date: new Date(2025, 10, 3),
       type: "event" as const,
     },
+    {
+      title: "Mutirão de Arrecadação de Alimentos",
+      date: new Date(2025, 10, 3),
+      type: "news" as const,
+    },
+    {
+      title: "Mutirão de Arrecadação de Alimentos",
+      date: new Date(2025, 10, 3),
+      type: "event" as const,
+    },
+    {
+      title: "Mutirão de Arrecadação de Alimentos",
+      date: new Date(2025, 10, 3),
+      type: "event" as const,
+    },
+    {
+      title: "Mutirão de Arrecadação de Alimentos",
+      date: new Date(2025, 10, 3),
+      type: "news" as const,
+    },
+    {
+      title: "Mutirão de Arrecadação de Alimentos",
+      date: new Date(2025, 10, 3),
+      type: "event" as const,
+    },
+    {
+      title: "Mutirão de Arrecadação de Alimentos",
+      date: new Date(2025, 10, 3),
+      type: "news" as const,
+    },
+    {
+      title: "Mutirão de Arrecadação de Alimentos",
+      date: new Date(2025, 10, 3),
+      type: "event" as const,
+    },
+    {
+      title: "Mutirão de Arrecadação de Alimentos",
+      date: new Date(2025, 10, 3),
+      type: "news" as const,
+    },
   ];
-  const mockDonors = [
-    {
-      id: 1,
-      donorName: "Fulano de Tal",
-      donorEmail: "email@email.com",
-      donationAmount: 1500,
-      title: "Campanha Santo Antônio",
-      raised: 1500,
-      goal: 2000,
-      memberSince: "12/08/2023",
-      campaigns: [
-        "Campanha Santo Antônio",
-        "Campanha de Aniversário 130 anos do Pão",
-        "Campanha de Natal Solidário",
-      ],
-    },
-    {
-      id: 1,
-      donorName: "Fulano de Tal",
-      donorEmail: "email@email.com",
-      donationAmount: 1500,
-      title: "Campanha Santo Antônio",
-      raised: 1500,
-      goal: 2000,
-      memberSince: "12/08/2023",
-      campaigns: [
-        "Campanha Santo Antônio",
-        "Campanha de Aniversário 130 anos do Pão",
-        "Campanha de Natal Solidário",
-      ],
-    },
-    {
-      id: 1,
-      donorName: "Fulano de Tal",
-      donorEmail: "email@email.com",
-      donationAmount: 1500,
-      title: "Campanha Santo Antônio",
-      raised: 1500,
-      goal: 2000,
-      memberSince: "12/08/2023",
-      campaigns: [
-        "Campanha Santo Antônio",
-        "Campanha de Aniversário 130 anos do Pão",
-        "Campanha de Natal Solidário",
-      ],
-    },
-    {
-      id: 1,
-      donorName: "Fulano de Tal",
-      donorEmail: "email@email.com",
-      donationAmount: 1500,
-      title: "Campanha Santo Antônio",
-      raised: 1500,
-      goal: 2000,
-      memberSince: "12/08/2023",
-      campaigns: [
-        "Campanha Santo Antônio",
-        "Campanha de Aniversário 130 anos do Pão",
-        "Campanha de Natal Solidário",
-      ],
-    },
-    {
-      id: 1,
-      donorName: "Fulano de Tal",
-      donorEmail: "email@email.com",
-      donationAmount: 1500,
-      title: "Campanha Santo Antônio",
-      raised: 1500,
-      goal: 2000,
-      memberSince: "12/08/2023",
-      campaigns: [
-        "Campanha Santo Antônio",
-        "Campanha de Aniversário 130 anos do Pão",
-        "Campanha de Natal Solidário",
-      ],
-    },
-    {
-      id: 1,
-      donorName: "Fulano de Tal",
-      donorEmail: "email@email.com",
-      donationAmount: 1500,
-      title: "Campanha Santo Antônio",
-      raised: 1500,
-      goal: 2000,
-      memberSince: "12/08/2023",
-      campaigns: [
-        "Campanha Santo Antônio",
-        "Campanha de Aniversário 130 anos do Pão",
-        "Campanha de Natal Solidário",
-      ],
-    },
-    {
-      id: 1,
-      donorName: "Fulano de Tal",
-      donorEmail: "email@email.com",
-      donationAmount: 1500,
-      title: "Campanha Santo Antônio",
-      raised: 1500,
-      goal: 2000,
-      memberSince: "12/08/2023",
-      campaigns: [
-        "Campanha Santo Antônio",
-        "Campanha de Aniversário 130 anos do Pão",
-        "Campanha de Natal Solidário",
-      ],
-    },
-    {
-      id: 1,
-      donorName: "Fulano de Tal",
-      donorEmail: "email@email.com",
-      donationAmount: 1500,
-      title: "Campanha Santo Antônio",
-      raised: 1500,
-      goal: 2000,
-      memberSince: "12/08/2023",
-      campaigns: [
-        "Campanha Santo Antônio",
-        "Campanha de Aniversário 130 anos do Pão",
-        "Campanha de Natal Solidário",
-      ],
-    },
-    {
-      id: 1,
-      donorName: "Fulano de Tal",
-      donorEmail: "email@email.com",
-      donationAmount: 1500,
-      title: "Campanha Santo Antônio",
-      raised: 1500,
-      goal: 2000,
-      memberSince: "12/08/2023",
-      campaigns: [
-        "Campanha Santo Antônio",
-        "Campanha de Aniversário 130 anos do Pão",
-        "Campanha de Natal Solidário",
-      ],
-    },
-    {
-      id: 1,
-      donorName: "Fulano de Tal",
-      donorEmail: "email@email.com",
-      donationAmount: 1500,
-      title: "Campanha Santo Antônio",
-      raised: 1500,
-      goal: 2000,
-      memberSince: "12/08/2023",
-      campaigns: [
-        "Campanha Santo Antônio",
-        "Campanha de Aniversário 130 anos do Pão",
-        "Campanha de Natal Solidário",
-      ],
-    },
-    {
-      id: 1,
-      donorName: "Fulano de Tal",
-      donorEmail: "email@email.com",
-      donationAmount: 1500,
-      title: "Campanha Santo Antônio",
-      raised: 1500,
-      goal: 2000,
-      memberSince: "12/08/2023",
-      campaigns: [
-        "Campanha Santo Antônio",
-        "Campanha de Aniversário 130 anos do Pão",
-        "Campanha de Natal Solidário",
-      ],
-    },
-    {
-      id: 1,
-      donorName: "Fulano de Tal",
-      donorEmail: "email@email.com",
-      donationAmount: 1500,
-      title: "Campanha Santo Antônio",
-      raised: 1500,
-      goal: 2000,
-      memberSince: "12/08/2023",
-      campaigns: [
-        "Campanha Santo Antônio",
-        "Campanha de Aniversário 130 anos do Pão",
-        "Campanha de Natal Solidário",
-      ],
-    },
-    {
-      id: 1,
-      donorName: "Fulano de Tal",
-      donorEmail: "email@email.com",
-      donationAmount: 1500,
-      title: "Campanha Santo Antônio",
-      raised: 1500,
-      goal: 2000,
-      memberSince: "12/08/2023",
-      campaigns: [
-        "Campanha Santo Antônio",
-        "Campanha de Aniversário 130 anos do Pão",
-        "Campanha de Natal Solidário",
-      ],
-    },
-    {
-      id: 1,
-      donorName: "Fulano de Tal",
-      donorEmail: "email@email.com",
-      donationAmount: 1500,
-      title: "Campanha Santo Antônio",
-      raised: 1500,
-      goal: 2000,
-      memberSince: "12/08/2023",
-      campaigns: [
-        "Campanha Santo Antônio",
-        "Campanha de Aniversário 130 anos do Pão",
-        "Campanha de Natal Solidário",
-      ],
-    },
-    {
-      id: 1,
-      donorName: "Fulano de Tal",
-      donorEmail: "email@email.com",
-      donationAmount: 1500,
-      title: "Campanha Santo Antônio",
-      raised: 1500,
-      goal: 2000,
-      memberSince: "12/08/2023",
-      campaigns: [
-        "Campanha Santo Antônio",
-        "Campanha de Aniversário 130 anos do Pão",
-        "Campanha de Natal Solidário",
-      ],
-    },
-    {
-      id: 1,
-      donorName: "Fulano de Tal",
-      donorEmail: "email@email.com",
-      donationAmount: 1500,
-      title: "Campanha Santo Antônio",
-      raised: 1500,
-      goal: 2000,
-      memberSince: "12/08/2023",
-      campaigns: [
-        "Campanha Santo Antônio",
-        "Campanha de Aniversário 130 anos do Pão",
-        "Campanha de Natal Solidário",
-      ],
-    },
-    {
-      id: 1,
-      donorName: "Fulano de Tal",
-      donorEmail: "email@email.com",
-      donationAmount: 1500,
-      title: "Campanha Santo Antônio",
-      raised: 1500,
-      goal: 2000,
-      memberSince: "12/08/2023",
-      campaigns: [
-        "Campanha Santo Antônio",
-        "Campanha de Aniversário 130 anos do Pão",
-        "Campanha de Natal Solidário",
-      ],
-    },
-    {
-      id: 1,
-      donorName: "Fulano de Tal",
-      donorEmail: "email@email.com",
-      donationAmount: 1500,
-      title: "Campanha Santo Antônio",
-      raised: 1500,
-      goal: 2000,
-      memberSince: "12/08/2023",
-      campaigns: [
-        "Campanha Santo Antônio",
-        "Campanha de Aniversário 130 anos do Pão",
-        "Campanha de Natal Solidário",
-      ],
-    },
-    {
-      id: 1,
-      donorName: "Fulano de Tal",
-      donorEmail: "email@email.com",
-      donationAmount: 1500,
-      title: "Campanha Santo Antônio",
-      raised: 1500,
-      goal: 2000,
-      memberSince: "12/08/2023",
-      campaigns: [
-        "Campanha Santo Antônio",
-        "Campanha de Aniversário 130 anos do Pão",
-        "Campanha de Natal Solidário",
-      ],
-    },
-    {
-      id: 1,
-      donorName: "Fulano de Tal",
-      donorEmail: "email@email.com",
-      donationAmount: 1500,
-      title: "Campanha Santo Antônio",
-      raised: 1500,
-      goal: 2000,
-      memberSince: "12/08/2023",
-      campaigns: [
-        "Campanha Santo Antônio",
-        "Campanha de Aniversário 130 anos do Pão",
-        "Campanha de Natal Solidário",
-      ],
-    },
-    {
-      id: 1,
-      donorName: "Fulano de Tal",
-      donorEmail: "email@email.com",
-      donationAmount: 1500,
-      title: "Campanha Santo Antônio",
-      raised: 1500,
-      goal: 2000,
-      memberSince: "12/08/2023",
-      campaigns: [
-        "Campanha Santo Antônio",
-        "Campanha de Aniversário 130 anos do Pão",
-        "Campanha de Natal Solidário",
-      ],
-    },
-    {
-      id: 1,
-      donorName: "Fulano de Tal",
-      donorEmail: "email@email.com",
-      donationAmount: 1500,
-      title: "Campanha Santo Antônio",
-      raised: 1500,
-      goal: 2000,
-      memberSince: "12/08/2023",
-      campaigns: [
-        "Campanha Santo Antônio",
-        "Campanha de Aniversário 130 anos do Pão",
-        "Campanha de Natal Solidário",
-      ],
-    },
-    {
-      id: 1,
-      donorName: "Fulano de Tal",
-      donorEmail: "email@email.com",
-      donationAmount: 1500,
-      title: "Campanha Santo Antônio",
-      raised: 1500,
-      goal: 2000,
-      memberSince: "12/08/2023",
-      campaigns: [
-        "Campanha Santo Antônio",
-        "Campanha de Aniversário 130 anos do Pão",
-        "Campanha de Natal Solidário",
-      ],
-    },
 
-  ];
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 10;
 
-  const totalPages = Math.ceil(mockDonors.length / cardsPerPage);
+
+  const totalPages = Math.ceil(mockEventsAndNews.length / cardsPerPage);
 
   return (
-    <div className="w-full py-5 px-6">
+    <div className="w-full py-5 px-6 bg-[#2F5361]">
       <div className="flex w-full items-center justify-between gap-3">
         <div className="flex-1">
           <SearchBar />
@@ -404,24 +100,12 @@ export default function NewsEvents() {
         </div>
       </div>
 
-      <div>
-        <Tabs tabs={["Pendentes", "Ativos", "Todas"]} variant="secondary">
-          <div className="flex flex-col gap-3 w-full">
-            {eventsAndNews.map((item, index) => (
-              <CampaignCardEventAndNews
-                key={index}
-                title={item.title}
-                date={item.date}
-                type={item.type}
-                onDelete={() => console.log(`Excluir: ${item.title}`)}
-                onEdit={() => console.log(`Editar: ${item.title}`)}
-              />
-            ))}
-          </div>
-
-          <div className="flex flex-col gap-3 w-full">
-            {eventsAndNews
-              .filter((e) => e.type === "event")
+      <div className="w-full flex flex-col py-5">
+        <Tabs tabs={["Notícias", "Eventos", "Todos"]} variant="secondary">
+          <div className="flex flex-col gap-3 py-5 w-full">
+            {mockEventsAndNews
+              .filter((e) => e.type === "news")
+              .slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage)
               .map((item, index) => (
                 <CampaignCardEventAndNews
                   key={index}
@@ -434,17 +118,35 @@ export default function NewsEvents() {
               ))}
           </div>
 
-          <div className="flex flex-col gap-3 w-full">
-            {eventsAndNews.map((item, index) => (
-              <CampaignCardEventAndNews
-                key={index}
-                title={item.title}
-                date={item.date}
-                type={item.type}
-                onDelete={() => console.log(`Excluir: ${item.title}`)}
-                onEdit={() => console.log(`Editar: ${item.title}`)}
-              />
-            ))}
+          <div className="flex flex-col gap-3 py-5 w-full">
+            {mockEventsAndNews
+              .filter((e) => e.type === "event")
+              .slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage)
+              .map((item, index) => (
+                <CampaignCardEventAndNews
+                  key={index}
+                  title={item.title}
+                  date={item.date}
+                  type={item.type}
+                  onDelete={() => console.log(`Excluir: ${item.title}`)}
+                  onEdit={() => console.log(`Editar: ${item.title}`)}
+                />
+              ))}
+          </div>
+
+          <div className="flex flex-col gap-3 py-5 w-full">
+            {mockEventsAndNews
+              .slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage)
+              .map((item, index) => (
+                <CampaignCardEventAndNews
+                  key={index}
+                  title={item.title}
+                  date={item.date}
+                  type={item.type}
+                  onDelete={() => console.log(`Excluir: ${item.title}`)}
+                  onEdit={() => console.log(`Editar: ${item.title}`)}
+                />
+              ))}
           </div>
         </Tabs>
       </div>
