@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Button from "./button";
 import camera from "@/assets/camera.svg";
 import { cn } from "@/lib/utils";
@@ -12,18 +12,32 @@ type ModalVariant =
   | "delete-account"
   | "avatar-change";
 
-interface ModalProps {
-  isOpen: boolean;
+type InterfaceProps = {
+  isOpen?: boolean;
+  open?: boolean;
   onClose: () => void;
-  variant: ModalVariant;
   onConfirm?: () => void;
   onRetry?: () => void;
+  variant?: ModalVariant | "custom";
+  title?: string;
+  description?: string;
+  children?: ReactNode;
+  footer?: ReactNode;
+  className?: string;
+
   avatarUrl?: string;
   onAvatarSelect?: (file: File) => void;
   donorId?: string;
-}
+};
 
-type ModalConfig = Record<ModalVariant, { title: string; description: string; actions: { label: string; variant: string; action: string }[] }>;
+type ModalConfig = Record<
+  ModalVariant,
+  {
+    title: string;
+    description: string;
+    actions: { label: string; variant: string; action: string }[];
+  }
+>;
 
 const modalConfig: ModalConfig = {
   logout: {
@@ -179,9 +193,17 @@ function AvatarPicker(props: {
   );
 }
 
-export default function Modal(props: ModalProps) {
+export default function Modal(props: InterfaceProps) {
   const { isOpen, onClose, variant, onConfirm, onRetry, avatarUrl, onAvatarSelect, donorId } = props;
-  const config = modalConfig[variant];
+  const config =
+    variant && variant !== "custom"
+      ? modalConfig[variant as ModalVariant]
+      : {
+          title: props.title ?? "",
+          description: props.description ?? "",
+          actions: [],
+        };
+
   const isAvatarModal = variant === "avatar-change";
   
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
