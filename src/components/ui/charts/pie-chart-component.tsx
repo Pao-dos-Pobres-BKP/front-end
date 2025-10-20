@@ -17,7 +17,13 @@ interface BasePieChartProps<TData> {
   config: ChartConfig;
 }
 
-export function BasePieChart<TData extends Record<string, unknown>>({ data, dataKey, nameKey, config }: BasePieChartProps<TData>) {  const colors = Object.values(config).map((item) => item.color || "#000000");
+export function BasePieChart<TData extends Record<string, unknown>>({
+  data,
+  dataKey,
+  nameKey,
+  config,
+}: BasePieChartProps<TData>) {
+  const colors = Object.values(config).map((item) => item.color || "#000000");
 
   return (
     <ChartContainer config={config} className="h-full w-full">

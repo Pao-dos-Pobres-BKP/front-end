@@ -117,7 +117,7 @@ export const DoadoresPorCampanhaStats = () => {
   const campaignSelector = (
     <div className="relative w-64">
       <Input
-      fullWidth
+        fullWidth
         type="text"
         value={searchTerm}
         onChange={(e) => {
@@ -130,7 +130,7 @@ export const DoadoresPorCampanhaStats = () => {
       {isDropdownOpen && searchResults.length > 0 && (
         <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg left-0">
           <ul className="w-full">
-            {searchResults.map(campaign => (
+            {searchResults.map((campaign) => (
               <li
                 key={campaign.id}
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-left"

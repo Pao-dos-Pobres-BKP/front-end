@@ -24,7 +24,13 @@ export function BaseAreaChart<TData extends object>({
     <ChartContainer config={config} className="h-full w-full">
       <AreaChart data={data} margin={{ left: 12, right: 12 }}>
         <CartesianGrid vertical={false} />
-        <XAxis dataKey={categoryKey} tickLine={false} axisLine={false} tickMargin={8} interval={1} />
+        <XAxis
+          dataKey={categoryKey}
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+          interval={1}
+        />
         <YAxis tickLine={false} axisLine={false} tickMargin={8} />
         <ChartTooltip
           cursor={false}

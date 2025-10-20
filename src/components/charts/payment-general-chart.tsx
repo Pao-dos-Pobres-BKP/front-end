@@ -9,7 +9,8 @@ type OverallPaymentData = {
   valor: number;
 };
 
-const fetchOverallPaymentData = async (): Promise<OverallPaymentData[]> => {  const mockData = [
+const fetchOverallPaymentData = async (): Promise<OverallPaymentData[]> => {
+  const mockData = [
     { metodo: "PIX", quantidade: 850, valor: 150000 },
     { metodo: "Cartão", quantidade: 620, valor: 215000 },
     { metodo: "Boleto", quantidade: 310, valor: 45000 },
@@ -32,7 +33,7 @@ const configValor = {
 } satisfies ChartConfig;
 
 export const PagamentosGeralChart = () => {
-const [data, setData] = useState<OverallPaymentData[]>([]);
+  const [data, setData] = useState<OverallPaymentData[]>([]);
   useEffect(() => {
     fetchOverallPaymentData().then(setData);
   }, []);
