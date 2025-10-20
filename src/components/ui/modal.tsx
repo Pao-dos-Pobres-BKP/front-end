@@ -104,9 +104,15 @@ function ModalOverlay(props: { onClick: () => void }) {
   );
 }
 
-function ModalActions(props: { actions: typeof modalConfig.logout.actions; handleActionClick: (action: string) => void; centered?: boolean }) {
+function ModalActions(props: {
+  actions: typeof modalConfig.logout.actions;
+  handleActionClick: (action: string) => void;
+  centered?: boolean;
+}) {
   return (
-    <div className={cn("flex gap-3 w-full mt-2", props.centered ? "justify-center" : "justify-end")}>
+    <div
+      className={cn("flex gap-3 w-full mt-2", props.centered ? "justify-center" : "justify-end")}
+    >
       {props.actions.map(function (action, index) {
         return (
           <Button
@@ -125,8 +131,8 @@ function ModalActions(props: { actions: typeof modalConfig.logout.actions; handl
   );
 }
 
-function AvatarPicker(props: { 
-  avatarUrl?: string; 
+function AvatarPicker(props: {
+  avatarUrl?: string;
   onAvatarSelect?: (file: File) => void;
   previewUrl: string | null;
 }) {
@@ -194,7 +200,8 @@ function AvatarPicker(props: {
 }
 
 export default function Modal(props: InterfaceProps) {
-  const { isOpen, onClose, variant, onConfirm, onRetry, avatarUrl, onAvatarSelect, donorId } = props;
+  const { isOpen, onClose, variant, onConfirm, onRetry, avatarUrl, onAvatarSelect, donorId } =
+    props;
   const config =
     variant && variant !== "custom"
       ? modalConfig[variant as ModalVariant]
@@ -205,52 +212,61 @@ export default function Modal(props: InterfaceProps) {
         };
 
   const isAvatarModal = variant === "avatar-change";
-  
+
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-  useEffect(function () {
-    function handleEscape(e: KeyboardEvent) {
-      if (e.key === "Escape" && isOpen) onClose();
-    }
-
-    if (isOpen) {
-      document.addEventListener("keydown", handleEscape);
-      document.body.style.overflow = "hidden";
-    }
-
-    return function () {
-      document.removeEventListener("keydown", handleEscape);
-      document.body.style.overflow = "unset";
-    };
-  }, [isOpen, onClose]);
-
-  useEffect(function () {
-    if (!isOpen) {
-      setSelectedFile(null);
-      setPreviewUrl(null);
-    }
-  }, [isOpen]);
-
-  useEffect(function () {
-    return function () {
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
+  useEffect(
+    function () {
+      function handleEscape(e: KeyboardEvent) {
+        if (e.key === "Escape" && isOpen) onClose();
       }
-    };
-  }, [previewUrl]);
+
+      if (isOpen) {
+        document.addEventListener("keydown", handleEscape);
+        document.body.style.overflow = "hidden";
+      }
+
+      return function () {
+        document.removeEventListener("keydown", handleEscape);
+        document.body.style.overflow = "unset";
+      };
+    },
+    [isOpen, onClose]
+  );
+
+  useEffect(
+    function () {
+      if (!isOpen) {
+        setSelectedFile(null);
+        setPreviewUrl(null);
+      }
+    },
+    [isOpen]
+  );
+
+  useEffect(
+    function () {
+      return function () {
+        if (previewUrl) {
+          URL.revokeObjectURL(previewUrl);
+        }
+      };
+    },
+    [previewUrl]
+  );
 
   if (!isOpen) return null;
 
   function handleAvatarFileSelect(file: File) {
     setSelectedFile(file);
-    
+
     if (previewUrl) {
       URL.revokeObjectURL(previewUrl);
     }
     const newPreviewUrl = URL.createObjectURL(file);
     setPreviewUrl(newPreviewUrl);
-    
+
     if (onAvatarSelect) {
       onAvatarSelect(file);
     }
@@ -300,26 +316,39 @@ export default function Modal(props: InterfaceProps) {
       <div
         className={cn(
           "relative bg-white rounded-lg border border-slate-300 shadow-lg",
-          isAvatarModal ? "flex flex-col items-center justify-between w-[400px] max-h-[90vh] h-auto min-h-[500px] p-8 mx-4" : "inline-flex flex-col items-start max-w-md w-full mx-4 p-6 gap-4"
+          isAvatarModal
+            ? "flex flex-col items-center justify-between w-[400px] max-h-[90vh] h-auto min-h-[500px] p-8 mx-4"
+            : "inline-flex flex-col items-start max-w-md w-full mx-4 p-6 gap-4"
         )}
       >
-        <h3 className={cn("text-slate-900 font-inter text-lg font-semibold leading-7 text-center", !isAvatarModal ? "mb-2" : "")}>
+        <h3
+          className={cn(
+            "text-slate-900 font-inter text-lg font-semibold leading-7 text-center",
+            !isAvatarModal ? "mb-2" : ""
+          )}
+        >
           {config.title}
         </h3>
 
         {!isAvatarModal && config.description && (
-          <p className="text-slate-500 font-inter text-sm font-normal leading-5">{config.description}</p>
+          <p className="text-slate-500 font-inter text-sm font-normal leading-5">
+            {config.description}
+          </p>
         )}
 
         {isAvatarModal && (
-          <AvatarPicker 
-            avatarUrl={avatarUrl} 
+          <AvatarPicker
+            avatarUrl={avatarUrl}
             onAvatarSelect={handleAvatarFileSelect}
             previewUrl={previewUrl}
           />
         )}
 
-        <ModalActions actions={config.actions} handleActionClick={handleActionClick} centered={isAvatarModal} />
+        <ModalActions
+          actions={config.actions}
+          handleActionClick={handleActionClick}
+          centered={isAvatarModal}
+        />
       </div>
     </div>
   );
