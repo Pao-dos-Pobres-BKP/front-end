@@ -3,6 +3,7 @@ import Button from "@/components/ui/button";
 import PlusIcon from "@/assets/Plus.svg";
 import { Tabs } from "@/components/ui/tabs";
 import { CampaignCardEventAndNews } from "@/components/ui/campaignCard/campaingCardEventAndNews";
+import { DatePicker } from "@/components/ui/Calendar/date-picker"; 
 
 import {
   Pagination,
@@ -86,18 +87,19 @@ export default function NewsEvents() {
 
   return (
     <div className="w-full py-5 px-6 bg-[#2F5361]">
-      <div className="flex w-full items-center justify-between gap-3">
+            <div className="flex w-full items-center gap-3">
         <div className="flex-1">
           <SearchBar />
+        </div>
+        <div className="min-w-[100px]">
+          <DatePicker />
         </div>
         <Button variant="quinary" size="extraSmall">
           Pesquisar
         </Button>
-        <div className="flex items-center">
-          <Button variant="quinary" size="extraSmall" className="ml-2 sm:ml-4 flex-shrink-0">
-            <img src={PlusIcon} alt="Icone-plus" />
-          </Button>
-        </div>
+        <Button variant="quinary" size="extraSmall" className="flex-shrink-0">
+          <img src={PlusIcon} alt="Icone-plus" />
+        </Button>
       </div>
 
       <div className="w-full flex flex-col py-5">
