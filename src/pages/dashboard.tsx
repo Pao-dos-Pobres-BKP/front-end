@@ -140,9 +140,7 @@ function Dashboard() {
         </aside>
 
         <section className="flex-1 flex flex-col gap-6">
-          <div
-            className={`grid grid-cols-2 md:grid-cols-3 gap-4 ${!isSidebarOpen ? "lg:grid-cols-6" : "lg:grid-cols-5"}`}
-          >
+          <div className="flex flex-wrap gap-4">
             {!isSidebarOpen && (
               <button
                 onClick={() => setIsSidebarOpen(true)}
@@ -155,20 +153,15 @@ function Dashboard() {
               </button>
             )}
             {metrics && (
-              <>
+              <div className="grid grid-cols-2 lg:grid-cols-5 gap-6 w-full">
                 <MetricCard label="Novos Doadores" value={metrics.newDonors} prefix="+ " />
                 <MetricCard label="Doadores Recorrentes" value={metrics.recurringDonors} />
                 <MetricCard label="Doadores" value={metrics.totalDonors} />
-                <MetricCard
-                  label="Arrecadado este mês"
-                  value={formatCurrency(metrics.raisedThisMonth)}
-                />
-                <MetricCard
-                  label="Média de doação"
-                  value={formatCurrency(metrics.averageDonation)}
-                  prefix="~"
-                />
-              </>
+                <MetricCard label="Média de doação" value={formatCurrency(metrics.averageDonation)} prefix="~" />
+                <div className="col-span-2 lg:col-span-1">
+                  <MetricCard label="Arrecadado este mês" value={formatCurrency(metrics.raisedThisMonth)} />
+                </div>
+              </div>
             )}
           </div>
 
