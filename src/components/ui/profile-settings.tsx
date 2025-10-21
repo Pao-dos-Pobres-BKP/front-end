@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import Button from "./button";
-import PlusIcon from "@/assets/Plus.svg";
 import CreateAdminModal from "./create-admin-modal";
 import UserList from "./user-list";
+import { PlusCircleIcon } from "lucide-react";
 
 type FormData = {
     nome: string;
@@ -78,7 +78,7 @@ export default function ProfileSettingsModal({
             size="icon"
             onClick={handleOpenCreateAdminModal}
           >
-            <img className="invert" src={PlusIcon} alt="Adicionar" />
+            <PlusCircleIcon className="h-8 w-8 text-white" />
           </Button>
         </div>
 

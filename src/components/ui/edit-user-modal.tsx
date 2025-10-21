@@ -28,7 +28,11 @@ export default function EditUserModal({
     if (isOpen) {
       setFormData(initialData);
       setPreviewPhoto(initialData.photo || "https://via.placeholder.com/60");
+      document.body.style.overflow = "hidden";
     }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
   }, [isOpen, initialData]);
 
   if (!isOpen) return null;
@@ -72,7 +76,7 @@ export default function EditUserModal({
             alt="foto de perfil"
             className="w-16 h-16 rounded-full object-cover border"
           />
-          <div className="flex items-center gap-2">
+          <div className="flex flex-start gap-2">
             <label className="text-sm font-medium text-[#005172] cursor-pointer">
               <span className="px-3 py-1 border rounded-lg hover:bg-gray-100">Alterar Foto</span>
               <input type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
