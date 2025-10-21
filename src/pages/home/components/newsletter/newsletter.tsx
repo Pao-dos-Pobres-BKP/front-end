@@ -4,6 +4,7 @@ import Checkbox from "@/components/ui/checkbox";
 import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
 import Modal from "@/components/ui/modal";
+import { useNewsletter } from "./useNewsletter";
 
 const newsletterSchema = z.object({
   email: z.string().email({ message: "Email inválido" }),
@@ -19,21 +20,29 @@ export const Newsletter = () => {
     "newsletter-success"
   );
 
+  const { subscribe } = useNewsletter();
+
   function handleSubmit() {
     const result = newsletterSchema.safeParse({ email, isChecked });
 
     if (!result.success) {
       setErrorMessage(result.error.issues[0].message);
-      setModalVariant("newsletter-error");
-      setIsModalOpen(true);
       return;
     }
 
-    setErrorMessage("");
-    setEmail("");
-    setIsChecked(false);
-    setModalVariant("newsletter-success");
-    setIsModalOpen(true);
+    subscribe(email, {
+      onSuccess: () => {
+        setModalVariant("newsletter-success");
+        setIsModalOpen(true);
+        setEmail("");
+        setIsChecked(false);
+      },
+      onError: (message) => {
+        setErrorMessage(message);
+        setModalVariant("newsletter-error");
+        setIsModalOpen(true);
+      },
+    });
   }
 
   return (

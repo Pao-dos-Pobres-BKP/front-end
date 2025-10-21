@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Modal } from "@/components/ui/modal";
+import Modal from "@/components/ui/modal";
 import { Progress } from "@/components/ui/progress";
 import Button from "@/components/ui/button";
 import Link from "@/components/ui/link";
