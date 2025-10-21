@@ -53,7 +53,7 @@ export function DateRangePicker({
   const { from, to } = value || {};
   const formatOptions = { locale: ptBR };
   let displayValue = placeholder;
-  
+
   if (from && to) {
     displayValue = `${format(from, "P", formatOptions)} - ${format(to, "P", formatOptions)}`;
   } else if (from) {
