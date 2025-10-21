@@ -140,28 +140,42 @@ function Dashboard() {
         </aside>
 
         <section className="flex-1 flex flex-col gap-6">
-          <div className="flex flex-wrap gap-4">
+          <div
+            className={`grid grid-cols-2 md:grid-cols-3 gap-4 ${
+              !isSidebarOpen ? "lg:grid-cols-6" : "lg:grid-cols-5"
+            }`}
+          >
             {!isSidebarOpen && (
               <button
                 onClick={() => setIsSidebarOpen(true)}
-                className="flex h-20 sm:h-24 flex-1 min-w-[120px] flex-row items-center justify-between gap-2 rounded-lg bg-white px-4 shadow-sm hover:bg-gray-100 transition-colors"
+                className="
+                  flex items-center justify-center h-12 lg:h-16 rounded-lg bg-white px-2 lg:px-4 shadow-sm
+                  hover:bg-gray-100 transition-colors
+                "
               >
-                <span className="font-bold text-lg text-[color:var(--color-components)]">
-                  Dashboard
-                </span>
-                <ChevronRight className="h-5 w-5 text-[color:var(--color-components)]" />
+                <div className="flex items-center gap-2">
+                  <span className="text-base md:text-xl font-bold text-[color:var(--color-components)]">
+                    Dashboard
+                  </span>
+                  <ChevronRight className="h-5 w-5 text-[color:var(--color-components)]" />
+                </div>
               </button>
             )}
             {metrics && (
-              <div className="grid grid-cols-2 lg:grid-cols-5 gap-6 w-full">
+              <>
                 <MetricCard label="Novos Doadores" value={metrics.newDonors} prefix="+ " />
                 <MetricCard label="Doadores Recorrentes" value={metrics.recurringDonors} />
                 <MetricCard label="Doadores" value={metrics.totalDonors} />
-                <MetricCard label="Média de doação" value={formatCurrency(metrics.averageDonation)} prefix="~" />
-                <div className="col-span-2 lg:col-span-1">
-                  <MetricCard label="Arrecadado este mês" value={formatCurrency(metrics.raisedThisMonth)} />
-                </div>
-              </div>
+                <MetricCard
+                  label="Arrecadado este mês"
+                  value={formatCurrency(metrics.raisedThisMonth)}
+                />
+                <MetricCard
+                  label="Média de doação"
+                  value={formatCurrency(metrics.averageDonation)}
+                  prefix="~"
+                />
+              </>
             )}
           </div>
 
