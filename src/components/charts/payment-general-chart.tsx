@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { ChartCard } from "@/components/ui/charts/chart-card";
 import { BaseBarChart } from "@/components/ui/charts/bar-chart-component";
 import type { ChartConfig } from "@/components/ui/charts/chart";
+import type { DateRange } from "react-day-picker";
 
 type OverallPaymentData = {
   metodo: string;
@@ -9,7 +10,8 @@ type OverallPaymentData = {
   valor: number;
 };
 
-const fetchOverallPaymentData = async (): Promise<OverallPaymentData[]> => {
+const fetchOverallPaymentData = async (period?: DateRange): Promise<OverallPaymentData[]> => {
+  console.log("Buscando dados gerais de pagamento para o período:", period);
   const mockData = [
     { metodo: "PIX", quantidade: 850, valor: 150000 },
     { metodo: "Cartão", quantidade: 620, valor: 215000 },
@@ -32,11 +34,38 @@ const configValor = {
   Boleto: { label: "Boleto", color: "#F4A462" },
 } satisfies ChartConfig;
 
-export const PagamentosGeralChart = () => {
+export const PagamentosGeralChart = ({
+  show = "all",
+  period,
+}: {
+  show?: "quantidade" | "valor" | "all";
+  period?: DateRange;
+}) => {
   const [data, setData] = useState<OverallPaymentData[]>([]);
   useEffect(() => {
-    fetchOverallPaymentData().then(setData);
-  }, []);
+    fetchOverallPaymentData(period).then(setData);
+  }, [period]);
+
+  if (show === "quantidade") {
+    return (
+      <ChartCard title="Quantidade de Doações por Método">
+        <BaseBarChart
+          data={data}
+          dataKey="quantidade"
+          categoryKey="metodo"
+          config={configQuantidade}
+        />
+      </ChartCard>
+    );
+  }
+
+  if (show === "valor") {
+    return (
+      <ChartCard title="Valor Arrecadado por Método">
+        <BaseBarChart data={data} dataKey="valor" categoryKey="metodo" config={configValor} />
+      </ChartCard>
+    );
+  }
 
   return (
     <div className="grid md:grid-cols-2 gap-6 w-full">

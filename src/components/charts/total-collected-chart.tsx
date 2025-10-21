@@ -3,6 +3,7 @@ import { ChartCard } from "@/components/ui/charts/chart-card";
 import { BaseAreaChart } from "@/components/ui/charts/area-chart-component";
 import type { ChartConfig } from "@/components/ui/charts/chart";
 import { CalendarIcon } from "lucide-react";
+import type { DateRange } from "react-day-picker";
 
 const formatDate = (date: Date) => {
   return new Intl.DateTimeFormat("pt-BR", {
@@ -11,7 +12,10 @@ const formatDate = (date: Date) => {
   }).format(date);
 };
 
-const fetchDataForPeriod = async (startDate: Date, endDate: Date) => {
+const fetchDataForPeriod = async (startDate: Date | undefined, endDate: Date | undefined) => {
+  if (!startDate || !endDate) {
+    return [];
+  }
   const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
@@ -37,19 +41,12 @@ const chartConfig = {
   total: { label: "Total", color: "#A9840C" },
 } satisfies ChartConfig;
 
-export const TotalArrecadadoChart = () => {
+export const TotalArrecadadoChart = ({ period }: { period?: DateRange }) => {
   const [data, setData] = useState<Array<{ data: string; total: number }>>([]);
   const [monthSeparators, setMonthSeparators] = useState<{ x: string }[]>([]);
 
-  const [period] = useState(() => {
-    const endDate = new Date();
-    const startDate = new Date();
-    startDate.setDate(endDate.getDate() - 29);
-    return { startDate, endDate };
-  });
-
   useEffect(() => {
-    fetchDataForPeriod(period.startDate, period.endDate).then((fetchedData) => {
+    fetchDataForPeriod(period?.from, period?.to).then((fetchedData) => {
       setData(fetchedData);
 
       const separators: { x: string }[] = [];
@@ -65,7 +62,10 @@ export const TotalArrecadadoChart = () => {
     });
   }, [period]);
 
-  const formattedPeriod = `${formatDate(period.startDate)} - ${formatDate(period.endDate)}`;
+  const formattedPeriod =
+    period?.from && period?.to
+      ? `${formatDate(period.from)} - ${formatDate(period.to)}`
+      : "Nenhum período selecionado";
 
   const periodSelector = (
     <div className="flex items-center gap-2 text-sm text-gray-600 border rounded-md px-3 py-1 cursor-pointer">
