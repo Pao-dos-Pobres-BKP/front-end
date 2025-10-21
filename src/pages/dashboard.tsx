@@ -262,7 +262,7 @@ function Dashboard() {
   };
 
   return (
-    <div className="bg-[#2F5361] min-h-screen">
+    <div className="bg-[#2F5361]">
       <main className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex gap-6">
         <aside
           className={`transition-all duration-300 ${isSidebarOpen ? "w-80" : "w-0"} overflow-hidden`}

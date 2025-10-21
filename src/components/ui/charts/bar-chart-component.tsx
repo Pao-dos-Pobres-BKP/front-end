@@ -19,15 +19,9 @@ export function BaseBarChart<TData extends Record<string, unknown>>({
   return (
     <ChartContainer config={config} className="h-full w-full">
       <BarChart accessibilityLayer data={data} margin={{ left: 12, right: 12 }}>
-        <CartesianGrid vertical={false} />
-        <XAxis
-          dataKey={categoryKey}
-          tickLine={false}
-          axisLine={false}
-          tickMargin={8}
-          // tickFormatter={(value: string) => value.slice(0, 3)}
-        />
-        <YAxis tickLine={false} axisLine={false} width={32} />
+        <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#cccc" />
+        <XAxis dataKey={categoryKey} tickLine={true} axisLine={true} tickMargin={8} />
+        <YAxis tickLine={true} axisLine={true} width={32} />
         <ChartTooltip
           cursor={false}
           content={<ChartTooltipContent hideLabel className="bg-white" />}

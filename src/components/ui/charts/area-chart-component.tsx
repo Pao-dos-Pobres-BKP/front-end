@@ -23,18 +23,12 @@ export function BaseAreaChart<TData extends object>({
   return (
     <ChartContainer config={config} className="h-full w-full">
       <AreaChart data={data} margin={{ left: 12, right: 12 }}>
-        <CartesianGrid vertical={false} />
-        <XAxis
-          dataKey={categoryKey}
-          tickLine={false}
-          axisLine={false}
-          tickMargin={8}
-          interval={1}
-        />
-        <YAxis tickLine={false} axisLine={false} tickMargin={8} />
+        <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#cccc" />
+        <XAxis dataKey={categoryKey} tickLine={true} axisLine={true} tickMargin={8} interval={1} />
+        <YAxis tickLine={true} axisLine={true} tickMargin={8} />
         <ChartTooltip
           cursor={false}
-          content={<ChartTooltipContent indicator="dot" hideLabel className="bg-white" />}
+          content={<ChartTooltipContent indicator="dot" className="bg-white" />}
         />
         {referenceLines?.map((line, index) => (
           <ReferenceLine key={index} x={line.x} strokeDasharray="3 3" />
@@ -46,6 +40,12 @@ export function BaseAreaChart<TData extends object>({
           fillOpacity={0.4}
           stroke={strokeColor || "var(--color-stroke, #000000)"}
           strokeWidth={2}
+          activeDot={{
+            r: 6,
+            strokeWidth: 2,
+            fill: strokeColor || "#000000",
+            stroke: "#ffffff",
+          }}
         />
       </AreaChart>
     </ChartContainer>
