@@ -23,3 +23,28 @@ jobs:
 
       - name: Build do projeto
         run: yarn build
+
+  mirror:
+    name: Mirror para GitLab
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout do repositório (histórico completo + tags)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          tags: true
+
+      - name: Adicionar remoto GitLab
+        run: |
+          git remote add gitlab "${{ secrets.GITLAB_MIRROR_URL }}"
+          git remote -v
+
+      - name: Sincronizar refs do origin
+        run: |
+          git fetch --prune --tags origin
+
+      - name: Push --mirror (todas as refs)
+        run: |
+          git push --mirror gitlab
