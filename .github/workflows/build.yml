@@ -6,54 +6,25 @@ on:
 
 jobs:
   build:
-    name: Build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout do repositório
-        uses: actions/checkout@v4
-      - name: Configurar Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'yarn'
-      - name: Instalar dependências
-        run: yarn install --frozen-lockfile
-      - name: Build do projeto
-        run: yarn build
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn build
 
   mirror:
-    name: Mirror para GitLab (via SSH)
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Registrar host
-        run: |
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          ssh-keyscan github.com 2>/dev/null | tee -a ~/.ssh/known_hosts >/dev/null
-          ssh-keyscan -p 8822 tools.ages.pucrs.br 2>/dev/null | tee -a ~/.ssh/known_hosts >/dev/null
-
-      - name: Carregar chave SSH do GitLab
-        uses: webfactory/ssh-agent@v0.9.0
+      - uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Clonar origem (HTTPS com GITHUB_TOKEN)
-        run: |
+      - run: |
           git clone --mirror "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" mirror.git
-
-      - name: Configurar remoto GitLab
-        env:
-          GITLAB_REPO_SSH: ${{ secrets.GITLAB_REPO_SSH }}
-        run: |
-          test -n "$GITLAB_REPO_SSH"
           cd mirror.git
-          git remote add gitlab "$GITLAB_REPO_SSH"
-          git remote -v
-
-      - name: Push --mirror para GitLab
-        env:
-          GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=yes -p 8822"
-        run: |
-          cd mirror.git
-          git push --mirror gitlab
+          git remote add gitlab "${{ secrets.GITLAB_REPO_SSH }}"
+          GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -p 8822" git push --mirror gitlab
