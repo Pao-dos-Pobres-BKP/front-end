@@ -29,27 +29,28 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Checkout (histórico completo + tags)
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          tags: true
-
       - name: Carregar chave SSH
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Registrar host key do GitLab (porta 8822)
+      - name: Registrar host key do GitHub e GitLab (8822)
+        shell: bash
         run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -p 8822 tools.ages.pucrs.br >> ~/.ssh/known_hosts
+          install -m 700 -d "$HOME/.ssh"
+          ssh-keyscan github.com 2>/dev/null | tee -a "$HOME/.ssh/known_hosts" >/dev/null
+          ssh-keyscan -p 8822 tools.ages.pucrs.br 2>/dev/null | tee -a "$HOME/.ssh/known_hosts" >/dev/null
 
-      - name: Adicionar remoto GitLab (SSH)
+      - name: Clonar repositório de origem como espelho (GitHub)
+        env:
+          GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=yes"
         run: |
-          git remote add gitlab "ssh://git@tools.ages.pucrs.br:8822/plataforma-de-doa-es-para-o-p-o-dos-pobres/front-end.git"
+          git clone --mirror "git@github.com:${{ github.repository }}.git" mirror.git
 
-      - name: Sincronizar refs e espelhar (push --mirror)
+      - name: Adicionar remoto GitLab e push --mirror
+        env:
+          GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=yes -p 8822"
         run: |
-          git fetch --prune --tags origin
+          cd mirror.git
+          git remote add gitlab "${{ secrets.GITLAB_REPO_SSH }}"
           git push --mirror gitlab
