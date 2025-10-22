@@ -82,29 +82,34 @@ export default function NewsEvents() {
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 10;
 
-
   const totalPages = Math.ceil(mockEventsAndNews.length / cardsPerPage);
+
+  const searchHeader = (
+    <div className="flex w-full items-center gap-3 my-5">
+      <div className="flex-1">
+        <SearchBar />
+      </div>
+      <div className="min-w-[100px]">
+        <DatePicker />
+      </div>
+      <Button variant="quinary" size="extraSmall">
+        Pesquisar
+      </Button>
+      <Button variant="quinary" size="extraSmall" className="flex-shrink-0">
+        <img src={PlusIcon} alt="Icone-plus" />
+      </Button>
+    </div>
+  );
 
   return (
     <div className="w-full py-5 px-6 bg-[#2F5361]">
-            <div className="flex w-full items-center gap-3">
-        <div className="flex-1">
-          <SearchBar />
-        </div>
-        <div className="min-w-[100px]">
-          <DatePicker />
-        </div>
-        <Button variant="quinary" size="extraSmall">
-          Pesquisar
-        </Button>
-        <Button variant="quinary" size="extraSmall" className="flex-shrink-0">
-          <img src={PlusIcon} alt="Icone-plus" />
-        </Button>
-      </div>
-
-      <div className="w-full flex flex-col py-5">
-        <Tabs tabs={["Notícias", "Eventos", "Todos"]} variant="secondary">
-          <div className="flex flex-col gap-3 py-5 w-full">
+      <div className="w-full flex flex-col">
+        <Tabs 
+          tabs={["Notícias", "Eventos", "Todos"]} 
+          variant="secondary"
+          headerContent={searchHeader}
+        >
+          <div className="flex flex-col gap-3 w-full">
             {mockEventsAndNews
               .filter((e) => e.type === "news")
               .slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage)
@@ -120,7 +125,7 @@ export default function NewsEvents() {
               ))}
           </div>
 
-          <div className="flex flex-col gap-3 py-5 w-full">
+          <div className="flex flex-col gap-3 w-full">
             {mockEventsAndNews
               .filter((e) => e.type === "event")
               .slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage)
@@ -136,7 +141,7 @@ export default function NewsEvents() {
               ))}
           </div>
 
-          <div className="flex flex-col gap-3 py-5 w-full">
+          <div className="flex flex-col gap-3 w-full">
             {mockEventsAndNews
               .slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage)
               .map((item, index) => (
