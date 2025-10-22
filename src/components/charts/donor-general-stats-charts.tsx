@@ -5,7 +5,7 @@ import { BasePieChart } from "@/components/ui/charts/pie-chart-component";
 import { BaseBarChart } from "@/components/ui/charts/bar-chart-component";
 import type { ChartConfig } from "@/components/ui/charts/chart";
 
-type PieData = { name: string; value: number; fill: string };
+type PieData = { name: string; value: number };
 type BarData = { faixa: string; total: number };
 
 const fetchDonorGeneralStats = async (
@@ -13,9 +13,9 @@ const fetchDonorGeneralStats = async (
 ): Promise<{ pieData: PieData[]; barData: BarData[] }> => {
   console.log("Buscando dados gerais de doadores para o período:", period);
   const pieData = [
-    { name: "Masculino", value: 450, fill: "#E8C468" },
-    { name: "Feminino", value: 510, fill: "#2A9D90" },
-    { name: "Outro", value: 80, fill: "#F4A462" },
+    { name: "Masculino", value: 450 },
+    { name: "Feminino", value: 510 },
+    { name: "Outro", value: 80 },
   ];
   const barData = [
     { faixa: "18-20", total: 150 },
