@@ -175,18 +175,18 @@ export default function Perfil() {
 
   return (
     <div className="min-h-screen bg-[#2F5361] font-inter">
-      <div className="flex justify-center px-6 py-6">
-        <div className="w-full max-w-6md bg-white rounded-xl shadow-lg p-4">
+      <div className="flex justify-center px-4 sm:px-6 py-6">
+        <div className="w-full max-w-6xl bg-white rounded-xl shadow-lg p-4 sm:p-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white rounded-lg gap-4 p-4 mb-6">
             <div className="flex items-center gap-4 w-full sm:w-auto">
               <img
                 src={dados.photo || "https://via.placeholder.com/80"}
                 alt="Foto do usuário"
-                className="w-20 h-20 rounded-2xl object-cover"
+                className="w-20 h-20 rounded-2xl object-cover flex-shrink-0"
               />
-              <div className="flex flex-col flex-1">
+              <div className="flex flex-col flex-1 min-w-0">
                 <div className="flex items-center">
-                  <h2 className="text-[22px] sm:text-[27px] font-bold text-[#005172]">
+                  <h2 className="text-xl sm:text-2xl md:text-[27px] font-bold text-[#005172] break-words">
                     {dados.fullname}
                   </h2>
                 </div>
@@ -202,19 +202,19 @@ export default function Perfil() {
               {currentUser?.role === "ADMIN" && (
                 <button
                   onClick={handleOpenCreateAdminModal}
-                  className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl bg-[#005172] text-white hover:bg-[#24434f] transition-colors"
+                  className="flex-1 sm:flex-none px-4 sm:px-6 py-2 text-sm border rounded-xl bg-[#005172] text-white hover:bg-[#24434f] transition-colors"
                 >
                   Ajustes
                 </button>
               )}
               <button
                 onClick={() => setIsLogoutModalOpen(true)}
-                className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl text-[#005172] hover:bg-[#e6f3f5] transition-colors"
+                className="flex-1 sm:flex-none px-4 sm:px-6 py-2 text-sm border rounded-xl text-[#005172] hover:bg-[#e6f3f5] transition-colors whitespace-nowrap"
               >
                 Sair da Conta
               </button>
               <button
-                className="p-2 rounded-md bg-[#005172] text-white hover:bg-[#24434f] flex items-center justify-center"
+                className="p-2 rounded-md bg-[#005172] text-white hover:bg-[#24434f] flex items-center justify-center flex-shrink-0"
                 onClick={handleEditarConta}
               >
                 <EditSquare size="medium" />
@@ -222,21 +222,21 @@ export default function Perfil() {
             </div>
           </div>
 
-          <div className="flex flex-col lg:flex-row gap-8">
-            <div className="lg:w-1/3 flex flex-col gap-4">
-              <div className="bg-white rounded-lg p-6 flex-1 min-h-[420px]">
-                <div className="flex flex-col space-y-10">
-                  <div className="flex items-center gap-2">
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+            <div className="w-full lg:w-1/3 flex flex-col gap-4">
+              <div className="bg-white rounded-lg p-4 sm:p-6 flex-1 min-h-[420px]">
+                <div className="flex flex-col space-y-6 sm:space-y-10">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                     <label className="text-sm font-medium text-[#005172] text-left whitespace-nowrap">
                       Data de Nascimento
                     </label>
-                    <span className="flex-1 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
+                    <span className="py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
                       {dados.birthDate ? dados.birthDate.toLocaleDateString("pt-BR") : "—"}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                     <label className="text-sm font-medium text-[#005172] text-left">Gênero:</label>
-                    <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
+                    <span className="py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
                       {{
                         MALE: "Masculino",
                         FEMALE: "Feminino",
@@ -244,29 +244,29 @@ export default function Perfil() {
                       }[dados.gender as "MALE" | "FEMALE" | "OTHER"] ?? "—"}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                     <label className="text-sm font-medium text-[#005172] text-left whitespace-nowrap">CPF:</label>
-                    <span className="flex-1 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
+                    <span className="py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
                       {dados.cpf}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                     <label className="text-sm font-medium text-[#005172] text-left">
                       Telefone:
                     </label>
-                    <span className="flex-1 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
+                    <span className="py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
                       {dados.phone}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                     <label className="text-sm font-medium text-[#005172] text-left whitespace-nowrap">E-mail:</label>
-                    <span className="flex-1 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
+                    <span className="py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left break-all">
                       {dados.email}
                     </span>
                   </div>
                 </div>
 
-                <div className="mt-10 flex items-center gap-2">
+                <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row sm:items-center gap-2">
                   <span className="text-sm text-[#005172] whitespace-nowrap">
                     Quanto doou até agora:
                   </span>
@@ -299,7 +299,7 @@ export default function Perfil() {
                     goal={campanha.goal}
                     variant="compact"
                     situation="recurring"
-                    className="border border-[#005172] rounded-lg text-sm p-3"
+                    className="border border-[#005172] rounded-lg w-full"
                   />
                 ))
               ) : (
@@ -311,11 +311,13 @@ export default function Perfil() {
           </div>
 
           <hr className="border-t border-[#266D88CC] mx-50 my-8" />
-          <h2 className="text-2xl font-bold text-[#005172] mt-2 mb-4">Histórico de Doações</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-[#005172] mt-2 mb-4">Histórico de Doações</h2>
 
-          <div className="mt-2 bg-white rounded-lg p-6 min-h-[580px] flex flex-col">
-            <div className="flex flex-col lg:flex-row gap-3 items-center mb-6 w-full">
-              <Input placeholder="Buscar..." fullWidth />
+          <div className="mt-2 bg-white rounded-lg p-4 sm:p-6 min-h-[580px] flex flex-col">
+            <div className="flex flex-col lg:flex-row gap-3 items-stretch lg:items-center mb-6 w-full">
+              <div className="flex-1">
+                <Input placeholder="Buscar..." fullWidth />
+              </div>
 
               <div className="relative w-full lg:w-1/3">
                 <select
@@ -360,7 +362,7 @@ export default function Perfil() {
                   variant="historic"
                   situation={campanha.situation}
                   lastDonation={80}
-                  className="border border-[#005172] rounded-lg text-sm p-3"
+                  className="border border-[#005172] rounded-lg w-full"
                 />
               ))}
             </div>
