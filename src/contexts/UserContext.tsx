@@ -15,6 +15,7 @@ export interface User {
   role: RoleEnum;
   accessToken: string;
   photo?: string;
+  totalDonated: number;
 }
 
 export interface UserContextType {

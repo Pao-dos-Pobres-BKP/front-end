@@ -8,3 +8,12 @@ export type CampaignDonation = {
   situation: SituationType;
   donationAmount: number;
 };
+
+export type CampaignCard = {
+  raised: number;
+  goal: number;
+  situation: SituationType;
+  donationAmount: number;
+  title: string;
+  creatorName: string;
+};

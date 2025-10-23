@@ -14,7 +14,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditUserModal from "@/components/ui/edit-user-modal";
 import ConfirmLogoutModal from "@/components/ui/confirm-logout-modal";
 
@@ -22,6 +22,8 @@ import type { User } from "@/contexts/UserContext";
 import CreateAdminModal from "@/components/ui/create-admin-modal";
 import { useUser } from "@/hooks/useUser";
 import { usePerfil } from "./usePerfil";
+import { useSearchParams } from "react-router-dom";
+import { formatCurrency } from "@/utils/formatCurrency";
 
 interface ProfileUser extends User {
   totalDonated: number;
@@ -29,12 +31,21 @@ interface ProfileUser extends User {
 }
 
 export default function Perfil() {
+  const [, setSearchParams] = useSearchParams();
+  const [pageSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const { campaigns } = usePerfil(currentPage, pageSize);
+
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isCreateAdminModalOpen, setIsCreateAdminModalOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 6;
   const currentUser = useUser().user;
+
+  useEffect(() => {
+    setSearchParams({ page: currentPage.toString() });
+  }, [currentPage, setSearchParams]);
 
   const [dados, setDados] = useState<ProfileUser>({
     id: "1",
@@ -53,34 +64,6 @@ export default function Perfil() {
 
   //const campanhas: any[] = [];      // para testar quando não tiver campanhas apoiando.
 
-  const campanhas = [
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: "Fundação Pão dos Pobres Santo Antônio",
-      raised: 81825.33,
-      goal: 90000,
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: "Fundação Pão dos Pobres Santo Antônio",
-      raised: 81825.33,
-      goal: 90000,
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: "Fundação Pão dos Pobres Santo Antônio",
-      raised: 81825.33,
-      goal: 90000,
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: "Fundação Pão dos Pobres Santo Antônio",
-      raised: 81825.33,
-      goal: 90000,
-    },
-  ];
-
-  const { campaigns } = usePerfil();
   const totalPages = Math.ceil(campaigns.length / cardsPerPage);
 
   const handleEditarConta = () => {
@@ -157,7 +140,9 @@ export default function Perfil() {
                       Data de Nascimento:
                     </label>
                     <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
-                      {dados.birthDate ? dados.birthDate.toLocaleDateString("pt-BR") : "—"}
+                      {/* {currentUser?.birthDate
+                        ? currentUser?.birthDate?.toLocaleDateString("pt-BR")
+                        : "—"} */}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -203,10 +188,7 @@ export default function Perfil() {
                     className="flex-1"
                   />
                   <span className="text-sm text-[#005172] whitespace-nowrap">
-                    {dados.totalDonated.toLocaleString("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    })}
+                    {formatCurrency(currentUser?.totalDonated ?? 0)}
                   </span>
                 </div>
               </div>
@@ -215,8 +197,8 @@ export default function Perfil() {
             <div className="flex-1 flex flex-col gap-3 items-start">
               <h3 className="text-sm font-semibold text-[#005172]">Campanhas que apoia</h3>
 
-              {campanhas.length > 0 ? (
-                campanhas.map((campanha, index) => (
+              {campaigns.length > 0 ? (
+                campaigns.map((campanha, index) => (
                   <CampaignCard
                     key={index}
                     title={campanha.title}

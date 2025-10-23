@@ -40,6 +40,7 @@ export async function getDonor(id: string, accessToken: string): Promise<User> {
     cpf: data.cpf,
     accessToken: accessToken,
     role: "DONOR",
+    totalDonated: data.totalDonated,
   };
   return user;
 }
@@ -53,6 +54,7 @@ export async function getAdmin(id: string, accessToken: string): Promise<User> {
     root: data.root,
     accessToken: accessToken,
     role: "ADMIN",
+    totalDonated: data.totalDonated,
   };
   return user;
 }

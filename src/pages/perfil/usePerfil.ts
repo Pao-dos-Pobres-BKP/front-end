@@ -1,24 +1,21 @@
 import { useEffect, useState } from "react";
 
-import { getDonorDonations } from "@/services/campaign";
+import { getDonorCampaigns } from "@/services/campaign";
 import type { CampaignDonation } from "./types";
 import { campaignAdapter } from "./utils/campaignAdapter";
 
-export function usePerfil() {
+export function usePerfil(page: number, pageSize: number) {
   const [campaigns, setCampaigns] = useState<CampaignDonation[]>([]);
 
   useEffect(() => {
-    getCampaignDonations();
-  }, []);
+    getCampaignDonations(page, pageSize);
+  }, [page, pageSize]);
 
-  async function getCampaignDonations() {
-    const response = await getDonorDonations();
-    if (response.data) {
-      setCampaigns(response.data.map(campaignAdapter.toCampaignDonation));
-    }
+  async function getCampaignDonations(page: number, pageSize: number) {
+    const response = await getDonorCampaigns(page, pageSize);
+    setCampaigns(response.data.map(campaignAdapter.toCampaignCard));
+    return response.data;
   }
 
-  return {
-    campaigns,
-  };
+  return { campaigns };
 }
