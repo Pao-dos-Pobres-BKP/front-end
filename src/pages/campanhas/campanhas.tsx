@@ -13,7 +13,7 @@ const Campanhas = () => {
 
   /*
   const fetchCampaigns = async () => {
-   //BATER NA API AQUI
+   // API AQUI
   }
    */
 
@@ -68,7 +68,7 @@ const campaigns: CampaignCardCompactProps[] = [
     raised: 4200,
     goal: 5000,
     creatorName: "Instituto Esperança",
-    situation: "approved",
+    situation: "pending",
     progressPercent: 84,
   },
   {
@@ -76,7 +76,7 @@ const campaigns: CampaignCardCompactProps[] = [
     raised: 12000,
     goal: 20000,
     creatorName: "Associação Educando Juntos",
-    situation: "approved",
+    situation: "rejected",
     progressPercent: 60,
   },
   {
@@ -84,7 +84,7 @@ const campaigns: CampaignCardCompactProps[] = [
     raised: 2600,
     goal: 3000,
     creatorName: "Ana Costa",
-    situation: "approved",
+    situation: "recurring",
     progressPercent: 87,
   },
   {

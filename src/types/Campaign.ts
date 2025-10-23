@@ -17,16 +17,15 @@ export interface CampaignBase {
   id?: string;
   title: string;
   description: string;
-  targetValue: number; // stored in cents or number? assuming number currency units
+  targetValue: number; 
   image?: CampaignImage | null;
   status?: CampaignStatus;
-  authorName?: string; // display only
+  authorName?: string; 
   authorId?: string;
   createdAt?: string;
   updatedAt?: string;
 }
 
-// Inputs for forms
 export interface CreateCampaignInput {
   title: string;
   description: string;
@@ -41,7 +40,7 @@ export interface UpdateCampaignInput extends CreateCampaignInput {
 export interface ApproveCampaignInput {
   id: string;
   password: string;
-  approve: boolean; // true approve, false reject
+  approve: boolean; 
 }
 
 export interface DeleteCampaignInput {
