@@ -85,18 +85,18 @@ export default function NewsEvents() {
   const totalPages = Math.ceil(mockEventsAndNews.length / cardsPerPage);
 
   const searchHeader = (
-    <div className="flex w-full items-center gap-3 my-5">
-      <div className="flex-1">
+    <div className="flex flex-wrap w-full items-center gap-3 my-5">
+      <div className="flex-1 min-w-[200px]">
         <SearchBar />
       </div>
-      <div className="min-w-[100px]">
-        <DatePicker />
+      <div>
+        <DatePicker className="!bg-[var(--color-text-special-2)] !text-[var(--color-background)] [&_*]:!text-[var(--color-background)]" />
       </div>
       <Button variant="quinary" size="extraSmall">
         Pesquisar
       </Button>
-      <Button variant="quinary" size="extraSmall" className="flex-shrink-0">
-        <img src={PlusIcon} alt="Icone-plus" />
+      <Button variant="quinary" size="extraSmall" className="flex items-center justify-center flex-shrink-0">
+        <img src={PlusIcon} alt="Icone-plus" className="w-8 h-8 translate-y-[4px]" />
       </Button>
     </div>
   );
