@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Image from "@/assets/Image.svg";
-import { DatePicker } from "./date-picker";
+import { DatePicker } from "./Calendar/date-picker";
 import Input from "./input";
 
 interface EditEventModalProps {
