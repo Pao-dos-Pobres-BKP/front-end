@@ -3,7 +3,7 @@ import Button from "@/components/ui/button";
 import PlusIcon from "@/assets/Plus.svg";
 import { Tabs } from "@/components/ui/tabs";
 import { CampaignCardEventAndNews } from "@/components/ui/campaignCard/campaingCardEventAndNews";
-import { DatePicker } from "@/components/ui/Calendar/date-picker"; 
+import { DatePicker } from "@/components/ui/Calendar/date-picker";
 
 import {
   Pagination,
@@ -95,7 +95,11 @@ export default function NewsEvents() {
       <Button variant="quinary" size="extraSmall">
         Pesquisar
       </Button>
-      <Button variant="quinary" size="extraSmall" className="flex items-center justify-center flex-shrink-0">
+      <Button
+        variant="quinary"
+        size="extraSmall"
+        className="flex items-center justify-center flex-shrink-0"
+      >
         <img src={PlusIcon} alt="Icone-plus" className="w-8 h-8 translate-y-[4px]" />
       </Button>
     </div>
@@ -104,8 +108,8 @@ export default function NewsEvents() {
   return (
     <div className="w-full py-5 px-6 bg-[#2F5361]">
       <div className="w-full flex flex-col">
-        <Tabs 
-          tabs={["Notícias", "Eventos", "Todos"]} 
+        <Tabs
+          tabs={["Notícias", "Eventos", "Todos"]}
           variant="secondary"
           headerContent={searchHeader}
         >
