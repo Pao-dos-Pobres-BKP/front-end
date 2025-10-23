@@ -17,10 +17,10 @@ export interface CampaignBase {
   id?: string;
   title: string;
   description: string;
-  targetValue: number; 
+  targetValue: number;
   image?: CampaignImage | null;
   status?: CampaignStatus;
-  authorName?: string; 
+  authorName?: string;
   authorId?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -40,7 +40,7 @@ export interface UpdateCampaignInput extends CreateCampaignInput {
 export interface ApproveCampaignInput {
   id: string;
   password: string;
-  approve: boolean; 
+  approve: boolean;
 }
 
 export interface DeleteCampaignInput {

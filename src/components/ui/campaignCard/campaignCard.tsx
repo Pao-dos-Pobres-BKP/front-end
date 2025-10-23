@@ -22,7 +22,7 @@ export type CampaignCardProps = {
   donorName?: string;
   donorEmail?: string;
   donationAmount?: number;
-  memberSince?: string; 
+  memberSince?: string;
   campaigns?: string[];
   lastDonation?: number;
 };
@@ -59,7 +59,7 @@ export default function CampaignCard({
         className={className}
         progressPercent={percent}
       />
-    )
+    );
   }
 
   if (variant === "compact") {
