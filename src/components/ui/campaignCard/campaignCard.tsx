@@ -98,6 +98,7 @@ export default function CampaignCard({
         title={title}
         className={className}
         lastDonation={lastDonation}
+        donationAmount={donationAmount}
       />
     );
   }

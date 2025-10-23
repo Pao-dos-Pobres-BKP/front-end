@@ -12,10 +12,11 @@ export type CampaignCardHistoricProps = {
   className?: string;
   situation?: "approved" | "pending" | "rejected" | "recurring";
   lastDonation?: number;
+  donationAmount?: number;
 };
 
 export function CampaignCardHistoric(props: CampaignCardHistoricProps) {
-  const { situation, creatorName, title, className, lastDonation } = props;
+  const { situation, creatorName, title, className, donationAmount } = props;
 
   const situationLabels: Record<string, string> = {
     approved: "Única",
@@ -88,34 +89,34 @@ export function CampaignCardHistoric(props: CampaignCardHistoricProps) {
         </div>
       )}
 
-      {(situation || lastDonation !== undefined) && (
+      {(situation || donationAmount !== undefined) && (
         <div className="sm:hidden grid grid-cols-2 gap-2 w-full col-span-1">
           {situation && (
             <div className={cn("text-base font-semibold text-left col-span-1", gradientTextClass)}>
               {situationLabels[situation]}
             </div>
           )}
-          {lastDonation !== undefined && (
+          {donationAmount !== undefined && (
             <div
               className={cn(
                 "text-xl font-semibold text-right col-span-1 justify-self-end",
                 gradientTextClass
               )}
             >
-              +{formatCurrency(lastDonation)}
+              +{formatCurrency(donationAmount ?? 0)}
             </div>
           )}
         </div>
       )}
 
-      {lastDonation !== undefined && (
+      {donationAmount !== undefined && (
         <div
           className={cn(
             "hidden sm:flex items-center justify-self-end text-2xl font-semibold ml-4",
             gradientTextClass
           )}
         >
-          +{formatCurrency(lastDonation)}
+          +{formatCurrency(donationAmount ?? 0)}
         </div>
       )}
     </article>

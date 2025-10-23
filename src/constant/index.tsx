@@ -6,7 +6,7 @@ import { ROUTES } from "./routes";
 import Login from "@/pages/login/login";
 import Doacao from "@/pages/doacao";
 import Campanhas from "@/pages/campanhas/campanhas";
-import Perfil from "@/pages/perfil";
+import Perfil from "@/pages/perfil/perfil";
 import Dashboard from "@/pages/dashboard";
 import DonorList from "@/pages/donor-list";
 import Partners from "@/pages/empresas-parceiras";

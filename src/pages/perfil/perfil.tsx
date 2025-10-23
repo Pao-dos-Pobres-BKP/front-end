@@ -21,6 +21,7 @@ import ConfirmLogoutModal from "@/components/ui/confirm-logout-modal";
 import type { User } from "@/contexts/UserContext";
 import CreateAdminModal from "@/components/ui/create-admin-modal";
 import { useUser } from "@/hooks/useUser";
+import { usePerfil } from "./usePerfil";
 
 interface ProfileUser extends User {
   totalDonated: number;
@@ -79,83 +80,8 @@ export default function Perfil() {
     },
   ];
 
-  type SituationType = "approved" | "pending" | "rejected" | "recurring";
-  const campanhasHistorico: {
-    title: string;
-    creatorName: string;
-    raised: number;
-    goal: number;
-    situation: SituationType;
-  }[] = [
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 81825.33,
-      goal: 90000,
-      situation: "recurring",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 5000,
-      goal: 10000,
-      situation: "recurring",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 15000,
-      goal: 20000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 2500,
-      goal: 3000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 7000,
-      goal: 10000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 9000,
-      goal: 15000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 1200,
-      goal: 2000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 4500,
-      goal: 5000,
-      situation: "approved",
-    },
-    {
-      title: "Campanha de Santo Antônio",
-      creatorName: " Fundação Pão dos Pobres Santo Antônio",
-      raised: 800,
-      goal: 1000,
-      situation: "approved",
-    },
-  ];
-
-  const totalPages = Math.ceil(campanhasHistorico.length / cardsPerPage);
-  const indexOfLastCard = currentPage * cardsPerPage;
-  const indexOfFirstCard = indexOfLastCard - cardsPerPage;
-  const currentCards = campanhasHistorico.slice(indexOfFirstCard, indexOfLastCard);
+  const { campaigns } = usePerfil();
+  const totalPages = Math.ceil(campaigns.length / cardsPerPage);
 
   const handleEditarConta = () => {
     setIsEditModalOpen(true);
@@ -350,17 +276,12 @@ export default function Perfil() {
             </div>
 
             <div className="flex flex-col gap-3 flex-1">
-              {currentCards.map((campanha, index) => (
+              {campaigns.map((campaign, index) => (
                 <CampaignCard
                   key={index}
-                  title={campanha.title}
-                  creatorName={campanha.creatorName}
-                  raised={campanha.raised}
-                  goal={campanha.goal}
                   variant="historic"
-                  situation={campanha.situation}
-                  lastDonation={80}
                   className="border border-[#005172] rounded-lg text-sm p-3"
+                  {...campaign}
                 />
               ))}
             </div>
@@ -372,7 +293,7 @@ export default function Perfil() {
                     <PaginationPrevious
                       size="sm"
                       onClick={
-                        currentPage === 1 ? undefined : () => setCurrentPage(currentPage - 1)
+                        currentPage === 1 ? undefined : () => setCurrentPage((prev) => prev - 1)
                       }
                       className={cn(
                         "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
@@ -408,7 +329,7 @@ export default function Perfil() {
                       onClick={
                         currentPage === totalPages
                           ? undefined
-                          : () => setCurrentPage(currentPage + 1)
+                          : () => setCurrentPage((prev) => prev + 1)
                       }
                       className={cn(
                         "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
