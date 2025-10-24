@@ -67,7 +67,7 @@ export default function ProfileSettingsModal({
         onClose={() => setIsCreateAdminModalOpen(false)}
       />
 
-     <div className="bg-white w-full max-w-lg rounded-xl shadow-lg mx-4 sm:mx-0 overflow-hidden">
+      <div className="bg-white w-full max-w-lg rounded-xl shadow-lg mx-4 sm:mx-0 overflow-hidden">
         <h2 className="text-2xl font-bold text-[color:var(--primary-800)] m-4 text-left">
           Ajustes
         </h2>
@@ -75,11 +75,7 @@ export default function ProfileSettingsModal({
         <div className="flex items-center justify-between bg-[color:var(--primary-100)] py-3 px-4 font-semibold text-[color:var(--primary-900)]">
           <h3>Lista de usuários</h3>
 
-          <Button
-            variant="primary"
-            size="icon"
-            onClick={handleOpenCreateAdminModal}
-          >
+          <Button variant="primary" size="icon" onClick={handleOpenCreateAdminModal}>
             <PlusCircleIcon className="h-8 w-8 text-white" />
           </Button>
         </div>

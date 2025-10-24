@@ -87,70 +87,70 @@ export default function Perfil() {
     goal: number;
     situation: SituationType;
   }[] = [
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 81825.33,
-        goal: 90000,
-        situation: "recurring",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 5000,
-        goal: 10000,
-        situation: "recurring",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 15000,
-        goal: 20000,
-        situation: "approved",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 2500,
-        goal: 3000,
-        situation: "approved",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 7000,
-        goal: 10000,
-        situation: "approved",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 9000,
-        goal: 15000,
-        situation: "approved",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 1200,
-        goal: 2000,
-        situation: "approved",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 4500,
-        goal: 5000,
-        situation: "approved",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 800,
-        goal: 1000,
-        situation: "approved",
-      },
-    ];
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 81825.33,
+      goal: 90000,
+      situation: "recurring",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 5000,
+      goal: 10000,
+      situation: "recurring",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 15000,
+      goal: 20000,
+      situation: "approved",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 2500,
+      goal: 3000,
+      situation: "approved",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 7000,
+      goal: 10000,
+      situation: "approved",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 9000,
+      goal: 15000,
+      situation: "approved",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 1200,
+      goal: 2000,
+      situation: "approved",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 4500,
+      goal: 5000,
+      situation: "approved",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 800,
+      goal: 1000,
+      situation: "approved",
+    },
+  ];
 
   const totalPages = Math.ceil(campanhasHistorico.length / cardsPerPage);
   const indexOfLastCard = currentPage * cardsPerPage;
@@ -393,10 +393,11 @@ export default function Perfil() {
                         size="icon"
                         onClick={() => setCurrentPage(i + 1)}
                         isActive={currentPage === i + 1}
-                        className={`px-3 py-1 border rounded-full transition-colors ${currentPage === i + 1
-                          ? "bg-white text-[#F68537] border-[#F68537]"
-                          : "bg-[#F68537] text-white border-[#F68537]"
-                          }`}
+                        className={`px-3 py-1 border rounded-full transition-colors ${
+                          currentPage === i + 1
+                            ? "bg-white text-[#F68537] border-[#F68537]"
+                            : "bg-[#F68537] text-white border-[#F68537]"
+                        }`}
                       >
                         {i + 1}
                       </PaginationLink>
@@ -427,8 +428,6 @@ export default function Perfil() {
           </div>
         </div>
       </div>
-
-
 
       {/** Modal de Ajustes de Perfil (somente admin) */}
       <ProfileSettingsModal

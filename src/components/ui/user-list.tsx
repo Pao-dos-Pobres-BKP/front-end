@@ -63,9 +63,7 @@ export default function UserList({ users, onUserAction }: UserListProps) {
     if (!searchTermAll.trim()) return sortedUsers;
 
     const searchLower = searchTermAll.toLowerCase().trim();
-    return sortedUsers.filter((user) =>
-      user.profileName.toLowerCase().includes(searchLower)
-    );
+    return sortedUsers.filter((user) => user.profileName.toLowerCase().includes(searchLower));
   }, [sortedUsers, searchTermAll]);
 
   const filteredAdmins = useMemo(() => {
@@ -74,9 +72,7 @@ export default function UserList({ users, onUserAction }: UserListProps) {
     if (!searchTermAdmins.trim()) return allAdmins;
 
     const searchLower = searchTermAdmins.toLowerCase().trim();
-    return allAdmins.filter((user) =>
-      user.profileName.toLowerCase().includes(searchLower)
-    );
+    return allAdmins.filter((user) => user.profileName.toLowerCase().includes(searchLower));
   }, [sortedUsers, searchTermAdmins]);
 
   const filteredDonors = useMemo(() => {
@@ -85,9 +81,7 @@ export default function UserList({ users, onUserAction }: UserListProps) {
     if (!searchTermDonors.trim()) return allDonors;
 
     const searchLower = searchTermDonors.toLowerCase().trim();
-    return allDonors.filter((user) =>
-      user.profileName.toLowerCase().includes(searchLower)
-    );
+    return allDonors.filter((user) => user.profileName.toLowerCase().includes(searchLower));
   }, [sortedUsers, searchTermDonors]);
 
   const totalPagesAll = Math.max(1, Math.ceil(filteredAllUsers.length / ITEMS_PER_PAGE));
@@ -110,15 +104,9 @@ export default function UserList({ users, onUserAction }: UserListProps) {
 
   useMemo(() => {
     setCurrentPageAll(1);
-  }, [searchTermAll]);
-
-  useMemo(() => {
     setCurrentPageAdmins(1);
-  }, [searchTermAdmins]);
-
-  useMemo(() => {
     setCurrentPageDonors(1);
-  }, [searchTermDonors]);
+  }, []);
 
   const renderPagination = (
     currentPage: number,
@@ -131,9 +119,7 @@ export default function UserList({ users, onUserAction }: UserListProps) {
           <PaginationItem>
             <PaginationPrevious
               size="sm"
-              onClick={
-                currentPage === 1 ? undefined : () => onPageChange(currentPage - 1)
-              }
+              onClick={currentPage === 1 ? undefined : () => onPageChange(currentPage - 1)}
               className={cn(
                 "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors border",
                 currentPage === 1
@@ -166,11 +152,7 @@ export default function UserList({ users, onUserAction }: UserListProps) {
           <PaginationItem>
             <PaginationNext
               size="sm"
-              onClick={
-                currentPage === totalPages
-                  ? undefined
-                  : () => onPageChange(currentPage + 1)
-              }
+              onClick={currentPage === totalPages ? undefined : () => onPageChange(currentPage + 1)}
               className={cn(
                 "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors border",
                 currentPage === totalPages
@@ -234,9 +216,7 @@ export default function UserList({ users, onUserAction }: UserListProps) {
       <Tabs tabs={["Todos", "Administradores", "Doadores"]} variant="secondary">
         {renderUserList(
           paginatedAll,
-          searchTermAll
-            ? "Nenhum usuário encontrado para sua busca"
-            : "Nenhum usuário encontrado",
+          searchTermAll ? "Nenhum usuário encontrado para sua busca" : "Nenhum usuário encontrado",
           "all",
           currentPageAll,
           totalPagesAll,
@@ -262,9 +242,7 @@ export default function UserList({ users, onUserAction }: UserListProps) {
 
         {renderUserList(
           paginatedDonors,
-          searchTermDonors
-            ? "Nenhum doador encontrado para sua busca"
-            : "Nenhum doador encontrado",
+          searchTermDonors ? "Nenhum doador encontrado para sua busca" : "Nenhum doador encontrado",
           "donor",
           currentPageDonors,
           totalPagesDonors,

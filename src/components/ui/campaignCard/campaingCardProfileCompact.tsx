@@ -18,15 +18,15 @@ export function CampaignCardProfileCompact({
   showRole = true,
 }: CampaignCardProfileCompactProps) {
   const roleConfig = {
-    donor: { 
-      long: "Doador", 
+    donor: {
+      long: "Doador",
       bg: "bg-[var(--color-text-success)]",
-      text: "text-[var(--color-text-1)]"
+      text: "text-[var(--color-text-1)]",
     },
-    admin: { 
-      long: "Administrador", 
+    admin: {
+      long: "Administrador",
       bg: "bg-[var(--color-text-special-2)]",
-      text: "text-[var(--color-text-1)]"
+      text: "text-[var(--color-text-1)]",
     },
   }[role];
 
