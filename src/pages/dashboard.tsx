@@ -155,6 +155,19 @@ const RenderChart = ({
   }
 };
 
+// TEMPORÁRIO: Lista de todos os gráficos para navegar
+const allChartKeys = [
+  "financeiro_total_valor",
+  "financeiro_metodo_quantidade",
+  "financeiro_metodo_valor",
+  "operacional_doadores_idade",
+  "operacional_doadores_genero",
+  "financeiro_metodo_quantidade_campaign",
+  "financeiro_metodo_valor_campaign",
+  "operacional_doadores_idade_campaign",
+  "operacional_doadores_genero_campaign",
+];
+
 function Dashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [metrics, setMetrics] = useState<MetricData | null>(null);
@@ -165,12 +178,32 @@ function Dashboard() {
   const [metric1Options, setMetric1Options] = useState<Option[]>([]);
   const [metric2Options, setMetric2Options] = useState<Option[]>([]);
   const [datePeriod, setDatePeriod] = useState<DateRange | undefined>(undefined);
-  const [chartToShow, setChartToShow] = useState<string | null>(null);
+  const [chartToShow, setChartToShow] = useState<string | null>("operacional_doadores_idade"); // exemplo
   const [useCampaignFilter, setUseCampaignFilter] = useState(false);
   const [campaignSearchTerm, setCampaignSearchTerm] = useState("");
   const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
   const [campaignSearchResults, setCampaignSearchResults] = useState<Campaign[]>([]);
   const [isCampaignDropdownOpen, setCampaignDropdownOpen] = useState(false);
+
+  const [currentChartIndex, setCurrentChartIndex] = useState(0);
+
+  // TEMPORÁRIO: Atualiza o gráfico quando o índice muda
+  useEffect(() => {
+    setChartToShow(allChartKeys[currentChartIndex]);
+    // Se for um gráfico de campanha, seleciona uma campanha automaticamente
+    if (allChartKeys[currentChartIndex].includes("_campaign")) {
+      setSelectedCampaign(allCampaigns[0]);
+    }
+  }, [currentChartIndex]);
+
+  // TEMPORÁRIO: Funções de navegação
+  const handlePreviousChart = () => {
+    setCurrentChartIndex((prev) => (prev > 0 ? prev - 1 : allChartKeys.length - 1));
+  };
+
+  const handleNextChart = () => {
+    setCurrentChartIndex((prev) => (prev < allChartKeys.length - 1 ? prev + 1 : 0));
+  };
 
   useEffect(() => {
     setMetrics(mockMetrics);
@@ -466,6 +499,27 @@ function Dashboard() {
           </div>
 
           <div className="bg-white rounded-lg p-6 flex-1 flex flex-col">
+            
+            {/* TEMPORÁRIO: Navegação entre gráficos */}
+            <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <div className="flex items-center justify-between gap-4">
+                <Button variant="secondary" onClick={handlePreviousChart} size="small">
+                  ← Anterior
+                </Button>
+                <div className="flex-1 text-center">
+                  <p className="text-sm text-gray-600">
+                    Gráfico {currentChartIndex + 1} de {allChartKeys.length}
+                  </p>
+                  <p className="font-semibold text-[var(--color-components)]">
+                    {allChartKeys[currentChartIndex]}
+                  </p>
+                </div>
+                <Button variant="secondary" onClick={handleNextChart} size="small">
+                  Próximo →
+                </Button>
+              </div>
+            </div>
+
             <RenderChart
               chartKey={chartToShow}
               campaignId={selectedCampaign ? selectedCampaign.id : null}
