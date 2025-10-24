@@ -83,7 +83,8 @@ export function CampaignCardProfileCompact({
           tabIndex={0}
           onClick={onAction}
           onKeyDown={handleActionKeyDown}
-          className={cn( "inline-flex items-center justify-center rounded-xl transition-colors cursor-pointer flex-shrink-0",
+          className={cn(
+            "inline-flex items-center justify-center rounded-xl transition-colors cursor-pointer flex-shrink-0",
             "w-10 h-10 sm:w-12 sm:h-12 bg-[var(--color-brand-dark)] hover:bg-[var(--color-brand-light)] text-[var(--color-text-1)]"
           )}
         >

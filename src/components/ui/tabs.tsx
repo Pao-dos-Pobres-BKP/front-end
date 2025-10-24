@@ -13,7 +13,7 @@ const tabsContainerVariants = cva("flex items-center p-1 rounded-[6px] mb-2 w-fi
       secondary: "bg-[var(--color-components-2)]",
     },
   },
-  defaultVariants: { variant: "default" }
+  defaultVariants: { variant: "default" },
 });
 
 const tabButtonVariants = cva(
