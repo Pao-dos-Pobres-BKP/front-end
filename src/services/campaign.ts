@@ -12,6 +12,7 @@ export type DonorCampaignsAPI = {
   endDate: string;
   status: string;
   createdBy: string;
+  creatorName: string;
 };
 
 export async function getDonorCampaigns(page: number, pageSize: number) {

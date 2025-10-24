@@ -19,7 +19,7 @@ function toCampaignCard(campaign: DonorCampaignsAPI): CampaignCard {
     goal: Number(campaign.targetAmount),
     situation: campaign.status as SituationType,
     donationAmount: parseFloat(campaign.currentAmount),
-    creatorName: campaign.createdBy,
+    creatorName: campaign.creatorName,
   };
 }
 

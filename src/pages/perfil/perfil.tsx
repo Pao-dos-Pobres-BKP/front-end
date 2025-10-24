@@ -18,17 +18,25 @@ import { useEffect, useState } from "react";
 import EditUserModal from "@/components/ui/edit-user-modal";
 import ConfirmLogoutModal from "@/components/ui/confirm-logout-modal";
 
-import type { User } from "@/contexts/UserContext";
+import type { Gender, User } from "@/contexts/UserContext";
 import CreateAdminModal from "@/components/ui/create-admin-modal";
 import { useUser } from "@/hooks/useUser";
 import { usePerfil } from "./usePerfil";
 import { useSearchParams } from "react-router-dom";
 import { formatCurrency } from "@/utils/formatCurrency";
+import { dateUtils } from "@/utils/dateUtils";
+import { formatCPF, formatPhone } from "@/utils/formatters";
 
 interface ProfileUser extends User {
   totalDonated: number;
   percentageAchieved: number;
 }
+
+const genderMapper: Record<Gender, string> = {
+  MALE: "Masculino",
+  FEMALE: "Feminino",
+  OTHER: "Outro",
+};
 
 export default function Perfil() {
   const [, setSearchParams] = useSearchParams();
@@ -96,12 +104,13 @@ export default function Perfil() {
               <div className="flex flex-col flex-1">
                 <div className="flex items-center">
                   <h2 className="text-[22px] sm:text-[27px] font-bold text-[#005172]">
-                    {dados.fullname}
+                    {currentUser?.fullname}
                   </h2>
                 </div>
                 <div className="flex items-center mt-2">
                   <p className="text-xs sm:text-sm font-inter text-[#005172]">
-                    Membro desde 12 de Agosto de 2023
+                    Membro desde{" "}
+                    {/* {dateUtils.formatCompleteDate(new Date(currentUser?.birthDate ?? ""))} */}
                   </p>
                 </div>
               </div>
@@ -140,25 +149,19 @@ export default function Perfil() {
                       Data de Nascimento:
                     </label>
                     <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
-                      {/* {currentUser?.birthDate
-                        ? currentUser?.birthDate?.toLocaleDateString("pt-BR")
-                        : "—"} */}
+                      {currentUser?.birthDate ? dateUtils.formatDate(currentUser?.birthDate) : "—"}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <label className="text-sm font-medium text-[#005172] text-left">Gênero:</label>
                     <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
-                      {{
-                        MALE: "Masculino",
-                        FEMALE: "Feminino",
-                        OTHER: "Outro",
-                      }[dados.gender as "MALE" | "FEMALE" | "OTHER"] ?? "—"}
+                      {genderMapper[currentUser?.gender as Gender] ?? "—"}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <label className="text-sm font-medium text-[#005172] text-left">CPF:</label>
                     <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
-                      {dados.cpf}
+                      {formatCPF(currentUser?.cpf ?? "")}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -166,13 +169,13 @@ export default function Perfil() {
                       Telefone:
                     </label>
                     <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
-                      {dados.phone}
+                      {formatPhone(currentUser?.phone ?? "")}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <label className="text-sm font-medium text-[#005172] text-left">E-mail:</label>
                     <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
-                      {dados.email}
+                      {currentUser?.email}
                     </span>
                   </div>
                 </div>
