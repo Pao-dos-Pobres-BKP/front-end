@@ -72,7 +72,7 @@ export default function ProfileSettingsModal({
           Ajustes
         </h2>
 
-        <div className="flex items-center justify-between bg-[color:var(--primary-100)] py-3 px-4 font-semibold text-[color:var(--primary-900)]">
+        <div className="flex items-center justify-between bg-[#CCDFE5] py-3 px-4 font-semibold text-[#003B50]">
           <h3>Lista de usuários</h3>
 
           <Button variant="primary" size="icon" onClick={handleOpenCreateAdminModal}>
