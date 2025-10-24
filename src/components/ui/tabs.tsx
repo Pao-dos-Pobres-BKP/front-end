@@ -16,7 +16,7 @@ const tabsContainerVariants = cva("flex items-center p-1 rounded-[6px] mb-2 w-fi
   defaultVariants: { variant: "default" },
 });
 
-const tabButtonVariants = cva("cursor-pointer px-3 py-[6px] rounded min-w-[80px]", {
+const tabButtonVariants = cva("cursor-pointer px-2 sm:px-3 py-[6px] rounded text-xs sm:text-sm whitespace-nowrap", {
   variants: {
     variant: {
       default: "",
@@ -70,7 +70,7 @@ export const Tabs = ({ tabs, children, variant }: TabsProps) => {
               className={tabButtonVariants({ variant, active: isActive })}
               onClick={() => setActiveTab(index)}
             >
-              <span className="text-sm font-medium">{tab}</span>
+              <span className="font-medium">{tab}</span>
             </button>
           );
         })}
