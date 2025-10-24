@@ -499,7 +499,6 @@ function Dashboard() {
           </div>
 
           <div className="bg-white rounded-lg p-6 flex-1 flex flex-col">
-            
             {/* TEMPORÁRIO: Navegação entre gráficos */}
             <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
               <div className="flex items-center justify-between gap-4">

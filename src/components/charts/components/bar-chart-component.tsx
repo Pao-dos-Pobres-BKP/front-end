@@ -1,7 +1,11 @@
 "use client";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Cell } from "recharts";
 import type { ChartConfig } from "@/components/charts/components/chart";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/charts/components/chart";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/charts/components/chart";
 
 interface BaseBarChartProps<TData> {
   data: TData[];
