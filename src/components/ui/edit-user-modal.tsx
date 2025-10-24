@@ -66,9 +66,11 @@ export default function EditUserModal({
   };
 
   return (
-    <div className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-50 px-2">
-      <div className="bg-white w-full max-w-lg rounded-xl p-6 shadow-lg mx-4 sm:mx-0">
-        <h2 className="block text-left text-2xl font-bold text-[#005172] mb-4">Editar Perfil</h2>
+    <div className="fixed inset-0 backdrop-blur-sm bg-[color:var(--overlay)] flex items-center justify-center z-50 px-2">
+      <div className="bg-[color:var(--background)] w-full max-w-lg rounded-xl p-6 shadow-lg mx-4 sm:mx-0">
+        <h2 className="block text-left text-2xl font-bold text-[color:var(--primary-800)] mb-4">
+          Editar Perfil
+        </h2>
 
         <div className="flex items-center gap-4 mb-6">
           <img

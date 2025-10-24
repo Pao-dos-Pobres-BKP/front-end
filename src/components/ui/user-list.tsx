@@ -240,9 +240,11 @@ export default function UserList({ users, onUserAction }: UserListProps) {
           false
         )}
 
-        {renderUserList(
+       {renderUserList(
           paginatedDonors,
-          searchTermDonors ? "Nenhum doador encontrado para sua busca" : "Nenhum doador encontrado",
+          searchTermDonors
+            ? "Nenhum doador encontrado para sua busca"
+            : "Nenhum doador encontrado",
           "donor",
           currentPageDonors,
           totalPagesDonors,

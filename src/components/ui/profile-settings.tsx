@@ -67,7 +67,7 @@ export default function ProfileSettingsModal({
         onClose={() => setIsCreateAdminModalOpen(false)}
       />
 
-      <div className="bg-white w-full max-w-lg rounded-xl shadow-lg mx-4 sm:mx-0 overflow-hidden">
+       <div className="bg-white w-full max-w-lg rounded-xl shadow-lg mx-4 sm:mx-0 overflow-hidden">
         <h2 className="text-2xl font-bold text-[color:var(--primary-800)] m-4 text-left">
           Ajustes
         </h2>
