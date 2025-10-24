@@ -96,7 +96,11 @@ export default function LoginContent({ onRegisterClick }: { onRegisterClick: () 
           <Button type="submit" variant="confirm" className="w-full" disabled={isLoading}>
             {isLoading ? "Carregando..." : "Entrar"}
           </Button>
-          
+
+          <Button type="button" variant="tertiary" className="w-full">
+            Entrar com o Google
+          </Button>
+
           <Divider text="ou" variant="secondary" className="mt-1" />
 
           <Button

@@ -28,7 +28,11 @@ export default function EditUserModal({
     if (isOpen) {
       setFormData(initialData);
       setPreviewPhoto(initialData.photo || "https://via.placeholder.com/60");
+      document.body.style.overflow = "hidden";
     }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
   }, [isOpen, initialData]);
 
   if (!isOpen) return null;
@@ -62,32 +66,37 @@ export default function EditUserModal({
   };
 
   return (
-    <div className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-50 px-2">
-      <div className="bg-white w-full max-w-lg rounded-xl p-6 shadow-lg mx-4 sm:mx-0">
-        <h2 className="block text-left text-2xl font-bold text-[#005172] mb-4">Editar Perfil</h2>
+    <div className="fixed inset-0 backdrop-blur-sm bg-[color:var(--overlay)] flex items-center justify-center z-50 px-2">
+      <div className="bg-[color:var(--background)] w-full max-w-lg rounded-xl p-6 shadow-lg mx-4 sm:mx-0">
+        <h2 className="block text-left text-2xl font-bold text-[color:var(--primary-800)] mb-4">
+          Editar Perfil
+        </h2>
 
         <div className="flex items-center gap-4 mb-6">
           <img
             src={previewPhoto}
             alt="foto de perfil"
-            className="w-16 h-16 rounded-full object-cover border"
+            className="w-16 h-16 rounded-full object-cover border border-[color:var(--border-light)]"
           />
-          <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-[#005172] cursor-pointer">
-              <span className="px-3 py-1 border rounded-lg hover:bg-gray-100">Alterar Foto</span>
+          <div className="flex flex-start gap-2">
+            <label className="text-sm font-medium text-[color:var(--primary-900)] cursor-pointer">
+              <span className="px-3 py-1 border border-[color:var(--border-light)] rounded-lg hover:bg-[color:var(--surface-hover)]">
+                Alterar Foto
+              </span>
               <input type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
             </label>
             {previewPhoto !== "https://via.placeholder.com/60" && (
               <button
                 type="button"
                 onClick={handlePhotoRemove}
-                className="px-3 py-1 border border-red-500 text-red-500 rounded-lg text-sm hover:bg-gray-400 cursor-pointer"
+                className="px-3 py-1 border border-[color:var(--danger-border)] text-[color:var(--danger-text)] rounded-lg text-sm hover:bg-[color:var(--danger-hover)] transition-colors duration-200"
               >
                 Remover Foto
               </button>
             )}
           </div>
         </div>
+
         <div className="mb-4">
           <Input
             id="fullname"
@@ -165,24 +174,25 @@ export default function EditUserModal({
 
         <div className="flex justify-center gap-4 mt-6">
           <button
-            className="px-6 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 cursor-pointer transition-colors duration-200"
+            className="px-6 py-2 bg-[color:var(--surface-muted)] rounded-lg hover:bg-[color:var(--surface-hover)] cursor-pointer transition-colors duration-200"
             onClick={onClose}
           >
             Cancelar
           </button>
 
           <button
-            className="px-6 py-2 bg-[#005172] text-white rounded-lg hover:bg-[#006b91] cursor-pointer transition-colors duration-200"
+            className="px-6 py-2 bg-[color:var(--primary-700)] text-[color:var(--text-on-primary)] rounded-lg hover:bg-[color:var(--primary-600)] cursor-pointer transition-colors duration-200"
             onClick={handleConfirm}
           >
             Confirmar
           </button>
         </div>
+
         <div className="flex flex-col items-center mt-4">
           <button
             type="button"
             onClick={() => setShowDeleteModal(true)}
-            className="text-[#D65E5E] text-sm underline hover:text-red-600 hover:bg-gray-400 cursor-pointer"
+            className="text-[color:var(--danger-text)] text-sm underline hover:text-[color:var(--warning-text)] cursor-pointer transition-colors duration-200"
           >
             Apagar minha conta
           </button>
