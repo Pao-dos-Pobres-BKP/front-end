@@ -32,7 +32,7 @@ export default function CampaignCard({
   raised = 30,
   goal = 90,
   creatorName = " João Silva",
-  variant = "compact",
+  variant = "profile_compact",
   className,
   donorName = "OPAAAA",
   donorEmail = "bekirsch@gmail.com",
