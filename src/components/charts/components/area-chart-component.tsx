@@ -1,7 +1,7 @@
 "use client";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis, ReferenceLine } from "recharts";
-import type { ChartConfig } from "@/components/ui/charts/chart";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/charts/chart";
+import type { ChartConfig } from "@/components/charts/components/chart";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/charts/components/chart";
 
 interface BaseAreaChartProps<TData> {
   data: TData[];

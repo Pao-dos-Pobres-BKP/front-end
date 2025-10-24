@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { ChartCard } from "@/components/ui/charts/chart-card";
-import { BaseAreaChart } from "@/components/ui/charts/area-chart-component";
-import type { ChartConfig } from "@/components/ui/charts/chart";
+import { ChartCard } from "@/components/charts/components/chart-card";
+import { BaseAreaChart } from "@/components/charts/components/area-chart-component";
+import type { ChartConfig } from "@/components/charts/components/chart";
 import { CalendarIcon } from "lucide-react";
 import type { DateRange } from "react-day-picker";
 

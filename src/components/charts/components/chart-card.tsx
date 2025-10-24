@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/charts/components/card";
 import cn from "@/utils/cn";
 import React from "react";
 interface ChartCardProps {

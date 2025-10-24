@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { ChartCard } from "@/components/ui/charts/chart-card";
-import { BaseBarChart } from "@/components/ui/charts/bar-chart-component";
-import type { ChartConfig } from "@/components/ui/charts/chart";
+import { ChartCard } from "@/components/charts/components/chart-card";
+import { BaseBarChart } from "@/components/charts/components/bar-chart-component";
+import type { ChartConfig } from "@/components/charts/components/chart";
 import type { DateRange } from "react-day-picker";
 
 type PaymentData = {

@@ -1,14 +1,14 @@
 "use client";
 
 import { Pie, PieChart, Cell } from "recharts";
-import type { ChartConfig } from "@/components/ui/charts/chart";
+import type { ChartConfig } from "@/components/charts/components/chart";
 import {
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/charts/chart";
+} from "@/components/charts/components/chart";
 
 interface BasePieChartProps<TData> {
   data: TData[];
