@@ -1,0 +1,203 @@
+import { SearchBar } from "@/components/ui/search-bar";
+import Button from "@/components/ui/button";
+import PlusIcon from "@/assets/Plus.svg";
+import { Tabs } from "@/components/ui/tabs";
+import { CampaignCardEventAndNews } from "@/components/ui/campaignCard/campaingCardEventAndNews";
+import { DatePicker } from "@/components/ui/Calendar/date-picker";
+
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { useState } from "react";
+
+export default function NewsEvents() {
+  const mockEventsAndNews = [
+    {
+      title: "Campanha de Doação de Roupas",
+      date: new Date(2025, 8, 15),
+      type: "news" as const,
+    },
+    {
+      title: "Evento de Adoção de Animais",
+      date: new Date(2025, 9, 25),
+      type: "event" as const,
+    },
+    {
+      title: "Mutirão de Arrecadação de Alimentos",
+      date: new Date(2025, 10, 3),
+      type: "news" as const,
+    },
+    {
+      title: "Mutirão de Arrecadação de Alimentos",
+      date: new Date(2025, 10, 3),
+      type: "event" as const,
+    },
+    {
+      title: "Mutirão de Arrecadação de Alimentos",
+      date: new Date(2025, 10, 3),
+      type: "news" as const,
+    },
+    {
+      title: "Mutirão de Arrecadação de Alimentos",
+      date: new Date(2025, 10, 3),
+      type: "event" as const,
+    },
+    {
+      title: "Mutirão de Arrecadação de Alimentos",
+      date: new Date(2025, 10, 3),
+      type: "event" as const,
+    },
+    {
+      title: "Mutirão de Arrecadação de Alimentos",
+      date: new Date(2025, 10, 3),
+      type: "news" as const,
+    },
+    {
+      title: "Mutirão de Arrecadação de Alimentos",
+      date: new Date(2025, 10, 3),
+      type: "event" as const,
+    },
+    {
+      title: "Mutirão de Arrecadação de Alimentos",
+      date: new Date(2025, 10, 3),
+      type: "news" as const,
+    },
+    {
+      title: "Mutirão de Arrecadação de Alimentos",
+      date: new Date(2025, 10, 3),
+      type: "event" as const,
+    },
+    {
+      title: "Mutirão de Arrecadação de Alimentos",
+      date: new Date(2025, 10, 3),
+      type: "news" as const,
+    },
+  ];
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const cardsPerPage = 10;
+
+  const totalPages = Math.ceil(mockEventsAndNews.length / cardsPerPage);
+
+  const searchHeader = (
+    <div className="flex flex-wrap w-full items-center gap-3 my-5">
+      <div className="flex-1 min-w-[200px]">
+        <SearchBar />
+      </div>
+      <div>
+        <DatePicker className="!bg-[var(--color-text-special-2)] !text-[var(--color-background)] [&_*]:!text-[var(--color-background)]" />
+      </div>
+      <Button variant="quinary" size="extraSmall">
+        Pesquisar
+      </Button>
+      <Button
+        variant="quinary"
+        size="extraSmall"
+        className="flex items-center justify-center flex-shrink-0"
+      >
+        <img src={PlusIcon} alt="Icone-plus" className="w-8 h-8 translate-y-[4px]" />
+      </Button>
+    </div>
+  );
+
+  return (
+    <div className="w-full py-5 px-6 bg-[#2F5361]">
+      <div className="w-full flex flex-col">
+        <Tabs
+          tabs={["Notícias", "Eventos", "Todos"]}
+          variant="secondary"
+          headerContent={searchHeader}
+        >
+          <div className="flex flex-col gap-3 w-full">
+            {mockEventsAndNews
+              .filter((e) => e.type === "news")
+              .slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage)
+              .map((item, index) => (
+                <CampaignCardEventAndNews
+                  key={index}
+                  title={item.title}
+                  date={item.date}
+                  type={item.type}
+                  onDelete={() => console.log(`Excluir: ${item.title}`)}
+                  onEdit={() => console.log(`Editar: ${item.title}`)}
+                />
+              ))}
+          </div>
+
+          <div className="flex flex-col gap-3 w-full">
+            {mockEventsAndNews
+              .filter((e) => e.type === "event")
+              .slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage)
+              .map((item, index) => (
+                <CampaignCardEventAndNews
+                  key={index}
+                  title={item.title}
+                  date={item.date}
+                  type={item.type}
+                  onDelete={() => console.log(`Excluir: ${item.title}`)}
+                  onEdit={() => console.log(`Editar: ${item.title}`)}
+                />
+              ))}
+          </div>
+
+          <div className="flex flex-col gap-3 w-full">
+            {mockEventsAndNews
+              .slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage)
+              .map((item, index) => (
+                <CampaignCardEventAndNews
+                  key={index}
+                  title={item.title}
+                  date={item.date}
+                  type={item.type}
+                  onDelete={() => console.log(`Excluir: ${item.title}`)}
+                  onEdit={() => console.log(`Editar: ${item.title}`)}
+                />
+              ))}
+          </div>
+        </Tabs>
+      </div>
+
+      <div className="flex justify-center items-center gap-2 mt-6">
+        <Pagination>
+          <PaginationContent className="text-white">
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={currentPage === 1 ? undefined : () => setCurrentPage(currentPage - 1)}
+                className={currentPage === 1 ? "opacity-30 cursor-not-allowed" : ""}
+              >
+                Anterior
+              </PaginationPrevious>
+            </PaginationItem>
+
+            {Array.from({ length: totalPages }, (_, i) => (
+              <PaginationItem key={i}>
+                <PaginationLink
+                  onClick={() => setCurrentPage(i + 1)}
+                  isActive={currentPage === i + 1}
+                >
+                  {i + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+
+            <PaginationItem>
+              <PaginationNext
+                onClick={
+                  currentPage === totalPages ? undefined : () => setCurrentPage(currentPage + 1)
+                }
+                className={currentPage === totalPages ? "opacity-30 cursor-not-allowed" : ""}
+              >
+                Próximo
+              </PaginationNext>
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
+    </div>
+  );
+}
