@@ -16,45 +16,48 @@ const tabsContainerVariants = cva("flex items-center p-1 rounded-[6px] mb-2 w-fi
   defaultVariants: { variant: "default" },
 });
 
-const tabButtonVariants = cva("cursor-pointer px-3 py-[6px] rounded min-w-[80px]", {
-  variants: {
-    variant: {
-      default: "",
-      secondary: "",
+const tabButtonVariants = cva(
+  "cursor-pointer px-2 sm:px-3 py-[6px] rounded text-xs sm:text-sm whitespace-nowrap",
+  {
+    variants: {
+      variant: {
+        default: "",
+        secondary: "",
+      },
+      active: {
+        true: "",
+        false: "",
+      },
     },
-    active: {
-      true: "",
-      false: "",
-    },
-  },
-  compoundVariants: [
-    {
-      variant: "default",
-      active: true,
-      class: "bg-white text-[var(--color-components)]",
-    },
-    {
-      variant: "default",
-      active: false,
-      class: "bg-[var(--color-components)] text-white",
-    },
+    compoundVariants: [
+      {
+        variant: "default",
+        active: true,
+        class: "bg-white text-[var(--color-components)]",
+      },
+      {
+        variant: "default",
+        active: false,
+        class: "bg-[var(--color-components)] text-white",
+      },
 
-    {
-      variant: "secondary",
-      active: true,
-      class: "bg-white text-[var(--color-components-2)]",
-    },
-    {
-      variant: "secondary",
+      {
+        variant: "secondary",
+        active: true,
+        class: "bg-white text-[var(--color-components-2)]",
+      },
+      {
+        variant: "secondary",
+        active: false,
+        class: "bg-[var(--color-components-2)] text-white",
+      },
+    ],
+    defaultVariants: {
+      variant: "default",
       active: false,
-      class: "bg-[var(--color-components-2)] text-white",
     },
-  ],
-  defaultVariants: {
-    variant: "default",
-    active: false,
-  },
-});
+  }
+);
 
 export const Tabs = ({ tabs, children, variant }: TabsProps) => {
   const [activeTab, setActiveTab] = useState<number>(0);
@@ -70,7 +73,7 @@ export const Tabs = ({ tabs, children, variant }: TabsProps) => {
               className={tabButtonVariants({ variant, active: isActive })}
               onClick={() => setActiveTab(index)}
             >
-              <span className="text-sm font-medium">{tab}</span>
+              <span className="font-medium">{tab}</span>
             </button>
           );
         })}
