@@ -70,13 +70,13 @@ export function CampaignCardProfile({
           </div>
           <div className="flex items-center justify-between gap-4 w-full min-w-0">
             <div className="min-w-0 flex-1">
-              <div 
+              <div
                 className="text-left font-semibold text-[#034d6b] overflow-hidden text-ellipsis whitespace-nowrap"
                 title={donorName ?? "Fulano De Tal"}
               >
                 {donorName ?? "Fulano De Tal"}
               </div>
-              <div 
+              <div
                 className="text-sm font-semibold text-[#6b7280] overflow-hidden text-ellipsis whitespace-nowrap"
                 title={donorEmail ?? "email@email.com"}
               >
@@ -88,7 +88,7 @@ export function CampaignCardProfile({
               <div className="text-left text-lg font-bold text-[#034d6b] whitespace-nowrap">
                 {donationAmount ? formatCurrency(donationAmount) : "+0,00"}
               </div>
-              <div 
+              <div
                 className="text-sm text-left text-[#f68537] font-semibold overflow-hidden text-ellipsis whitespace-nowrap max-w-[200px]"
                 title={`para ${title}`}
               >

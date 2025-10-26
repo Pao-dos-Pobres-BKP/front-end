@@ -5,7 +5,7 @@ export default function CampaignCardSkeleton() {
       <div className="flex items-start gap-2 flex-shrink-0 min-w-0 w-full md:w-[320px]">
         {/* Ícone do coração */}
         <div className="h-6 w-6 bg-gray-300 rounded-full flex-shrink-0"></div>
-        
+
         {/* Título, criador e datas */}
         <div className="flex flex-col gap-2 min-w-0 flex-1">
           <div className="h-6 bg-gray-300 rounded w-3/4"></div>
@@ -30,4 +30,3 @@ export default function CampaignCardSkeleton() {
     </div>
   );
 }
-

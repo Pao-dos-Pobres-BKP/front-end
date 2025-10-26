@@ -7,12 +7,12 @@ import DeleteCampaignConfirmModal from "@/components/campaign/DeleteCampaignConf
 import AdminCreateCampaignModal from "@/components/campaign/AdminCreateCampaignModal";
 import DonorCreateCampaignModal from "@/components/campaign/DonorCreateCampaignModal";
 import { useUser } from "@/hooks/useUser";
-import { 
-  getCampaigns, 
-  updateCampaign, 
+import {
+  getCampaigns,
+  updateCampaign,
   deleteCampaign,
   createCampaign,
-  type CampaignAPI 
+  type CampaignAPI,
 } from "@/services/campaigns";
 import { getUserDonations } from "@/services/donations";
 import { SearchBar } from "@/components/ui/search-bar";
@@ -72,23 +72,23 @@ const Campanhas = () => {
     const fetchData = async () => {
       const MIN_LOADING_TIME = 500; // Tempo mínimo de loading em ms
       const startTime = Date.now();
-      
+
       try {
         setLoading(true);
-        
+
         // Obter termo de busca dos parâmetros da URL
         const searchTerm = searchParams.get("search") || undefined;
-        
+
         // Buscar campanhas com paginação
-        const campaignsResponse = await getCampaigns({ 
-          page: currentPage, 
+        const campaignsResponse = await getCampaigns({
+          page: currentPage,
           pageSize: 10,
           title: searchTerm,
         });
-        
+
         // Armazenar metadados de paginação
         setTotalPages(campaignsResponse.lastPage);
-        
+
         // Buscar doações do usuário (apenas se for doador)
         let donatedCampaignIds = new Set<string>();
         if (user?.role === "DONOR") {
@@ -155,7 +155,7 @@ const Campanhas = () => {
         const remainingTime = Math.max(0, MIN_LOADING_TIME - elapsedTime);
 
         // Aguardar o tempo mínimo antes de exibir os resultados
-        await new Promise(resolve => setTimeout(resolve, remainingTime));
+        await new Promise((resolve) => setTimeout(resolve, remainingTime));
 
         setCampaigns(filteredCampaigns);
       } catch (error) {
@@ -218,9 +218,10 @@ const Campanhas = () => {
       }
 
       // TODO: Se houver imagem nova (File), fazer upload primeiro e obter URL
-      const imageUrl = data.image instanceof File 
-        ? originalCampaign.imageUrl // Por enquanto mantém a URL original
-        : originalCampaign.imageUrl;
+      const imageUrl =
+        data.image instanceof File
+          ? originalCampaign.imageUrl // Por enquanto mantém a URL original
+          : originalCampaign.imageUrl;
 
       await updateCampaign(data.id, {
         title: data.title,
@@ -363,7 +364,7 @@ const Campanhas = () => {
         <div className="w-full">
           <SearchBar placeholder="Pesquisar campanhas" />
         </div>
-        
+
         <button
           onClick={() => setSortOrder(sortOrder === "recent" ? "oldest" : "recent")}
           className="min-h-10 px-4 bg-[var(--color-text-special-2)] text-white flex items-center justify-center gap-2 rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md hover:opacity-90 whitespace-nowrap"
@@ -409,8 +410,8 @@ const Campanhas = () => {
                 endDate={campaign.endDate}
                 situation={campaign.situation}
                 isAdmin={user?.role === "ADMIN"}
-                onAction={() => 
-                  user?.role === "ADMIN" 
+                onAction={() =>
+                  user?.role === "ADMIN"
                     ? handleOpenEditModal(campaign)
                     : handleOpenCampaignModal(campaign)
                 }
@@ -424,7 +425,9 @@ const Campanhas = () => {
               <PaginationContent>
                 <PaginationPrevious
                   onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                  className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                  className={
+                    currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"
+                  }
                 />
                 {renderPaginationItems()}
                 <PaginationNext

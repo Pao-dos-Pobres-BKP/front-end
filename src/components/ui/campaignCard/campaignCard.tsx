@@ -151,10 +151,7 @@ export default function CampaignCard({
 
   return (
     <article
-      className={cn(
-        "w-full bg-white border border-[#e6e8eb] rounded-2xl p-4",
-        className
-      )}
+      className={cn("w-full bg-white border border-[#e6e8eb] rounded-2xl p-4", className)}
       role="group"
       aria-label={`Card da campanha ${title}`}
     >
@@ -165,7 +162,7 @@ export default function CampaignCard({
               <div className="h-5 w-5 flex-shrink-0">
                 <img src={blueHeart} alt="Coração azul" className="h-5 w-5" />
               </div>
-              <h3 
+              <h3
                 className="text-3xl font-semibold text-[#034d6b] leading-tight overflow-hidden text-ellipsis whitespace-nowrap"
                 title={title}
               >
@@ -173,7 +170,7 @@ export default function CampaignCard({
               </h3>
             </div>
             {creatorName && (
-              <p 
+              <p
                 className="mt-1 text-base text-[#f68537] font-semibold text-center overflow-hidden text-ellipsis whitespace-nowrap"
                 title={`por ${creatorName}`}
               >
@@ -183,8 +180,12 @@ export default function CampaignCard({
           </div>
           <div className="mt-4 items-center flex flex-col">
             <div className="flex items-baseline gap-3">
-              <span className="text-3xl font-bold text-[#034d6b] whitespace-nowrap">{formatCurrency(raised)}</span>
-              <span className="text-base text-[#6b7280] whitespace-nowrap">de {formatCurrency(goal)}</span>
+              <span className="text-3xl font-bold text-[#034d6b] whitespace-nowrap">
+                {formatCurrency(raised)}
+              </span>
+              <span className="text-base text-[#6b7280] whitespace-nowrap">
+                de {formatCurrency(goal)}
+              </span>
             </div>
           </div>
           <div className="mt-4 md:mt-6">

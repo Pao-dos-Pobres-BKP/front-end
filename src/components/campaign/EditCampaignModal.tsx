@@ -55,12 +55,12 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
   function resetAll() {
     setErrors({});
   }
-  
+
   function handleChange(field: string, value: string) {
     if (field === "targetValue") value = currencyMask(value);
     setForm((f) => ({ ...f, [field]: value }));
   }
-  
+
   function handleImage(file: File | null) {
     setImageFile(file);
     setForm((f) => ({ ...f, imageName: file?.name || "" }));
@@ -88,11 +88,11 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
       return null;
     }
   }
-  
+
   async function handleSubmit() {
     const parsed = validateForm();
     if (!parsed) return;
-    
+
     await onSave({
       id: parsed.id,
       title: parsed.title,
@@ -100,7 +100,7 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
       targetValue: parsed.targetValue,
       image: imageFile ?? null,
     });
-    
+
     resetAll();
     onOpenChange(false);
   }

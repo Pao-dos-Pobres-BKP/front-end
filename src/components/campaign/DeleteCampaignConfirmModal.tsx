@@ -28,7 +28,8 @@ export default function DeleteCampaignConfirmModal({
             <strong className="text-[var(--color-text-3)]">"{campaignTitle}"</strong>?
           </p>
           <p className="text-[13px] text-red-600 font-medium">
-            Esta ação não pode ser desfeita. Todas as informações da campanha serão permanentemente removidas.
+            Esta ação não pode ser desfeita. Todas as informações da campanha serão permanentemente
+            removidas.
           </p>
           <div className="flex gap-3 justify-center pt-2">
             <Button variant="senary" size="extraSmall" onClick={() => onOpenChange(false)}>
@@ -50,4 +51,3 @@ export default function DeleteCampaignConfirmModal({
     />
   );
 }
-

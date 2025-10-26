@@ -52,10 +52,7 @@ export type UpdateCampaignParams = {
   createdBy: string;
 };
 
-export async function updateCampaign(
-  id: string,
-  data: UpdateCampaignParams
-): Promise<void> {
+export async function updateCampaign(id: string, data: UpdateCampaignParams): Promise<void> {
   try {
     await api.patch(`/campaigns/${id}`, data);
   } catch (error) {

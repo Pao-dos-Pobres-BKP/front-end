@@ -72,8 +72,8 @@ export function CampaignCardList(props: CampaignCardListProps) {
           <img src={situationIcons[situation]} alt="" className="h-6 w-6 flex-shrink-0 mt-0.5" />
         )}
         <div className="flex flex-col items-start min-w-0 flex-1">
-          <div 
-            className="text-[#034d6b] text-xl font-semibold text-left w-full overflow-hidden text-ellipsis whitespace-nowrap" 
+          <div
+            className="text-[#034d6b] text-xl font-semibold text-left w-full overflow-hidden text-ellipsis whitespace-nowrap"
             title={title}
           >
             {title}
@@ -107,9 +107,7 @@ export function CampaignCardList(props: CampaignCardListProps) {
           <div className="text-xl font-bold text-[#034d6b] whitespace-nowrap">
             {formatCurrency(raised)}
           </div>
-          <div className="text-sm text-[#6b7280] whitespace-nowrap">
-            de {formatCurrency(goal)}
-          </div>
+          <div className="text-sm text-[#6b7280] whitespace-nowrap">de {formatCurrency(goal)}</div>
         </div>
         <div className="w-full">
           {situation === "approved" || situation === "recurring" ? (

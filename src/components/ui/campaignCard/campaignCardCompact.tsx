@@ -81,16 +81,18 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
       >
         {/* Coluna 1: Ícone + Título/Creator */}
         <div className="flex items-start gap-2 flex-shrink-0 min-w-0 w-full md:w-[280px]">
-          {situationIcon && <img src={situationIcon} alt="" className="h-6 w-6 flex-shrink-0 mt-0.5" />}
+          {situationIcon && (
+            <img src={situationIcon} alt="" className="h-6 w-6 flex-shrink-0 mt-0.5" />
+          )}
           <div className="flex flex-col min-w-0 flex-1">
-            <div 
+            <div
               className="text-[#034d6b] text-xl font-semibold w-full overflow-hidden text-ellipsis whitespace-nowrap"
               title={title}
             >
               {title}
             </div>
             {creatorName && (
-              <div 
+              <div
                 className="text-sm text-[#f68537] w-full overflow-hidden text-ellipsis whitespace-nowrap"
                 title={`por ${creatorName}`}
               >
@@ -106,7 +108,9 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
             <div className="text-lg font-bold text-[#034d6b] whitespace-nowrap">
               {formatCurrency(raised)}
             </div>
-            <div className="text-sm text-[#6b7280] whitespace-nowrap">de {formatCurrency(goal)}</div>
+            <div className="text-sm text-[#6b7280] whitespace-nowrap">
+              de {formatCurrency(goal)}
+            </div>
           </div>
 
           <div className="w-full">

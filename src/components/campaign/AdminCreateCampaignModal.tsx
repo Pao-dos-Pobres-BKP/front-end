@@ -72,7 +72,7 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
   async function handleSubmit() {
     const parsed = validateForm();
     if (!parsed) return;
-    
+
     await onSubmit({
       title: parsed.title,
       description: parsed.description,

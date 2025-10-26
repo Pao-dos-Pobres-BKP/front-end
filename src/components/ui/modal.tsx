@@ -163,9 +163,7 @@ function Modal({
           "inline-flex flex-col items-start",
           "max-w-lg w-full mx-4 p-6 gap-4 shadow-lg",
           "transition-all duration-300 ease-out",
-          isAnimating
-            ? "opacity-100 scale-100 translate-y-0"
-            : "opacity-0 scale-95 translate-y-4",
+          isAnimating ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-4",
           className,
         ].join(" ")}
         role="dialog"
