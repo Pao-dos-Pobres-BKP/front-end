@@ -173,8 +173,8 @@ export default function Perfil() {
 
   return (
     <div className="min-h-screen bg-[#2F5361] font-inter">
-      <div className="flex justify-center px-4 sm:px-6 lg:px-12 xl:px-16 py-6">
-        <div className="w-full max-w-[1600px] bg-white rounded-xl shadow-lg p-4 sm:p-6 lg:p-10 xl:p-12">
+      <div className="flex justify-center px-4 sm:px-6 lg:px-12 xl:px-8 py-8">
+        <div className="w-full max-w-[2400px] bg-white rounded-xl shadow-lg p-4 sm:p-6 lg:p-12 xl:p-16">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white rounded-lg gap-4 p-4 lg:p-0 mb-6 lg:mb-8">
             <div className="flex items-center gap-4 w-full sm:w-auto">
               <img
