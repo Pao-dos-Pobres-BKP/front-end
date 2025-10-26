@@ -50,8 +50,6 @@ export default function Perfil() {
     photo: exemplo_foto_perfil,
   });
 
-  //const campanhas: any[] = [];      // para testar quando não tiver campanhas apoiando.
-
   const campanhas = [
     {
       title: "Campanha de Santo Antônio",
@@ -175,9 +173,10 @@ export default function Perfil() {
 
   return (
     <div className="min-h-screen bg-[#2F5361] font-inter">
-      <div className="flex justify-center px-4 sm:px-6 py-6">
-        <div className="w-full max-w-6xl bg-white rounded-xl shadow-lg p-4 sm:p-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white rounded-lg gap-4 p-4 mb-6">
+      <div className="flex justify-center px-4 sm:px-6 lg:px-12 xl:px-16 py-6">
+        <div className="w-full max-w-[1600px] bg-white rounded-xl shadow-lg p-4 sm:p-6 lg:p-10 xl:p-12">
+          {/* Header com foto e botões */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white rounded-lg gap-4 p-4 lg:p-0 mb-6 lg:mb-8">
             <div className="flex items-center gap-4 w-full sm:w-auto">
               <img
                 src={dados.photo || "https://via.placeholder.com/80"}
@@ -185,16 +184,12 @@ export default function Perfil() {
                 className="w-20 h-20 rounded-2xl object-cover flex-shrink-0"
               />
               <div className="flex flex-col flex-1 min-w-0">
-                <div className="flex items-center">
-                  <h2 className="text-xl sm:text-2xl md:text-[27px] font-bold text-[#005172] break-words">
-                    {dados.fullname}
-                  </h2>
-                </div>
-                <div className="flex items-center mt-2">
-                  <p className="text-xs sm:text-sm font-inter text-[#005172]">
-                    Membro desde 12 de Agosto de 2023
-                  </p>
-                </div>
+                <h2 className="text-xl sm:text-2xl md:text-[27px] font-bold text-[#005172] break-words">
+                  {dados.fullname}
+                </h2>
+                <p className="text-xs sm:text-sm font-inter text-[#005172] mt-2">
+                  Membro desde 12 de Agosto de 2023
+                </p>
               </div>
             </div>
 
@@ -222,13 +217,15 @@ export default function Perfil() {
             </div>
           </div>
 
-          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-            <div className="w-full lg:w-1/3 flex flex-col gap-4">
-              <div className="bg-white rounded-lg p-4 sm:p-6 flex-1 min-h-[420px]">
-                <div className="flex flex-col space-y-6 sm:space-y-10">
+          {/* Layout principal: dados pessoais + campanhas */}
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 xl:gap-12">
+            {/* Coluna esquerda: Dados pessoais */}
+            <div className="w-full lg:w-72 xl:w-80 flex flex-col gap-4">
+              <div className="bg-white rounded-lg p-4 sm:p-6 lg:p-0 flex-1">
+                <div className="flex flex-col space-y-6 sm:space-y-8 lg:space-y-6">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                     <label className="text-sm font-medium text-[#005172] text-left whitespace-nowrap">
-                      Data de Nascimento
+                      Data de Nascimento:
                     </label>
                     <span className="py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
                       {dados.birthDate ? dados.birthDate.toLocaleDateString("pt-BR") : "—"}
@@ -266,7 +263,7 @@ export default function Perfil() {
                   </div>
                 </div>
 
-                <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row sm:items-center gap-2">
+                <div className="mt-8 sm:mt-10 lg:mt-8 flex flex-col sm:flex-row sm:items-center gap-2">
                   <span className="text-sm text-[#005172] whitespace-nowrap">
                     Quanto doou até agora:
                   </span>
@@ -286,6 +283,7 @@ export default function Perfil() {
               </div>
             </div>
 
+            {/* Coluna direita: Campanhas que apoia */}
             <div className="flex-1 flex flex-col gap-3 items-start">
               <h3 className="text-sm font-semibold text-[#005172]">Campanhas que apoia</h3>
 
@@ -310,16 +308,20 @@ export default function Perfil() {
             </div>
           </div>
 
-          <hr className="border-t border-[#266D88CC] mx-50 my-8" />
-          <h2 className="text-xl sm:text-2xl font-bold text-[#005172] mt-2 mb-4">Histórico de Doações</h2>
+          {/* Divisor */}
+          <hr className="border-t border-[#266D88CC] my-8 lg:my-10" />
 
-          <div className="mt-2 bg-white rounded-lg p-4 sm:p-6 min-h-[580px] flex flex-col">
+          {/* Histórico de Doações */}
+          <h2 className="text-xl sm:text-2xl font-bold text-[#005172] mb-4 lg:mb-6">Histórico de Doações</h2>
+
+          <div className="bg-white rounded-lg p-4 sm:p-6 lg:p-0 flex flex-col">
+            {/* Filtros */}
             <div className="flex flex-col lg:flex-row gap-3 items-stretch lg:items-center mb-6 w-full">
               <div className="flex-1">
                 <Input placeholder="Buscar..." fullWidth />
               </div>
 
-              <div className="relative w-full lg:w-1/3">
+              <div className="relative w-full lg:w-64">
                 <select
                   id="filtro-doacoes"
                   className="w-full appearance-none bg-[#F68537] text-white py-2 pl-3 pr-10 rounded-md shadow-sm focus:outline-none"
@@ -346,12 +348,13 @@ export default function Perfil() {
                 </svg>
               </div>
 
-              <button className="w-full lg:w-auto px-4 py-2 rounded-lg bg-[#F68537] text-white hover:bg-orange-600">
+              <button className="w-full lg:w-auto px-6 py-2 rounded-lg bg-[#F68537] text-white hover:bg-orange-600">
                 Pesquisar
               </button>
             </div>
 
-            <div className="flex flex-col gap-3 flex-1">
+            {/* Cards do histórico */}
+            <div className="flex flex-col gap-3 flex-1 min-h-[400px]">
               {currentCards.map((campanha, index) => (
                 <CampaignCard
                   key={index}
@@ -367,6 +370,7 @@ export default function Perfil() {
               ))}
             </div>
 
+            {/* Paginação */}
             <div className="flex justify-center items-center gap-2 mt-6">
               <Pagination>
                 <PaginationContent className="gap-2">
