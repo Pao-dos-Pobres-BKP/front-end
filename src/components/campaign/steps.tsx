@@ -73,8 +73,6 @@ export const FormStep: React.FC<FormStepProps> = ({
   onBack,
   onNext,
   hideActions,
-  stepOverride,
-  totalStepsOverride,
 }) => {
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
@@ -168,10 +166,8 @@ export const FormStep: React.FC<FormStepProps> = ({
               Salvar
             </Button>
           </div>
-          <StepIndicators step={stepOverride ?? 2} total={totalStepsOverride ?? 3} />
         </div>
       )}
-      {hideActions && <StepIndicators step={stepOverride ?? 2} total={totalStepsOverride ?? 3} />}
     </div>
   );
 };

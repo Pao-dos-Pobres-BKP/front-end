@@ -1,7 +1,7 @@
 import React from "react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { FormStep, PasswordStep } from "./steps";
-import { createCampaignSchema, passwordSchema } from "@/schemas/campaign";
+import { FormStep } from "./steps";
+import { createCampaignSchema } from "@/schemas/campaign";
 import { z } from "zod";
 
 interface AdminCreateCampaignModalProps {
@@ -12,7 +12,6 @@ interface AdminCreateCampaignModalProps {
     description: string;
     targetValue: number;
     image?: File | null;
-    password: string;
   }) => Promise<void> | void;
 }
 
@@ -27,7 +26,6 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
   onOpenChange,
   onSubmit,
 }) => {
-  const [step, setStep] = React.useState(1); // 1 form 2 password
   const [form, setForm] = React.useState({
     title: "",
     description: "",
@@ -35,14 +33,11 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
     imageName: "" as string | null,
   });
   const [imageFile, setImageFile] = React.useState<File | null>(null);
-  const [password, setPassword] = React.useState("");
   const [, setErrors] = React.useState<Record<string, string>>({});
 
   function resetAll() {
-    setStep(1);
     setForm({ title: "", description: "", targetValue: "", imageName: "" });
     setImageFile(null);
-    setPassword("");
     setErrors({});
   }
   function handleChange(field: string, value: string) {
@@ -73,26 +68,16 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
       return null;
     }
   }
-  function validatePassword() {
-    try {
-      passwordSchema.parse({ password });
-      return true;
-    } catch (e) {
-      if (e instanceof z.ZodError)
-        setErrors({ password: e.issues[0]?.message || "Senha inválida" });
-      return false;
-    }
-  }
+
   async function handleSubmit() {
     const parsed = validateForm();
     if (!parsed) return;
-    if (!validatePassword()) return;
+    
     await onSubmit({
       title: parsed.title,
       description: parsed.description,
       targetValue: parsed.targetValue,
       image: imageFile ?? null,
-      password,
     });
     resetAll();
     onOpenChange(false);
@@ -109,30 +94,12 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
         <DialogTitle className="text-2xl font-semibold text-[var(--color-components)]">
           Nova Campanha
         </DialogTitle>
-        {step === 1 && (
-          <FormStep
-            form={form}
-            onChange={handleChange}
-            onImageSelect={handleImage}
-            onNext={() => {
-              const ok = validateForm();
-              if (ok) setStep(2);
-            }}
-            stepOverride={1}
-            totalStepsOverride={2}
-          />
-        )}
-        {step === 2 && (
-          <PasswordStep
-            password={password}
-            onChange={setPassword}
-            onBack={() => setStep(1)}
-            onSubmit={handleSubmit}
-            confirmLabel="Criar"
-            stepOverride={2}
-            totalStepsOverride={2}
-          />
-        )}
+        <FormStep
+          form={form}
+          onChange={handleChange}
+          onImageSelect={handleImage}
+          onNext={handleSubmit}
+        />
       </DialogContent>
     </Dialog>
   );

@@ -74,62 +74,74 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
     <>
       <article
         className={cn(
-          "flex flex-col w-full bg-white border border-[#e6e8eb] rounded-2xl p-5 gap-3",
-          "md:flex-row md:items-center md:justify-between",
+          "flex w-full bg-white border border-[#e6e8eb] rounded-2xl p-5 gap-3",
           className
         )}
         aria-label={`Card compacto ${title}`}
       >
-        <div className="flex items-center gap-2">
-          {situationIcon && <img src={situationIcon} alt="" className="h-6 w-6 flex-shrink-0" />}
-          <div className="flex flex-col truncate">
-            <div className="text-[#034d6b] text-xl font-semibold truncate">{title}</div>
+        {/* Coluna 1: Ícone + Título/Creator */}
+        <div className="flex items-start gap-2 flex-shrink-0 min-w-0 w-full md:w-[280px]">
+          {situationIcon && <img src={situationIcon} alt="" className="h-6 w-6 flex-shrink-0 mt-0.5" />}
+          <div className="flex flex-col min-w-0 flex-1">
+            <div 
+              className="text-[#034d6b] text-xl font-semibold w-full overflow-hidden text-ellipsis whitespace-nowrap"
+              title={title}
+            >
+              {title}
+            </div>
             {creatorName && (
-              <div className="text-sm text-[#f68537] truncate">por {creatorName}</div>
+              <div 
+                className="text-sm text-[#f68537] w-full overflow-hidden text-ellipsis whitespace-nowrap"
+                title={`por ${creatorName}`}
+              >
+                por {creatorName}
+              </div>
             )}
           </div>
         </div>
-        <div className="flex items-center w-full gap-3">
-          <div className="flex flex-col flex-1 min-w-0">
-            <div className="flex justify-between items-center gap-1.5 w-full flex-wrap">
-              <div className="text-lg font-bold text-[#034d6b] truncate">
-                {formatCurrency(raised)}
-              </div>
-              <div className="text-sm text-[#6b7280] truncate">de {formatCurrency(goal)}</div>
-            </div>
 
-            <div className="w-full mt-1">
-              {situation === "approved" || situation === "recurring" ? (
-                <Progress value={percent} variant="blue" size="large" />
-              ) : situation === "rejected" ? (
-                <div className="text-center text-xs font-semibold text-yellow-800 bg-red-400 rounded-full py-0.5 px-2 w-full max-w-[120px]">
-                  Rejeitada
-                </div>
-              ) : (
-                <div className="text-center text-xs font-semibold text-white bg-[#F6C337] rounded-full py-0.5 px-2 w-full max-w-[140px]">
-                  Pendente Aprovação
-                </div>
-              )}
+        {/* Coluna 2: Valores + Barra de Progresso */}
+        <div className="flex flex-col flex-1 min-w-0 justify-center">
+          <div className="flex justify-between items-center gap-1.5 mb-1">
+            <div className="text-lg font-bold text-[#034d6b] whitespace-nowrap">
+              {formatCurrency(raised)}
             </div>
+            <div className="text-sm text-[#6b7280] whitespace-nowrap">de {formatCurrency(goal)}</div>
           </div>
-          <div className="flex-shrink-0">
-            <div
-              role="button"
-              tabIndex={0}
-              onClick={handleActionClick}
-              onKeyDown={handleActionKeyDown}
-              className={cn(
-                "inline-flex items-center justify-center text-sm font-semibold rounded-[10px] transition-colors shadow-sm hover:shadow-lg focus:outline-none cursor-pointer min-w-[44px] h-10 sm:h-11 md:h-12 px-3",
-                actionButtonClass
-              )}
-            >
-              <img
-                src={actionIconSrc}
-                alt=""
-                className="h-[18px] w-[18px] sm:h-[20px] sm:w-[20px] md:h-[21px] md:w-[21px]"
-                aria-hidden="true"
-              />
-            </div>
+
+          <div className="w-full">
+            {situation === "approved" || situation === "recurring" ? (
+              <Progress value={percent} variant="blue" size="large" />
+            ) : situation === "rejected" ? (
+              <div className="text-center text-xs font-semibold text-yellow-800 bg-red-400 rounded-full py-0.5 px-2 w-full max-w-[120px]">
+                Rejeitada
+              </div>
+            ) : (
+              <div className="text-center text-xs font-semibold text-white bg-[#F6C337] rounded-full py-0.5 px-2 w-full max-w-[140px]">
+                Pendente Aprovação
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Coluna 3: Botão de ação */}
+        <div className="flex-shrink-0 flex items-center">
+          <div
+            role="button"
+            tabIndex={0}
+            onClick={handleActionClick}
+            onKeyDown={handleActionKeyDown}
+            className={cn(
+              "inline-flex items-center justify-center text-sm font-semibold rounded-[10px] transition-colors shadow-sm hover:shadow-lg focus:outline-none cursor-pointer min-w-[44px] h-10 sm:h-11 md:h-12 px-3",
+              actionButtonClass
+            )}
+          >
+            <img
+              src={actionIconSrc}
+              alt=""
+              className="h-[18px] w-[18px] sm:h-[20px] sm:w-[20px] md:h-[21px] md:w-[21px]"
+              aria-hidden="true"
+            />
           </div>
         </div>
       </article>
