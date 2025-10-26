@@ -58,16 +58,9 @@ export function CampaignCardHistoric(props: CampaignCardHistoricProps) {
       <div className="flex items-center min-w-0 overflow-hidden">
         {renderIcon()}
         <div className="font-semibold flex flex-col items-start ml-2 min-w-0 shrink truncate">
-          <div className="text-[#034d6b] truncate text-base sm:text-xl">
-            {title}
-          </div>
+          <div className="text-[#034d6b] truncate text-base sm:text-xl">{title}</div>
           {creatorName && (
-            <div
-              className={cn(
-                "text-xs sm:text-sm truncate",
-                gradientTextClass
-              )}
-            >
+            <div className={cn("text-xs sm:text-sm truncate", gradientTextClass)}>
               por {creatorName}
             </div>
           )}

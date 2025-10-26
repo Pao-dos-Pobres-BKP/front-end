@@ -175,7 +175,6 @@ export default function Perfil() {
     <div className="min-h-screen bg-[#2F5361] font-inter">
       <div className="flex justify-center px-4 sm:px-6 lg:px-12 xl:px-16 py-6">
         <div className="w-full max-w-[1600px] bg-white rounded-xl shadow-lg p-4 sm:p-6 lg:p-10 xl:p-12">
-          {/* Header com foto e botões */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white rounded-lg gap-4 p-4 lg:p-0 mb-6 lg:mb-8">
             <div className="flex items-center gap-4 w-full sm:w-auto">
               <img
@@ -217,9 +216,7 @@ export default function Perfil() {
             </div>
           </div>
 
-          {/* Layout principal: dados pessoais + campanhas */}
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 xl:gap-12">
-            {/* Coluna esquerda: Dados pessoais */}
             <div className="w-full lg:w-72 xl:w-80 flex flex-col gap-4">
               <div className="bg-white rounded-lg p-4 sm:p-6 lg:p-0 flex-1">
                 <div className="flex flex-col space-y-6 sm:space-y-8 lg:space-y-6">
@@ -242,7 +239,9 @@ export default function Perfil() {
                     </span>
                   </div>
                   <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-                    <label className="text-sm font-medium text-[#005172] text-left whitespace-nowrap">CPF:</label>
+                    <label className="text-sm font-medium text-[#005172] text-left whitespace-nowrap">
+                      CPF:
+                    </label>
                     <span className="py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
                       {dados.cpf}
                     </span>
@@ -256,7 +255,9 @@ export default function Perfil() {
                     </span>
                   </div>
                   <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-                    <label className="text-sm font-medium text-[#005172] text-left whitespace-nowrap">E-mail:</label>
+                    <label className="text-sm font-medium text-[#005172] text-left whitespace-nowrap">
+                      E-mail:
+                    </label>
                     <span className="py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left break-all">
                       {dados.email}
                     </span>
@@ -283,7 +284,6 @@ export default function Perfil() {
               </div>
             </div>
 
-            {/* Coluna direita: Campanhas que apoia */}
             <div className="flex-1 flex flex-col gap-3 items-start">
               <h3 className="text-sm font-semibold text-[#005172]">Campanhas que apoia</h3>
 
@@ -308,14 +308,13 @@ export default function Perfil() {
             </div>
           </div>
 
-          {/* Divisor */}
           <hr className="border-t border-[#266D88CC] my-8 lg:my-10" />
 
-          {/* Histórico de Doações */}
-          <h2 className="text-xl sm:text-2xl font-bold text-[#005172] mb-4 lg:mb-6">Histórico de Doações</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-[#005172] mb-4 lg:mb-6">
+            Histórico de Doações
+          </h2>
 
           <div className="bg-white rounded-lg p-4 sm:p-6 lg:p-0 flex flex-col">
-            {/* Filtros */}
             <div className="flex flex-col lg:flex-row gap-3 items-stretch lg:items-center mb-6 w-full">
               <div className="flex-1">
                 <Input placeholder="Buscar..." fullWidth />
@@ -353,7 +352,6 @@ export default function Perfil() {
               </button>
             </div>
 
-            {/* Cards do histórico */}
             <div className="flex flex-col gap-3 flex-1 min-h-[400px]">
               {currentCards.map((campanha, index) => (
                 <CampaignCard
@@ -370,7 +368,6 @@ export default function Perfil() {
               ))}
             </div>
 
-            {/* Paginação */}
             <div className="flex justify-center items-center gap-2 mt-6">
               <Pagination>
                 <PaginationContent className="gap-2">
