@@ -93,3 +93,25 @@ jobs:
             aws ecr get-login-password --region "$REGION" | sudo docker login --username AWS --password-stdin "$ECR_URL"
             sudo docker pull "$IMAGE_REF"
             sudo docker service update --with-registry-auth --image "$IMAGE_REF" --env-add VITE_API_BASE_URL="$API_BASE" "$SERVICE"
+  
+  push_main_to_gitlab:
+    runs-on: ubuntu-latest
+    needs: deploy_to_ec2
+    steps:
+      - name: Checkout main completo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configurar Git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Push main para GitLab
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+        run: |
+          git remote add gitlab "https://oauth2:${GITLAB_TOKEN}@tools.ages.pucrs.br/plataforma-de-doa-es-para-o-p-o-dos-pobres/front-end.git" || true
+          git fetch gitlab || true
+          git push gitlab main --force
