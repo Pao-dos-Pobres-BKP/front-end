@@ -176,19 +176,19 @@ function Modal({
 
         {children}
 
-        <div className="flex justify-end gap-3 w-full mt-2">
+        <div className="flex justify-center gap-3 w-full mt-2">
           {footer
             ? footer
             : cfg?.actions?.map((a, i) => (
-                <Button
-                  key={i}
-                  variant={a.variant}
-                  size="extraSmall"
-                  onClick={() => handleActionClick(a.action)}
-                >
-                  {a.label}
-                </Button>
-              ))}
+              <Button
+                key={i}
+                variant={a.variant}
+                size="extraSmall"
+                onClick={() => handleActionClick(a.action)}
+              >
+                {a.label}
+              </Button>
+            ))}
         </div>
       </div>
     </div>
