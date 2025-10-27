@@ -16,11 +16,11 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: yarn build
 
-  mirror_to_gitlab:
+  push_develop_to_gitlab:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Checkout completo
+      - name: Checkout develop completo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -30,10 +30,10 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
-      - name: Fazer push de todas as branches e tags para GitLab
+      - name: Push develop para GitLab
         env:
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
         run: |
           git remote add gitlab "https://oauth2:${GITLAB_TOKEN}@tools.ages.pucrs.br/plataforma-de-doa-es-para-o-p-o-dos-pobres/front-end.git" || true
           git fetch gitlab || true
-          git push --mirror --force "https://oauth2:${GITLAB_TOKEN}@tools.ages.pucrs.br/plataforma-de-doa-es-para-o-p-o-dos-pobres/front-end.git"
+          git push gitlab develop --force
