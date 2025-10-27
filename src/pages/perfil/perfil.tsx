@@ -38,18 +38,20 @@ const genderMapper: Record<Gender, string> = {
   OTHER: "Outro",
 };
 
+const CAMPAIGNS_PAGE_SIZE = 4;
+
 export default function Perfil() {
   const [, setSearchParams] = useSearchParams();
-  const [pageSize] = useState(10);
+  const [campaignsPageSize] = useState(CAMPAIGNS_PAGE_SIZE);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { campaigns } = usePerfil(currentPage, pageSize);
+  const { campaigns, campaignsTotalPages } = usePerfil(currentPage, campaignsPageSize);
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isCreateAdminModalOpen, setIsCreateAdminModalOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const cardsPerPage = 6;
-  const currentUser = useUser().user;
+  const { user: currentUser } = useUser();
 
   useEffect(() => {
     setSearchParams({ page: currentPage.toString() });
@@ -110,7 +112,7 @@ export default function Perfil() {
                 <div className="flex items-center mt-2">
                   <p className="text-xs sm:text-sm font-inter text-[#005172]">
                     Membro desde{" "}
-                    {/* {dateUtils.formatCompleteDate(new Date(currentUser?.birthDate ?? ""))} */}
+                    {dateUtils.formatCompleteDate(currentUser?.createdAt ?? new Date())}
                   </p>
                 </div>
               </div>
@@ -200,24 +202,79 @@ export default function Perfil() {
             <div className="flex-1 flex flex-col gap-3 items-start">
               <h3 className="text-sm font-semibold text-[#005172]">Campanhas que apoia</h3>
 
-              {campaigns.length > 0 ? (
-                campaigns.map((campanha, index) => (
-                  <CampaignCard
-                    key={index}
-                    title={campanha.title}
-                    creatorName={campanha.creatorName}
-                    raised={campanha.raised}
-                    goal={campanha.goal}
-                    variant="compact"
-                    situation="recurring"
-                    className="border border-[#005172] rounded-lg text-sm p-3"
-                  />
-                ))
-              ) : (
-                <div className="w-full mx-auto py-8 bg-blue-100 text-[#005172] text-center font-medium border border-[#005172] rounded-lg">
-                  Você ainda não apoia nenhuma campanha.
-                </div>
-              )}
+              <div className="flex flex-col gap-3 w-full min-h-[400px]">
+                {campaigns.length > 0 ? (
+                  campaigns.map((campaign, index) => (
+                    <CampaignCard
+                      key={index}
+                      {...campaign}
+                      variant="compact"
+                      situation="recurring"
+                      className="border border-[#005172] rounded-lg text-sm p-3"
+                    />
+                  ))
+                ) : (
+                  <div className="w-full mx-auto py-8 bg-blue-100 text-[#005172] text-center font-medium border border-[#005172] rounded-lg">
+                    Você ainda não apoia nenhuma campanha.
+                  </div>
+                )}
+              </div>
+              <Pagination>
+                <PaginationContent className="gap-2">
+                  <PaginationItem>
+                    <PaginationPrevious
+                      size="sm"
+                      onClick={
+                        currentPage === 1 ? undefined : () => setCurrentPage((prev) => prev - 1)
+                      }
+                      className={cn(
+                        "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
+                        currentPage === 1
+                          ? "bg-white text-[#F68537] border-[#F68537] cursor-not-allowed"
+                          : "bg-[#F68537] text-white border-[#F68537]"
+                      )}
+                    >
+                      Anterior
+                    </PaginationPrevious>
+                  </PaginationItem>
+
+                  {Array.from({ length: campaignsTotalPages }, (_, i) => (
+                    <PaginationItem key={i}>
+                      <PaginationLink
+                        size="icon"
+                        onClick={() => setCurrentPage(i + 1)}
+                        isActive={currentPage === i + 1}
+                        className={`px-3 py-1 border rounded-full transition-colors ${
+                          currentPage === i + 1
+                            ? "bg-white text-[#F68537] border-[#F68537]"
+                            : "bg-[#F68537] text-white border-[#F68537]"
+                        }`}
+                      >
+                        {i + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+
+                  <PaginationItem>
+                    <PaginationNext
+                      size="sm"
+                      onClick={
+                        currentPage === campaignsTotalPages
+                          ? undefined
+                          : () => setCurrentPage((prev) => prev + 1)
+                      }
+                      className={cn(
+                        "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
+                        currentPage === campaignsTotalPages
+                          ? "bg-white text-[#F68537] border-[#F68537] cursor-not-allowed"
+                          : "bg-[#F68537] text-white border-[#F68537]"
+                      )}
+                    >
+                      Próximo
+                    </PaginationNext>
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
             </div>
           </div>
 
