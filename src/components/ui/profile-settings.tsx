@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Button from "./button";
 import CreateAdminModal from "./create-admin-modal";
 import UserList from "./user-list";
 import { PlusCircleIcon } from "lucide-react";
+import { listAllAdmins } from "@/services/admin/listAdmins";
+import { listAllDonors } from "@/services/donors/listDonors";
 
 type FormData = {
   nome: string;
@@ -36,6 +38,8 @@ export default function ProfileSettingsModal({
 }: ProfileSettingsModalProps) {
   const [formData, setFormData] = useState(initialData);
   const [isCreateAdminModalOpen, setIsCreateAdminModalOpen] = useState(false);
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (isOpen) setFormData(initialData);
@@ -50,15 +54,37 @@ export default function ProfileSettingsModal({
     setIsCreateAdminModalOpen(true);
   };
 
-  if (!isOpen) return null;
+  const loadUsers = useCallback(async () => {
+    try {
+      setLoading(true);
+      const [admins, donors] = await Promise.all([listAllAdmins(), listAllDonors()]);
+      const mappedAdmins: User[] = admins.map((a) => ({
+        id: a.id,
+        profileName: a.fullName,
+        role: "admin",
+      }));
+      const mappedDonors: User[] = donors.map((d) => ({
+        id: d.id,
+        profileName: d.fullName,
+        role: "donor",
+      }));
+      setUsers([...mappedAdmins, ...mappedDonors]);
+    } catch (e) {
+      console.error("Falha ao carregar usuários:", e);
+      setUsers([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-  const users: User[] = [
-    { profileName: "Fulano de Tal", role: "admin" },
-    { profileName: "Maria Silva", role: "donor" },
-    { profileName: "João Santos", role: "donor" },
-    { profileName: "Ana Lima", role: "admin" },
-    { profileName: "Pedro Costa", role: "donor" },
-  ];
+  // Load users when modal opens, and refresh when create-admin modal closes
+  useEffect(() => {
+    if (isOpen && !isCreateAdminModalOpen) {
+      void loadUsers();
+    }
+  }, [isOpen, isCreateAdminModalOpen, loadUsers]);
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 backdrop-blur-sm bg-[color:var(--overlay)] flex items-center justify-center z-60 px-2">
@@ -80,7 +106,13 @@ export default function ProfileSettingsModal({
           </Button>
         </div>
 
-        <UserList users={users} />
+        {loading ? (
+          <div className="p-6 text-center text-[var(--color-text-2)]">
+            Carregando usuários...
+          </div>
+        ) : (
+          <UserList users={users} />
+        )}
 
         <div className="flex justify-center gap-1.5 sm:gap-3 py-1.5 sm:py-3 bg-[color:var(--primary-100)] rounded-b-xl">
           <Button
