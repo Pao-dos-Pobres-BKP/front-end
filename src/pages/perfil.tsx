@@ -203,20 +203,20 @@ export default function Perfil() {
                 <>
                   <button
                     onClick={() => setIsLogoutModalOpen(true)}
-                    className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl text-[#005172] hover:bg-[#e6f3f5] transition-colors"
+                    className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl text-[#005172] hover:bg-[#e6f3f5] transition-colors cursor-pointer"
                   >
                     Sair da Conta
                   </button>
                   <button
                     onClick={handleOpenSettingsModal}
-                    className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl bg-[#005172] text-white hover:bg-[#24434f] transition-colors"
+                    className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl bg-[#005172] text-white hover:bg-[#24434f] transition-colors cursor-pointer"
                   >
                     Ajustes
                   </button>
                 </>
               )}
               <button
-                className="p-1.5 rounded-lg bg-[#005172] text-white hover:bg-[#24434f] flex items-center justify-center"
+                className="p-1.5 rounded-lg bg-[#005172] text-white hover:bg-[#24434f] flex items-center justify-center cursor-pointer"
                 onClick={handleEditarConta}
               >
                 <EditSquare size="medium" />
@@ -394,8 +394,8 @@ export default function Perfil() {
                         onClick={() => setCurrentPage(i + 1)}
                         isActive={currentPage === i + 1}
                         className={`px-3 py-1 border rounded-full transition-colors ${currentPage === i + 1
-                            ? "bg-white text-[#F68537] border-[#F68537]"
-                            : "bg-[#F68537] text-white border-[#F68537]"
+                          ? "bg-white text-[#F68537] border-[#F68537]"
+                          : "bg-[#F68537] text-white border-[#F68537]"
                           }`}
                       >
                         {i + 1}
