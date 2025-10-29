@@ -2,34 +2,26 @@ import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/utils/formatCurrency";
 import Button from "../button";
 import { useState } from "react";
-import { Progress } from "../progress";
 import { ChevronDownIcon } from "lucide-react";
 
 export type CampaignCardProfileProps = {
-  title: string;
   raised: number;
-  goal: number;
   creatorName?: string;
   onAction?: () => void;
   className?: string;
   donorName: string;
   donorEmail: string;
-  donationAmount?: number;
   memberSince: string; //'DD/MM/AAAA' or year
   campaigns: string[];
-  progressPercent?: number;
 };
 
 export function CampaignCardProfile({
-  goal,
-  title,
+  raised,
   className,
   donorName,
   donorEmail,
-  donationAmount,
   memberSince = "DD/MM/AAAA",
   campaigns = [],
-  progressPercent: percent = 0,
 }: CampaignCardProfileProps) {
   const [detailsOpen, setDetailsOpen] = useState(false);
   return (
@@ -80,9 +72,9 @@ export function CampaignCardProfile({
 
             <div className="text-right">
               <div className="text-left text-lg font-bold text-[#034d6b]">
-                {donationAmount ? formatCurrency(donationAmount) : "+0,00"}
+                {raised ? formatCurrency(raised) : "+0,00"}
               </div>
-              <div className="text-sm text-left text-[#f68537] font-semibold">para {title}</div>
+              <div className="text-sm text-left text-[#f68537] font-semibold">doados até agora</div>
             </div>
           </div>
           <div
@@ -105,28 +97,25 @@ export function CampaignCardProfile({
         >
           <div className="overflow-hidden rounded-b-2xl">
             <div className="text-[#005172] bg-[#DEDEDE] pb-4 pl-4 pr-4">
-              <div className="flex font-semibold items-center gap-3  pt-3 border-t-1 border-gray-300">
-                <div>Quanto doou: </div>
-                <div className="flex-1">
-                  <div className="rounded-full overflow-hidden">
-                    <Progress value={percent} variant="blue" size="large" />
+              <div className="flex flex-col mt-3 font-semibold text-[var(--color-text-muted)] w-full text-left pt-3">
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="font-bold whitespace-nowrap leading-snug">
+                    Campanhas <br /> recorrentes:
                   </div>
+                  <ul className="list-disc list-inside text-sm font-normal">
+                    {campaigns.slice(0, 3).map((c, i) => (
+                      <li key={i}>{c}</li>
+                    ))}
+                  </ul>
                 </div>
-                <div className="text-md font-bold ">{formatCurrency(goal)}</div>
-              </div>
-
-              <div className="mt-3 font-semibold text-[var(--color-text-muted)] w-full text-left">
-                <div className="mt-1 font-bold mb-1">Campanhas:</div>
-                <ul className="list-disc list-inside text-sm">
-                  {campaigns.slice(0, 3).map((c, i) => (
-                    <li key={i}>{c}</li>
-                  ))}
-                </ul>
                 <div className="flex mt-2 font-semibold items-center justify-between">
                   <div>Membro desde: {memberSince ?? "DD/MM/AAAA"}</div>
                   <div>
-                    <Button variant="secondary" size="small">
-                      Adicionar Dados
+                    <Button
+                     onClick={() => (window.location.href = "/perfil")} // simula rota para perfil do doador
+                     variant="secondary" size="small"
+                     >
+                      Visualizar perfil
                     </Button>
                   </div>
                 </div>
