@@ -77,7 +77,6 @@ export default function ProfileSettingsModal({
     }
   }, []);
 
-  // Load users when modal opens, and refresh when create-admin modal closes
   useEffect(() => {
     if (isOpen && !isCreateAdminModalOpen) {
       void loadUsers();
