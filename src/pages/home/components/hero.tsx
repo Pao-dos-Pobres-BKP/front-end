@@ -173,8 +173,14 @@ export function Hero({ items, className, showArrows = true, showIndicators = tru
                             <div>
                               <div className="flex items-center gap-2">
                                 <span aria-hidden className="inline-block h-5 w-5">
-                                  <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current">
-                                    <path d="M12 21s7-6.17 7-11a7 7 0 1 0-14 0c0 4.83 7 11 7 11Z" strokeWidth="1.5" />
+                                  <svg
+                                    viewBox="0 0 24 24"
+                                    className="h-5 w-5 fill-none stroke-current"
+                                  >
+                                    <path
+                                      d="M12 21s7-6.17 7-11a7 7 0 1 0-14 0c0 4.83 7 11 7 11Z"
+                                      strokeWidth="1.5"
+                                    />
                                     <circle cx="12" cy="10" r="2.5" strokeWidth="1.5" />
                                   </svg>
                                 </span>
@@ -188,8 +194,18 @@ export function Hero({ items, className, showArrows = true, showIndicators = tru
                             <div>
                               <div className="flex items-center gap-2">
                                 <span aria-hidden className="inline-block h-5 w-5">
-                                  <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current">
-                                    <rect x="3" y="4" width="18" height="18" rx="2" strokeWidth="1.5" />
+                                  <svg
+                                    viewBox="0 0 24 24"
+                                    className="h-5 w-5 fill-none stroke-current"
+                                  >
+                                    <rect
+                                      x="3"
+                                      y="4"
+                                      width="18"
+                                      height="18"
+                                      rx="2"
+                                      strokeWidth="1.5"
+                                    />
                                     <path d="M8 2v4M16 2v4M3 10h18" strokeWidth="1.5" />
                                   </svg>
                                 </span>
@@ -203,7 +219,10 @@ export function Hero({ items, className, showArrows = true, showIndicators = tru
                             <div>
                               <div className="flex items-center gap-2">
                                 <span aria-hidden className="inline-block h-5 w-5">
-                                  <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current">
+                                  <svg
+                                    viewBox="0 0 24 24"
+                                    className="h-5 w-5 fill-none stroke-current"
+                                  >
                                     <circle cx="12" cy="12" r="9" strokeWidth="1.5" />
                                     <path d="M12 7v5l3 2" strokeWidth="1.5" />
                                   </svg>
