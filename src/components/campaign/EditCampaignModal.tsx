@@ -5,6 +5,11 @@ import { updateCampaignSchema } from "@/schemas/campaign";
 import { z } from "zod";
 import type { CampaignBase } from "@/types/Campaign";
 
+interface CampaignWithDates extends CampaignBase {
+  startDate?: string;
+  endDate?: string;
+}
+
 interface EditCampaignModalProps {
   open: boolean;
   onOpenChange: (o: boolean) => void;
@@ -14,6 +19,7 @@ interface EditCampaignModalProps {
     title: string;
     description: string;
     targetValue: number;
+    endDate: Date;
     image?: File | null;
   }) => Promise<void> | void;
   onDeleteRequest: () => void; // triggers external delete modal
@@ -37,17 +43,22 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
     description: "",
     targetValue: "",
     imageName: "" as string | null,
+    startDate: undefined as Date | undefined,
+    endDate: undefined as Date | undefined,
   });
   const [imageFile, setImageFile] = React.useState<File | null>(null);
   const [, setErrors] = React.useState<Record<string, string>>({});
 
   React.useEffect(() => {
     if (campaign && open) {
+      const campaignWithDates = campaign as CampaignWithDates;
       setForm({
         title: campaign.title,
         description: campaign.description,
         targetValue: currencyMask(String(campaign.targetValue * 100)), // assume value already numeric
         imageName: campaign.image?.name || campaign.image?.url || "",
+        startDate: campaignWithDates.startDate ? new Date(campaignWithDates.startDate) : undefined,
+        endDate: campaignWithDates.endDate ? new Date(campaignWithDates.endDate) : undefined,
       });
     }
   }, [campaign, open]);
@@ -58,6 +69,10 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
 
   function handleChange(field: string, value: string) {
     if (field === "targetValue") value = currencyMask(value);
+    setForm((f) => ({ ...f, [field]: value }));
+  }
+
+  function handleDateChange(field: "startDate" | "endDate", value: Date | undefined) {
     setForm((f) => ({ ...f, [field]: value }));
   }
 
@@ -93,11 +108,30 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
     const parsed = validateForm();
     if (!parsed) return;
 
+    if (!form.endDate) {
+      alert("A data de término é obrigatória");
+      return;
+    }
+
+    // Validar que a data de término é no mínimo amanhã
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const endDateOnly = new Date(form.endDate);
+    endDateOnly.setHours(0, 0, 0, 0);
+    
+    if (endDateOnly < tomorrow) {
+      alert("A data de término deve ser no mínimo amanhã");
+      return;
+    }
+
     await onSave({
       id: parsed.id,
       title: parsed.title,
       description: parsed.description,
       targetValue: parsed.targetValue,
+      endDate: form.endDate,
       image: imageFile ?? null,
     });
 
@@ -120,6 +154,7 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
         <FormStep
           form={form}
           onChange={handleChange}
+          onDateChange={handleDateChange}
           onImageSelect={handleImage}
           onBack={() => {
             resetAll();
@@ -128,6 +163,8 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
           onNext={handleSubmit}
           stepOverride={1}
           totalStepsOverride={1}
+          showDates={true}
+          isEditMode={true}
         />
         <div className="text-center">
           <button

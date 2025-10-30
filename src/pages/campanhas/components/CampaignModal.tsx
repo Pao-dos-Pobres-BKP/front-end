@@ -17,7 +17,7 @@ type CampaignData = {
   targetAmount: number;
   currentAmount: number;
   achievementPercentage: number;
-  status: "ACTIVE" | "INACTIVE" | "COMPLETED";
+  status: "PENDING" | "ACTIVE" | "PAUSED" | "FINISHED" | "CANCELED";
 };
 
 type CampaignModalProps = {
@@ -126,7 +126,25 @@ export default function CampaignModal({ open, onOpenChange, campaign }: Campaign
 
           {/* Botões baseados no estado de colaboração */}
           <div className="mt-4">
-            {checkingCollaboration ? (
+            {campaign.status === "PENDING" ? (
+              <Button
+                variant="quaternary"
+                size="large"
+                className="w-full opacity-60 cursor-not-allowed"
+                disabled
+              >
+                Campanha sob aprovação
+              </Button>
+            ) : campaign.status === "CANCELED" ? (
+              <Button
+                variant="quaternary"
+                size="large"
+                className="w-full opacity-60 cursor-not-allowed"
+                disabled
+              >
+                Campanha rejeitada
+              </Button>
+            ) : checkingCollaboration ? (
               <div className="space-y-2">
                 <div className="h-12 bg-gray-300 animate-pulse rounded-xl w-full" />
               </div>

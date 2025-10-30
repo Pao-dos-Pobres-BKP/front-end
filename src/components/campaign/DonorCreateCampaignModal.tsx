@@ -1,7 +1,7 @@
 import React from "react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { AgreementStep, FormStep, PasswordStep } from "./steps";
-import { createCampaignSchema, passwordSchema } from "@/schemas/campaign";
+import { AgreementStep, FormStep } from "./steps";
+import { createCampaignSchema } from "@/schemas/campaign";
 import { z } from "zod";
 
 interface DonorCreateCampaignModalProps {
@@ -11,8 +11,9 @@ interface DonorCreateCampaignModalProps {
     title: string;
     description: string;
     targetValue: number;
+    startDate: Date;
+    endDate: Date;
     image?: File | null;
-    password: string;
   }) => Promise<void> | void;
 }
 
@@ -33,21 +34,32 @@ export const DonorCreateCampaignModal: React.FC<DonorCreateCampaignModalProps> =
     description: "",
     targetValue: "",
     imageName: "" as string | null,
+    startDate: undefined as Date | undefined,
+    endDate: undefined as Date | undefined,
   });
   const [imageFile, setImageFile] = React.useState<File | null>(null);
-  const [password, setPassword] = React.useState("");
   const [, setErrors] = React.useState<Record<string, string>>({});
 
   function resetAll() {
     setStep(1);
-    setForm({ title: "", description: "", targetValue: "", imageName: "" });
+    setForm({ 
+      title: "", 
+      description: "", 
+      targetValue: "", 
+      imageName: "",
+      startDate: undefined,
+      endDate: undefined,
+    });
     setImageFile(null);
-    setPassword("");
     setErrors({});
   }
 
   function handleChange(field: string, value: string) {
     if (field === "targetValue") value = currencyMask(value);
+    setForm((f) => ({ ...f, [field]: value }));
+  }
+
+  function handleDateChange(field: "startDate" | "endDate", value: Date | undefined) {
     setForm((f) => ({ ...f, [field]: value }));
   }
 
@@ -77,28 +89,50 @@ export const DonorCreateCampaignModal: React.FC<DonorCreateCampaignModalProps> =
     }
   }
 
-  function validatePassword() {
-    try {
-      passwordSchema.parse({ password });
-      return true;
-    } catch (e) {
-      if (e instanceof z.ZodError) {
-        setErrors({ password: e.issues[0]?.message || "Senha inválida" });
-      }
-      return false;
-    }
-  }
-
   async function handleSubmit() {
     const parsed = validateForm();
     if (!parsed) return;
-    if (!validatePassword()) return;
+    
+    if (!form.startDate || !form.endDate) {
+      alert("As datas são obrigatórias");
+      return;
+    }
+
+    // Validar que a data de início não é antes de hoje
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const startDateOnly = new Date(form.startDate);
+    startDateOnly.setHours(0, 0, 0, 0);
+    
+    if (startDateOnly < today) {
+      alert("A data de início não pode ser antes de hoje");
+      return;
+    }
+
+    // Validar que a data de término é no mínimo amanhã
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const endDateOnly = new Date(form.endDate);
+    endDateOnly.setHours(0, 0, 0, 0);
+    
+    if (endDateOnly < tomorrow) {
+      alert("A data de término deve ser no mínimo amanhã");
+      return;
+    }
+
+    // Validar que a data de término é posterior à data de início
+    if (endDateOnly <= startDateOnly) {
+      alert("A data de término deve ser posterior à data de início");
+      return;
+    }
+    
     await onSubmit({
       title: parsed.title,
       description: parsed.description,
       targetValue: parsed.targetValue,
+      startDate: form.startDate,
+      endDate: form.endDate,
       image: imageFile ?? null,
-      password,
     });
     resetAll();
     onOpenChange(false);
@@ -121,25 +155,15 @@ export const DonorCreateCampaignModal: React.FC<DonorCreateCampaignModalProps> =
           <FormStep
             form={form}
             onChange={handleChange}
+            onDateChange={handleDateChange}
             onImageSelect={handleImage}
             onBack={() => setStep(1)}
-            onNext={() => {
-              const ok = validateForm();
-              if (ok) setStep(3);
-            }}
+            onNext={handleSubmit}
             stepOverride={2}
-            totalStepsOverride={3}
-          />
-        )}
-        {step === 3 && (
-          <PasswordStep
-            password={password}
-            onChange={setPassword}
-            onBack={() => setStep(2)}
-            onSubmit={handleSubmit}
-            confirmLabel="Solicitar"
-            stepOverride={3}
-            totalStepsOverride={3}
+            totalStepsOverride={2}
+            showDates={true}
+            isEditMode={false}
+            submitLabel="Solicitar"
           />
         )}
       </DialogContent>

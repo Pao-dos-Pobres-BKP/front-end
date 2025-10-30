@@ -11,6 +11,8 @@ interface AdminCreateCampaignModalProps {
     title: string;
     description: string;
     targetValue: number;
+    startDate: Date;
+    endDate: Date;
     image?: File | null;
   }) => Promise<void> | void;
 }
@@ -31,12 +33,21 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
     description: "",
     targetValue: "",
     imageName: "" as string | null,
+    startDate: undefined as Date | undefined,
+    endDate: undefined as Date | undefined,
   });
   const [imageFile, setImageFile] = React.useState<File | null>(null);
   const [, setErrors] = React.useState<Record<string, string>>({});
 
   function resetAll() {
-    setForm({ title: "", description: "", targetValue: "", imageName: "" });
+    setForm({ 
+      title: "", 
+      description: "", 
+      targetValue: "", 
+      imageName: "",
+      startDate: undefined,
+      endDate: undefined,
+    });
     setImageFile(null);
     setErrors({});
   }
@@ -44,6 +55,11 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
     if (field === "targetValue") value = currencyMask(value);
     setForm((f) => ({ ...f, [field]: value }));
   }
+  
+  function handleDateChange(field: "startDate" | "endDate", value: Date | undefined) {
+    setForm((f) => ({ ...f, [field]: value }));
+  }
+  
   function handleImage(file: File | null) {
     setImageFile(file);
     setForm((f) => ({ ...f, imageName: file?.name || "" }));
@@ -72,11 +88,46 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
   async function handleSubmit() {
     const parsed = validateForm();
     if (!parsed) return;
+    
+    if (!form.startDate || !form.endDate) {
+      alert("As datas são obrigatórias");
+      return;
+    }
+
+    // Validar que a data de início não é antes de hoje
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const startDateOnly = new Date(form.startDate);
+    startDateOnly.setHours(0, 0, 0, 0);
+    
+    if (startDateOnly < today) {
+      alert("A data de início não pode ser antes de hoje");
+      return;
+    }
+
+    // Validar que a data de término é no mínimo amanhã
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const endDateOnly = new Date(form.endDate);
+    endDateOnly.setHours(0, 0, 0, 0);
+    
+    if (endDateOnly < tomorrow) {
+      alert("A data de término deve ser no mínimo amanhã");
+      return;
+    }
+
+    // Validar que a data de término é posterior à data de início
+    if (endDateOnly <= startDateOnly) {
+      alert("A data de término deve ser posterior à data de início");
+      return;
+    }
 
     await onSubmit({
       title: parsed.title,
       description: parsed.description,
       targetValue: parsed.targetValue,
+      startDate: form.startDate,
+      endDate: form.endDate,
       image: imageFile ?? null,
     });
     resetAll();
@@ -97,8 +148,12 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
         <FormStep
           form={form}
           onChange={handleChange}
+          onDateChange={handleDateChange}
           onImageSelect={handleImage}
           onNext={handleSubmit}
+          showDates={true}
+          isEditMode={false}
+          submitLabel="Criar"
         />
       </DialogContent>
     </Dialog>

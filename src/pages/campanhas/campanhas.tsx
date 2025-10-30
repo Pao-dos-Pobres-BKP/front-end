@@ -6,12 +6,14 @@ import EditCampaignModal from "@/components/campaign/EditCampaignModal";
 import DeleteCampaignConfirmModal from "@/components/campaign/DeleteCampaignConfirmModal";
 import AdminCreateCampaignModal from "@/components/campaign/AdminCreateCampaignModal";
 import DonorCreateCampaignModal from "@/components/campaign/DonorCreateCampaignModal";
+import ApproveCampaignModal from "@/components/campaign/ApproveCampaignModal";
 import { useUser } from "@/hooks/useUser";
 import {
   getCampaigns,
   updateCampaign,
   deleteCampaign,
   createCampaign,
+  updateCampaignStatus,
   type CampaignAPI,
 } from "@/services/campaigns";
 import { getUserDonations } from "@/services/donations";
@@ -39,7 +41,7 @@ type CampaignData = {
   targetAmount: number;
   currentAmount: number;
   achievementPercentage: number;
-  status: "ACTIVE" | "INACTIVE" | "COMPLETED";
+  status: "PENDING" | "ACTIVE" | "PAUSED" | "FINISHED" | "CANCELED";
 };
 
 type CampaignWithSituation = CampaignAPI & {
@@ -51,9 +53,12 @@ const Campanhas = () => {
   const [isCampaignModalOpen, setIsCampaignModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
   const [selectedCampaign, setSelectedCampaign] = useState<CampaignData | null>(null);
   const [selectedCampaignToEdit, setSelectedCampaignToEdit] = useState<CampaignBase | null>(null);
+  const [selectedCampaignToApprove, setSelectedCampaignToApprove] = useState<CampaignBase | null>(null);
   const [campaignToDelete, setCampaignToDelete] = useState<CampaignWithSituation | null>(null);
+  const [deleteFromEditModal, setDeleteFromEditModal] = useState(false);
   const [campaigns, setCampaigns] = useState<CampaignWithSituation[]>([]);
   const [loading, setLoading] = useState(true);
   const [sortOrder, setSortOrder] = useState<"recent" | "oldest">("recent");
@@ -106,18 +111,9 @@ const Campanhas = () => {
             // Admins veem tudo
             if (user?.role === "ADMIN") return true;
 
-            // Doadores veem:
-            // - Todas as campanhas ativas (ACTIVE)
-            // - Campanhas pendentes/canceladas que ele criou
+            // Doadores veem tudo exceto campanhas finalizadas
             if (user?.role === "DONOR") {
-              if (campaign.status === "ACTIVE") return true;
-              if (
-                (campaign.status === "PENDING" || campaign.status === "CANCELED") &&
-                campaign.createdBy === user.id
-              ) {
-                return true;
-              }
-              return false;
+              return campaign.status !== "FINISHED";
             }
 
             return true;
@@ -180,19 +176,22 @@ const Campanhas = () => {
       targetAmount: campaign.targetAmount,
       currentAmount: campaign.currentAmount,
       achievementPercentage: campaign.achievementPercentage,
-      status: campaign.status as "ACTIVE" | "INACTIVE" | "COMPLETED",
+      status: campaign.status,
     };
     setSelectedCampaign(campaignData);
     setIsCampaignModalOpen(true);
   };
 
   const handleOpenEditModal = (campaign: CampaignAPI) => {
-    const campaignBase: CampaignBase = {
+    const campaignBase: CampaignBase & { startDate?: string; endDate?: string } = {
       id: campaign.id,
       title: campaign.title,
       description: campaign.description,
       targetValue: campaign.targetAmount,
       image: campaign.imageUrl ? { url: campaign.imageUrl, name: "" } : undefined,
+      // Adicionar as datas ao objeto
+      ...(campaign.startDate && { startDate: campaign.startDate }),
+      ...(campaign.endDate && { endDate: campaign.endDate }),
     };
     setSelectedCampaignToEdit(campaignBase);
     // Armazena a campanha completa para possível exclusão
@@ -203,11 +202,53 @@ const Campanhas = () => {
     setIsEditModalOpen(true);
   };
 
+  const handleOpenApproveModal = (campaign: CampaignAPI) => {
+    const campaignBase: CampaignBase & { startDate?: string; endDate?: string; authorName?: string } = {
+      id: campaign.id,
+      title: campaign.title,
+      description: campaign.description,
+      targetValue: campaign.targetAmount,
+      image: campaign.imageUrl ? { url: campaign.imageUrl, name: "" } : undefined,
+      authorName: campaign.createdBy,
+      ...(campaign.startDate && { startDate: campaign.startDate }),
+      ...(campaign.endDate && { endDate: campaign.endDate }),
+    };
+    setSelectedCampaignToApprove(campaignBase);
+    setIsApproveModalOpen(true);
+  };
+
+  const handleApproveCampaign = async () => {
+    if (!selectedCampaignToApprove) return;
+
+    try {
+      await updateCampaignStatus(selectedCampaignToApprove.id!, "ACTIVE");
+      setIsApproveModalOpen(false);
+      window.location.reload();
+    } catch (error) {
+      console.error("Erro ao aprovar campanha:", error);
+      alert("Erro ao aprovar campanha. Tente novamente.");
+    }
+  };
+
+  const handleRejectCampaign = async () => {
+    if (!selectedCampaignToApprove) return;
+
+    try {
+      await updateCampaignStatus(selectedCampaignToApprove.id!, "CANCELED");
+      setIsApproveModalOpen(false);
+      window.location.reload();
+    } catch (error) {
+      console.error("Erro ao rejeitar campanha:", error);
+      alert("Erro ao rejeitar campanha. Tente novamente.");
+    }
+  };
+
   const handleSaveEditedCampaign = async (data: {
     id: string;
     title: string;
     description: string;
     targetValue: number;
+    endDate: Date;
     image?: File | null;
   }) => {
     try {
@@ -227,9 +268,9 @@ const Campanhas = () => {
         title: data.title,
         description: data.description,
         targetAmount: data.targetValue,
-        currentAmount: originalCampaign.currentAmount,
+        currentAmount: originalCampaign.currentAmount > 0 ? originalCampaign.currentAmount : null,
         startDate: originalCampaign.startDate,
-        endDate: originalCampaign.endDate,
+        endDate: data.endDate.toISOString(),
         imageUrl: imageUrl || undefined,
         status: originalCampaign.status,
         createdBy: user.id,
@@ -245,7 +286,14 @@ const Campanhas = () => {
 
   const handleDeleteRequest = () => {
     setIsEditModalOpen(false); // Fecha o modal de edição
+    setDeleteFromEditModal(true); // Marca que veio do modal de edição
     setIsDeleteConfirmOpen(true); // Abre o modal de confirmação
+  };
+
+  const handleOpenDeleteModal = (campaign: CampaignWithSituation) => {
+    setCampaignToDelete(campaign);
+    setDeleteFromEditModal(false); // Marca que não veio do modal de edição
+    setIsDeleteConfirmOpen(true);
   };
 
   const handleConfirmDelete = async () => {
@@ -266,15 +314,20 @@ const Campanhas = () => {
 
   const handleCancelDelete = () => {
     setIsDeleteConfirmOpen(false);
-    setIsEditModalOpen(true); // Reabre o modal de edição
+    // Só reabre o modal de edição se o delete foi chamado de lá
+    if (deleteFromEditModal) {
+      setIsEditModalOpen(true);
+    }
+    setDeleteFromEditModal(false); // Reseta o estado
   };
 
   const handleCreateCampaign = async (data: {
     title: string;
     description: string;
     targetValue: number;
+    startDate: Date;
+    endDate: Date;
     image?: File | null;
-    password?: string;
   }) => {
     if (!user) return;
 
@@ -282,19 +335,12 @@ const Campanhas = () => {
       // TODO: Se houver imagem, fazer upload primeiro e obter URL
       const imageUrl = undefined; // Por enquanto sem imagem
 
-      // Define datas padrão: início hoje, fim daqui a 3 meses
-      const startDate = new Date().toISOString();
-      const endDate = new Date();
-      endDate.setMonth(endDate.getMonth() + 3);
-      const endDateISO = endDate.toISOString();
-
       await createCampaign({
         title: data.title,
         description: data.description,
         targetAmount: data.targetValue,
-        currentAmount: 0,
-        startDate,
-        endDate: endDateISO,
+        startDate: data.startDate.toISOString(),
+        endDate: data.endDate.toISOString(),
         imageUrl,
         status: user.role === "ADMIN" ? "ACTIVE" : "PENDING",
         createdBy: user.id,
@@ -397,27 +443,35 @@ const Campanhas = () => {
         </div>
       ) : (
         <>
-          <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3">
             {campaigns.map((campaign) => (
-              <CampaignCard
+          <CampaignCard
                 key={campaign.id}
                 variant="list"
-                title={campaign.title}
+            title={campaign.title}
                 raised={campaign.currentAmount}
                 goal={campaign.targetAmount}
                 creatorName={campaign.createdBy}
                 startDate={campaign.startDate}
                 endDate={campaign.endDate}
-                situation={campaign.situation}
+            situation={campaign.situation}
                 isAdmin={user?.role === "ADMIN"}
-                onAction={() =>
-                  user?.role === "ADMIN"
-                    ? handleOpenEditModal(campaign)
-                    : handleOpenCampaignModal(campaign)
-                }
-              />
-            ))}
-          </div>
+                onAction={() => {
+                  if (user?.role === "ADMIN") {
+                    if (campaign.situation === "pending") {
+                      handleOpenApproveModal(campaign);
+                    } else if (campaign.situation === "rejected") {
+                      handleOpenDeleteModal(campaign);
+                    } else {
+                      handleOpenEditModal(campaign);
+                    }
+                  } else {
+                    handleOpenCampaignModal(campaign);
+                  }
+                }}
+          />
+        ))}
+      </div>
 
           {/* Paginação */}
           {totalPages > 1 && (
@@ -473,6 +527,15 @@ const Campanhas = () => {
           campaignTitle={campaignToDelete.title}
         />
       )}
+
+      {/* Modal de Aprovação de Campanha */}
+      <ApproveCampaignModal
+        open={isApproveModalOpen}
+        onOpenChange={setIsApproveModalOpen}
+        campaign={selectedCampaignToApprove}
+        onApprove={handleApproveCampaign}
+        onReject={handleRejectCampaign}
+      />
 
       {/* Modais de Criação de Campanha */}
       {user?.role === "ADMIN" ? (
