@@ -15,19 +15,10 @@ export function CampaignCardProfileCompact({
   role,
   onAction,
   className,
-  showRole = true,
 }: CampaignCardProfileCompactProps) {
   const roleConfig = {
-    donor: {
-      long: "Doador",
-      bg: "bg-[var(--color-text-success)]",
-      text: "text-[var(--color-text-1)]",
-    },
-    admin: {
-      long: "Administrador",
-      bg: "bg-[var(--color-text-special-2)]",
-      text: "text-[var(--color-text-1)]",
-    },
+    donor: { long: "Doador", short: "Doador", bg: "bg-[var(--color-text-success)]" },
+    admin: { long: "Administrador", short: "Admin", bg: "bg-[var(--color-text-special-2)]" },
   }[role];
 
   const handleActionKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -40,56 +31,52 @@ export function CampaignCardProfileCompact({
   return (
     <article
       className={cn(
-        "flex flex-col sm:flex-row w-full",
-        "bg-[var(--color-background)] border border-[var(--color-components-2)]",
-        "rounded-2xl p-4 gap-3 sm:items-center",
+        "flex flex-row w-full bg-white border border-[#e6e8eb] rounded-2xl p-4 sm:p-5 items-center",
         className
       )}
       aria-label={`Card perfil compacto ${profileName}`}
     >
-      <div className="flex items-center flex-1 min-w-0">
-        <div className="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0">
+      <div className="flex items-center min-w-0 flex-shrink-0">
+        <div className="h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0">
           <img
             src={fulano_de_tal_profile_pic}
             alt={`Foto de ${profileName}`}
             className="h-full w-full rounded-full object-cover"
           />
         </div>
-
-        <div className="flex-1 min-w-0 ml-3">
-          <div className="font-semibold text-[var(--color-brand-dark)] truncate text-sm sm:text-base lg:text-lg text-left">
-            {profileName}
-          </div>
+        <div className="font-semibold flex flex-col items-start ml-4 min-w-0">
+          <div className="text-[#034d6b] truncate text-base sm:text-2xl">{profileName}</div>
         </div>
       </div>
 
-      <div className="flex items-center gap-2 sm:gap-3 justify-end">
-        {showRole && (
-          <div className="w-[110px] sm:w-[120px] flex-shrink-0">
-            <div
-              className={cn(
-                "font-semibold rounded-lg py-2 px-3 text-xs sm:text-sm text-center whitespace-nowrap",
-                roleConfig.bg,
-                roleConfig.text
-              )}
-            >
-              {roleConfig.long}
-            </div>
-          </div>
-        )}
-
+      <div className="flex-1 flex justify-center">
         <div
           role="button"
           tabIndex={0}
           onClick={onAction}
           onKeyDown={handleActionKeyDown}
           className={cn(
-            "inline-flex items-center justify-center rounded-xl transition-colors cursor-pointer flex-shrink-0",
-            "w-10 h-10 sm:w-12 sm:h-12 bg-[var(--color-brand-dark)] hover:bg-[var(--color-brand-light)] text-[var(--color-text-1)]"
+            "text-xs sm:text-sm md:text-base font-semibold text-white rounded-lg px-2 sm:px-3 py-0.5 sm:py-1 whitespace-nowrap",
+            roleConfig.bg
           )}
         >
-          <Category set="bold" size={20} />
+          <span className="sm:hidden">{roleConfig.short}</span>
+          <span className="hidden sm:inline">{roleConfig.long}</span>
         </div>
+      </div>
+
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={onAction}
+        onKeyDown={handleActionKeyDown}
+        className={cn(
+          "inline-flex items-center justify-center text-sm font-semibold rounded-[10px] transition-colors shadow-sm hover:shadow-lg focus:outline-none cursor-pointer flex-shrink-0",
+          "min-w-[40px] h-9 sm:min-w-[44px] sm:h-11 md:h-12 px-2 sm:px-3",
+          "bg-[#034d6b] hover:bg-[#023a50] text-white"
+        )}
+      >
+        <Category set="bold" />
       </div>
     </article>
   );
