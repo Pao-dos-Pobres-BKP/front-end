@@ -16,10 +16,29 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'yarn'
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn build
 
-      - name: Instalar dependências
-        run: yarn install --frozen-lockfile
+  mirror_to_gitlab:
+      runs-on: ubuntu-latest
+      needs: build
+      steps:
+      - name: Checkout completo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Build do projeto
-        run: yarn build
+      - name: Configurar Git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Fazer push de todas as branches e tags para GitLab
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+        run: |
+          git remote add gitlab "https://oauth2:${GITLAB_TOKEN}@tools.ages.pucrs.br/plataforma-de-doa-es-para-o-p-o-dos-pobres/front-end.git" || true
+          git fetch gitlab || true
+          git push gitlab --all
+          git push gitlab --tags
