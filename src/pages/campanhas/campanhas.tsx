@@ -3,7 +3,7 @@ import Plus from "@/assets/Plus.svg";
 import { useState, useEffect } from "react";
 import CampaignModal from "./components/CampaignModal";
 import EditCampaignModal from "@/components/campaign/EditCampaignModal";
-import DeleteCampaignConfirmModal from "@/components/campaign/DeleteCampaignConfirmModal";
+import DeleteCampaignModal from "@/components/campaign/DeleteCampaignModal";
 import AdminCreateCampaignModal from "@/components/campaign/AdminCreateCampaignModal";
 import DonorCreateCampaignModal from "@/components/campaign/DonorCreateCampaignModal";
 import ApproveCampaignModal from "@/components/campaign/ApproveCampaignModal";
@@ -522,7 +522,7 @@ const Campanhas = () => {
 
       {/* Modal de Confirmação de Exclusão */}
       {campaignToDelete && (
-        <DeleteCampaignConfirmModal
+        <DeleteCampaignModal
           open={isDeleteConfirmOpen}
           onOpenChange={(open) => {
             if (!open) {

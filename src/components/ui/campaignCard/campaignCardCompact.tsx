@@ -58,7 +58,6 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
     } else {
       onAction?.();
     }
-    // ADICIONAR AQUI AS OUTRAS VARIAÇÕES DE BOTÃO
   };
 
   const situationIcon =
@@ -79,7 +78,7 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
         )}
         aria-label={`Card compacto ${title}`}
       >
-        {/* Coluna 1: Ícone + Título/Creator */}
+        {/* Column 1: Icon + Title/Creator */}
         <div className="flex items-start gap-2 flex-shrink-0 min-w-0 w-full md:w-[280px]">
           {situationIcon && (
             <img src={situationIcon} alt="" className="h-6 w-6 flex-shrink-0 mt-0.5" />
@@ -102,7 +101,7 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
           </div>
         </div>
 
-        {/* Coluna 2: Valores + Barra de Progresso */}
+        {/* Column 2: Values + Progress Bar */}
         <div className="flex flex-col flex-1 min-w-0 justify-center">
           <div className="flex justify-between items-center gap-1.5 mb-1">
             <div className="text-lg font-bold text-[#034d6b] whitespace-nowrap">
@@ -128,7 +127,7 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
           </div>
         </div>
 
-        {/* Coluna 3: Botão de ação */}
+        {/* Coluna 3: Action Button */} 
         <div className="flex-shrink-0 flex items-center">
           <div
             role="button"

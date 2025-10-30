@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import Button from "@/components/ui/button";
 import type { CampaignBase } from "@/types/Campaign";
 import { formatCurrency } from "@/utils/formatCurrency";
+import { formatDate } from "@/utils/formatters";
 import Input from "@/components/ui/input";
 
 interface ApproveCampaignModalProps {
@@ -21,16 +22,6 @@ export const ApproveCampaignModal: React.FC<ApproveCampaignModalProps> = ({
   onReject,
 }) => {
   if (!campaign) return null;
-
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return "N/A";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("pt-BR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-  };
 
   const campaignWithDates = campaign as CampaignBase & { startDate?: string; endDate?: string };
 

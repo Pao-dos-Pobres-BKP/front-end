@@ -1,19 +1,19 @@
 import { Modal } from "@/components/ui/modal";
 import Button from "@/components/ui/button";
 
-type DeleteCampaignConfirmModalProps = {
+type DeleteCampaignModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onConfirm: () => void;
   campaignTitle: string;
 };
 
-export default function DeleteCampaignConfirmModal({
+export default function DeleteCampaignModal({
   open,
   onOpenChange,
   onConfirm,
   campaignTitle,
-}: DeleteCampaignConfirmModalProps) {
+}: DeleteCampaignModalProps) {
   return (
     <Modal
       variant="custom"

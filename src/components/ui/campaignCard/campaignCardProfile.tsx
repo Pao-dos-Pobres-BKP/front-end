@@ -15,7 +15,7 @@ export type CampaignCardProfileProps = {
   donorName: string;
   donorEmail: string;
   donationAmount?: number;
-  memberSince: string; //'DD/MM/AAAA' or year
+  memberSince: string;
   campaigns: string[];
   progressPercent?: number;
 };
@@ -72,15 +72,15 @@ export function CampaignCardProfile({
             <div className="min-w-0 flex-1">
               <div
                 className="text-left font-semibold text-[#034d6b] overflow-hidden text-ellipsis whitespace-nowrap"
-                title={donorName ?? "Fulano De Tal"}
+                title={donorName}
               >
-                {donorName ?? "Fulano De Tal"}
+                {donorName}
               </div>
               <div
                 className="text-sm font-semibold text-[#6b7280] overflow-hidden text-ellipsis whitespace-nowrap"
-                title={donorEmail ?? "email@email.com"}
+                title={donorEmail}
               >
-                {donorEmail ?? "email@email.com"}
+                {donorEmail}
               </div>
             </div>
 

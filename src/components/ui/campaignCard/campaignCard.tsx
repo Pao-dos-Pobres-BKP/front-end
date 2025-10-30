@@ -27,11 +27,11 @@ export type CampaignCardProps = {
   onAction?: () => void;
   className?: string;
   situation?: "approved" | "pending" | "rejected" | "recurring";
-  type?: "event" | "news"; // para "event_news"
+  type?: "event" | "news"; // for "event_news"
   date?: Date;
-  isAdmin?: boolean; // para indicar se o usuário é admin
-  // profile (opcionais)
-  role?: "donor" | "admin"; // para "profile_compact"
+  isAdmin?: boolean; // to indicate if the user is admin
+  // profile (optional)
+  role?: "donor" | "admin"; // for "profile_compact"
   donorName?: string;
   donorEmail?: string;
   donationAmount?: number;

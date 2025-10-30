@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/utils/formatCurrency";
+import { formatDate } from "@/utils/formatters";
 import { Progress } from "../progress";
 import blueHeart from "@/assets/blueHeart.svg";
 import orangeHeart from "@/assets/orangeHeart.svg";
@@ -43,15 +44,6 @@ export function CampaignCardList(props: CampaignCardListProps) {
     }
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("pt-BR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-  };
-
   const situationIcons: Record<"approved" | "pending" | "rejected" | "recurring", string> = {
     approved: blueHeart,
     pending: orangeHeart,
@@ -67,7 +59,7 @@ export function CampaignCardList(props: CampaignCardListProps) {
       )}
       aria-label={`Card lista ${title}`}
     >
-      {/* Coluna 1: Ícone + Título/Creator */}
+      {/* Column 1: Icon + Title/Creator */}
       <div className="flex items-start gap-2 flex-shrink-0 min-w-0 w-full md:w-[320px]">
         {situation && (
           <img src={situationIcons[situation]} alt="" className="h-6 w-6 flex-shrink-0 mt-0.5" />
@@ -102,7 +94,7 @@ export function CampaignCardList(props: CampaignCardListProps) {
         </div>
       </div>
 
-      {/* Coluna 2: Valores + Barra de Progresso */}
+      {/* Column 2: Values + Progress Bar */}
       <div className="flex flex-col flex-1 min-w-0 justify-center">
         <div className="flex justify-between items-center gap-1.5 mb-1">
           <div className="text-xl font-bold text-[#034d6b] whitespace-nowrap">
@@ -125,7 +117,7 @@ export function CampaignCardList(props: CampaignCardListProps) {
         </div>
       </div>
 
-      {/* Coluna 3: Botão de ação */}
+      {/* Column 3: Action Button */}
       <div className="flex-shrink-0 flex items-center">
         <div
           role="button"

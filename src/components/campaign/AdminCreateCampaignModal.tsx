@@ -94,7 +94,6 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
       return;
     }
 
-    // Validar que a data de início não é antes de hoje
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const startDateOnly = new Date(form.startDate);
@@ -105,7 +104,6 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
       return;
     }
 
-    // Validar que a data de término é no mínimo amanhã
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
     const endDateOnly = new Date(form.endDate);
@@ -116,7 +114,6 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
       return;
     }
 
-    // Validar que a data de término é posterior à data de início
     if (endDateOnly <= startDateOnly) {
       alert("A data de término deve ser posterior à data de início");
       return;

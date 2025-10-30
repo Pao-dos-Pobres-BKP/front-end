@@ -113,7 +113,6 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
       return;
     }
 
-    // Validar que a data de término é no mínimo amanhã
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const tomorrow = new Date(today);

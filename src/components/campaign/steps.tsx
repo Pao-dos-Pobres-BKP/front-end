@@ -65,12 +65,12 @@ interface FormStepProps extends StepProps {
   onChange: (field: string, value: string) => void;
   onDateChange?: (field: "startDate" | "endDate", value: Date | undefined) => void;
   onImageSelect: (file: File | null) => void;
-  hideActions?: boolean; // quando true não renderiza botões internos
+  hideActions?: boolean; // if true, does not render internal buttons
   stepOverride?: number;
   totalStepsOverride?: number;
-  showDates?: boolean; // controla se mostra os campos de data
-  isEditMode?: boolean; // se true, data de início é readonly
-  submitLabel?: string; // texto customizado para o botão de submit
+  showDates?: boolean; // controls if the date fields are shown
+  isEditMode?: boolean; // if true, start date is readonly
+  submitLabel?: string; // custom text for the submit button
 }
 
 export const FormStep: React.FC<FormStepProps> = ({
