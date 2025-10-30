@@ -127,7 +127,7 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
           </div>
         </div>
 
-        {/* Coluna 3: Action Button */} 
+        {/* Coluna 3: Action Button */}
         <div className="flex-shrink-0 flex items-center">
           <div
             role="button"
