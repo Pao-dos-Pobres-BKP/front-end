@@ -18,7 +18,6 @@ export const SearchBar = ({ placeholder = "Buscar" }: SearchBarProps) => {
     if (debouncedValue) {
       setSearchParams({ search: debouncedValue });
     } else {
-      // Remove o parâmetro de busca quando o campo está vazio
       setSearchParams({});
     }
   }, [debouncedValue, setSearchParams]);

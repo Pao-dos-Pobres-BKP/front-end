@@ -41,7 +41,6 @@ export default function CampaignModal({ open, onOpenChange, campaign }: Campaign
 
   const imageUrl = campaign.imageUrl || fundo;
 
-  // Verificar se o usuário é colaborador desta campanha
   useEffect(() => {
     const checkCollaboration = async () => {
       if (!open) {
@@ -74,7 +73,6 @@ export default function CampaignModal({ open, onOpenChange, campaign }: Campaign
     checkCollaboration();
   }, [open, campaign.id, user]);
 
-  // Pré-carregar a imagem
   useEffect(() => {
     if (!open) {
       setImageLoaded(false);
@@ -84,7 +82,7 @@ export default function CampaignModal({ open, onOpenChange, campaign }: Campaign
     const img = new Image();
     img.src = imageUrl;
     img.onload = () => setImageLoaded(true);
-    img.onerror = () => setImageLoaded(true); // Considera como carregado mesmo com erro
+    img.onerror = () => setImageLoaded(true);
   }, [open, imageUrl]);
 
   return (
@@ -124,7 +122,6 @@ export default function CampaignModal({ open, onOpenChange, campaign }: Campaign
 
           <Progress value={campaign.achievementPercentage} variant="blue" size="full" />
 
-          {/* Botões baseados no estado de colaboração */}
           <div className="mt-4">
             {campaign.status === "PENDING" ? (
               <Button

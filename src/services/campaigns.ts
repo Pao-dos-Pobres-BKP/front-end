@@ -54,7 +54,6 @@ export type UpdateCampaignParams = {
 
 export async function updateCampaign(id: string, data: UpdateCampaignParams): Promise<void> {
   try {
-    console.log(data);
     await api.patch(`/campaigns/${id}`, data);
   } catch (error) {
     console.error(error);
