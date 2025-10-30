@@ -24,6 +24,11 @@ export function CampaignCardProfile({
   campaigns = [],
 }: CampaignCardProfileProps) {
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [showAllCampaigns, setShowAllCampaigns] = useState(false);
+
+  const displayedCampaigns = showAllCampaigns ? campaigns : campaigns.slice(0, 3);
+  const hasMoreCampaigns = campaigns.length > 3;
+
   return (
     <article
       className={cn("w-full bg-white border border-[#e6e8eb] rounded-2xl", className)}
@@ -86,7 +91,7 @@ export function CampaignCardProfile({
             <ChevronDownIcon />
           </div>
         </div>
-
+      
         <div
           className={cn(
             "grid transition-[grid-template-rows] duration-300 ease-in-out",
@@ -103,18 +108,27 @@ export function CampaignCardProfile({
                     Campanhas <br /> recorrentes:
                   </div>
                   <ul className="list-disc list-inside text-sm font-normal">
-                    {campaigns.slice(0, 3).map((c, i) => (
+                    {displayedCampaigns.map((c, i) => (
                       <li key={i}>{c}</li>
                     ))}
+                    {hasMoreCampaigns && (
+                      <li
+                        className="text-[#007b83] cursor-pointer hover:underline font-semibold mt-1"
+                        onClick={() => setShowAllCampaigns(!showAllCampaigns)}
+                      >
+                        {showAllCampaigns ? "Ver menos" : "Ver mais"}
+                      </li>
+                    )}
                   </ul>
                 </div>
                 <div className="flex mt-2 font-semibold items-center justify-between">
                   <div>Membro desde: {memberSince ?? "DD/MM/AAAA"}</div>
                   <div>
                     <Button
-                     onClick={() => (window.location.href = "/perfil")} // simula rota para perfil do doador
-                     variant="secondary" size="small"
-                     >
+                      onClick={() => (window.location.href = "/perfil")}
+                      variant="secondary"
+                      size="small"
+                    >
                       Visualizar perfil
                     </Button>
                   </div>
