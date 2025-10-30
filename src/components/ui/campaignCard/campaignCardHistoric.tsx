@@ -49,8 +49,8 @@ export function CampaignCardHistoric(props: CampaignCardHistoricProps) {
   return (
     <article
       className={cn(
-        "grid grid-cols-1 sm:grid-cols-3 w-full bg-white border border-[#e6e8eb] rounded-2xl p-4 sm:p-5 gap-3 sm:gap-4",
-        "sm:[&>*:nth-child(2)]:justify-self-center sm:[&>*:nth-child(3)]:justify-self-end",
+        "w-full bg-white border border-[#e6e8eb] rounded-2xl p-4 sm:p-5",
+        "flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4",
         className
       )}
       aria-label={`Card histórico ${title}`}
@@ -76,6 +76,19 @@ export function CampaignCardHistoric(props: CampaignCardHistoricProps) {
         </div>
       </div>
 
+      <div className="flex sm:hidden items-center justify-between gap-3 w-full">
+        {situation && (
+          <div className={cn("text-base font-semibold", gradientTextClass)}>
+            {situationLabels[situation]}
+          </div>
+        )}
+        {lastDonation !== undefined && (
+          <div className={cn("text-xl font-semibold", gradientTextClass)}>
+            +{formatCurrency(lastDonation)}
+          </div>
+        )}
+      </div>
+
       {situation && (
         <div
           className={cn(
@@ -88,30 +101,11 @@ export function CampaignCardHistoric(props: CampaignCardHistoricProps) {
         </div>
       )}
 
-      {(situation || lastDonation !== undefined) && (
-        <div className="sm:hidden grid grid-cols-2 gap-2 w-full col-span-1">
-          {situation && (
-            <div className={cn("text-base font-semibold text-left col-span-1", gradientTextClass)}>
-              {situationLabels[situation]}
-            </div>
-          )}
-          {lastDonation !== undefined && (
-            <div
-              className={cn(
-                "text-xl font-semibold text-right col-span-1 justify-self-end",
-                gradientTextClass
-              )}
-            >
-              +{formatCurrency(lastDonation)}
-            </div>
-          )}
-        </div>
-      )}
-
       {lastDonation !== undefined && (
         <div
           className={cn(
-            "hidden sm:flex items-center justify-self-end text-2xl font-semibold ml-4",
+            "hidden sm:flex items-center justify-end text-xl md:text-2xl font-semibold",
+            "min-w-fit whitespace-nowrap",
             gradientTextClass
           )}
         >
