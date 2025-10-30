@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
 import { MetricCard } from "@/components/ui/metric-card";
-import { Tabs } from "@/components/ui/tabs";
 import { Select } from "@/components/ui/select";
 import Button from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -15,6 +14,7 @@ import { PagamentosGeralChart } from "@/components/charts/payment-general-chart"
 import { DoadoresGeralStats } from "@/components/charts/donor-general-stats-charts";
 import { PagamentosPorCampanhaChart } from "@/components/charts/payment-by-campaign-chart";
 import { DoadoresPorCampanhaStats } from "@/components/charts/donor-by-campaign-stats-chart";
+import { getGlobalMetrics } from "@/services/metrics/global";
 
 type MetricData = {
   newDonors: number;
@@ -22,14 +22,6 @@ type MetricData = {
   totalDonors: number;
   raisedThisMonth: number;
   averageDonation: number;
-};
-
-const mockMetrics: MetricData = {
-  newDonors: 29,
-  recurringDonors: 213,
-  totalDonors: 841,
-  raisedThisMonth: 9343.21,
-  averageDonation: 20.0,
 };
 
 type Option = { value: string; label: string };
@@ -92,13 +84,6 @@ const searchCampaigns = async (query: string): Promise<Campaign[]> => {
   return new Promise<Campaign[]>((resolve) => setTimeout(() => resolve(filtered), 300));
 };
 
-const TabContentTrigger = ({ onSelect }: { onSelect: () => void }) => {
-  useEffect(() => {
-    onSelect();
-  }, [onSelect]);
-  return null;
-};
-
 const formatCurrency = (value: number) => {
   return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 };
@@ -106,11 +91,11 @@ const formatCurrency = (value: number) => {
 const RenderChart = ({
   chartKey,
   campaignId,
-  period,
+  confirmedPeriod,
 }: {
   chartKey: string | null;
   campaignId: string | null;
-  period: DateRange | undefined;
+  confirmedPeriod: DateRange | undefined;
 }) => {
   if (!chartKey) {
     return (
@@ -122,29 +107,39 @@ const RenderChart = ({
 
   switch (chartKey) {
     case "financeiro_total_valor":
-      return <TotalArrecadadoChart period={period} />;
+      return <TotalArrecadadoChart period={confirmedPeriod} />;
     case "financeiro_metodo_quantidade":
-      return <PagamentosGeralChart show="quantidade" period={period} />;
+      return <PagamentosGeralChart show="quantidade" period={confirmedPeriod} />;
     case "financeiro_metodo_valor":
-      return <PagamentosGeralChart show="valor" period={period} />;
+      return <PagamentosGeralChart show="valor" period={confirmedPeriod} />;
     case "operacional_doadores_idade":
-      return <DoadoresGeralStats show="idade" period={period} />;
+      return <DoadoresGeralStats show="idade" period={confirmedPeriod} />;
     case "operacional_doadores_genero":
-      return <DoadoresGeralStats show="genero" period={period} />;
+      return <DoadoresGeralStats show="genero" period={confirmedPeriod} />;
     case "financeiro_metodo_quantidade_campaign":
       if (!campaignId) return <p>Erro: Campanha não selecionada.</p>;
       return (
-        <PagamentosPorCampanhaChart campaignId={campaignId} show="quantidade" period={period} />
+        <PagamentosPorCampanhaChart
+          campaignId={campaignId}
+          show="quantidade"
+          period={confirmedPeriod}
+        />
       );
     case "financeiro_metodo_valor_campaign":
       if (!campaignId) return <p>Erro: Campanha não selecionada.</p>;
-      return <PagamentosPorCampanhaChart campaignId={campaignId} show="valor" period={period} />;
+      return (
+        <PagamentosPorCampanhaChart campaignId={campaignId} show="valor" period={confirmedPeriod} />
+      );
     case "operacional_doadores_idade_campaign":
       if (!campaignId) return <p>Erro: Campanha não selecionada.</p>;
-      return <DoadoresPorCampanhaStats campaignId={campaignId} show="idade" period={period} />;
+      return (
+        <DoadoresPorCampanhaStats campaignId={campaignId} show="idade" period={confirmedPeriod} />
+      );
     case "operacional_doadores_genero_campaign":
       if (!campaignId) return <p>Erro: Campanha não selecionada.</p>;
-      return <DoadoresPorCampanhaStats campaignId={campaignId} show="genero" period={period} />;
+      return (
+        <DoadoresPorCampanhaStats campaignId={campaignId} show="genero" period={confirmedPeriod} />
+      );
 
     default:
       return (
@@ -171,7 +166,6 @@ const allChartKeys = [
 function Dashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [metrics, setMetrics] = useState<MetricData | null>(null);
-  const [timeRangeTab, setTimeRangeTab] = useState<"mensal" | "anual">("mensal");
   const [sectorFilter, setSectorFilter] = useState("");
   const [metric1Filter, setMetric1Filter] = useState("");
   const [metric2Filter, setMetric2Filter] = useState("");
@@ -184,6 +178,7 @@ function Dashboard() {
   const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
   const [campaignSearchResults, setCampaignSearchResults] = useState<Campaign[]>([]);
   const [isCampaignDropdownOpen, setCampaignDropdownOpen] = useState(false);
+  const [confirmedPeriod, setConfirmedPeriod] = useState<DateRange | undefined>(undefined);
 
   const [currentChartIndex, setCurrentChartIndex] = useState(0);
 
@@ -206,7 +201,24 @@ function Dashboard() {
   };
 
   useEffect(() => {
-    setMetrics(mockMetrics);
+    const fetchMetrics = async () => {
+      try {
+        const data = await getGlobalMetrics();
+
+        setMetrics({
+          newDonors: data.last30Days.newDonors,
+          recurringDonors: data.last30Days.recurringDonations,
+          totalDonors: data.last30Days.totalDonations,
+          raisedThisMonth: data.last30Days.totalRaised,
+          averageDonation: data.last30Days.averageTicket,
+        });
+      } catch (error) {
+        console.error("Erro ao carregar métricas:", error);
+        setMetrics(null);
+      }
+    };
+
+    fetchMetrics();
   }, []);
 
   useEffect(() => {
@@ -251,12 +263,7 @@ function Dashboard() {
     }
   }, [showCampaignFilter]);
 
-  useEffect(() => {
-    console.log(`Filtro de período alterado para: ${timeRangeTab}`);
-  }, [timeRangeTab]);
-
   const handleClearFilters = () => {
-    setTimeRangeTab("mensal");
     setSectorFilter("");
     setMetric1Filter("");
     setMetric2Filter("");
@@ -286,6 +293,7 @@ function Dashboard() {
       key += "_campaign";
     }
     setChartToShow(key);
+    setConfirmedPeriod(datePeriod);
   };
 
   const handleSelectCampaign = (campaign: Campaign) => {
@@ -309,16 +317,6 @@ function Dashboard() {
               >
                 <ChevronLeft className="h-5 w-5" />
               </button>
-            </div>
-
-            <div>
-              <h3 className="text-sm font-semibold text-gray-600 mb-2 text-left">Resumos Totais</h3>
-              <div className="[&>div>div]:w-full [&>div>div>button]:flex-1">
-                <Tabs tabs={["Mensal", "Anual"]} variant="default">
-                  <TabContentTrigger onSelect={() => setTimeRangeTab("mensal")} />
-                  <TabContentTrigger onSelect={() => setTimeRangeTab("anual")} />
-                </Tabs>
-              </div>
             </div>
 
             <div className="flex flex-col gap-2">
@@ -522,7 +520,7 @@ function Dashboard() {
             <RenderChart
               chartKey={chartToShow}
               campaignId={selectedCampaign ? selectedCampaign.id : null}
-              period={datePeriod}
+              confirmedPeriod={confirmedPeriod}
             />
           </div>
         </section>

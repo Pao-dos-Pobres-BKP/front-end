@@ -3,6 +3,8 @@ import { ChartCard } from "@/components/charts/components/chart-card";
 import { BaseBarChart } from "@/components/charts/components/bar-chart-component";
 import type { ChartConfig } from "@/components/charts/components/chart";
 import type { DateRange } from "react-day-picker";
+import { getCampaignMetrics } from "@/services/metrics/campaign-metrics";
+import { PaymentMethodLabel } from "@/services/metrics/donations-payment-method";
 
 type PaymentData = {
   metodo: string;
@@ -10,39 +12,17 @@ type PaymentData = {
   quantidade: number;
 };
 
-const fetchPaymentDataByCampaign = async (
-  campaignId: string,
-  period?: DateRange
-): Promise<PaymentData[]> => {
-  console.log(`Buscando dados para a campanha: ${campaignId} no período:`, period);
-  const mockData: Record<string, PaymentData[]> = {
-    "campanha-a": [
-      { metodo: "PIX", valor: 12500, quantidade: 120 },
-      { metodo: "Cartão", valor: 8700, quantidade: 80 },
-      { metodo: "Boleto", valor: 4200, quantidade: 40 },
-    ],
-    "campanha-b": [
-      { metodo: "PIX", valor: 22300, quantidade: 200 },
-      { metodo: "Cartão", valor: 15400, quantidade: 150 },
-      { metodo: "Boleto", valor: 9800, quantidade: 90 },
-    ],
-  };
-  return new Promise<PaymentData[]>((resolve) =>
-    setTimeout(() => resolve(mockData[campaignId] || []), 500)
-  );
-};
-
 const configValor = {
   valor: { label: "Valor (R$)" },
-  PIX: { label: "PIX", color: "#2A9D90" },
-  Cartão: { label: "Cartão", color: "#E8C468" },
+  Pix: { label: "Pix", color: "#2A9D90" },
+  "Cartão de Crédito": { label: "Cartão de Crédito", color: "#E8C468" },
   Boleto: { label: "Boleto", color: "#F4A462" },
 } satisfies ChartConfig;
 
 const configQuantidade = {
   quantidade: { label: "Quantidade" },
-  PIX: { label: "PIX", color: "#2A9D90" },
-  Cartão: { label: "Cartão", color: "#E8C468" },
+  Pix: { label: "Pix", color: "#2A9D90" },
+  "Cartão de Crédito": { label: "Cartão de Crédito", color: "#E8C468" },
   Boleto: { label: "Boleto", color: "#F4A462" },
 } satisfies ChartConfig;
 
@@ -56,14 +36,65 @@ export const PagamentosPorCampanhaChart = ({
   period?: DateRange;
 }) => {
   const [data, setData] = useState<PaymentData[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (campaignId) {
-      fetchPaymentDataByCampaign(campaignId, period).then(setData);
-    } else {
-      setData([]);
-    }
+    const fetchData = async () => {
+      if (!campaignId) {
+        setData([]);
+        return;
+      }
+
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const response = await getCampaignMetrics(campaignId);
+
+        // Mapeia os dados de paymentComparison para o formato do gráfico
+        const mappedData: PaymentData[] = response.paymentComparison.map((item) => ({
+          metodo: PaymentMethodLabel[item.paymentMethod], // Traduz o método de pagamento
+          valor: item.totalAmount,
+          quantidade: item.totalCount,
+        }));
+
+        setData(mappedData);
+      } catch (err) {
+        console.error("Erro ao buscar métricas da campanha:", err);
+        setError("Não foi possível carregar os dados. Tente novamente.");
+        setData([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, [campaignId, period]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <p className="text-gray-500">Carregando dados...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <p className="text-red-500">{error}</p>
+      </div>
+    );
+  }
+
+  if (data.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <p className="text-gray-500">Nenhum dado disponível para esta campanha</p>
+      </div>
+    );
+  }
 
   if (show === "quantidade") {
     return (
