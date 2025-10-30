@@ -19,7 +19,7 @@ const pieConfig = {
 } satisfies ChartConfig;
 
 const barConfig = {
-  total: { label: "Total de Doadores", color: "#264653" },
+  total: { label: "Total de Doadores: ", color: "#264653" },
 } satisfies ChartConfig;
 
 export const DoadoresPorCampanhaStats = ({
@@ -50,13 +50,11 @@ export const DoadoresPorCampanhaStats = ({
       try {
         const response = await getDonorsCampaignSocialData(campaignId);
 
-        // Mapeia os dados de gênero para o gráfico de pizza
         const mappedPieData: PieData[] = response.genderDistribution.map((item) => ({
-          name: CampaignGenderLabel[item.gender], // Traduz o gênero
+          name: CampaignGenderLabel[item.gender],
           value: item.count,
         }));
 
-        // Mapeia os dados de idade para o gráfico de barras
         const mappedBarData: BarData[] = response.ageDistribution.map((item) => ({
           faixa: item.ageRange,
           total: item.count,

@@ -15,6 +15,7 @@ import { DoadoresGeralStats } from "@/components/charts/donor-general-stats-char
 import { PagamentosPorCampanhaChart } from "@/components/charts/payment-by-campaign-chart";
 import { DoadoresPorCampanhaStats } from "@/components/charts/donor-by-campaign-stats-chart";
 import { getGlobalMetrics } from "@/services/metrics/global";
+import { getCampaigns, type CampaignAPI } from "@/services/campaigns";
 
 type MetricData = {
   newDonors: number;
@@ -69,19 +70,11 @@ const metric2Descriptions: Record<string, string> = {
   genero: "Estatística a cerca do gênero dos doadores.",
 };
 
-type Campaign = { id: string; name: string };
-const allCampaigns: Campaign[] = [
-  { id: "campanha-a", name: "Campanha de Natal 2025" },
-  { id: "campanha-b", name: "Campanha de Inverno" },
-  { id: "campanha-c", name: "Ajuda RS" },
-  { id: "campanha-d", name: "Cestas Básicas POA" },
-];
-
-const searchCampaigns = async (query: string): Promise<Campaign[]> => {
+const searchCampaigns = async (query: string, campaigns: CampaignAPI[]): Promise<CampaignAPI[]> => {
   if (query.length < 3) return [];
   console.log(`Buscando campanhas com o termo: ${query}`);
-  const filtered = allCampaigns.filter((c) => c.name.toLowerCase().includes(query.toLowerCase()));
-  return new Promise<Campaign[]>((resolve) => setTimeout(() => resolve(filtered), 300));
+  const filtered = campaigns.filter((c) => c.title.toLowerCase().includes(query.toLowerCase()));
+  return new Promise<CampaignAPI[]>((resolve) => setTimeout(() => resolve(filtered), 300));
 };
 
 const formatCurrency = (value: number) => {
@@ -150,19 +143,6 @@ const RenderChart = ({
   }
 };
 
-// TEMPORÁRIO: Lista de todos os gráficos para navegar
-const allChartKeys = [
-  "financeiro_total_valor",
-  "financeiro_metodo_quantidade",
-  "financeiro_metodo_valor",
-  "operacional_doadores_idade",
-  "operacional_doadores_genero",
-  "financeiro_metodo_quantidade_campaign",
-  "financeiro_metodo_valor_campaign",
-  "operacional_doadores_idade_campaign",
-  "operacional_doadores_genero_campaign",
-];
-
 function Dashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [metrics, setMetrics] = useState<MetricData | null>(null);
@@ -172,33 +152,22 @@ function Dashboard() {
   const [metric1Options, setMetric1Options] = useState<Option[]>([]);
   const [metric2Options, setMetric2Options] = useState<Option[]>([]);
   const [datePeriod, setDatePeriod] = useState<DateRange | undefined>(undefined);
-  const [chartToShow, setChartToShow] = useState<string | null>("operacional_doadores_idade"); // exemplo
+  const [chartToShow, setChartToShow] = useState<string | null>(null);
   const [useCampaignFilter, setUseCampaignFilter] = useState(false);
   const [campaignSearchTerm, setCampaignSearchTerm] = useState("");
-  const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
-  const [campaignSearchResults, setCampaignSearchResults] = useState<Campaign[]>([]);
+  const [selectedCampaign, setSelectedCampaign] = useState<CampaignAPI | null>(null);
+  const [campaignSearchResults, setCampaignSearchResults] = useState<CampaignAPI[]>([]);
   const [isCampaignDropdownOpen, setCampaignDropdownOpen] = useState(false);
   const [confirmedPeriod, setConfirmedPeriod] = useState<DateRange | undefined>(undefined);
+  const [campaigns, setCampaigns] = useState<CampaignAPI[]>([]);
 
-  const [currentChartIndex, setCurrentChartIndex] = useState(0);
-
-  // TEMPORÁRIO: Atualiza o gráfico quando o índice muda
   useEffect(() => {
-    setChartToShow(allChartKeys[currentChartIndex]);
-    // Se for um gráfico de campanha, seleciona uma campanha automaticamente
-    if (allChartKeys[currentChartIndex].includes("_campaign")) {
-      setSelectedCampaign(allCampaigns[0]);
-    }
-  }, [currentChartIndex]);
-
-  // TEMPORÁRIO: Funções de navegação
-  const handlePreviousChart = () => {
-    setCurrentChartIndex((prev) => (prev > 0 ? prev - 1 : allChartKeys.length - 1));
-  };
-
-  const handleNextChart = () => {
-    setCurrentChartIndex((prev) => (prev < allChartKeys.length - 1 ? prev + 1 : 0));
-  };
+    const fetchCampaigns = async () => {
+      const { data: campaigns } = await getCampaigns();
+      setCampaigns(campaigns);
+    };
+    fetchCampaigns();
+  }, []);
 
   useEffect(() => {
     const fetchMetrics = async () => {
@@ -243,7 +212,7 @@ function Dashboard() {
   useEffect(() => {
     const handler = setTimeout(() => {
       if (useCampaignFilter && campaignSearchTerm.length >= 2) {
-        searchCampaigns(campaignSearchTerm).then(setCampaignSearchResults);
+        searchCampaigns(campaignSearchTerm, campaigns).then(setCampaignSearchResults);
       } else {
         setCampaignSearchResults([]);
       }
@@ -263,6 +232,10 @@ function Dashboard() {
     }
   }, [showCampaignFilter]);
 
+  useEffect(() => {
+    setChartToShow(null);
+  }, [sectorFilter, metric1Filter, metric2Filter, useCampaignFilter]);
+
   const handleClearFilters = () => {
     setSectorFilter("");
     setMetric1Filter("");
@@ -281,11 +254,11 @@ function Dashboard() {
     !!datePeriod ||
     useCampaignFilter;
 
-  const areAllFiltersSelected =
-    sectorFilter !== "" && metric1Filter !== "" && metric2Filter !== "" && !!datePeriod;
+  const areAllFiltersSelected = sectorFilter !== "" && metric1Filter !== "" && metric2Filter !== "";
 
-  const canSearch =
-    areAllFiltersSelected && (!useCampaignFilter || (useCampaignFilter && !!selectedCampaign));
+  const canSearch = useCampaignFilter
+    ? areAllFiltersSelected && !!selectedCampaign
+    : areAllFiltersSelected && !!datePeriod;
 
   const handleSearch = () => {
     let key = `${sectorFilter}_${metric1Filter}_${metric2Filter}`;
@@ -296,9 +269,9 @@ function Dashboard() {
     setConfirmedPeriod(datePeriod);
   };
 
-  const handleSelectCampaign = (campaign: Campaign) => {
+  const handleSelectCampaign = (campaign: CampaignAPI) => {
     setSelectedCampaign(campaign);
-    setCampaignSearchTerm(campaign.name);
+    setCampaignSearchTerm(campaign.title);
     setCampaignDropdownOpen(false);
   };
 
@@ -415,7 +388,7 @@ function Dashboard() {
                             className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-left"
                             onMouseDown={() => handleSelectCampaign(campaign)}
                           >
-                            {campaign.name}
+                            {campaign.title}
                           </li>
                         ))}
                       </ul>
@@ -425,15 +398,17 @@ function Dashboard() {
               </div>
             )}
 
-            <div className="flex flex-col gap-2">
-              <label className="text-sm font-semibold text-gray-600 text-left">Período</label>
-              <DateRangePicker
-                value={datePeriod}
-                onChange={setDatePeriod}
-                placeholder="Selecione..."
-                fullWidth
-              />
-            </div>
+            {!useCampaignFilter && (
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-semibold text-gray-600 text-left">Período</label>
+                <DateRangePicker
+                  value={datePeriod}
+                  onChange={setDatePeriod}
+                  placeholder="Selecione..."
+                  fullWidth
+                />
+              </div>
+            )}
 
             <div className="mt-auto flex gap-2">
               <Button
@@ -497,26 +472,6 @@ function Dashboard() {
           </div>
 
           <div className="bg-white rounded-lg p-6 flex-1 flex flex-col">
-            {/* TEMPORÁRIO: Navegação entre gráficos */}
-            <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-              <div className="flex items-center justify-between gap-4">
-                <Button variant="secondary" onClick={handlePreviousChart} size="small">
-                  ← Anterior
-                </Button>
-                <div className="flex-1 text-center">
-                  <p className="text-sm text-gray-600">
-                    Gráfico {currentChartIndex + 1} de {allChartKeys.length}
-                  </p>
-                  <p className="font-semibold text-[var(--color-components)]">
-                    {allChartKeys[currentChartIndex]}
-                  </p>
-                </div>
-                <Button variant="secondary" onClick={handleNextChart} size="small">
-                  Próximo →
-                </Button>
-              </div>
-            </div>
-
             <RenderChart
               chartKey={chartToShow}
               campaignId={selectedCampaign ? selectedCampaign.id : null}

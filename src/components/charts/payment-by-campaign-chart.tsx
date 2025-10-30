@@ -14,14 +14,14 @@ type PaymentData = {
 
 const configValor = {
   valor: { label: "Valor (R$)" },
-  Pix: { label: "Pix", color: "#2A9D90" },
+  PIX: { label: "Pix", color: "#2A9D90" },
   "Cartão de Crédito": { label: "Cartão de Crédito", color: "#E8C468" },
   Boleto: { label: "Boleto", color: "#F4A462" },
 } satisfies ChartConfig;
 
 const configQuantidade = {
   quantidade: { label: "Quantidade" },
-  Pix: { label: "Pix", color: "#2A9D90" },
+  PIX: { label: "Pix", color: "#2A9D90" },
   "Cartão de Crédito": { label: "Cartão de Crédito", color: "#E8C468" },
   Boleto: { label: "Boleto", color: "#F4A462" },
 } satisfies ChartConfig;
@@ -52,9 +52,8 @@ export const PagamentosPorCampanhaChart = ({
       try {
         const response = await getCampaignMetrics(campaignId);
 
-        // Mapeia os dados de paymentComparison para o formato do gráfico
         const mappedData: PaymentData[] = response.paymentComparison.map((item) => ({
-          metodo: PaymentMethodLabel[item.paymentMethod], // Traduz o método de pagamento
+          metodo: PaymentMethodLabel[item.paymentMethod],
           valor: item.totalAmount,
           quantidade: item.totalCount,
         }));

@@ -52,9 +52,8 @@ export const PagamentosGeralChart = ({
       try {
         const response = await getDonationsPaymentMethod(period.from, period.to);
 
-        // Mapeia os dados da API para o formato do gráfico
         const mappedData: OverallPaymentData[] = response.data.map((item) => ({
-          metodo: PaymentMethodLabel[item.paymentMethod], // Traduz o método de pagamento
+          metodo: PaymentMethodLabel[item.paymentMethod],
           quantidade: item.totalQuantity,
           valor: item.totalAmount,
         }));

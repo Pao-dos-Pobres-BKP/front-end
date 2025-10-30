@@ -19,7 +19,7 @@ const pieConfig = {
 } satisfies ChartConfig;
 
 const barConfig = {
-  total: { label: "Total de Doadores", color: "#2A9D90" },
+  total: { label: "Total de Doadores: ", color: "#2A9D90" },
 } satisfies ChartConfig;
 
 const ageChartId = "age-distribution-chart";
