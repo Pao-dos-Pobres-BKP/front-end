@@ -56,7 +56,9 @@ const Campanhas = () => {
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
   const [selectedCampaign, setSelectedCampaign] = useState<CampaignData | null>(null);
   const [selectedCampaignToEdit, setSelectedCampaignToEdit] = useState<CampaignBase | null>(null);
-  const [selectedCampaignToApprove, setSelectedCampaignToApprove] = useState<CampaignBase | null>(null);
+  const [selectedCampaignToApprove, setSelectedCampaignToApprove] = useState<CampaignBase | null>(
+    null
+  );
   const [campaignToDelete, setCampaignToDelete] = useState<CampaignWithSituation | null>(null);
   const [deleteFromEditModal, setDeleteFromEditModal] = useState(false);
   const [campaigns, setCampaigns] = useState<CampaignWithSituation[]>([]);
@@ -203,7 +205,11 @@ const Campanhas = () => {
   };
 
   const handleOpenApproveModal = (campaign: CampaignAPI) => {
-    const campaignBase: CampaignBase & { startDate?: string; endDate?: string; authorName?: string } = {
+    const campaignBase: CampaignBase & {
+      startDate?: string;
+      endDate?: string;
+      authorName?: string;
+    } = {
       id: campaign.id,
       title: campaign.title,
       description: campaign.description,
@@ -443,18 +449,18 @@ const Campanhas = () => {
         </div>
       ) : (
         <>
-      <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3">
             {campaigns.map((campaign) => (
-          <CampaignCard
+              <CampaignCard
                 key={campaign.id}
                 variant="list"
-            title={campaign.title}
+                title={campaign.title}
                 raised={campaign.currentAmount}
                 goal={campaign.targetAmount}
                 creatorName={campaign.createdBy}
                 startDate={campaign.startDate}
                 endDate={campaign.endDate}
-            situation={campaign.situation}
+                situation={campaign.situation}
                 isAdmin={user?.role === "ADMIN"}
                 onAction={() => {
                   if (user?.role === "ADMIN") {
@@ -469,9 +475,9 @@ const Campanhas = () => {
                     handleOpenCampaignModal(campaign);
                   }
                 }}
-          />
-        ))}
-      </div>
+              />
+            ))}
+          </div>
 
           {/* Paginação */}
           {totalPages > 1 && (

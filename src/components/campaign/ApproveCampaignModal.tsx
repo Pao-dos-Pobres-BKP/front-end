@@ -74,7 +74,9 @@ export const ApproveCampaignModal: React.FC<ApproveCampaignModalProps> = ({
               value={campaign.description}
               className="w-full h-32 rounded-md border border-[var(--color-components)]/30 p-3 text-sm text-black resize-none"
             />
-            <div className="text-xs text-gray-500 mt-1">{campaign.description?.length || 0}/200</div>
+            <div className="text-xs text-gray-500 mt-1">
+              {campaign.description?.length || 0}/200
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

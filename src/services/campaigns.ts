@@ -91,10 +91,7 @@ export async function createCampaign(data: CreateCampaignParams): Promise<void> 
   }
 }
 
-export async function updateCampaignStatus(
-  id: string,
-  status: CampaignStatus
-): Promise<void> {
+export async function updateCampaignStatus(id: string, status: CampaignStatus): Promise<void> {
   try {
     await api.patch(`/campaigns/${id}/status`, { status });
   } catch (error) {

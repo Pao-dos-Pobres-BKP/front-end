@@ -42,10 +42,10 @@ export const DonorCreateCampaignModal: React.FC<DonorCreateCampaignModalProps> =
 
   function resetAll() {
     setStep(1);
-    setForm({ 
-      title: "", 
-      description: "", 
-      targetValue: "", 
+    setForm({
+      title: "",
+      description: "",
+      targetValue: "",
       imageName: "",
       startDate: undefined,
       endDate: undefined,
@@ -92,7 +92,7 @@ export const DonorCreateCampaignModal: React.FC<DonorCreateCampaignModalProps> =
   async function handleSubmit() {
     const parsed = validateForm();
     if (!parsed) return;
-    
+
     if (!form.startDate || !form.endDate) {
       alert("As datas são obrigatórias");
       return;
@@ -103,7 +103,7 @@ export const DonorCreateCampaignModal: React.FC<DonorCreateCampaignModalProps> =
     today.setHours(0, 0, 0, 0);
     const startDateOnly = new Date(form.startDate);
     startDateOnly.setHours(0, 0, 0, 0);
-    
+
     if (startDateOnly < today) {
       alert("A data de início não pode ser antes de hoje");
       return;
@@ -114,7 +114,7 @@ export const DonorCreateCampaignModal: React.FC<DonorCreateCampaignModalProps> =
     tomorrow.setDate(tomorrow.getDate() + 1);
     const endDateOnly = new Date(form.endDate);
     endDateOnly.setHours(0, 0, 0, 0);
-    
+
     if (endDateOnly < tomorrow) {
       alert("A data de término deve ser no mínimo amanhã");
       return;
@@ -125,7 +125,7 @@ export const DonorCreateCampaignModal: React.FC<DonorCreateCampaignModalProps> =
       alert("A data de término deve ser posterior à data de início");
       return;
     }
-    
+
     await onSubmit({
       title: parsed.title,
       description: parsed.description,

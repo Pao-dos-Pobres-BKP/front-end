@@ -123,7 +123,7 @@ export const FormStep: React.FC<FormStepProps> = ({
             {form.description.length}/200
           </div>
         </div>
-        
+
         {showDates && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -148,7 +148,7 @@ export const FormStep: React.FC<FormStepProps> = ({
                 />
               )}
             </div>
-            
+
             <DatePicker
               id="campaign-end-date"
               label="Data de Término*"
@@ -159,7 +159,7 @@ export const FormStep: React.FC<FormStepProps> = ({
             />
           </div>
         )}
-        
+
         <Input
           id="campaign-target"
           label="Valor Pretendido*"
@@ -168,7 +168,7 @@ export const FormStep: React.FC<FormStepProps> = ({
           value={form.targetValue}
           onChange={(e) => onChange("targetValue", e.target.value)}
         />
-        
+
         <div>
           <button
             type="button"
@@ -208,11 +208,21 @@ export const FormStep: React.FC<FormStepProps> = ({
               variant="primary"
               size="extraSmall"
               onClick={
-                form.title && form.description && form.targetValue && (!showDates || (form.startDate && form.endDate))
+                form.title &&
+                form.description &&
+                form.targetValue &&
+                (!showDates || (form.startDate && form.endDate))
                   ? () => onNext?.()
                   : undefined
               }
-              disabled={!(form.title && form.description && form.targetValue && (!showDates || (form.startDate && form.endDate)))}
+              disabled={
+                !(
+                  form.title &&
+                  form.description &&
+                  form.targetValue &&
+                  (!showDates || (form.startDate && form.endDate))
+                )
+              }
             >
               {submitLabel}
             </Button>

@@ -40,10 +40,10 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
   const [, setErrors] = React.useState<Record<string, string>>({});
 
   function resetAll() {
-    setForm({ 
-      title: "", 
-      description: "", 
-      targetValue: "", 
+    setForm({
+      title: "",
+      description: "",
+      targetValue: "",
       imageName: "",
       startDate: undefined,
       endDate: undefined,
@@ -55,11 +55,11 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
     if (field === "targetValue") value = currencyMask(value);
     setForm((f) => ({ ...f, [field]: value }));
   }
-  
+
   function handleDateChange(field: "startDate" | "endDate", value: Date | undefined) {
     setForm((f) => ({ ...f, [field]: value }));
   }
-  
+
   function handleImage(file: File | null) {
     setImageFile(file);
     setForm((f) => ({ ...f, imageName: file?.name || "" }));
@@ -88,7 +88,7 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
   async function handleSubmit() {
     const parsed = validateForm();
     if (!parsed) return;
-    
+
     if (!form.startDate || !form.endDate) {
       alert("As datas são obrigatórias");
       return;
@@ -99,7 +99,7 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
     today.setHours(0, 0, 0, 0);
     const startDateOnly = new Date(form.startDate);
     startDateOnly.setHours(0, 0, 0, 0);
-    
+
     if (startDateOnly < today) {
       alert("A data de início não pode ser antes de hoje");
       return;
@@ -110,7 +110,7 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
     tomorrow.setDate(tomorrow.getDate() + 1);
     const endDateOnly = new Date(form.endDate);
     endDateOnly.setHours(0, 0, 0, 0);
-    
+
     if (endDateOnly < tomorrow) {
       alert("A data de término deve ser no mínimo amanhã");
       return;

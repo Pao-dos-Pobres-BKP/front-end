@@ -120,7 +120,7 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
     tomorrow.setDate(tomorrow.getDate() + 1);
     const endDateOnly = new Date(form.endDate);
     endDateOnly.setHours(0, 0, 0, 0);
-    
+
     if (endDateOnly < tomorrow) {
       alert("A data de término deve ser no mínimo amanhã");
       return;
