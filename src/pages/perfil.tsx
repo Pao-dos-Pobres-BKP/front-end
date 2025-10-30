@@ -17,9 +17,9 @@ import {
 import { useState } from "react";
 import EditUserModal from "@/components/ui/edit-user-modal";
 import ConfirmLogoutModal from "@/components/ui/confirm-logout-modal";
-import ProfileSettingsModal from "@/components/ui/profile-settings";
 
 import type { User } from "@/contexts/UserContext";
+import CreateAdminModal from "@/components/ui/create-admin-modal";
 import { useUser } from "@/hooks/useUser";
 
 interface ProfileUser extends User {
@@ -29,7 +29,7 @@ interface ProfileUser extends User {
 
 export default function Perfil() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+  const [isCreateAdminModalOpen, setIsCreateAdminModalOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 6;
@@ -161,8 +161,8 @@ export default function Perfil() {
     setIsEditModalOpen(true);
   };
 
-  const handleOpenSettingsModal = () => {
-    setIsSettingsModalOpen(true);
+  const handleOpenCreateAdminModal = () => {
+    setIsCreateAdminModalOpen(true);
   };
 
   const handleSalvarPerfil = (updatedUser: User) => {
@@ -200,14 +200,12 @@ export default function Perfil() {
 
             <div className="flex items-center gap-2 w-full sm:w-auto">
               {currentUser?.role === "ADMIN" && (
-                <>
-                  <button
-                    onClick={handleOpenSettingsModal}
-                    className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl bg-[#005172] text-white hover:bg-[#24434f] transition-colors"
-                  >
-                    Ajustes
-                  </button>
-                </>
+                <button
+                  onClick={handleOpenCreateAdminModal}
+                  className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl bg-[#005172] text-white hover:bg-[#24434f] transition-colors"
+                >
+                  Ajustes
+                </button>
               )}
               <button
                 onClick={() => setIsLogoutModalOpen(true)}
@@ -429,31 +427,9 @@ export default function Perfil() {
         </div>
       </div>
 
-      {/** Modal de Ajustes de Perfil (somente admin) */}
-      <ProfileSettingsModal
-        isOpen={isSettingsModalOpen}
-        onClose={() => setIsSettingsModalOpen(false)}
-        onSave={(formData) => {
-          setDados((prev) => ({
-            ...prev,
-            fullname: formData?.nome ?? prev.fullname,
-            birthDate: formData?.nascimento ? new Date(formData.nascimento) : prev.birthDate,
-            gender: (formData?.genero as User["gender"]) ?? prev.gender,
-            cpf: formData?.cpf ?? prev.cpf,
-            phone: formData?.telefone ?? prev.phone,
-            email: formData?.email ?? prev.email,
-            photo: formData?.foto ?? prev.photo,
-          }));
-        }}
-        initialData={{
-          nome: dados.fullname,
-          nascimento: dados.birthDate ? dados.birthDate.toISOString().slice(0, 10) : "",
-          genero: dados.gender ?? "",
-          cpf: dados.cpf ?? "",
-          telefone: dados.phone ?? "",
-          email: dados.email ?? "",
-          foto: dados.photo,
-        }}
+      <CreateAdminModal
+        isModalOpen={isCreateAdminModalOpen}
+        onClose={() => setIsCreateAdminModalOpen(false)}
       />
 
       <EditUserModal
