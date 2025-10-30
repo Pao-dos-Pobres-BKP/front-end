@@ -7,6 +7,7 @@ export type CampaignCardProfileCompactProps = {
   role: "donor" | "admin";
   onAction?: () => void;
   className?: string;
+  showRole?: boolean;
 };
 
 export function CampaignCardProfileCompact({
@@ -50,6 +51,10 @@ export function CampaignCardProfileCompact({
 
       <div className="flex-1 flex justify-center">
         <div
+          role="button"
+          tabIndex={0}
+          onClick={onAction}
+          onKeyDown={handleActionKeyDown}
           className={cn(
             "text-xs sm:text-sm md:text-base font-semibold text-white rounded-lg px-2 sm:px-3 py-0.5 sm:py-1 whitespace-nowrap",
             roleConfig.bg

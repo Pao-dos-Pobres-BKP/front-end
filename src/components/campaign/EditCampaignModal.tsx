@@ -1,9 +1,14 @@
 import React from "react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { FormStep, PasswordStep } from "./steps";
-import { updateCampaignSchema, passwordSchema } from "@/schemas/campaign";
+import { FormStep } from "./steps";
+import { updateCampaignSchema } from "@/schemas/campaign";
 import { z } from "zod";
 import type { CampaignBase } from "@/types/Campaign";
+
+interface CampaignWithDates extends CampaignBase {
+  startDate?: string;
+  endDate?: string;
+}
 
 interface EditCampaignModalProps {
   open: boolean;
@@ -14,8 +19,8 @@ interface EditCampaignModalProps {
     title: string;
     description: string;
     targetValue: number;
+    endDate: Date;
     image?: File | null;
-    password: string;
   }) => Promise<void> | void;
   onDeleteRequest: () => void; // triggers external delete modal
 }
@@ -33,37 +38,44 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
   onSave,
   onDeleteRequest,
 }) => {
-  const [step, setStep] = React.useState<1 | 2>(1);
   const [form, setForm] = React.useState({
     title: "",
     description: "",
     targetValue: "",
     imageName: "" as string | null,
+    startDate: undefined as Date | undefined,
+    endDate: undefined as Date | undefined,
   });
   const [imageFile, setImageFile] = React.useState<File | null>(null);
-  const [password, setPassword] = React.useState("");
   const [, setErrors] = React.useState<Record<string, string>>({});
 
   React.useEffect(() => {
     if (campaign && open) {
+      const campaignWithDates = campaign as CampaignWithDates;
       setForm({
         title: campaign.title,
         description: campaign.description,
         targetValue: currencyMask(String(campaign.targetValue * 100)), // assume value already numeric
         imageName: campaign.image?.name || campaign.image?.url || "",
+        startDate: campaignWithDates.startDate ? new Date(campaignWithDates.startDate) : undefined,
+        endDate: campaignWithDates.endDate ? new Date(campaignWithDates.endDate) : undefined,
       });
     }
   }, [campaign, open]);
 
   function resetAll() {
-    setStep(1);
-    setPassword("");
     setErrors({});
   }
+
   function handleChange(field: string, value: string) {
     if (field === "targetValue") value = currencyMask(value);
     setForm((f) => ({ ...f, [field]: value }));
   }
+
+  function handleDateChange(field: "startDate" | "endDate", value: Date | undefined) {
+    setForm((f) => ({ ...f, [field]: value }));
+  }
+
   function handleImage(file: File | null) {
     setImageFile(file);
     setForm((f) => ({ ...f, imageName: file?.name || "" }));
@@ -91,28 +103,37 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
       return null;
     }
   }
-  function validatePassword() {
-    try {
-      passwordSchema.parse({ password });
-      return true;
-    } catch (e) {
-      if (e instanceof z.ZodError)
-        setErrors({ password: e.issues[0]?.message || "Senha inválida" });
-      return false;
-    }
-  }
+
   async function handleSubmit() {
     const parsed = validateForm();
     if (!parsed) return;
-    if (!validatePassword()) return;
+
+    if (!form.endDate) {
+      alert("A data de término é obrigatória");
+      return;
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const endDateOnly = new Date(form.endDate);
+    endDateOnly.setHours(0, 0, 0, 0);
+
+    if (endDateOnly < tomorrow) {
+      alert("A data de término deve ser no mínimo amanhã");
+      return;
+    }
+
     await onSave({
       id: parsed.id,
       title: parsed.title,
       description: parsed.description,
       targetValue: parsed.targetValue,
+      endDate: form.endDate,
       image: imageFile ?? null,
-      password,
     });
+
     resetAll();
     onOpenChange(false);
   }
@@ -129,45 +150,30 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
         <DialogTitle className="text-2xl font-semibold text-[var(--color-components)]">
           Editar Campanha
         </DialogTitle>
-        {step === 1 && (
-          <>
-            <FormStep
-              form={form}
-              onChange={handleChange}
-              onImageSelect={handleImage}
-              onBack={() => {
-                resetAll();
-                onOpenChange(false);
-              }}
-              onNext={() => {
-                const ok = validateForm();
-                if (ok) setStep(2);
-              }}
-              stepOverride={1}
-              totalStepsOverride={2}
-            />
-            <div className="mt-4 text-center">
-              <button
-                type="button"
-                onClick={onDeleteRequest}
-                className="text-sm text-red-600 hover:cursor-pointer underline"
-              >
-                Excluir esta campanha
-              </button>
-            </div>
-          </>
-        )}
-        {step === 2 && (
-          <PasswordStep
-            password={password}
-            onChange={setPassword}
-            onBack={() => setStep(1)}
-            onSubmit={handleSubmit}
-            confirmLabel="Salvar"
-            stepOverride={2}
-            totalStepsOverride={2}
-          />
-        )}
+        <FormStep
+          form={form}
+          onChange={handleChange}
+          onDateChange={handleDateChange}
+          onImageSelect={handleImage}
+          onBack={() => {
+            resetAll();
+            onOpenChange(false);
+          }}
+          onNext={handleSubmit}
+          stepOverride={1}
+          totalStepsOverride={1}
+          showDates={true}
+          isEditMode={true}
+        />
+        <div className="text-center">
+          <button
+            type="button"
+            onClick={onDeleteRequest}
+            className="text-sm text-red-600 hover:cursor-pointer underline"
+          >
+            Excluir esta campanha
+          </button>
+        </div>
       </DialogContent>
     </Dialog>
   );

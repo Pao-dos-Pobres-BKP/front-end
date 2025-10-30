@@ -460,24 +460,17 @@ function Dashboard() {
 
         <section className="flex-1 flex flex-col gap-6">
           <div
-            className={`grid grid-cols-2 md:grid-cols-3 gap-4 ${
-              !isSidebarOpen ? "lg:grid-cols-6" : "lg:grid-cols-5"
-            }`}
+            className={`grid grid-cols-2 md:grid-cols-3 gap-4 ${!isSidebarOpen ? "lg:grid-cols-6" : "lg:grid-cols-5"}`}
           >
             {!isSidebarOpen && (
               <button
                 onClick={() => setIsSidebarOpen(true)}
-                className="
-                  flex items-center justify-center h-12 lg:h-16 rounded-lg bg-white px-2 lg:px-4 shadow-sm
-                  hover:bg-gray-100 transition-colors
-                "
+                className="flex h-20 sm:h-24 flex-1 min-w-[120px] flex-row items-center justify-between gap-2 rounded-lg bg-white px-4 shadow-sm hover:bg-gray-100 transition-colors"
               >
-                <div className="flex items-center gap-2">
-                  <span className="text-base md:text-xl font-bold text-[color:var(--color-components)]">
-                    Dashboard
-                  </span>
-                  <ChevronRight className="h-5 w-5 text-[color:var(--color-components)]" />
-                </div>
+                <span className="font-bold text-lg text-[color:var(--color-components)]">
+                  Dashboard
+                </span>
+                <ChevronRight className="h-5 w-5 text-[color:var(--color-components)]" />
               </button>
             )}
             {metrics && (

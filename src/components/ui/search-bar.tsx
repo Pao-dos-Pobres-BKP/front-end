@@ -4,7 +4,11 @@ import { useSearchParams } from "react-router-dom";
 import { Search } from "lucide-react";
 import Input from "./input";
 
-export const SearchBar = () => {
+type SearchBarProps = {
+  placeholder?: string;
+};
+
+export const SearchBar = ({ placeholder = "Buscar" }: SearchBarProps) => {
   const [value, setValue] = useState("");
   const debouncedValue = useDebounce(value);
 
@@ -13,6 +17,8 @@ export const SearchBar = () => {
   useEffect(() => {
     if (debouncedValue) {
       setSearchParams({ search: debouncedValue });
+    } else {
+      setSearchParams({});
     }
   }, [debouncedValue, setSearchParams]);
 
@@ -22,7 +28,8 @@ export const SearchBar = () => {
         className="w-full"
         RightIcon={<Search className="h-4 w-4" color="#94A3B8" />}
         onChange={(e) => setValue(e.currentTarget.value)}
-        placeholder="Buscar"
+        placeholder={placeholder}
+        value={value}
       />
     </div>
   );

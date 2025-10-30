@@ -1,6 +1,7 @@
 import React from "react";
 import Input from "@/components/ui/input";
 import Button from "@/components/ui/button";
+import { DatePicker } from "@/components/ui/Calendar/date-picker";
 import type { CampaignBase } from "@/types/Campaign";
 import { formatCurrency } from "@/utils/formatCurrency";
 
@@ -58,23 +59,31 @@ interface FormStepProps extends StepProps {
     description: string;
     targetValue: string;
     imageName?: string | null;
+    startDate?: Date;
+    endDate?: Date;
   };
   onChange: (field: string, value: string) => void;
+  onDateChange?: (field: "startDate" | "endDate", value: Date | undefined) => void;
   onImageSelect: (file: File | null) => void;
-  hideActions?: boolean; // quando true não renderiza botões internos
+  hideActions?: boolean; // if true, does not render internal buttons
   stepOverride?: number;
   totalStepsOverride?: number;
+  showDates?: boolean; // controls if the date fields are shown
+  isEditMode?: boolean; // if true, start date is readonly
+  submitLabel?: string; // custom text for the submit button
 }
 
 export const FormStep: React.FC<FormStepProps> = ({
   form,
   onChange,
+  onDateChange,
   onImageSelect,
   onBack,
   onNext,
   hideActions,
-  stepOverride,
-  totalStepsOverride,
+  showDates = true,
+  isEditMode = false,
+  submitLabel = "Salvar",
 }) => {
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
@@ -114,6 +123,43 @@ export const FormStep: React.FC<FormStepProps> = ({
             {form.description.length}/200
           </div>
         </div>
+
+        {showDates && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-sm font-medium text-[var(--color-components)] mb-1 block">
+                Data de Início*
+              </label>
+              {isEditMode ? (
+                <input
+                  type="text"
+                  readOnly
+                  value={form.startDate ? form.startDate.toLocaleDateString("pt-BR") : ""}
+                  className="w-full rounded-lg border border-[var(--color-components)]/30 bg-gray-100 px-3 py-2 text-sm text-gray-600 cursor-not-allowed"
+                  placeholder="Data de início (não editável)"
+                />
+              ) : (
+                <DatePicker
+                  id="campaign-start-date"
+                  placeholder="Selecione a data de início"
+                  value={form.startDate}
+                  onChange={(date) => onDateChange?.("startDate", date)}
+                  fullWidth
+                />
+              )}
+            </div>
+
+            <DatePicker
+              id="campaign-end-date"
+              label="Data de Término*"
+              placeholder="Selecione a data de término"
+              value={form.endDate}
+              onChange={(date) => onDateChange?.("endDate", date)}
+              fullWidth
+            />
+          </div>
+        )}
+
         <Input
           id="campaign-target"
           label="Valor Pretendido*"
@@ -122,6 +168,7 @@ export const FormStep: React.FC<FormStepProps> = ({
           value={form.targetValue}
           onChange={(e) => onChange("targetValue", e.target.value)}
         />
+
         <div>
           <button
             type="button"
@@ -161,17 +208,27 @@ export const FormStep: React.FC<FormStepProps> = ({
               variant="primary"
               size="extraSmall"
               onClick={
-                form.title && form.description && form.targetValue ? () => onNext?.() : undefined
+                form.title &&
+                form.description &&
+                form.targetValue &&
+                (!showDates || (form.startDate && form.endDate))
+                  ? () => onNext?.()
+                  : undefined
               }
-              disabled={!(form.title && form.description && form.targetValue)}
+              disabled={
+                !(
+                  form.title &&
+                  form.description &&
+                  form.targetValue &&
+                  (!showDates || (form.startDate && form.endDate))
+                )
+              }
             >
-              Salvar
+              {submitLabel}
             </Button>
           </div>
-          <StepIndicators step={stepOverride ?? 2} total={totalStepsOverride ?? 3} />
         </div>
       )}
-      {hideActions && <StepIndicators step={stepOverride ?? 2} total={totalStepsOverride ?? 3} />}
     </div>
   );
 };

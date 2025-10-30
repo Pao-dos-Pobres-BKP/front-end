@@ -40,7 +40,7 @@ export function CampaignCardHistoric(props: CampaignCardHistoricProps) {
     const src = situation ? map[situation] : undefined;
     if (!src) return null;
     return (
-      <div className="h-5 w-5 sm:h-6 sm:w-6 flex-shrink-0">
+      <div className="h-5 w-5 sm:h-6 sm:w-6 flex-shrink-0 mt-0.5 sm:mt-1">
         <img src={src} alt="" className="h-5 w-5 sm:h-6 sm:w-6" />
       </div>
     );
@@ -55,12 +55,21 @@ export function CampaignCardHistoric(props: CampaignCardHistoricProps) {
       )}
       aria-label={`Card histórico ${title}`}
     >
-      <div className="flex items-center min-w-0 overflow-hidden">
+      <div className="flex items-start min-w-0 w-full sm:w-auto col-span-1 overflow-hidden">
         {renderIcon()}
-        <div className="font-semibold flex flex-col items-start ml-2 min-w-0 shrink truncate">
-          <div className="text-[#034d6b] truncate text-base sm:text-xl">{title}</div>
+        <div className="font-semibold flex flex-col items-start ml-2 min-w-0 flex-1 truncate">
+          <div className="text-[#034d6b] truncate text-base sm:text-xl text-left">{title}</div>
           {creatorName && (
-            <div className={cn("text-xs sm:text-sm truncate", gradientTextClass)}>
+            <div
+              className={cn(
+                "text-xs sm:text-sm truncate text-left",
+                situation === "recurring"
+                  ? "bg-gradient-to-b from-[#FF4A4A] to-[#FF8787] bg-clip-text text-transparent"
+                  : situation === "approved"
+                    ? "bg-gradient-to-b from-[#456DFF] to-[#AABCFF] bg-clip-text text-transparent"
+                    : "text-[#034d6b]"
+              )}
+            >
               por {creatorName}
             </div>
           )}
@@ -83,8 +92,8 @@ export function CampaignCardHistoric(props: CampaignCardHistoricProps) {
       {situation && (
         <div
           className={cn(
-            "hidden sm:flex items-center justify-center text-base md:text-xl font-semibold px-4",
-            "min-w-fit whitespace-nowrap",
+            "flex sm:hidden items-center justify-self-start text-base font-semibold",
+            "hidden sm:flex sm:col-span-1 items-center justify-center text-xl font-semibold",
             gradientTextClass
           )}
         >

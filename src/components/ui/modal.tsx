@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
+
 import Button from "./button";
-import camera from "@/assets/camera.svg";
-import { cn } from "@/lib/utils";
 
 type ModalVariant =
   | "logout"
@@ -9,37 +9,23 @@ type ModalVariant =
   | "main-site-redirect"
   | "newsletter-success"
   | "newsletter-error"
-  | "delete-account"
-  | "avatar-change";
+  | "delete-account";
 
-type InterfaceProps = {
-  isOpen?: boolean;
-  open?: boolean;
-  onClose: () => void;
-  onConfirm?: () => void;
-  onRetry?: () => void;
-  variant?: ModalVariant | "custom";
-  title?: string;
-  description?: string;
-  children?: ReactNode;
-  footer?: ReactNode;
-  className?: string;
+type ActionType = "close" | "confirm" | "retry";
 
-  avatarUrl?: string;
-  onAvatarSelect?: (file: File) => void;
-  donorId?: string;
+type ActionDef = {
+  label: string;
+  variant: "senary" | "primary" | "destructive";
+  action: ActionType;
 };
 
-type ModalConfig = Record<
-  ModalVariant,
-  {
-    title: string;
-    description: string;
-    actions: { label: string; variant: string; action: string }[];
-  }
->;
+type PresetConfig = {
+  title: string;
+  description: string;
+  actions: ActionDef[];
+};
 
-const modalConfig: ModalConfig = {
+const modalConfig: Record<ModalVariant, PresetConfig> = {
   logout: {
     title: "Deseja sair da sua conta?",
     description:
@@ -85,221 +71,75 @@ const modalConfig: ModalConfig = {
       { label: "Excluir", variant: "destructive", action: "confirm" },
     ],
   },
-  "avatar-change": {
-    title: "Alterar foto de perfil",
-    description: "",
-    actions: [
-      { label: "Voltar", variant: "senary", action: "close" },
-      { label: "Salvar", variant: "primary", action: "confirm" },
-    ],
-  },
 };
 
-function ModalOverlay(props: { onClick: () => void }) {
-  return (
-    <div
-      className="absolute inset-0 bg-black/20 backdrop-blur-[2px] transition-opacity"
-      onClick={props.onClick}
-    />
-  );
-}
+type BaseProps = {
+  isOpen?: boolean;
+  open?: boolean;
+  onClose: () => void;
+  onConfirm?: () => void;
+  onRetry?: () => void;
+  variant?: ModalVariant | "custom";
+  title?: string;
+  description?: string;
+  children?: ReactNode;
+  footer?: ReactNode;
+  className?: string;
+};
 
-function ModalActions(props: {
-  actions: typeof modalConfig.logout.actions;
-  handleActionClick: (action: string) => void;
-  centered?: boolean;
-}) {
-  return (
-    <div
-      className={cn("flex gap-3 w-full mt-2", props.centered ? "justify-center" : "justify-end")}
-    >
-      {props.actions.map(function (action, index) {
-        return (
-          <Button
-            key={index}
-            variant={action.variant as "primary" | "senary" | "destructive"}
-            size="extraSmall"
-            onClick={function () {
-              props.handleActionClick(action.action);
-            }}
-          >
-            {action.label}
-          </Button>
-        );
-      })}
-    </div>
-  );
-}
+function Modal({
+  isOpen,
+  open,
+  onClose,
+  onConfirm,
+  onRetry,
+  variant,
+  title,
+  description,
+  children,
+  footer,
+  className = "",
+}: BaseProps) {
+  const visible = typeof isOpen === "boolean" ? isOpen : !!open;
+  const [isAnimating, setIsAnimating] = useState(false);
 
-function AvatarPicker(props: {
-  avatarUrl?: string;
-  onAvatarSelect?: (file: File) => void;
-  previewUrl: string | null;
-}) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  function handleButtonClick() {
-    fileInputRef.current?.click();
-  }
-
-  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (file && props.onAvatarSelect) {
-      props.onAvatarSelect(file);
+  useEffect(() => {
+    if (visible) {
+      // Trigger animation after mount
+      setTimeout(() => setIsAnimating(true), 10);
+    } else {
+      setIsAnimating(false);
     }
-  }
+  }, [visible]);
 
-  const displayUrl = props.previewUrl || props.avatarUrl;
-
-  if (displayUrl) {
-    return (
-      <div className="flex items-center justify-center flex-1 relative">
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          className="hidden"
-        />
-        <div className="w-[220px] h-[220px] rounded-full overflow-hidden border-4 border-slate-200 relative group">
-          <img src={displayUrl} alt="Avatar preview" className="w-full h-full object-cover" />
-          {props.onAvatarSelect && (
-            <button
-              onClick={handleButtonClick}
-              className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-              type="button"
-            >
-              <img src={camera} alt="Camera icon" className="h-12 w-12 text-white opacity-80" />
-            </button>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex items-center justify-center flex-1 relative">
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        onChange={handleFileChange}
-        className="hidden"
-      />
-      <div className="w-[220px] h-[220px] rounded-full overflow-hidden border-4 border-slate-200">
-        <button
-          onClick={handleButtonClick}
-          className="w-full h-full flex items-center justify-center bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors"
-          type="button"
-        >
-          <img src={camera} alt="Camera icon" className="h-12 w-12" />
-        </button>
-      </div>
-    </div>
-  );
-}
-
-export default function Modal(props: InterfaceProps) {
-  const { isOpen, onClose, variant, onConfirm, onRetry, avatarUrl, onAvatarSelect, donorId } =
-    props;
-  const config =
-    variant && variant !== "custom"
-      ? modalConfig[variant as ModalVariant]
-      : {
-          title: props.title ?? "",
-          description: props.description ?? "",
-          actions: [],
-        };
-
-  const isAvatarModal = variant === "avatar-change";
-
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
-  useEffect(
-    function () {
-      function handleEscape(e: KeyboardEvent) {
-        if (e.key === "Escape" && isOpen) onClose();
-      }
-
-      if (isOpen) {
-        document.addEventListener("keydown", handleEscape);
-        document.body.style.overflow = "hidden";
-      }
-
-      return function () {
-        document.removeEventListener("keydown", handleEscape);
-        document.body.style.overflow = "unset";
-      };
-    },
-    [isOpen, onClose]
-  );
-
-  useEffect(
-    function () {
-      if (!isOpen) {
-        setSelectedFile(null);
-        setPreviewUrl(null);
-      }
-    },
-    [isOpen]
-  );
-
-  useEffect(
-    function () {
-      return function () {
-        if (previewUrl) {
-          URL.revokeObjectURL(previewUrl);
-        }
-      };
-    },
-    [previewUrl]
-  );
-
-  if (!isOpen) return null;
-
-  function handleAvatarFileSelect(file: File) {
-    setSelectedFile(file);
-
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl);
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && visible) onClose();
+    };
+    if (visible) {
+      document.addEventListener("keydown", handleEscape);
+      document.body.style.overflow = "hidden";
     }
-    const newPreviewUrl = URL.createObjectURL(file);
-    setPreviewUrl(newPreviewUrl);
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "unset";
+    };
+  }, [visible, onClose]);
 
-    if (onAvatarSelect) {
-      onAvatarSelect(file);
-    }
-  }
+  if (!visible) return null;
 
-  async function uploadAvatar() {
-    if (!selectedFile || !donorId) return;
+  const cfg: PresetConfig | null = variant && variant !== "custom" ? modalConfig[variant] : null;
 
-    const formData = new FormData();
-    formData.append("file", selectedFile);
+  const resolvedTitle = title ?? cfg?.title ?? "";
+  const resolvedDescription = description ?? cfg?.description ?? "";
 
-    const response = await fetch(`/donors/${donorId}/avatar`, {
-      method: "POST",
-      body: formData,
-    });
-
-    if (response.ok) {
-      onConfirm?.();
-      onClose();
-    }
-  }
-
-  function handleActionClick(action: string) {
+  const handleActionClick = (action: ActionType) => {
     switch (action) {
       case "close":
         onClose();
         break;
       case "confirm":
-        if (isAvatarModal && selectedFile) {
-          uploadAvatar();
-        } else {
-          onConfirm?.();
-        }
+        onConfirm?.();
         break;
       case "retry":
         onRetry?.();
@@ -307,49 +147,67 @@ export default function Modal(props: InterfaceProps) {
       default:
         onClose();
     }
-  }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <ModalOverlay onClick={onClose} />
-
       <div
-        className={cn(
-          "relative bg-white rounded-lg border border-slate-300 shadow-lg",
-          isAvatarModal
-            ? "flex flex-col items-center justify-between w-[400px] max-h-[90vh] h-auto min-h-[500px] p-8 mx-4"
-            : "inline-flex flex-col items-start max-w-md w-full mx-4 p-6 gap-4"
-        )}
+        className={`absolute inset-0 bg-black/20 backdrop-blur-[2px] transition-opacity duration-200 ${
+          isAnimating ? "opacity-100" : "opacity-0"
+        }`}
+        onClick={onClose}
+      />
+      <div
+        className={[
+          "relative bg-white rounded-2xl border border-slate-300",
+          "inline-flex flex-col items-start",
+          "max-w-lg w-full mx-4 p-6 gap-4 shadow-lg",
+          "transition-all duration-300 ease-out",
+          isAnimating ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-4",
+          className,
+        ].join(" ")}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
       >
-        <h3
-          className={cn(
-            "text-slate-900 font-inter text-lg font-semibold leading-7 text-center",
-            !isAvatarModal ? "mb-2" : ""
-          )}
-        >
-          {config.title}
-        </h3>
-
-        {!isAvatarModal && config.description && (
-          <p className="text-slate-500 font-inter text-sm font-normal leading-5">
-            {config.description}
-          </p>
+        {(resolvedTitle || resolvedDescription) && (
+          <div className="w-full">
+            {resolvedTitle && (
+              <h3
+                id="modal-title"
+                className="text-slate-900 font-inter text-lg font-semibold leading-7 mb-2"
+              >
+                {resolvedTitle}
+              </h3>
+            )}
+            {resolvedDescription && (
+              <p className="text-slate-500 font-inter text-sm font-normal leading-5">
+                {resolvedDescription}
+              </p>
+            )}
+          </div>
         )}
 
-        {isAvatarModal && (
-          <AvatarPicker
-            avatarUrl={avatarUrl}
-            onAvatarSelect={handleAvatarFileSelect}
-            previewUrl={previewUrl}
-          />
-        )}
+        {children}
 
-        <ModalActions
-          actions={config.actions}
-          handleActionClick={handleActionClick}
-          centered={isAvatarModal}
-        />
+        <div className="flex justify-end gap-3 w-full mt-2">
+          {footer
+            ? footer
+            : cfg?.actions?.map((a, i) => (
+                <Button
+                  key={i}
+                  variant={a.variant}
+                  size="extraSmall"
+                  onClick={() => handleActionClick(a.action)}
+                >
+                  {a.label}
+                </Button>
+              ))}
+        </div>
       </div>
     </div>
   );
 }
+
+export { Modal };
+export default Modal;
