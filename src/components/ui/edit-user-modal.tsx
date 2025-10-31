@@ -67,7 +67,7 @@ export default function EditUserModal({
   };
 
   return (
-    <div className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-50 px-2">
+    <div className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-50 px-2 py-8">
       <div className="bg-white w-full max-w-lg rounded-xl p-6 shadow-lg mx-4 sm:mx-0">
         <h2 className="block text-left text-2xl font-bold text-[#005172] mb-4">Editar Perfil</h2>
 
@@ -79,14 +79,14 @@ export default function EditUserModal({
           />
           <div className="flex flex-start gap-2">
             <label className="flex justify-center text-sm font-medium text-[#005172] cursor-pointer">
-              <span className="px-3 py-1 border rounded-lg hover:bg-gray-100">Alterar Foto</span>
+              <span className="px-4 py-2.5 border rounded-lg hover:bg-gray-100">Alterar Foto</span>
               <input type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
             </label>
             {previewPhoto !== "https://via.placeholder.com/60" && (
               <button
                 type="button"
                 onClick={handlePhotoRemove}
-                className="px-3 py-1 border border-red-500 text-red-500 rounded-lg text-sm hover:bg-gray-400 cursor-pointer"
+                className="px-4 py-2.5 border border-red-500 text-red-500 rounded-lg text-sm hover:bg-gray-400 cursor-pointer"
               >
                 Remover Foto
               </button>
@@ -174,7 +174,7 @@ export default function EditUserModal({
             variant="secondary"
             size="small"
             onClick={onClose}
-            className="!px-6 !py-2"
+            className="!px-8 !py-3"
           >
             Cancelar
           </Button>
@@ -182,6 +182,7 @@ export default function EditUserModal({
             variant="primary"
             size="small"
             onClick={handleConfirm}
+            className="!px-8 !py-3"
           >
             Confirmar
           </Button>

@@ -20,32 +20,51 @@ export function CampaignCardProfileCompact({
   const roleConfig = {
     donor: {
       long: "Doador",
+      short: "Doador",
       bg: "bg-[var(--color-text-success)]",
       text: "text-[var(--color-text-1)]",
     },
     admin: {
       long: "Administrador",
+      short: "Admin",
       bg: "bg-[var(--color-text-special-2)]",
       text: "text-[var(--color-text-1)]",
     },
   }[role];
 
-  const handleActionKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleActionKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       onAction?.();
     }
   };
 
+  const truncateName = (name: string, maxLength: number = 25) => {
+    return name.length > maxLength ? `${name.substring(0, maxLength)}...` : name;
+  };
+
   return (
     <article
       className={cn(
-        "flex flex-col sm:flex-row w-full",
+        "flex flex-row w-full items-center",
         "bg-[var(--color-background)] border border-[var(--color-components-2)]",
-        "rounded-2xl p-4 gap-3 sm:items-center",
+        "rounded-2xl p-4 gap-3",
+        "sm:cursor-default cursor-pointer",
         className
       )}
       aria-label={`Card perfil compacto ${profileName}`}
+      onClick={() => {
+        if (window.innerWidth < 640) {
+          onAction?.();
+        }
+      }}
+      onKeyDown={(e) => {
+        if (window.innerWidth < 640) {
+          handleActionKeyDown(e);
+        }
+      }}
+      tabIndex={window.innerWidth < 640 ? 0 : undefined}
+      role={window.innerWidth < 640 ? "button" : undefined}
     >
       <div className="flex items-center flex-1 min-w-0">
         <div className="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0">
@@ -57,15 +76,18 @@ export function CampaignCardProfileCompact({
         </div>
 
         <div className="flex-1 min-w-0 ml-3">
-          <div className="font-semibold text-[var(--color-brand-dark)] truncate text-sm sm:text-base lg:text-lg text-left">
-            {profileName}
+          <div 
+            className="font-semibold text-[var(--color-brand-dark)] truncate text-sm sm:text-base lg:text-lg text-left"
+            title={profileName}
+          >
+            {truncateName(profileName)}
           </div>
         </div>
       </div>
 
-      <div className="flex items-center gap-2 sm:gap-3 justify-end">
+      <div className="flex items-center gap-2 sm:gap-3">
         {showRole && (
-          <div className="w-[110px] sm:w-[120px] flex-shrink-0">
+          <div className="w-[90px] sm:w-[120px] flex-shrink-0">
             <div
               className={cn(
                 "font-semibold rounded-lg py-2 px-3 text-xs sm:text-sm text-center whitespace-nowrap",
@@ -73,7 +95,8 @@ export function CampaignCardProfileCompact({
                 roleConfig.text
               )}
             >
-              {roleConfig.long}
+              <span className="sm:hidden">{roleConfig.short}</span>
+              <span className="hidden sm:inline">{roleConfig.long}</span>
             </div>
           </div>
         )}
@@ -81,10 +104,13 @@ export function CampaignCardProfileCompact({
         <div
           role="button"
           tabIndex={0}
-          onClick={onAction}
+          onClick={(e) => {
+            e.stopPropagation();
+            onAction?.();
+          }}
           onKeyDown={handleActionKeyDown}
           className={cn(
-            "inline-flex items-center justify-center rounded-xl transition-colors cursor-pointer flex-shrink-0",
+            "hidden sm:inline-flex items-center justify-center rounded-xl transition-colors cursor-pointer flex-shrink-0",
             "w-10 h-10 sm:w-12 sm:h-12 bg-[var(--color-brand-dark)] hover:bg-[var(--color-brand-light)] text-[var(--color-text-1)]"
           )}
         >
