@@ -4,6 +4,8 @@ import { useState } from "react";
 interface TabsProps extends VariantProps<typeof tabButtonVariants> {
   tabs: string[];
   children: React.ReactNode[];
+  headerContent?: React.ReactNode;
+  onTabChange?: (tab: string, index: number) => void;
 }
 
 const tabsContainerVariants = cva("flex items-center p-1 rounded-[6px] mb-2 w-fit", {
@@ -56,25 +58,32 @@ const tabButtonVariants = cva("cursor-pointer px-3 py-[6px] rounded min-w-[80px]
   },
 });
 
-export const Tabs = ({ tabs, children, variant }: TabsProps) => {
+export const Tabs = ({ tabs, children, variant, headerContent, onTabChange }: TabsProps) => {
   const [activeTab, setActiveTab] = useState<number>(0);
 
   return (
     <div>
-      <div className={tabsContainerVariants({ variant })}>
-        {tabs.map((tab, index) => {
-          const isActive = activeTab === index;
-          return (
-            <button
-              key={index}
-              className={tabButtonVariants({ variant, active: isActive })}
-              onClick={() => setActiveTab(index)}
-            >
-              <span className="text-sm font-medium">{tab}</span>
-            </button>
-          );
-        })}
+      <div className="flex justify-center w-full">
+        <div className={tabsContainerVariants({ variant })}>
+          {tabs.map((tab, index) => {
+            const isActive = activeTab === index;
+            return (
+              <button
+                key={index}
+                className={tabButtonVariants({ variant, active: isActive })}
+                onClick={() => {
+                  setActiveTab(index);
+                  if (onTabChange) onTabChange(tab, index);
+                }}
+              >
+                <span className="text-sm font-medium">{tab}</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
+
+      {headerContent && <div className="w-full">{headerContent}</div>}
 
       <div className="w-full flex flex-col items-start">{children[activeTab]}</div>
     </div>
