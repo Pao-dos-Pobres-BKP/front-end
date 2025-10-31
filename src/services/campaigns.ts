@@ -43,7 +43,7 @@ export async function getCampaigns(
 export type UpdateCampaignParams = {
   title: string;
   description: string;
-  currentAmount?: number | null;
+  // currentAmount?: number | null;
   targetAmount: number;
   startDate: string;
   endDate: string;

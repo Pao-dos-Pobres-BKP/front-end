@@ -61,6 +61,7 @@ const Campanhas = () => {
   );
   const [campaignToDelete, setCampaignToDelete] = useState<CampaignWithSituation | null>(null);
   const [deleteFromEditModal, setDeleteFromEditModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [campaigns, setCampaigns] = useState<CampaignWithSituation[]>([]);
   const [loading, setLoading] = useState(true);
   const [sortOrder, setSortOrder] = useState<"recent" | "oldest">("recent");
@@ -258,23 +259,21 @@ const Campanhas = () => {
     image?: File | null;
   }) => {
     try {
-      // Encontra a campanha original para pegar os dados completos
       const originalCampaign = campaigns.find((c) => c.id === data.id);
       if (!originalCampaign || !user) {
         throw new Error("Campanha ou usuário não encontrado");
       }
 
-      // TODO: Se houver imagem nova (File), fazer upload primeiro e obter URL
       const imageUrl =
         data.image instanceof File
-          ? originalCampaign.imageUrl // Por enquanto mantém a URL original
+          ? originalCampaign.imageUrl
           : originalCampaign.imageUrl;
 
       await updateCampaign(data.id, {
         title: data.title,
         description: data.description,
         targetAmount: data.targetValue,
-        currentAmount: originalCampaign.currentAmount > 0 ? originalCampaign.currentAmount : null,
+        // currentAmount: originalCampaign.currentAmount > 0 ? originalCampaign.currentAmount : null,
         startDate: originalCampaign.startDate,
         endDate: data.endDate.toISOString(),
         imageUrl: imageUrl || undefined,
@@ -282,7 +281,6 @@ const Campanhas = () => {
         createdBy: user.id,
       });
 
-      // Recarregar as campanhas
       window.location.reload();
     } catch (error) {
       console.error("Erro ao salvar campanha:", error);
@@ -291,14 +289,14 @@ const Campanhas = () => {
   };
 
   const handleDeleteRequest = () => {
-    setIsEditModalOpen(false); // Fecha o modal de edição
-    setDeleteFromEditModal(true); // Marca que veio do modal de edição
-    setIsDeleteConfirmOpen(true); // Abre o modal de confirmação
+    setIsEditModalOpen(false);
+    setDeleteFromEditModal(true);
+    setIsDeleteConfirmOpen(true);
   };
 
   const handleOpenDeleteModal = (campaign: CampaignWithSituation) => {
     setCampaignToDelete(campaign);
-    setDeleteFromEditModal(false); // Marca que não veio do modal de edição
+    setDeleteFromEditModal(false);
     setIsDeleteConfirmOpen(true);
   };
 
@@ -306,25 +304,29 @@ const Campanhas = () => {
     if (!campaignToDelete) return;
 
     try {
+      setIsDeleting(true);
       await deleteCampaign(campaignToDelete.id);
-      // Fechar modais
-      setIsEditModalOpen(false);
       setIsDeleteConfirmOpen(false);
-      // Recarregar campanhas
+      setIsEditModalOpen(false);
+      setDeleteFromEditModal(false);
+
       window.location.reload();
     } catch (error) {
       console.error("Erro ao excluir campanha:", error);
       alert("Erro ao excluir campanha. Tente novamente.");
+      setIsDeleting(false);
     }
   };
 
   const handleCancelDelete = () => {
+    // Se estiver no processo de deletar, não faz nada
+    if (isDeleting) return;
+    
     setIsDeleteConfirmOpen(false);
-    // Só reabre o modal de edição se o delete foi chamado de lá
     if (deleteFromEditModal) {
       setIsEditModalOpen(true);
     }
-    setDeleteFromEditModal(false); // Reseta o estado
+    setDeleteFromEditModal(false);
   };
 
   const handleCreateCampaign = async (data: {
@@ -338,8 +340,7 @@ const Campanhas = () => {
     if (!user) return;
 
     try {
-      // TODO: Se houver imagem, fazer upload primeiro e obter URL
-      const imageUrl = undefined; // Por enquanto sem imagem
+      const imageUrl = undefined;
 
       await createCampaign({
         title: data.title,
@@ -352,7 +353,6 @@ const Campanhas = () => {
         createdBy: user.id,
       });
 
-      // Recarregar campanhas
       window.location.reload();
     } catch (error) {
       console.error("Erro ao criar campanha:", error);
@@ -479,7 +479,6 @@ const Campanhas = () => {
             ))}
           </div>
 
-          {/* Paginação */}
           {totalPages > 1 && (
             <Pagination className="mt-4">
               <PaginationContent>
@@ -502,7 +501,6 @@ const Campanhas = () => {
         </>
       )}
 
-      {/* Modal de Campanha */}
       {selectedCampaign && (
         <CampaignModal
           open={isCampaignModalOpen}
@@ -511,16 +509,14 @@ const Campanhas = () => {
         />
       )}
 
-      {/* Modal de Edição de Campanha */}
       <EditCampaignModal
-        open={isEditModalOpen}
+        open={isEditModalOpen && !isDeleting}
         onOpenChange={setIsEditModalOpen}
         campaign={selectedCampaignToEdit}
         onSave={handleSaveEditedCampaign}
         onDeleteRequest={handleDeleteRequest}
       />
 
-      {/* Modal de Confirmação de Exclusão */}
       {campaignToDelete && (
         <DeleteCampaignModal
           open={isDeleteConfirmOpen}
@@ -534,7 +530,6 @@ const Campanhas = () => {
         />
       )}
 
-      {/* Modal de Aprovação de Campanha */}
       <ApproveCampaignModal
         open={isApproveModalOpen}
         onOpenChange={setIsApproveModalOpen}
@@ -543,7 +538,6 @@ const Campanhas = () => {
         onReject={handleRejectCampaign}
       />
 
-      {/* Modais de Criação de Campanha */}
       {user?.role === "ADMIN" ? (
         <AdminCreateCampaignModal
           open={isCreateModalOpen}
