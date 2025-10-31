@@ -82,9 +82,18 @@ export default function NewsEvents() {
   ];
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [activeTabIndex, setActiveTabIndex] = useState(0);
   const cardsPerPage = 10;
 
-  const totalPages = Math.ceil(mockEventsAndNews.length / cardsPerPage);
+  const filteredData =
+    activeTabIndex === 0
+      ? mockEventsAndNews.filter((e) => e.type === "news")
+      : activeTabIndex === 1
+        ? mockEventsAndNews.filter((e) => e.type === "event")
+        : mockEventsAndNews;
+
+  const totalPages = Math.ceil(filteredData.length / cardsPerPage);
+  const shouldShowPagination = totalPages > 1;
 
   const searchHeader = (
     <div className="flex flex-wrap w-full items-center gap-3 my-5">
@@ -108,12 +117,16 @@ export default function NewsEvents() {
   );
 
   return (
-    <div className="w-full py-5 px-6 bg-[#2F5361]">
+    <div className="w-full min-h-screen px-4 sm:px-8 py-10 flex flex-col gap-8 bg-[#2F5361]">
       <div className="w-full flex flex-col">
         <Tabs
           tabs={["Notícias", "Eventos", "Todos"]}
           variant="secondary"
           headerContent={searchHeader}
+          onTabChange={(_, index) => {
+            setActiveTabIndex(index);
+            setCurrentPage(1);
+          }}
         >
           <div className="flex flex-col gap-3 w-full">
             {mockEventsAndNews
@@ -164,60 +177,61 @@ export default function NewsEvents() {
         </Tabs>
       </div>
 
-       <div className="flex justify-center items-center gap-2 mt-6">
-         <Pagination>
-           <PaginationContent className="gap-2">
-             <PaginationItem>
-               <PaginationPrevious
-                 size="sm"
-                 onClick={currentPage === 1 ? undefined : () => setCurrentPage(currentPage - 1)}
-                 className={cn(
-                   "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
-                   currentPage === 1
-                     ? "bg-white text-[#F68537] border-[#F68537] opacity-50 cursor-not-allowed"
-                     : "bg-[#F68537] text-white border-[#F68537]"
-                 )}
-               >
-                 Anterior
-               </PaginationPrevious>
-             </PaginationItem>
- 
-             {Array.from({ length: totalPages }, (_, i) => (
-               <PaginationItem key={i}>
-                 <PaginationLink
-                   size="icon"
-                   onClick={() => setCurrentPage(i + 1)}
-                   isActive={currentPage === i + 1}
-                   className={`px-3 py-1 border rounded-full transition-colors ${
-                     currentPage === i + 1
-                       ? "bg-white text-[#F68537] border-[#F68537]"
-                       : "bg-[#F68537] text-white border-[#F68537]"
-                   }`}
-                 >
-                   {i + 1}
-                 </PaginationLink>
-               </PaginationItem>
-             ))}
- 
-             <PaginationItem>
-               <PaginationNext
-                 size="sm"
-                 onClick={
-                   currentPage === totalPages ? undefined : () => setCurrentPage(currentPage + 1)
-                 }
-                 className={cn(
-                   "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
-                   currentPage === totalPages
-                     ? "bg-white text-[#F68537] border-[#F68537] opacity-50 cursor-not-allowed"
-                     : "bg-[#F68537] text-white border-[#F68537]"
-                 )}
-               >
-                 Próximo
-               </PaginationNext>
-             </PaginationItem>
-           </PaginationContent>
-         </Pagination>
-       </div>
+      {shouldShowPagination && (
+        <div className="flex justify-center items-center gap-2 mt-6">
+          <Pagination>
+            <PaginationContent className="gap-2">
+              <PaginationItem>
+                <PaginationPrevious
+                  size="sm"
+                  onClick={currentPage === 1 ? undefined : () => setCurrentPage(currentPage - 1)}
+                  className={cn(
+                    "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
+                    currentPage === 1
+                      ? "bg-white text-[#F68537] border-[#F68537] opacity-50 cursor-not-allowed"
+                      : "bg-[#F68537] text-white border-[#F68537]"
+                  )}
+                >
+                  Anterior
+                </PaginationPrevious>
+              </PaginationItem>
+
+              {Array.from({ length: totalPages }, (_, i) => (
+                <PaginationItem key={i}>
+                  <PaginationLink
+                    size="icon"
+                    onClick={() => setCurrentPage(i + 1)}
+                    isActive={currentPage === i + 1}
+                    className={`px-3 py-1 border rounded-full transition-colors ${currentPage === i + 1
+                        ? "bg-white text-[#F68537] border-[#F68537]"
+                        : "bg-[#F68537] text-white border-[#F68537]"
+                      }`}
+                  >
+                    {i + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+
+              <PaginationItem>
+                <PaginationNext
+                  size="sm"
+                  onClick={
+                    currentPage === totalPages ? undefined : () => setCurrentPage(currentPage + 1)
+                  }
+                  className={cn(
+                    "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
+                    currentPage === totalPages
+                      ? "bg-white text-[#F68537] border-[#F68537] opacity-50 cursor-not-allowed"
+                      : "bg-[#F68537] text-white border-[#F68537]"
+                  )}
+                >
+                  Próximo
+                </PaginationNext>
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
     </div>
   );
 }
