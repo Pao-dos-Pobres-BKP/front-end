@@ -49,38 +49,42 @@ export function CampaignCardHistoric(props: CampaignCardHistoricProps) {
   return (
     <article
       className={cn(
-        "grid grid-cols-1 sm:grid-cols-3 w-full bg-white border border-[#e6e8eb] rounded-2xl p-4 sm:p-5 gap-3 sm:gap-4",
-        "sm:[&>*:nth-child(2)]:justify-self-center sm:[&>*:nth-child(3)]:justify-self-end",
+        "w-full bg-white border border-[#e6e8eb] rounded-2xl p-4 sm:p-5",
+        "flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4",
         className
       )}
       aria-label={`Card histórico ${title}`}
     >
-      <div className="flex items-center min-w-0 w-full sm:w-auto col-span-1 overflow-hidden">
+      <div className="flex items-center min-w-0 overflow-hidden">
         {renderIcon()}
-        <div className="font-semibold flex flex-col items-start ml-2 min-w-0 flex-1 truncate">
+        <div className="font-semibold flex flex-col items-start ml-2 min-w-0 shrink truncate">
           <div className="text-[#034d6b] truncate text-base sm:text-xl">{title}</div>
           {creatorName && (
-            <div
-              className={cn(
-                "text-xs sm:text-sm truncate",
-                situation === "recurring"
-                  ? "bg-gradient-to-b from-[#FF4A4A] to-[#FF8787] bg-clip-text text-transparent"
-                  : situation === "approved"
-                    ? "bg-gradient-to-b from-[#456DFF] to-[#AABCFF] bg-clip-text text-transparent"
-                    : "text-[#034d6b]"
-              )}
-            >
+            <div className={cn("text-xs sm:text-sm truncate", gradientTextClass)}>
               por {creatorName}
             </div>
           )}
         </div>
       </div>
 
+      <div className="flex sm:hidden items-center justify-between gap-3 w-full">
+        {situation && (
+          <div className={cn("text-base font-semibold", gradientTextClass)}>
+            {situationLabels[situation]}
+          </div>
+        )}
+        {lastDonation !== undefined && (
+          <div className={cn("text-xl font-semibold", gradientTextClass)}>
+            +{formatCurrency(lastDonation)}
+          </div>
+        )}
+      </div>
+
       {situation && (
         <div
           className={cn(
-            "flex sm:hidden items-center justify-self-start text-base font-semibold",
-            "hidden sm:flex sm:col-span-1 items-center justify-center text-xl font-semibold ml-100",
+            "hidden sm:flex items-center justify-center text-base md:text-xl font-semibold px-4",
+            "min-w-fit whitespace-nowrap",
             gradientTextClass
           )}
         >
@@ -88,30 +92,11 @@ export function CampaignCardHistoric(props: CampaignCardHistoricProps) {
         </div>
       )}
 
-      {(situation || lastDonation !== undefined) && (
-        <div className="sm:hidden grid grid-cols-2 gap-2 w-full col-span-1">
-          {situation && (
-            <div className={cn("text-base font-semibold text-left col-span-1", gradientTextClass)}>
-              {situationLabels[situation]}
-            </div>
-          )}
-          {lastDonation !== undefined && (
-            <div
-              className={cn(
-                "text-xl font-semibold text-right col-span-1 justify-self-end",
-                gradientTextClass
-              )}
-            >
-              +{formatCurrency(lastDonation)}
-            </div>
-          )}
-        </div>
-      )}
-
       {lastDonation !== undefined && (
         <div
           className={cn(
-            "hidden sm:flex items-center justify-self-end text-2xl font-semibold ml-4",
+            "hidden sm:flex items-center justify-end text-xl md:text-2xl font-semibold",
+            "min-w-fit whitespace-nowrap",
             gradientTextClass
           )}
         >
