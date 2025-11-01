@@ -10,7 +10,6 @@ import Perfil from "@/pages/perfil";
 import Dashboard from "@/pages/dashboard";
 import DonorList from "@/pages/donor-list";
 import Partners from "@/pages/empresas-parceiras";
-import NewsEvents from "@/pages/news-events";
 
 const Navigation = () => {
   return (
@@ -25,7 +24,6 @@ const Navigation = () => {
           <Route path={ROUTES.dashboard} element={<Dashboard />} />
           <Route path={ROUTES.donorList} element={<DonorList />} />
           <Route path={ROUTES.partners} element={<Partners />} />
-          <Route path={ROUTES.newsEvents} element={<NewsEvents />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
