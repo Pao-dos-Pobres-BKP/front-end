@@ -46,7 +46,6 @@ export default function CampaignCard({
   className,
   donorName = "",
   donorEmail = "",
-  donationAmount,
   memberSince = "",
   campaigns = [],
   lastDonation = 0,
@@ -62,14 +61,10 @@ export default function CampaignCard({
       <CampaignCardProfile
         donorName={donorName}
         donorEmail={donorEmail}
-        donationAmount={donationAmount}
         memberSince={memberSince}
         campaigns={campaigns}
-        title={title}
         raised={raised}
-        goal={goal}
         className={className}
-        progressPercent={percent}
       />
     );
   }
