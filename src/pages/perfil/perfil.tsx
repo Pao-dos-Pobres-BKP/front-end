@@ -46,18 +46,24 @@ export default function Perfil() {
   const [currentCampaignsPage, setCurrentCampaignsPage] = useState(1);
   const [currentDonationsPage, setCurrentDonationsPage] = useState(1);
 
-  const { campaigns, campaignsTotalPages, donations, donationsTotalPages, handleDeleteAccount } =
-    usePerfil({
-      campaignsPage: currentCampaignsPage,
-      campaignsPageSize: campaignsPageSize,
-      donationsPage: currentDonationsPage,
-      donationsPageSize: 10,
-    });
+  const {
+    campaigns,
+    campaignsTotalPages,
+    donations,
+    donationsTotalPages,
+    handleDeleteAccount,
+    handleUpdateAccount,
+  } = usePerfil({
+    campaignsPage: currentCampaignsPage,
+    campaignsPageSize: campaignsPageSize,
+    donationsPage: currentDonationsPage,
+    donationsPageSize: 10,
+  });
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isCreateAdminModalOpen, setIsCreateAdminModalOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-  const { user: currentUser, logout } = useUser();
+  const { user: currentUser, logout, setUser } = useUser();
 
   const [dados, setDados] = useState<ProfileUser>({
     id: "1",
@@ -99,6 +105,15 @@ export default function Perfil() {
     await handleDeleteAccount(currentUser.id, currentUser.role);
     // Clear all user data and logout
     logout();
+  };
+
+  const handleAccountUpdate = async (updatedUser: User) => {
+    if (!currentUser) return;
+    await handleUpdateAccount(currentUser.id, updatedUser);
+    // Update the user context with the new data
+    setUser({ ...currentUser, ...updatedUser });
+    // Update local state
+    setDados((prev) => ({ ...prev, ...updatedUser }));
   };
 
   return (
@@ -380,8 +395,9 @@ export default function Perfil() {
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         onSave={handleSalvarPerfil}
-        initialData={dados}
+        initialData={currentUser || dados}
         onDeleteAccount={handleAccountDeletion}
+        onUpdateAccount={handleAccountUpdate}
       />
 
       <ConfirmLogoutModal

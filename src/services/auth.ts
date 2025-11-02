@@ -64,3 +64,36 @@ export async function deleteAccount(id: string, role: RoleEnum): Promise<void> {
 
   return api.delete(`${deleteEndpoint}/${id}`);
 }
+
+export async function updateAccount(id: string, user: User): Promise<void> {
+  const updateEndpoint = user.role === "DONOR" ? "/donors" : "/admin";
+
+  // Only send the fields that the API expects
+  const requestBody: {
+    email: string;
+    password?: string;
+    fullName: string;
+    birthDate?: string;
+    gender?: string;
+    phone?: string;
+    cpf?: string;
+  } = {
+    email: user.email,
+    fullName: user.fullname,
+  };
+
+  if (user.birthDate) {
+    requestBody.birthDate =
+      user.birthDate instanceof Date ? user.birthDate.toISOString().split("T")[0] : user.birthDate;
+  }
+  if (user.gender) requestBody.gender = user.gender;
+  if (user.phone) {
+    const cleanPhone = user.phone.replace(/\D/g, "");
+    requestBody.phone = `+55${cleanPhone}`;
+  }
+  if (user.cpf) {
+    requestBody.cpf = user.cpf.replace(/\D/g, "");
+  }
+
+  return api.patch(`${updateEndpoint}/${id}`, requestBody);
+}
