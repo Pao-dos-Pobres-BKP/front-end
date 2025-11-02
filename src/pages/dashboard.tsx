@@ -538,33 +538,65 @@ function Dashboard() {
             )}
           </div>
 
-          <div className="bg-white rounded-lg p-4 sm:p-6 flex-1 flex flex-col">
-            {/* TEMPORÁRIO: Navegação entre gráficos */}
-            <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-              <div className="flex items-center justify-between gap-4">
-                <Button variant="secondary" onClick={handlePreviousChart} size="small">
-                  ← Anterior
-                </Button>
+          {isWide ?
+            <div className="bg-white rounded-lg p-4 sm:p-6 flex-1 flex flex-col">
+              {/* TEMPORÁRIO: Navegação entre gráficos */}
+              <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <div className="flex items-center justify-between gap-4">
+                  <Button variant="secondary" onClick={handlePreviousChart} size="small">
+                    ← Anterior
+                  </Button>
+                  <div className="flex-1 text-center">
+                    <p className="text-sm text-gray-600">
+                      Gráfico {currentChartIndex + 1} de {allChartKeys.length}
+                    </p>
+                    <p className="font-semibold text-[var(--color-components)]">
+                      {allChartKeys[currentChartIndex]}
+                    </p>
+                  </div>
+                  <Button variant="secondary" onClick={handleNextChart} size="small">
+                    Próximo →
+                  </Button>
+                </div>
+              </div>
+
+              <RenderChart
+                chartKey={chartToShow}
+                campaignId={selectedCampaign ? selectedCampaign.id : null}
+                period={datePeriod}
+              />
+            </div> :
+            <div className="bg-white rounded-lg p-4 sm:p-6 flex-1 flex flex-col">
+              {/* TEMPORÁRIO: Navegação entre gráficos */}
+              <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                 <div className="flex-1 text-center">
                   <p className="text-sm text-gray-600">
                     Gráfico {currentChartIndex + 1} de {allChartKeys.length}
                   </p>
-                  <p className="font-semibold text-[var(--color-components)]">
-                    {allChartKeys[currentChartIndex]}
-                  </p>
                 </div>
-                <Button variant="secondary" onClick={handleNextChart} size="small">
-                  Próximo →
-                </Button>
-              </div>
-            </div>
 
-            <RenderChart
-              chartKey={chartToShow}
-              campaignId={selectedCampaign ? selectedCampaign.id : null}
-              period={datePeriod}
-            />
-          </div>
+                <div className="flex items-center justify-between gap-4">
+                  <Button variant="secondary" onClick={handlePreviousChart} size="large">
+                    ← Anterior
+                  </Button>
+
+                  <Button variant="secondary" onClick={handleNextChart} size="large">
+                    Próximo →
+                  </Button>
+                </div>
+                <p className="font-semibold text-[var(--color-components)] mt-3 text-center text-lg">
+                  {allChartKeys[currentChartIndex]}
+                </p>
+              </div>
+
+              <RenderChart
+                chartKey={chartToShow}
+                campaignId={selectedCampaign ? selectedCampaign.id : null}
+                period={datePeriod}
+              />
+            </div>
+          }
+
         </section>
       </main>
     </div>
