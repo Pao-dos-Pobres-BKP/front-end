@@ -4,7 +4,7 @@ import { MetricCard } from "@/components/ui/metric-card";
 import { Tabs } from "@/components/ui/tabs";
 import { Select } from "@/components/ui/select";
 import Button from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronUp, ChevronDown } from "lucide-react";
 import { DateRangePicker } from "@/components/ui/Calendar/date-range-picker";
 import type { DateRange } from "react-day-picker";
 import Input from "@/components/ui/input";
@@ -103,6 +103,42 @@ const formatCurrency = (value: number) => {
   return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 };
 
+// Detect if viewport is at least 1156px (matches layout breakpoint)
+const useIsWide = () => {
+  const getMatch = () =>
+    typeof window !== "undefined"
+      ? window.matchMedia("(min-width: 1156px)").matches
+      : true;
+
+  const [isWide, setIsWide] = useState<boolean>(getMatch);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mql = window.matchMedia("(min-width: 1156px)");
+    const handler = (e: MediaQueryListEvent | MediaQueryList) => {
+      setIsWide("matches" in e ? e.matches : (e as MediaQueryList).matches);
+    };
+
+    // Initial sync (for some browsers when component mounts before first change event)
+    handler(mql);
+
+    if (typeof mql.addEventListener === "function") {
+      mql.addEventListener("change", handler as (ev: Event) => void);
+      return () => mql.removeEventListener("change", handler as (ev: Event) => void);
+    } else {
+      // Safari <14
+      // @ts-ignore - addListener exists in older types
+      mql.addListener(handler);
+      return () => {
+        // @ts-ignore - removeListener exists in older types
+        mql.removeListener(handler);
+      };
+    }
+  }, []);
+
+  return isWide;
+};
+
 const RenderChart = ({
   chartKey,
   campaignId,
@@ -169,6 +205,7 @@ const allChartKeys = [
 ];
 
 function Dashboard() {
+  const isWide = useIsWide();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [metrics, setMetrics] = useState<MetricData | null>(null);
   const [timeRangeTab, setTimeRangeTab] = useState<"mensal" | "anual">("mensal");
@@ -296,9 +333,9 @@ function Dashboard() {
 
   return (
     <div className="bg-[#2F5361]">
-      <main className={`max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex ${isSidebarOpen ? "gap-6" : ""}`}>
+      <main className={`max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col min-[1156px]:flex-row ${isSidebarOpen ? "gap-6" : ""}`}>
         <aside
-          className={`transition-all duration-300 ${isSidebarOpen ? "w-80" : "w-0"} overflow-hidden`}
+          className={`transition-all duration-300 overflow-hidden ${isSidebarOpen ? "block w-full min-[1156px]:w-80" : "hidden min-[1156px]:block min-[1156px]:w-0"}`}
         >
           <div className="bg-white rounded-lg p-4 h-full flex flex-col gap-4">
             <div className="flex justify-between items-center">
@@ -307,7 +344,11 @@ function Dashboard() {
                 onClick={() => setIsSidebarOpen(false)}
                 className="text-[var(--color-components)] hover:bg-gray-200 p-1 rounded-full"
               >
-                <ChevronLeft className="h-5 w-5" />
+                {isWide ? (
+                  <ChevronLeft className="h-5 w-5" />
+                ) : (
+                  <ChevronUp className="h-5 w-5" />
+                )}
               </button>
             </div>
 
@@ -460,7 +501,7 @@ function Dashboard() {
 
         <section className="flex-1 flex flex-col gap-6 w-full">
           <div
-            className={`grid grid-cols-2 md:grid-cols-3 gap-4 place-items-stretch ${!isSidebarOpen ? "xl:grid-cols-6" : "lg:grid-cols-5"}`}
+            className={`grid grid-cols-2 gap-4 place-items-stretch ${!isSidebarOpen ? "md:grid-cols-3 lg:grid-cols-3" : "md:grid-cols-4"}`}
           >
             {!isSidebarOpen && (
               <button
@@ -470,7 +511,11 @@ function Dashboard() {
                 <span className="font-bold text-lg text-[color:var(--color-components)]">
                   Dashboard
                 </span>
-                <ChevronRight className="h-5 w-5 text-[color:var(--color-components)]" />
+                {isWide ? (
+                  <ChevronRight className="h-5 w-5 text-[color:var(--color-components)]" />
+                ) : (
+                  <ChevronDown className="h-5 w-5 text-[color:var(--color-components)]" />
+                )}
               </button>
             )}
             {metrics && (
@@ -479,14 +524,16 @@ function Dashboard() {
                 <MetricCard label="Doadores Recorrentes" value={metrics.recurringDonors} />
                 <MetricCard label="Doadores" value={metrics.totalDonors} />
                 <MetricCard
-                  label="Arrecadado este mês"
-                  value={formatCurrency(metrics.raisedThisMonth)}
-                />
-                <MetricCard
                   label="Média de doação"
                   value={formatCurrency(metrics.averageDonation)}
                   prefix="~"
                 />
+                <div className={`${isSidebarOpen ? "col-span-2 lg:col-span-4 md:col-span-4" : ""}`}>
+                  <MetricCard
+                    label="Arrecadado este mês"
+                    value={formatCurrency(metrics.raisedThisMonth)}
+                  />
+                </div>
               </>
             )}
           </div>
