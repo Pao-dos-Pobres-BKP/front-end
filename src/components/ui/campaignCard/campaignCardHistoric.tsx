@@ -3,6 +3,7 @@ import { formatCurrency } from "@/utils/formatCurrency";
 import blueHeart from "@/assets/blueHeart.svg";
 import orangeHeart from "@/assets/orangeHeart.svg";
 import redHeart from "@/assets/redHeart.svg";
+import type { DonorDonationsAPI } from "@/services/donation";
 
 export type CampaignCardHistoricProps = {
   title: string;
@@ -13,22 +14,21 @@ export type CampaignCardHistoricProps = {
   situation?: "approved" | "pending" | "rejected" | "recurring";
   lastDonation?: number;
   donationAmount?: number;
+  periodicity?: DonorDonationsAPI["periodicity"];
 };
 
 export function CampaignCardHistoric(props: CampaignCardHistoricProps) {
-  const { situation, creatorName, title, className, donationAmount } = props;
+  const { situation, creatorName, title, className, donationAmount, periodicity } = props;
 
-  const situationLabels: Record<string, string> = {
-    approved: "Única",
-    pending: "Pendente de Aprovação",
-    rejected: "Rejeitada",
-    recurring: "Recorrente",
-  };
+  // Determine if donation is recurring based on periodicity
+  const isRecurring = periodicity !== null && periodicity !== undefined;
+  const displayLabel = isRecurring ? "Recorrente" : "Única";
+  const displaySituation = isRecurring ? "recurring" : "approved";
 
   const gradientTextClass =
-    situation === "recurring"
+    displaySituation === "recurring"
       ? "bg-gradient-to-b from-[#FF4A4A] to-[#FF8787] bg-clip-text text-transparent"
-      : situation === "approved"
+      : displaySituation === "approved"
         ? "bg-gradient-to-b from-[#456DFF] to-[#AABCFF] bg-clip-text text-transparent"
         : "text-[#034d6b]";
 
@@ -38,7 +38,7 @@ export function CampaignCardHistoric(props: CampaignCardHistoricProps) {
       pending: orangeHeart,
       recurring: redHeart,
     };
-    const src = situation ? map[situation] : undefined;
+    const src = displaySituation ? map[displaySituation] : undefined;
     if (!src) return null;
     return (
       <div className="h-5 w-5 sm:h-6 sm:w-6 flex-shrink-0">
@@ -77,37 +77,31 @@ export function CampaignCardHistoric(props: CampaignCardHistoricProps) {
         </div>
       </div>
 
-      {situation && (
-        <div
-          className={cn(
-            "flex sm:hidden items-center justify-self-start text-base font-semibold",
-            "hidden sm:flex sm:col-span-1 items-center justify-center text-xl font-semibold ml-100",
-            gradientTextClass
-          )}
-        >
-          {situationLabels[situation]}
-        </div>
-      )}
+      <div
+        className={cn(
+          "flex sm:hidden items-center justify-self-start text-base font-semibold",
+          "hidden sm:flex sm:col-span-1 items-center justify-center text-xl font-semibold ml-100",
+          gradientTextClass
+        )}
+      >
+        {displayLabel}
+      </div>
 
-      {(situation || donationAmount !== undefined) && (
-        <div className="sm:hidden grid grid-cols-2 gap-2 w-full col-span-1">
-          {situation && (
-            <div className={cn("text-base font-semibold text-left col-span-1", gradientTextClass)}>
-              {situationLabels[situation]}
-            </div>
-          )}
-          {donationAmount !== undefined && (
-            <div
-              className={cn(
-                "text-xl font-semibold text-right col-span-1 justify-self-end",
-                gradientTextClass
-              )}
-            >
-              +{formatCurrency(donationAmount ?? 0)}
-            </div>
-          )}
+      <div className="sm:hidden grid grid-cols-2 gap-2 w-full col-span-1">
+        <div className={cn("text-base font-semibold text-left col-span-1", gradientTextClass)}>
+          {displayLabel}
         </div>
-      )}
+        {donationAmount !== undefined && (
+          <div
+            className={cn(
+              "text-xl font-semibold text-right col-span-1 justify-self-end",
+              gradientTextClass
+            )}
+          >
+            +{formatCurrency(donationAmount ?? 0)}
+          </div>
+        )}
+      </div>
 
       {donationAmount !== undefined && (
         <div

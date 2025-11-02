@@ -1,6 +1,5 @@
 import { Progress } from "@/components/ui/progress";
 import CampaignCard from "@/components/ui/campaignCard/campaignCard";
-import Input from "@/components/ui/input";
 import exemplo_foto_perfil from "@/assets/exemplo_foto_perfil.jpg";
 import { EditSquare } from "react-iconly";
 import { cn } from "@/lib/utils";
@@ -14,7 +13,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import EditUserModal from "@/components/ui/edit-user-modal";
 import ConfirmLogoutModal from "@/components/ui/confirm-logout-modal";
 
@@ -22,7 +21,6 @@ import type { Gender, User } from "@/contexts/UserContext";
 import CreateAdminModal from "@/components/ui/create-admin-modal";
 import { useUser } from "@/hooks/useUser";
 import { usePerfil } from "./usePerfil";
-import { useSearchParams } from "react-router-dom";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { dateUtils } from "@/utils/dateUtils";
 import { formatCPF, formatPhone } from "@/utils/formatters";
@@ -41,21 +39,21 @@ const genderMapper: Record<Gender, string> = {
 const CAMPAIGNS_PAGE_SIZE = 4;
 
 export default function Perfil() {
-  const [, setSearchParams] = useSearchParams();
   const [campaignsPageSize] = useState(CAMPAIGNS_PAGE_SIZE);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentCampaignsPage, setCurrentCampaignsPage] = useState(1);
+  const [currentDonationsPage, setCurrentDonationsPage] = useState(1);
 
-  const { campaigns, campaignsTotalPages } = usePerfil(currentPage, campaignsPageSize);
+  const { campaigns, campaignsTotalPages, donations, donationsTotalPages } = usePerfil({
+    campaignsPage: currentCampaignsPage,
+    campaignsPageSize: campaignsPageSize,
+    donationsPage: currentDonationsPage,
+    donationsPageSize: 10,
+  });
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isCreateAdminModalOpen, setIsCreateAdminModalOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-  const cardsPerPage = 6;
   const { user: currentUser } = useUser();
-
-  useEffect(() => {
-    setSearchParams({ page: currentPage.toString() });
-  }, [currentPage, setSearchParams]);
 
   const [dados, setDados] = useState<ProfileUser>({
     id: "1",
@@ -71,10 +69,6 @@ export default function Perfil() {
     percentageAchieved: 75,
     photo: exemplo_foto_perfil,
   });
-
-  //const campanhas: any[] = [];      // para testar quando não tiver campanhas apoiando.
-
-  const totalPages = Math.ceil(campaigns.length / cardsPerPage);
 
   const handleEditarConta = () => {
     setIsEditModalOpen(true);
@@ -225,11 +219,13 @@ export default function Perfil() {
                     <PaginationPrevious
                       size="sm"
                       onClick={
-                        currentPage === 1 ? undefined : () => setCurrentPage((prev) => prev - 1)
+                        currentCampaignsPage === 1
+                          ? undefined
+                          : () => setCurrentCampaignsPage((prev) => prev - 1)
                       }
                       className={cn(
                         "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
-                        currentPage === 1
+                        currentCampaignsPage === 1
                           ? "bg-white text-[#F68537] border-[#F68537] cursor-not-allowed"
                           : "bg-[#F68537] text-white border-[#F68537]"
                       )}
@@ -242,10 +238,10 @@ export default function Perfil() {
                     <PaginationItem key={i}>
                       <PaginationLink
                         size="icon"
-                        onClick={() => setCurrentPage(i + 1)}
-                        isActive={currentPage === i + 1}
+                        onClick={() => setCurrentCampaignsPage(i + 1)}
+                        isActive={currentCampaignsPage === i + 1}
                         className={`px-3 py-1 border rounded-full transition-colors ${
-                          currentPage === i + 1
+                          currentCampaignsPage === i + 1
                             ? "bg-white text-[#F68537] border-[#F68537]"
                             : "bg-[#F68537] text-white border-[#F68537]"
                         }`}
@@ -259,13 +255,13 @@ export default function Perfil() {
                     <PaginationNext
                       size="sm"
                       onClick={
-                        currentPage === campaignsTotalPages
+                        currentCampaignsPage === campaignsTotalPages
                           ? undefined
-                          : () => setCurrentPage((prev) => prev + 1)
+                          : () => setCurrentCampaignsPage((prev) => prev + 1)
                       }
                       className={cn(
                         "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
-                        currentPage === campaignsTotalPages
+                        currentCampaignsPage === campaignsTotalPages
                           ? "bg-white text-[#F68537] border-[#F68537] cursor-not-allowed"
                           : "bg-[#F68537] text-white border-[#F68537]"
                       )}
@@ -282,48 +278,16 @@ export default function Perfil() {
           <h2 className="text-2xl font-bold text-[#005172] mt-2 mb-4">Histórico de Doações</h2>
 
           <div className="mt-2 bg-white rounded-lg p-6 min-h-[580px] flex flex-col">
-            <div className="flex flex-col md:flex-row gap-3 items-center mb-6 w-full">
-              <Input placeholder="Buscar..." fullWidth />
-
-              <div className="relative w-full md:w-1/3">
-                <select
-                  id="filtro-doacoes"
-                  className="w-full appearance-none bg-[#F68537] text-white py-2 pl-3 pr-10 rounded-md shadow-sm focus:outline-none"
-                >
-                  <option value="" disabled>
-                    Selecione uma data
-                  </option>
-                  <option value="30">Últimos 30 dias</option>
-                  <option value="60">Últimos 60 dias</option>
-                  <option value="120">Últimos 120 dias</option>
-                </select>
-                <svg
-                  className="w-4 h-4 text-white absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </div>
-
-              <button className="w-full md:w-auto px-4 py-2 rounded-lg bg-[#F68537] text-white hover:bg-orange-600">
-                Pesquisar
-              </button>
-            </div>
-
             <div className="flex flex-col gap-3 flex-1">
-              {campaigns.map((campaign, index) => (
+              {donations.map((donation, index) => (
                 <CampaignCard
                   key={index}
                   variant="historic"
                   className="border border-[#005172] rounded-lg text-sm p-3"
-                  {...campaign}
+                  title={donation.campaignName}
+                  donationAmount={donation.amount}
+                  periodicity={donation.periodicity}
+                  campaignCreator={donation.campaignCreatedBy}
                 />
               ))}
             </div>
@@ -335,11 +299,13 @@ export default function Perfil() {
                     <PaginationPrevious
                       size="sm"
                       onClick={
-                        currentPage === 1 ? undefined : () => setCurrentPage((prev) => prev - 1)
+                        currentDonationsPage === 1
+                          ? undefined
+                          : () => setCurrentDonationsPage((prev) => prev - 1)
                       }
                       className={cn(
                         "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
-                        currentPage === 1
+                        currentDonationsPage === 1
                           ? "bg-white text-[#F68537] border-[#F68537] cursor-not-allowed"
                           : "bg-[#F68537] text-white border-[#F68537]"
                       )}
@@ -348,14 +314,14 @@ export default function Perfil() {
                     </PaginationPrevious>
                   </PaginationItem>
 
-                  {Array.from({ length: totalPages }, (_, i) => (
+                  {Array.from({ length: donationsTotalPages }, (_, i) => (
                     <PaginationItem key={i}>
                       <PaginationLink
                         size="icon"
-                        onClick={() => setCurrentPage(i + 1)}
-                        isActive={currentPage === i + 1}
+                        onClick={() => setCurrentDonationsPage(i + 1)}
+                        isActive={currentDonationsPage === i + 1}
                         className={`px-3 py-1 border rounded-full transition-colors ${
-                          currentPage === i + 1
+                          currentDonationsPage === i + 1
                             ? "bg-white text-[#F68537] border-[#F68537]"
                             : "bg-[#F68537] text-white border-[#F68537]"
                         }`}
@@ -369,13 +335,13 @@ export default function Perfil() {
                     <PaginationNext
                       size="sm"
                       onClick={
-                        currentPage === totalPages
+                        currentDonationsPage === donationsTotalPages
                           ? undefined
-                          : () => setCurrentPage((prev) => prev + 1)
+                          : () => setCurrentDonationsPage((prev) => prev + 1)
                       }
                       className={cn(
                         "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
-                        currentPage === totalPages
+                        currentDonationsPage === donationsTotalPages
                           ? "bg-white text-[#F68537] border-[#F68537] cursor-not-allowed"
                           : "bg-[#F68537] text-white border-[#F68537]"
                       )}

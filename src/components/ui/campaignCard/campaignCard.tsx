@@ -8,12 +8,14 @@ import { CampaignCardHistoric } from "./campaignCardHistoric";
 import { CampaignCardList } from "./campaignCardList";
 import { CampaignCardProfileCompact } from "./campaingCardProfileCompact";
 import { CampaignCardEventAndNews } from "./campaingCardEventAndNews";
+import type { DonorDonationsAPI } from "@/services/donation";
 
 export type CampaignCardProps = {
   title?: string;
   raised?: number;
   goal?: number;
   creatorName?: string;
+  campaignCreator?: string;
   variant?:
     | "default"
     | "profile"
@@ -35,6 +37,7 @@ export type CampaignCardProps = {
   memberSince?: string; //'DD/MM/AAAA' or year
   campaigns?: string[];
   lastDonation?: number;
+  periodicity?: DonorDonationsAPI["periodicity"];
 };
 
 export default function CampaignCard({
@@ -42,6 +45,7 @@ export default function CampaignCard({
   raised = 0,
   goal = 0,
   creatorName,
+  campaignCreator,
   variant = "default",
   className,
   donorName = "",
@@ -54,6 +58,7 @@ export default function CampaignCard({
   type,
   date,
   role,
+  periodicity,
 }: CampaignCardProps) {
   const percent = goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
 
@@ -94,11 +99,12 @@ export default function CampaignCard({
         situation={situation}
         goal={goal}
         raised={raised}
-        creatorName={creatorName}
+        creatorName={campaignCreator || creatorName}
         title={title}
         className={className}
         lastDonation={lastDonation}
         donationAmount={donationAmount}
+        periodicity={periodicity}
       />
     );
   }
