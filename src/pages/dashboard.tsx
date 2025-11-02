@@ -296,7 +296,7 @@ function Dashboard() {
 
   return (
     <div className="bg-[#2F5361]">
-      <main className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex gap-6">
+      <main className={`max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex ${isSidebarOpen ? "gap-6" : ""}`}>
         <aside
           className={`transition-all duration-300 ${isSidebarOpen ? "w-80" : "w-0"} overflow-hidden`}
         >
@@ -458,9 +458,9 @@ function Dashboard() {
           </div>
         </aside>
 
-        <section className="flex-1 flex flex-col gap-6">
+        <section className="flex-1 flex flex-col gap-6 w-full">
           <div
-            className={`grid grid-cols-2 md:grid-cols-3 gap-4 ${!isSidebarOpen ? "lg:grid-cols-6" : "lg:grid-cols-5"}`}
+            className={`grid grid-cols-2 md:grid-cols-3 gap-4 place-items-stretch ${!isSidebarOpen ? "xl:grid-cols-6" : "lg:grid-cols-5"}`}
           >
             {!isSidebarOpen && (
               <button
@@ -491,7 +491,7 @@ function Dashboard() {
             )}
           </div>
 
-          <div className="bg-white rounded-lg p-6 flex-1 flex flex-col">
+          <div className="bg-white rounded-lg p-4 sm:p-6 flex-1 flex flex-col">
             {/* TEMPORÁRIO: Navegação entre gráficos */}
             <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
               <div className="flex items-center justify-between gap-4">
