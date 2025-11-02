@@ -46,12 +46,13 @@ export default function Perfil() {
   const [currentCampaignsPage, setCurrentCampaignsPage] = useState(1);
   const [currentDonationsPage, setCurrentDonationsPage] = useState(1);
 
-  const { campaigns, campaignsTotalPages, donations, donationsTotalPages } = usePerfil({
-    campaignsPage: currentCampaignsPage,
-    campaignsPageSize: campaignsPageSize,
-    donationsPage: currentDonationsPage,
-    donationsPageSize: 10,
-  });
+  const { campaigns, campaignsTotalPages, donations, donationsTotalPages, handleDeleteAccount } =
+    usePerfil({
+      campaignsPage: currentCampaignsPage,
+      campaignsPageSize: campaignsPageSize,
+      donationsPage: currentDonationsPage,
+      donationsPageSize: 10,
+    });
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isCreateAdminModalOpen, setIsCreateAdminModalOpen] = useState(false);
@@ -91,6 +92,13 @@ export default function Perfil() {
     setIsLogoutModalOpen(false);
     // Redirect to login page
     navigate(ROUTES.login);
+  };
+
+  const handleAccountDeletion = async () => {
+    if (!currentUser) return;
+    await handleDeleteAccount(currentUser.id, currentUser.role);
+    // Clear all user data and logout
+    logout();
   };
 
   return (
@@ -373,6 +381,7 @@ export default function Perfil() {
         onClose={() => setIsEditModalOpen(false)}
         onSave={handleSalvarPerfil}
         initialData={dados}
+        onDeleteAccount={handleAccountDeletion}
       />
 
       <ConfirmLogoutModal

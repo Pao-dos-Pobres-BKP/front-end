@@ -2,7 +2,7 @@
 
 import type { LoginInput } from "@/schemas/auth";
 import api from "./api";
-import type { User } from "@/contexts/UserContext";
+import type { RoleEnum, User } from "@/contexts/UserContext";
 
 export interface LoginResponse {
   accessToken: string;
@@ -57,4 +57,10 @@ export async function getAdmin(id: string, accessToken: string): Promise<User> {
     totalDonated: data.totalDonated,
   };
   return user;
+}
+
+export async function deleteAccount(id: string, role: RoleEnum): Promise<void> {
+  const deleteEndpoint = role === "DONOR" ? "/donors" : "/admin";
+
+  return api.delete(`${deleteEndpoint}/${id}`);
 }

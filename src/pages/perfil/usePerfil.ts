@@ -5,6 +5,8 @@ import {
   getDonorDonations as getDonorDonationsService,
   type DonorDonationsAPI,
 } from "@/services/donation";
+import { deleteAccount } from "@/services/auth";
+import type { RoleEnum } from "@/contexts/UserContext";
 import type { CampaignDonation } from "./types";
 import { campaignAdapter } from "./utils/campaignAdapter";
 
@@ -43,5 +45,15 @@ export function usePerfil({
     setDonationsTotalPages(Math.ceil(response.total / donationsPageSize));
   }
 
-  return { campaigns, campaignsTotalPages, donations, donationsTotalPages };
+  async function handleDeleteAccount(userId: string, userRole: RoleEnum) {
+    await deleteAccount(userId, userRole);
+  }
+
+  return {
+    campaigns,
+    campaignsTotalPages,
+    donations,
+    donationsTotalPages,
+    handleDeleteAccount,
+  };
 }
