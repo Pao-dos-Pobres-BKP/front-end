@@ -20,7 +20,6 @@ export type CampaignCardHistoricProps = {
 export function CampaignCardHistoric(props: CampaignCardHistoricProps) {
   const { situation, creatorName, title, className, donationAmount, periodicity } = props;
 
-  // Determine if donation is recurring based on periodicity
   const isRecurring = periodicity !== null && periodicity !== undefined;
   const displayLabel = isRecurring ? "Recorrente" : "Única";
   const displaySituation = isRecurring ? "recurring" : "approved";

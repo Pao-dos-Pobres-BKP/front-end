@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/pagination";
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import EditUserModal from "@/components/ui/edit-user-modal";
 import ConfirmLogoutModal from "@/components/ui/confirm-logout-modal";
 
@@ -24,6 +25,7 @@ import { usePerfil } from "./usePerfil";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { dateUtils } from "@/utils/dateUtils";
 import { formatCPF, formatPhone } from "@/utils/formatters";
+import { ROUTES } from "@/constant/routes";
 
 interface ProfileUser extends User {
   totalDonated: number;
@@ -39,6 +41,7 @@ const genderMapper: Record<Gender, string> = {
 const CAMPAIGNS_PAGE_SIZE = 4;
 
 export default function Perfil() {
+  const navigate = useNavigate();
   const [campaignsPageSize] = useState(CAMPAIGNS_PAGE_SIZE);
   const [currentCampaignsPage, setCurrentCampaignsPage] = useState(1);
   const [currentDonationsPage, setCurrentDonationsPage] = useState(1);
@@ -53,7 +56,7 @@ export default function Perfil() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isCreateAdminModalOpen, setIsCreateAdminModalOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-  const { user: currentUser } = useUser();
+  const { user: currentUser, logout } = useUser();
 
   const [dados, setDados] = useState<ProfileUser>({
     id: "1",
@@ -83,7 +86,11 @@ export default function Perfil() {
   };
 
   const handleConfirmLogout = () => {
+    // Clear all user data and authToken from localStorage
+    logout();
     setIsLogoutModalOpen(false);
+    // Redirect to login page
+    navigate(ROUTES.login);
   };
 
   return (
