@@ -15,7 +15,7 @@ import type { HowToHelpAPI } from "@/services/how-to-help";
 
 const WhatsAppButton = () => {
   const handleContactClick = () => {
-    window.open("https://wa.me/5551991341262", "_blank"); //simula rota wpp
+    window.open("https://wa.me/5551989719615", "_blank");
   };
   return (
     <Button
@@ -98,7 +98,7 @@ export default function HowToHelpSection() {
             >
               {howToHelpList.map((howToHelp) => (
                 <AccordionItem key={howToHelp.id} value={howToHelp.id}>
-                  <AccordionTrigger variant="secondary" size="large" className="[&>svg]:hidden">
+                  <AccordionTrigger variant="secondary" className="w-full [&>svg]:hidden">
                     <div className="flex items-center justify-between w-full">
                       <div className="flex items-center gap-3">
                         <span className="text-[#024b5a] font-medium text-lg">
