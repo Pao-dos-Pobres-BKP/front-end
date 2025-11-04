@@ -91,7 +91,7 @@ export function CampaignCardProfile({
             <ChevronDownIcon />
           </div>
         </div>
-      
+
         <div
           className={cn(
             "grid transition-[grid-template-rows] duration-300 ease-in-out",

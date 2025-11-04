@@ -52,7 +52,9 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
   const [, setErrors] = React.useState<Record<string, string>>({});
 
   React.useEffect(() => {
+    console.log("🔔 EditCampaignModal useEffect:", { open, campaign: campaign?.title });
     if (campaign && open) {
+      console.log("✅ Modal ABERTO com campanha:", campaign);
       const campaignWithDates = campaign as CampaignWithDates;
       setForm({
         title: campaign.title,
@@ -62,6 +64,8 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
         startDate: campaignWithDates.startDate ? new Date(campaignWithDates.startDate) : undefined,
         endDate: campaignWithDates.endDate ? new Date(campaignWithDates.endDate) : undefined,
       });
+    } else {
+      console.log("❌ Modal não aberto:", { open, hasCampaign: !!campaign });
     }
   }, [campaign, open]);
 

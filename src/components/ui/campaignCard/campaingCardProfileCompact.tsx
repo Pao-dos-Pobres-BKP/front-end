@@ -76,7 +76,7 @@ export function CampaignCardProfileCompact({
         </div>
 
         <div className="flex-1 min-w-0 ml-3">
-          <div 
+          <div
             className="font-semibold text-[var(--color-brand-dark)] truncate text-sm sm:text-base lg:text-lg text-left"
             title={profileName}
           >

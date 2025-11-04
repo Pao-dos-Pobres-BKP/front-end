@@ -106,9 +106,7 @@ export default function ProfileSettingsModal({
         </div>
 
         {loading ? (
-          <div className="p-6 text-center text-[var(--color-text-2)]">
-            Carregando usuários...
-          </div>
+          <div className="p-6 text-center text-[var(--color-text-2)]">Carregando usuários...</div>
         ) : (
           <UserList users={users} />
         )}

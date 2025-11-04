@@ -157,12 +157,7 @@ export default function CampaignModal({ open, onOpenChange, campaign }: Campaign
             </div>
           ) : (
             <div className="mt-4 flex flex-col items-center gap-2">
-              <Button
-                variant="confirm"
-                size="large"
-                className="w-full cursor-not-allowed"
-                disabled
-              >
+              <Button variant="confirm" size="large" className="w-full cursor-not-allowed" disabled>
                 Você é colaborador dessa campanha!
               </Button>
               <Link href="/minhas-colaboracoes" variant="blue">

@@ -202,10 +202,11 @@ export default function NewsEvents() {
                     size="icon"
                     onClick={() => setCurrentPage(i + 1)}
                     isActive={currentPage === i + 1}
-                    className={`px-3 py-1 border rounded-full transition-colors ${currentPage === i + 1
+                    className={`px-3 py-1 border rounded-full transition-colors ${
+                      currentPage === i + 1
                         ? "bg-white text-[#F68537] border-[#F68537]"
                         : "bg-[#F68537] text-white border-[#F68537]"
-                      }`}
+                    }`}
                   >
                     {i + 1}
                   </PaginationLink>
