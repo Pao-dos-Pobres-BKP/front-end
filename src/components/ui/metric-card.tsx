@@ -7,13 +7,17 @@ interface MetricCardProps {
 
 export function MetricCard({ label, value, prefix, suffix }: MetricCardProps) {
   return (
-    <div className="flex h-20 sm:h-24 flex-1 min-w-[120px] flex-col items-center justify-center gap-1 sm:gap-2 rounded-lg bg-white px-3 sm:px-4 shadow-sm">
-      <span className="text-lg sm:text-xl md:text-2xl font-bold text-[color:var(--color-components)] truncate max-w-full">
+    <div
+      className="
+      flex h-12 lg:h-16 flex-1 min-w-[110px] lg:min-w-[120px] flex-col items-center justify-center gap-1 lg:gap-2 rounded-lg bg-white px-2 lg:px-4 shadow-sm
+    "
+    >
+      <span className="text-base md:text-xl font-bold text-[color:var(--color-components)] text-center break-words">
         {prefix}
         {value}
         {suffix}
       </span>
-      <span className="text-[10px] sm:text-xs font-medium text-center text-[color:var(--color-components)] leading-tight line-clamp-2">
+      <span className="text-[10px] md:text-xs font-medium text-center text-[color:var(--color-components)] leading-tight break-words">
         {label}
       </span>
     </div>
