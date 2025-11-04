@@ -186,7 +186,6 @@ const Campanhas = () => {
   };
 
   const handleOpenEditModal = (campaign: CampaignAPI) => {
-    console.log("🔧 Abrindo modal de edição para:", campaign.title);
     const campaignBase: CampaignBase & { startDate?: string; endDate?: string } = {
       id: campaign.id,
       title: campaign.title,
@@ -197,14 +196,12 @@ const Campanhas = () => {
       ...(campaign.startDate && { startDate: campaign.startDate }),
       ...(campaign.endDate && { endDate: campaign.endDate }),
     };
-    console.log("📝 Dados da campanha para edição:", campaignBase);
     setSelectedCampaignToEdit(campaignBase);
     // Armazena a campanha completa para possível exclusão
     const fullCampaign = campaigns.find((c) => c.id === campaign.id);
     if (fullCampaign) {
       setCampaignToDelete(fullCampaign);
     }
-    console.log("✅ Abrindo modal, isEditModalOpen:", true);
     setIsEditModalOpen(true);
   };
 
@@ -260,7 +257,6 @@ const Campanhas = () => {
     targetValue: number;
     endDate: Date;
     image?: File | null;
-    password: string;
   }) => {
     try {
       const originalCampaign = campaigns.find((c) => c.id === data.id);
@@ -269,7 +265,9 @@ const Campanhas = () => {
       }
 
       const imageUrl =
-        data.image instanceof File ? originalCampaign.imageUrl : originalCampaign.imageUrl;
+        data.image instanceof File
+          ? originalCampaign.imageUrl
+          : originalCampaign.imageUrl;
 
       await updateCampaign(data.id, {
         title: data.title,
@@ -323,7 +321,7 @@ const Campanhas = () => {
   const handleCancelDelete = () => {
     // Se estiver no processo de deletar, não faz nada
     if (isDeleting) return;
-
+    
     setIsDeleteConfirmOpen(false);
     if (deleteFromEditModal) {
       setIsEditModalOpen(true);
@@ -465,25 +463,15 @@ const Campanhas = () => {
                 situation={campaign.situation}
                 isAdmin={user?.role === "ADMIN"}
                 onAction={() => {
-                  console.log(
-                    "🖱️ Botão clicado! Situação:",
-                    campaign.situation,
-                    "| Role:",
-                    user?.role
-                  );
                   if (user?.role === "ADMIN") {
                     if (campaign.situation === "pending") {
-                      console.log("📋 Abrindo modal de aprovação");
                       handleOpenApproveModal(campaign);
                     } else if (campaign.situation === "rejected") {
-                      console.log("🗑️ Abrindo modal de exclusão");
                       handleOpenDeleteModal(campaign);
                     } else {
-                      console.log("✏️ Abrindo modal de edição");
                       handleOpenEditModal(campaign);
                     }
                   } else {
-                    console.log("👁️ Abrindo modal de visualização");
                     handleOpenCampaignModal(campaign);
                   }
                 }}

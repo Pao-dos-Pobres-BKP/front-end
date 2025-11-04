@@ -4,8 +4,9 @@ import { Progress } from "@/components/ui/progress";
 import Button from "@/components/ui/button";
 import Link from "@/components/ui/link";
 import fundo from "@/assets/fundo-pp.png";
-import { getUserDonations, type DonationAPI } from "@/services/donations";
+import { getUserDonations } from "@/services/donations";
 import { useUser } from "@/hooks/useUser";
+import { useNavigate } from "react-router-dom";
 
 type CampaignData = {
   id: string;
@@ -27,9 +28,10 @@ type CampaignModalProps = {
 
 export default function CampaignModal({ open, onOpenChange, campaign }: CampaignModalProps) {
   const [isCollaborator, setIsCollaborator] = useState(false);
-  const [checkingCollaboration, setCheckingCollaboration] = useState(true);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [checkingCollaboration, setCheckingCollaboration] = useState(true);
   const { user } = useUser();
+  const navigate = useNavigate();
 
   const formattedTargetAmount = new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -57,7 +59,7 @@ export default function CampaignModal({ open, onOpenChange, campaign }: Campaign
         setCheckingCollaboration(true);
         const donationsResponse = await getUserDonations({ pageSize: 1000 });
         const hasContributed = donationsResponse.data.some(
-          (donation: DonationAPI) => donation.campaignId === campaign.id
+          (donation) => donation.campaignId === campaign.id
         );
         setIsCollaborator(hasContributed);
       } catch (error) {
@@ -92,15 +94,20 @@ export default function CampaignModal({ open, onOpenChange, campaign }: Campaign
       description=""
       footer={
         <div className="w-full -mt-4">
-          {!imageLoaded ? (
-            <div className="w-full h-40 bg-gray-200 animate-pulse rounded-2xl mb-3" />
-          ) : (
+          {/* Imagem com skeleton */}
+          <div className="relative w-full h-40 mb-3">
+            {!imageLoaded && (
+              <div className="absolute inset-0 bg-gray-300 animate-pulse rounded-2xl" />
+            )}
             <img
               src={imageUrl}
               alt={campaign.title}
-              className="w-full h-40 object-cover rounded-2xl mb-3"
+              className={`w-full h-40 object-cover rounded-2xl transition-opacity duration-300 ${
+                imageLoaded ? "opacity-100" : "opacity-0"
+              }`}
+              loading="eager"
             />
-          )}
+          </div>
 
           <p className="text-[13px] leading-relaxed text-[var(--color-text-2)] mb-4">
             {campaign.description}
@@ -115,8 +122,8 @@ export default function CampaignModal({ open, onOpenChange, campaign }: Campaign
 
           <Progress value={campaign.achievementPercentage} variant="blue" size="full" />
 
-          {campaign.status === "PENDING" ? (
-            <div className="mt-4">
+          <div className="mt-4">
+            {campaign.status === "PENDING" ? (
               <Button
                 variant="quaternary"
                 size="large"
@@ -125,9 +132,7 @@ export default function CampaignModal({ open, onOpenChange, campaign }: Campaign
               >
                 Campanha sob aprovação
               </Button>
-            </div>
-          ) : campaign.status === "CANCELED" ? (
-            <div className="mt-4">
+            ) : campaign.status === "CANCELED" ? (
               <Button
                 variant="quaternary"
                 size="large"
@@ -136,35 +141,37 @@ export default function CampaignModal({ open, onOpenChange, campaign }: Campaign
               >
                 Campanha rejeitada
               </Button>
-            </div>
-          ) : checkingCollaboration ? (
-            <div className="mt-4">
-              <div className="h-12 bg-gray-200 animate-pulse rounded-xl w-full" />
-            </div>
-          ) : !isCollaborator ? (
-            <div className="mt-4">
+            ) : checkingCollaboration ? (
+              <div className="space-y-2">
+                <div className="h-12 bg-gray-300 animate-pulse rounded-xl w-full" />
+              </div>
+            ) : !isCollaborator ? (
               <Button
                 variant="quaternary"
                 size="large"
                 className="w-full"
                 onClick={() => {
-                  // Redirecionar para página de doação
-                  window.location.href = `/doacao?campaignId=${campaign.id}`;
+                  navigate(`/doacao?campaignId=${campaign.id}`);
                 }}
               >
                 Colabore com a campanha!
               </Button>
-            </div>
-          ) : (
-            <div className="mt-4 flex flex-col items-center gap-2">
-              <Button variant="confirm" size="large" className="w-full cursor-not-allowed" disabled>
-                Você é colaborador dessa campanha!
-              </Button>
-              <Link href="/minhas-colaboracoes" variant="blue">
-                Encerrar minha colaboração
-              </Link>
-            </div>
-          )}
+            ) : (
+              <div className="flex flex-col items-center gap-2">
+                <Button
+                  variant="confirm"
+                  size="large"
+                  className="w-full"
+                  onClick={() => onOpenChange(false)}
+                >
+                  Você é colaborador dessa campanha!
+                </Button>
+                <Link href="/perfil" variant="blue">
+                  Gerenciar minha colaboração
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       }
     />

@@ -21,7 +21,6 @@ interface EditCampaignModalProps {
     targetValue: number;
     endDate: Date;
     image?: File | null;
-    password: string;
   }) => Promise<void> | void;
   onDeleteRequest: () => void; // triggers external delete modal
 }
@@ -48,13 +47,10 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
     endDate: undefined as Date | undefined,
   });
   const [imageFile, setImageFile] = React.useState<File | null>(null);
-  const [password, setPassword] = React.useState("");
   const [, setErrors] = React.useState<Record<string, string>>({});
 
   React.useEffect(() => {
-    console.log("🔔 EditCampaignModal useEffect:", { open, campaign: campaign?.title });
     if (campaign && open) {
-      console.log("✅ Modal ABERTO com campanha:", campaign);
       const campaignWithDates = campaign as CampaignWithDates;
       setForm({
         title: campaign.title,
@@ -64,15 +60,13 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
         startDate: campaignWithDates.startDate ? new Date(campaignWithDates.startDate) : undefined,
         endDate: campaignWithDates.endDate ? new Date(campaignWithDates.endDate) : undefined,
       });
-    } else {
-      console.log("❌ Modal não aberto:", { open, hasCampaign: !!campaign });
     }
   }, [campaign, open]);
 
   function resetAll() {
-    setPassword("");
     setErrors({});
   }
+
   function handleChange(field: string, value: string) {
     if (field === "targetValue") value = currencyMask(value);
     setForm((f) => ({ ...f, [field]: value }));
@@ -138,8 +132,8 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
       targetValue: parsed.targetValue,
       endDate: form.endDate,
       image: imageFile ?? null,
-      password,
     });
+
     resetAll();
     onOpenChange(false);
   }

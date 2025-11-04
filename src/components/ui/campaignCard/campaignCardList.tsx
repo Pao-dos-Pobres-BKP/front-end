@@ -105,7 +105,7 @@ export function CampaignCardList(props: CampaignCardListProps) {
           {situation === "approved" || situation === "recurring" ? (
             <Progress value={percent} variant="blue" size="large" />
           ) : situation === "rejected" ? (
-            <div className="text-center text-xs font-semibold text-white bg-red-400 rounded-full py-0.5 px-2 w-full max-w-[120px]">
+            <div className="text-center text-xs font-semibold text-white bg-red-500 rounded-full py-0.5 px-2 w-full max-w-[120px]">
               Rejeitada
             </div>
           ) : (

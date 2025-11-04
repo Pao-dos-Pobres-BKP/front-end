@@ -44,11 +44,10 @@ export const AgreementStep: React.FC<StepProps> = ({ onNext }) => {
         />
       </div>
       <div className="flex justify-center gap-4 mt-6">
-        <Button variant="tertiary" size="extraSmall" onClick={() => onNext?.()}>
+        <Button variant="primary" size="extraSmall" onClick={() => onNext?.()}>
           Concordo
         </Button>
       </div>
-      <StepIndicators step={1} total={3} />
     </div>
   );
 };
