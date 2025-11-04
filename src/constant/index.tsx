@@ -8,7 +8,7 @@ import Doacao from "@/pages/doacao";
 import Campanhas from "@/pages/campanhas/campanhas";
 import Perfil from "@/pages/perfil";
 import Dashboard from "@/pages/dashboard";
-import DonorList from "@/pages/donor-list";
+import DonorList from "@/pages/donor-list/donor-list";
 import Partners from "@/pages/empresas-parceiras";
 
 const Navigation = () => {
