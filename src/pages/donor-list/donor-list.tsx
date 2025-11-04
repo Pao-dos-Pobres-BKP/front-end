@@ -12,7 +12,7 @@ import {
 
 import { useState } from "react";
 import { useDonorList } from "./use-donor-list";
-import { donorAdapter } from "./donorAdapter";
+//import { donorAdapter } from "./donorAdapter";
 
 export default function DonorList() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,8 +20,7 @@ export default function DonorList() {
 
   const { donors } = useDonorList();
 
-  const donorListItems = donors.map(donorAdapter.toDonor);
-
+  const donorListItems = donors
   // const mockDonors = [
   //   {
   //     id: 1,
@@ -162,11 +161,10 @@ export default function DonorList() {
 
   // const totalPages = Math.ceil(mockDonors.length / cardsPerPage);
   const totalPages = Math.ceil(donorListItems.length / cardsPerPage);
-  const indexOfLastCard = currentPage * cardsPerPage;
-  const indexOfFirstCard = indexOfLastCard - cardsPerPage;
+  // const indexOfLastCard = currentPage * cardsPerPage;
+  // const indexOfFirstCard = indexOfLastCard - cardsPerPage;
   // const currentCards = mockDonors.slice(indexOfFirstCard, indexOfLastCard);
-  const currentCards = donorListItems.slice(indexOfFirstCard, indexOfLastCard);
-
+  // const currentCards = donorListItems.slice(indexOfFirstCard, indexOfLastCard);
   return (
     <div className="w-full min-h-screen px-4 sm:px-8 py-10 flex flex-col gap-8 bg-[#2F5361]">
       <div className="flex flex-col sm:flex-row gap-2 w-full items-center">
@@ -177,14 +175,14 @@ export default function DonorList() {
       </div>
 
       <div className="flex flex-col gap-4">
-        {currentCards.map((donor, index) => (
+        {donorListItems.map((donor, index) => (
           <CampaignCard
             key={index}
             variant="profile"
-            donorName={donor.donorName}
-            donorEmail={donor.donorEmail}
+            donorName={donor.fullname}
+            donorEmail={donor.email}
             raised={donor.raised}
-            memberSince={donor.memberSince}
+            // memberSince={`${donor.createdAt.getDay()}/${donor.createdAt.getMonth()}/${donor.createdAt.getFullYear()}`}
             campaigns={donor.campaigns}
           />
         ))}

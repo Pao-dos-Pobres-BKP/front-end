@@ -13,9 +13,8 @@ export function useDonorList() {
 
   async function getDonorList() {
     const response = await getDonors();
-
-    if (response.length > 0) {
-      setDonorList(response);
+    if (response.data.length > 0) {
+      setDonorList(response.data);
     }
   }
 

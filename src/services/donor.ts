@@ -15,7 +15,7 @@ export type DonorAPI = {
 
 export async function getDonors() {
   try {
-    const response = await api.get<DonorAPI[]>("/donors");
+    const response = await api.get("/donors");
     return response.data;
   } catch (error) {
     console.error(error);
