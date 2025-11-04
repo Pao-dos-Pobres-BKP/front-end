@@ -16,6 +16,8 @@ import { PagamentosPorCampanhaChart } from "@/components/charts/payment-by-campa
 import { DoadoresPorCampanhaStats } from "@/components/charts/donor-by-campaign-stats-chart";
 import { getGlobalMetrics } from "@/services/metrics/global";
 import { getCampaigns, type CampaignAPI } from "@/services/campaigns";
+import { useUser } from "@/hooks/useUser";
+import { useNavigate } from "react-router-dom";
 
 type MetricData = {
   newDonors: number;
@@ -160,6 +162,12 @@ function Dashboard() {
   const [isCampaignDropdownOpen, setCampaignDropdownOpen] = useState(false);
   const [confirmedPeriod, setConfirmedPeriod] = useState<DateRange | undefined>(undefined);
   const [campaigns, setCampaigns] = useState<CampaignAPI[]>([]);
+  const { user } = useUser();
+  const navigate = useNavigate();
+
+  if (user?.role != "ADMIN") {
+    navigate("/");
+  }
 
   useEffect(() => {
     const fetchCampaigns = async () => {
