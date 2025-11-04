@@ -25,4 +25,4 @@ ID da Task:
 
 
 ## 📌 Notas adicionais
-<!-- Opicional: Qualquer informação adicional que você considere importante para os revisores
+<!-- Opcional: Qualquer informação adicional que você considere importante para os revisores

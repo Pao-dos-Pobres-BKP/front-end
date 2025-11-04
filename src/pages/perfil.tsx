@@ -17,9 +17,9 @@ import {
 import { useState } from "react";
 import EditUserModal from "@/components/ui/edit-user-modal";
 import ConfirmLogoutModal from "@/components/ui/confirm-logout-modal";
-import ProfileSettingsModal from "@/components/ui/profile-settings";
 
 import type { User } from "@/contexts/UserContext";
+import CreateAdminModal from "@/components/ui/create-admin-modal";
 import { useUser } from "@/hooks/useUser";
 
 interface ProfileUser extends User {
@@ -29,7 +29,7 @@ interface ProfileUser extends User {
 
 export default function Perfil() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+  const [isCreateAdminModalOpen, setIsCreateAdminModalOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 6;
@@ -49,8 +49,6 @@ export default function Perfil() {
     percentageAchieved: 75,
     photo: exemplo_foto_perfil,
   });
-
-  //const campanhas: any[] = [];      // para testar quando não tiver campanhas apoiando.
 
   const campanhas = [
     {
@@ -87,70 +85,70 @@ export default function Perfil() {
     goal: number;
     situation: SituationType;
   }[] = [
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 81825.33,
-        goal: 90000,
-        situation: "recurring",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 5000,
-        goal: 10000,
-        situation: "recurring",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 15000,
-        goal: 20000,
-        situation: "approved",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 2500,
-        goal: 3000,
-        situation: "approved",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 7000,
-        goal: 10000,
-        situation: "approved",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 9000,
-        goal: 15000,
-        situation: "approved",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 1200,
-        goal: 2000,
-        situation: "approved",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 4500,
-        goal: 5000,
-        situation: "approved",
-      },
-      {
-        title: "Campanha de Santo Antônio",
-        creatorName: " Fundação Pão dos Pobres Santo Antônio",
-        raised: 800,
-        goal: 1000,
-        situation: "approved",
-      },
-    ];
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 81825.33,
+      goal: 90000,
+      situation: "recurring",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 5000,
+      goal: 10000,
+      situation: "recurring",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 15000,
+      goal: 20000,
+      situation: "approved",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 2500,
+      goal: 3000,
+      situation: "approved",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 7000,
+      goal: 10000,
+      situation: "approved",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 9000,
+      goal: 15000,
+      situation: "approved",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 1200,
+      goal: 2000,
+      situation: "approved",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 4500,
+      goal: 5000,
+      situation: "approved",
+    },
+    {
+      title: "Campanha de Santo Antônio",
+      creatorName: " Fundação Pão dos Pobres Santo Antônio",
+      raised: 800,
+      goal: 1000,
+      situation: "approved",
+    },
+  ];
 
   const totalPages = Math.ceil(campanhasHistorico.length / cardsPerPage);
   const indexOfLastCard = currentPage * cardsPerPage;
@@ -161,8 +159,8 @@ export default function Perfil() {
     setIsEditModalOpen(true);
   };
 
-  const handleOpenSettingsModal = () => {
-    setIsSettingsModalOpen(true);
+  const handleOpenCreateAdminModal = () => {
+    setIsCreateAdminModalOpen(true);
   };
 
   const handleSalvarPerfil = (updatedUser: User) => {
@@ -175,48 +173,42 @@ export default function Perfil() {
 
   return (
     <div className="min-h-screen bg-[#2F5361] font-inter">
-      <div className="flex justify-center px-6 py-6">
-        <div className="w-full max-w-6md bg-white rounded-xl shadow-lg p-4">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white rounded-lg gap-4 p-4 mb-6">
+      <div className="flex justify-center px-4 sm:px-6 lg:px-12 xl:px-8 py-8">
+        <div className="w-full max-w-[2400px] bg-white rounded-xl shadow-lg p-4 sm:p-6 lg:p-12 xl:p-16">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white rounded-lg gap-4 p-4 lg:p-0 mb-6 lg:mb-8">
             <div className="flex items-center gap-4 w-full sm:w-auto">
               <img
                 src={dados.photo || "https://via.placeholder.com/80"}
                 alt="Foto do usuário"
-                className="w-20 h-20 rounded-2xl object-cover"
+                className="w-20 h-20 rounded-2xl object-cover flex-shrink-0"
               />
-              <div className="flex flex-col flex-1">
-                <div className="flex items-center">
-                  <h2 className="text-[22px] sm:text-[27px] font-bold text-[#005172]">
-                    {dados.fullname}
-                  </h2>
-                </div>
-                <div className="flex items-center mt-2">
-                  <p className="text-xs sm:text-sm font-inter text-[#005172]">
-                    Membro desde 12 de Agosto de 2023
-                  </p>
-                </div>
+              <div className="flex flex-col flex-1 min-w-0">
+                <h2 className="text-xl sm:text-2xl md:text-[27px] font-bold text-[#005172] break-words">
+                  {dados.fullname}
+                </h2>
+                <p className="text-xs sm:text-sm font-inter text-[#005172] mt-2">
+                  Membro desde 12 de Agosto de 2023
+                </p>
               </div>
             </div>
 
             <div className="flex items-center gap-2 w-full sm:w-auto">
               {currentUser?.role === "ADMIN" && (
-                <>
-                  <button
-                    onClick={() => setIsLogoutModalOpen(true)}
-                    className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl text-[#005172] hover:bg-[#e6f3f5] transition-colors cursor-pointer"
-                  >
-                    Sair da Conta
-                  </button>
-                  <button
-                    onClick={handleOpenSettingsModal}
-                    className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl bg-[#005172] text-white hover:bg-[#24434f] transition-colors cursor-pointer"
-                  >
-                    Ajustes
-                  </button>
-                </>
+                <button
+                  onClick={handleOpenCreateAdminModal}
+                  className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl bg-[#005172] text-white hover:bg-[#24434f] transition-colors"
+                >
+                  Ajustes
+                </button>
               )}
               <button
-                className="p-1.5 rounded-lg bg-[#005172] text-white hover:bg-[#24434f] flex items-center justify-center cursor-pointer"
+                onClick={() => setIsLogoutModalOpen(true)}
+                className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl text-[#005172] hover:bg-[#e6f3f5] transition-colors"
+              >
+                Sair da Conta
+              </button>
+              <button
+                className="p-2 rounded-md bg-[#005172] text-white hover:bg-[#24434f] flex items-center justify-center"
                 onClick={handleEditarConta}
               >
                 <EditSquare size="medium" />
@@ -224,21 +216,21 @@ export default function Perfil() {
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-8">
-            <div className="md:w-0.5/3 flex flex-col gap-4">
-              <div className="bg-white rounded-lg p-6 flex-1 min-h-[420px]">
-                <div className="flex flex-col space-y-10">
-                  <div className="flex items-center gap-2">
-                    <label className="text-sm font-medium text-[#005172] text-left">
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 xl:gap-12">
+            <div className="w-full lg:w-72 xl:w-80 flex flex-col gap-4">
+              <div className="bg-white rounded-lg p-4 sm:p-6 lg:p-0 flex-1">
+                <div className="flex flex-col space-y-6 sm:space-y-8 lg:space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                    <label className="text-sm font-medium text-[#005172] text-left whitespace-nowrap">
                       Data de Nascimento:
                     </label>
-                    <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
+                    <span className="py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
                       {dados.birthDate ? dados.birthDate.toLocaleDateString("pt-BR") : "—"}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                     <label className="text-sm font-medium text-[#005172] text-left">Gênero:</label>
-                    <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
+                    <span className="py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
                       {{
                         MALE: "Masculino",
                         FEMALE: "Feminino",
@@ -246,9 +238,11 @@ export default function Perfil() {
                       }[dados.gender as "MALE" | "FEMALE" | "OTHER"] ?? "—"}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <label className="text-sm font-medium text-[#005172] text-left">CPF:</label>
-                    <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                    <label className="text-sm font-medium text-[#005172] text-left whitespace-nowrap">
+                      CPF:
+                    </label>
+                    <span className="py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
                       {dados.cpf}
                     </span>
                   </div>
@@ -260,9 +254,11 @@ export default function Perfil() {
                       {dados.phone}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <label className="text-sm font-medium text-[#005172] text-left">E-mail:</label>
-                    <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                    <label className="text-sm font-medium text-[#005172] text-left whitespace-nowrap">
+                      E-mail:
+                    </label>
+                    <span className="py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left break-all">
                       {dados.email}
                     </span>
                   </div>
@@ -393,10 +389,11 @@ export default function Perfil() {
                         size="icon"
                         onClick={() => setCurrentPage(i + 1)}
                         isActive={currentPage === i + 1}
-                        className={`px-3 py-1 border rounded-full transition-colors ${currentPage === i + 1
-                          ? "bg-white text-[#F68537] border-[#F68537]"
-                          : "bg-[#F68537] text-white border-[#F68537]"
-                          }`}
+                        className={`px-3 py-1 border rounded-full transition-colors ${
+                          currentPage === i + 1
+                            ? "bg-white text-[#F68537] border-[#F68537]"
+                            : "bg-[#F68537] text-white border-[#F68537]"
+                        }`}
                       >
                         {i + 1}
                       </PaginationLink>
@@ -428,31 +425,9 @@ export default function Perfil() {
         </div>
       </div>
 
-      {/** Modal de Ajustes de Perfil (somente admin) */}
-      <ProfileSettingsModal
-        isOpen={isSettingsModalOpen}
-        onClose={() => setIsSettingsModalOpen(false)}
-        onSave={(formData) => {
-          setDados((prev) => ({
-            ...prev,
-            fullname: formData?.nome ?? prev.fullname,
-            birthDate: formData?.nascimento ? new Date(formData.nascimento) : prev.birthDate,
-            gender: (formData?.genero as User["gender"]) ?? prev.gender,
-            cpf: formData?.cpf ?? prev.cpf,
-            phone: formData?.telefone ?? prev.phone,
-            email: formData?.email ?? prev.email,
-            photo: formData?.foto ?? prev.photo,
-          }));
-        }}
-        initialData={{
-          nome: dados.fullname,
-          nascimento: dados.birthDate ? dados.birthDate.toISOString().slice(0, 10) : "",
-          genero: dados.gender ?? "",
-          cpf: dados.cpf ?? "",
-          telefone: dados.phone ?? "",
-          email: dados.email ?? "",
-          foto: dados.photo,
-        }}
+      <CreateAdminModal
+        isModalOpen={isCreateAdminModalOpen}
+        onClose={() => setIsCreateAdminModalOpen(false)}
       />
 
       <EditUserModal

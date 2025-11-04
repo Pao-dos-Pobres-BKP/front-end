@@ -43,7 +43,7 @@ export async function getCampaigns(
 export type UpdateCampaignParams = {
   title: string;
   description: string;
-  currentAmount?: number;
+  // currentAmount?: number | null;
   targetAmount: number;
   startDate: string;
   endDate: string;
@@ -74,7 +74,6 @@ export type CreateCampaignParams = {
   title: string;
   description: string;
   targetAmount: number;
-  currentAmount: number;
   startDate: string;
   endDate: string;
   imageUrl?: string;
@@ -85,6 +84,15 @@ export type CreateCampaignParams = {
 export async function createCampaign(data: CreateCampaignParams): Promise<void> {
   try {
     await api.post("/campaigns", data);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function updateCampaignStatus(id: string, status: CampaignStatus): Promise<void> {
+  try {
+    await api.patch(`/campaigns/${id}/status`, { status });
   } catch (error) {
     console.error(error);
     throw error;
