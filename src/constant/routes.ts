@@ -3,8 +3,9 @@ export const ROUTES = {
   login: "/login",
   doacao: "/doacao",
   campanhas: "/campanhas",
-  perfil: "/perfil",
+  perfil: "/perfil/:id?",
   dashboard: "/dashboard",
   donorList: "/doadores",
   partners: "/empresas-parceiras",
+  newsEvents: "/noticias-eventos",
 } as const;

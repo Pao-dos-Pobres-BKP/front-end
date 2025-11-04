@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
 import Button from "./button";
@@ -101,6 +101,16 @@ function Modal({
   className = "",
 }: BaseProps) {
   const visible = typeof isOpen === "boolean" ? isOpen : !!open;
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    if (visible) {
+      // Trigger animation after mount
+      setTimeout(() => setIsAnimating(true), 10);
+    } else {
+      setIsAnimating(false);
+    }
+  }, [visible]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -142,14 +152,18 @@ function Modal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div
-        className="absolute inset-0 bg-black/20 backdrop-blur-[2px] transition-opacity"
+        className={`absolute inset-0 bg-black/20 backdrop-blur-[2px] transition-opacity duration-200 ${
+          isAnimating ? "opacity-100" : "opacity-0"
+        }`}
         onClick={onClose}
       />
       <div
         className={[
-          "relative bg-white rounded-lg border border-slate-300",
+          "relative bg-white rounded-2xl border border-slate-300",
           "inline-flex flex-col items-start",
-          "max-w-md w-full mx-4 p-6 gap-4 shadow-lg",
+          "max-w-lg w-full mx-4 p-6 gap-4 shadow-lg",
+          "transition-all duration-300 ease-out",
+          isAnimating ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-4",
           className,
         ].join(" ")}
         role="dialog"

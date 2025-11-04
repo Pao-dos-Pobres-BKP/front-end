@@ -3,6 +3,7 @@ import CampaignCard from "@/components/ui/campaignCard/campaignCard";
 import Input from "@/components/ui/input";
 import exemplo_foto_perfil from "@/assets/exemplo_foto_perfil.jpg";
 import { EditSquare } from "react-iconly";
+import { cn } from "@/lib/utils";
 
 import {
   Pagination,
@@ -18,18 +19,21 @@ import EditUserModal from "@/components/ui/edit-user-modal";
 import ConfirmLogoutModal from "@/components/ui/confirm-logout-modal";
 
 import type { User } from "@/contexts/UserContext";
+import CreateAdminModal from "@/components/ui/create-admin-modal";
+import { useUser } from "@/hooks/useUser";
 
 interface ProfileUser extends User {
   totalDonated: number;
   percentageAchieved: number;
-  foto: string;
 }
 
 export default function Perfil() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isCreateAdminModalOpen, setIsCreateAdminModalOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 6;
+  const currentUser = useUser().user;
 
   const [dados, setDados] = useState<ProfileUser>({
     id: "1",
@@ -43,10 +47,8 @@ export default function Perfil() {
     email: "fulanodetal@email.com.br",
     totalDonated: 2000,
     percentageAchieved: 75,
-    foto: exemplo_foto_perfil,
+    photo: exemplo_foto_perfil,
   });
-
-  //const campanhas: any[] = [];      // para testar quando não tiver campanhas apoiando.
 
   const campanhas = [
     {
@@ -154,14 +156,15 @@ export default function Perfil() {
   const currentCards = campanhasHistorico.slice(indexOfFirstCard, indexOfLastCard);
 
   const handleEditarConta = () => {
-    setIsModalOpen(true);
+    setIsEditModalOpen(true);
   };
 
-  const handleSalvarPerfil = (novosDados: Partial<User>) => {
-    setDados((prev) => ({
-      ...prev,
-      ...novosDados,
-    }));
+  const handleOpenCreateAdminModal = () => {
+    setIsCreateAdminModalOpen(true);
+  };
+
+  const handleSalvarPerfil = (updatedUser: User) => {
+    setDados((prev) => ({ ...prev, ...updatedUser }));
   };
 
   const handleConfirmLogout = () => {
@@ -170,30 +173,34 @@ export default function Perfil() {
 
   return (
     <div className="min-h-screen bg-[#2F5361] font-inter">
-      <div className="flex justify-center px-6 py-6">
-        <div className="w-full max-w-6md bg-white rounded-xl shadow-lg p-4">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white rounded-lg gap-4 p-4 mb-6">
+      <div className="flex justify-center px-4 sm:px-6 lg:px-12 xl:px-8 py-8">
+        <div className="w-full max-w-[2400px] bg-white rounded-xl shadow-lg p-4 sm:p-6 lg:p-12 xl:p-16">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white rounded-lg gap-4 p-4 lg:p-0 mb-6 lg:mb-8">
             <div className="flex items-center gap-4 w-full sm:w-auto">
               <img
-                src={dados.foto || "https://via.placeholder.com/80"}
+                src={dados.photo || "https://via.placeholder.com/80"}
                 alt="Foto do usuário"
-                className="w-20 h-20 rounded-2xl object-cover"
+                className="w-20 h-20 rounded-2xl object-cover flex-shrink-0"
               />
-              <div className="flex flex-col flex-1">
-                <div className="flex items-center">
-                  <h2 className="text-[22px] sm:text-[27px] font-bold text-[#005172]">
-                    {dados.fullname}
-                  </h2>
-                </div>
-                <div className="flex items-center mt-2">
-                  <p className="text-xs sm:text-sm font-inter text-[#005172]">
-                    Membro desde 12 de Agosto de 2023
-                  </p>
-                </div>
+              <div className="flex flex-col flex-1 min-w-0">
+                <h2 className="text-xl sm:text-2xl md:text-[27px] font-bold text-[#005172] break-words">
+                  {dados.fullname}
+                </h2>
+                <p className="text-xs sm:text-sm font-inter text-[#005172] mt-2">
+                  Membro desde 12 de Agosto de 2023
+                </p>
               </div>
             </div>
 
             <div className="flex items-center gap-2 w-full sm:w-auto">
+              {currentUser?.role === "ADMIN" && (
+                <button
+                  onClick={handleOpenCreateAdminModal}
+                  className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl bg-[#005172] text-white hover:bg-[#24434f] transition-colors"
+                >
+                  Ajustes
+                </button>
+              )}
               <button
                 onClick={() => setIsLogoutModalOpen(true)}
                 className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl text-[#005172] hover:bg-[#e6f3f5] transition-colors"
@@ -209,21 +216,21 @@ export default function Perfil() {
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-8">
-            <div className="md:w-0.5/3 flex flex-col gap-4">
-              <div className="bg-white rounded-lg p-6 flex-1 min-h-[420px]">
-                <div className="flex flex-col space-y-10">
-                  <div className="flex items-center gap-2">
-                    <label className="text-sm font-medium text-[#005172] text-left">
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 xl:gap-12">
+            <div className="w-full lg:w-72 xl:w-80 flex flex-col gap-4">
+              <div className="bg-white rounded-lg p-4 sm:p-6 lg:p-0 flex-1">
+                <div className="flex flex-col space-y-6 sm:space-y-8 lg:space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                    <label className="text-sm font-medium text-[#005172] text-left whitespace-nowrap">
                       Data de Nascimento:
                     </label>
-                    <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
+                    <span className="py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
                       {dados.birthDate ? dados.birthDate.toLocaleDateString("pt-BR") : "—"}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                     <label className="text-sm font-medium text-[#005172] text-left">Gênero:</label>
-                    <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
+                    <span className="py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
                       {{
                         MALE: "Masculino",
                         FEMALE: "Feminino",
@@ -231,9 +238,11 @@ export default function Perfil() {
                       }[dados.gender as "MALE" | "FEMALE" | "OTHER"] ?? "—"}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <label className="text-sm font-medium text-[#005172] text-left">CPF:</label>
-                    <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                    <label className="text-sm font-medium text-[#005172] text-left whitespace-nowrap">
+                      CPF:
+                    </label>
+                    <span className="py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
                       {dados.cpf}
                     </span>
                   </div>
@@ -245,9 +254,11 @@ export default function Perfil() {
                       {dados.phone}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <label className="text-sm font-medium text-[#005172] text-left">E-mail:</label>
-                    <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                    <label className="text-sm font-medium text-[#005172] text-left whitespace-nowrap">
+                      E-mail:
+                    </label>
+                    <span className="py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left break-all">
                       {dados.email}
                     </span>
                   </div>
@@ -290,7 +301,7 @@ export default function Perfil() {
                   />
                 ))
               ) : (
-                <div className="w-full mx-auto py-8 rounded-lg bg-blue-100 text-[#005172] text-center font-medium border border-[#005172] rounded-lg">
+                <div className="w-full mx-auto py-8 bg-blue-100 text-[#005172] text-center font-medium border border-[#005172] rounded-lg">
                   Você ainda não apoia nenhuma campanha.
                 </div>
               )}
@@ -354,13 +365,19 @@ export default function Perfil() {
 
             <div className="flex justify-center items-center gap-2 mt-6">
               <Pagination>
-                <PaginationContent>
+                <PaginationContent className="gap-2">
                   <PaginationItem>
                     <PaginationPrevious
+                      size="sm"
                       onClick={
                         currentPage === 1 ? undefined : () => setCurrentPage(currentPage - 1)
                       }
-                      className={currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""}
+                      className={cn(
+                        "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
+                        currentPage === 1
+                          ? "bg-white text-[#F68537] border-[#F68537] cursor-not-allowed"
+                          : "bg-[#F68537] text-white border-[#F68537]"
+                      )}
                     >
                       Anterior
                     </PaginationPrevious>
@@ -369,8 +386,14 @@ export default function Perfil() {
                   {Array.from({ length: totalPages }, (_, i) => (
                     <PaginationItem key={i}>
                       <PaginationLink
+                        size="icon"
                         onClick={() => setCurrentPage(i + 1)}
                         isActive={currentPage === i + 1}
+                        className={`px-3 py-1 border rounded-full transition-colors ${
+                          currentPage === i + 1
+                            ? "bg-white text-[#F68537] border-[#F68537]"
+                            : "bg-[#F68537] text-white border-[#F68537]"
+                        }`}
                       >
                         {i + 1}
                       </PaginationLink>
@@ -379,12 +402,18 @@ export default function Perfil() {
 
                   <PaginationItem>
                     <PaginationNext
+                      size="sm"
                       onClick={
                         currentPage === totalPages
                           ? undefined
                           : () => setCurrentPage(currentPage + 1)
                       }
-                      className={currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""}
+                      className={cn(
+                        "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
+                        currentPage === totalPages
+                          ? "bg-white text-[#F68537] border-[#F68537] cursor-not-allowed"
+                          : "bg-[#F68537] text-white border-[#F68537]"
+                      )}
                     >
                       Próximo
                     </PaginationNext>
@@ -396,9 +425,14 @@ export default function Perfil() {
         </div>
       </div>
 
+      <CreateAdminModal
+        isModalOpen={isCreateAdminModalOpen}
+        onClose={() => setIsCreateAdminModalOpen(false)}
+      />
+
       <EditUserModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
         onSave={handleSalvarPerfil}
         initialData={dados}
       />

@@ -13,6 +13,8 @@ export const SearchBar = () => {
   useEffect(() => {
     if (debouncedValue) {
       setSearchParams({ search: debouncedValue });
+    } else {
+      setSearchParams({});
     }
   }, [debouncedValue, setSearchParams]);
 

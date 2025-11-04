@@ -6,11 +6,14 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import NewsItem from "@/components/ui/news-item";
-import type { newsInformations } from "@/types/news";
+import type { NewsAPI } from "@/services/news";
 import excluir1 from "@/assets/excluir1.jpg";
-import excluir2 from "@/assets/excluir2.png";
 
-const News = () => {
+interface NewsProps {
+  news: NewsAPI[];
+}
+
+export const News = ({ news }: NewsProps) => {
   return (
     <div
       className="bg-[var(--color-components-2)] flex flex-col items-center 
@@ -42,13 +45,17 @@ const News = () => {
         className="w-full"
         opts={{
           align: "start",
-          loop: true,
+          loop: false,
         }}
       >
         <CarouselContent>
-          {mockedNewsInformations.map((news) => (
+          {news.map((news) => (
             <CarouselItem key={news.id}>
-              <NewsItem imageUrl={news.imageUrl} title={news.title} link={news.link} />
+              <NewsItem
+                imageUrl={excluir1}
+                title={news.title}
+                link={"https://www.paodospobres.org.br/categorias-noticias/noticias/"}
+              />
             </CarouselItem>
           ))}
         </CarouselContent>
@@ -58,50 +65,3 @@ const News = () => {
     </div>
   );
 };
-
-const mockedNewsInformations: newsInformations[] = [
-  {
-    id: "1",
-    title: "Pão dos Pobres celebra 130 anos de história e dedicação",
-    link: "https://example.com",
-    imageUrl: excluir1,
-  },
-  {
-    id: "2",
-    title: "Nova oficina de robótica inspira jovens a criarem o futuro",
-    link: "https://example.com",
-    imageUrl: excluir2,
-  },
-  {
-    id: "3",
-    title: "Campanha do agasalho de 2025 supera todas as metas",
-    link: "https://example.com",
-    imageUrl: excluir1,
-  },
-  {
-    id: "4",
-    title: "Alunos se destacam na feira de ciências com projetos inovadores",
-    link: "https://example.com",
-    imageUrl: excluir2,
-  },
-  {
-    id: "5",
-    title: "Parceria com empresa de tecnologia irá oferecer novos cursos",
-    link: "https://example.com",
-    imageUrl: excluir1,
-  },
-  {
-    id: "6",
-    title: "Tradicional Festa de São João anima a comunidade e arrecada fundos",
-    link: "https://example.com",
-    imageUrl: excluir2,
-  },
-  {
-    id: "7",
-    title: "Inscrições abertas para o concorrido curso de marcenaria",
-    link: "https://example.com",
-    imageUrl: excluir1,
-  },
-];
-
-export default News;

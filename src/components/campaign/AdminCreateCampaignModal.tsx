@@ -1,7 +1,7 @@
 import React from "react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { FormStep, PasswordStep } from "./steps";
-import { createCampaignSchema, passwordSchema } from "@/schemas/campaign";
+import { FormStep } from "./steps";
+import { createCampaignSchema } from "@/schemas/campaign";
 import { z } from "zod";
 
 interface AdminCreateCampaignModalProps {
@@ -11,8 +11,9 @@ interface AdminCreateCampaignModalProps {
     title: string;
     description: string;
     targetValue: number;
+    startDate: Date;
+    endDate: Date;
     image?: File | null;
-    password: string;
   }) => Promise<void> | void;
 }
 
@@ -27,28 +28,38 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
   onOpenChange,
   onSubmit,
 }) => {
-  const [step, setStep] = React.useState(1); // 1 form 2 password
   const [form, setForm] = React.useState({
     title: "",
     description: "",
     targetValue: "",
     imageName: "" as string | null,
+    startDate: undefined as Date | undefined,
+    endDate: undefined as Date | undefined,
   });
   const [imageFile, setImageFile] = React.useState<File | null>(null);
-  const [password, setPassword] = React.useState("");
   const [, setErrors] = React.useState<Record<string, string>>({});
 
   function resetAll() {
-    setStep(1);
-    setForm({ title: "", description: "", targetValue: "", imageName: "" });
+    setForm({
+      title: "",
+      description: "",
+      targetValue: "",
+      imageName: "",
+      startDate: undefined,
+      endDate: undefined,
+    });
     setImageFile(null);
-    setPassword("");
     setErrors({});
   }
   function handleChange(field: string, value: string) {
     if (field === "targetValue") value = currencyMask(value);
     setForm((f) => ({ ...f, [field]: value }));
   }
+
+  function handleDateChange(field: "startDate" | "endDate", value: Date | undefined) {
+    setForm((f) => ({ ...f, [field]: value }));
+  }
+
   function handleImage(file: File | null) {
     setImageFile(file);
     setForm((f) => ({ ...f, imageName: file?.name || "" }));
@@ -73,26 +84,48 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
       return null;
     }
   }
-  function validatePassword() {
-    try {
-      passwordSchema.parse({ password });
-      return true;
-    } catch (e) {
-      if (e instanceof z.ZodError)
-        setErrors({ password: e.issues[0]?.message || "Senha inválida" });
-      return false;
-    }
-  }
+
   async function handleSubmit() {
     const parsed = validateForm();
     if (!parsed) return;
-    if (!validatePassword()) return;
+
+    if (!form.startDate || !form.endDate) {
+      alert("As datas são obrigatórias");
+      return;
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const startDateOnly = new Date(form.startDate);
+    startDateOnly.setHours(0, 0, 0, 0);
+
+    if (startDateOnly < today) {
+      alert("A data de início não pode ser antes de hoje");
+      return;
+    }
+
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const endDateOnly = new Date(form.endDate);
+    endDateOnly.setHours(0, 0, 0, 0);
+
+    if (endDateOnly < tomorrow) {
+      alert("A data de término deve ser no mínimo amanhã");
+      return;
+    }
+
+    if (endDateOnly <= startDateOnly) {
+      alert("A data de término deve ser posterior à data de início");
+      return;
+    }
+
     await onSubmit({
       title: parsed.title,
       description: parsed.description,
       targetValue: parsed.targetValue,
+      startDate: form.startDate,
+      endDate: form.endDate,
       image: imageFile ?? null,
-      password,
     });
     resetAll();
     onOpenChange(false);
@@ -109,30 +142,16 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
         <DialogTitle className="text-2xl font-semibold text-[var(--color-components)]">
           Nova Campanha
         </DialogTitle>
-        {step === 1 && (
-          <FormStep
-            form={form}
-            onChange={handleChange}
-            onImageSelect={handleImage}
-            onNext={() => {
-              const ok = validateForm();
-              if (ok) setStep(2);
-            }}
-            stepOverride={1}
-            totalStepsOverride={2}
-          />
-        )}
-        {step === 2 && (
-          <PasswordStep
-            password={password}
-            onChange={setPassword}
-            onBack={() => setStep(1)}
-            onSubmit={handleSubmit}
-            confirmLabel="Criar"
-            stepOverride={2}
-            totalStepsOverride={2}
-          />
-        )}
+        <FormStep
+          form={form}
+          onChange={handleChange}
+          onDateChange={handleDateChange}
+          onImageSelect={handleImage}
+          onNext={handleSubmit}
+          showDates={true}
+          isEditMode={false}
+          submitLabel="Criar"
+        />
       </DialogContent>
     </Dialog>
   );
