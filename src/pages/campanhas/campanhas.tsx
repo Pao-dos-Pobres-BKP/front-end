@@ -265,9 +265,7 @@ const Campanhas = () => {
       }
 
       const imageUrl =
-        data.image instanceof File
-          ? originalCampaign.imageUrl
-          : originalCampaign.imageUrl;
+        data.image instanceof File ? originalCampaign.imageUrl : originalCampaign.imageUrl;
 
       await updateCampaign(data.id, {
         title: data.title,
@@ -321,7 +319,7 @@ const Campanhas = () => {
   const handleCancelDelete = () => {
     // Se estiver no processo de deletar, não faz nada
     if (isDeleting) return;
-    
+
     setIsDeleteConfirmOpen(false);
     if (deleteFromEditModal) {
       setIsEditModalOpen(true);
