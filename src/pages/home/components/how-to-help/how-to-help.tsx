@@ -87,8 +87,8 @@ export default function HowToHelpSection() {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-16 relative">
-          <div className="flex-1 lg:pr-72">
+        <div className="flex flex-col lg:flex-row gap-16">
+          <div className="flex-1">
             <Accordion
               type="single"
               collapsible
@@ -150,7 +150,7 @@ export default function HowToHelpSection() {
               ))}
             </Accordion>
           </div>
-          <div className="lg:absolute lg:top-16 lg:right-0 lg:w-52 flex flex-col gap-2 mt-6 lg:mt-0">
+          <div className="lg:w-52 flex flex-col gap-2 mt-6 lg:mt-0">
             <Button
               onClick={() => (window.location.href = "/doacao")} //simula rota de /doacoes
               className="bg-[var(--color-text-special)] text-white w-full hover:bg-[var(--color-text-special)] hover:opacity-95"
