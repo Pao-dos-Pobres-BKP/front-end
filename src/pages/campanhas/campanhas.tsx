@@ -1,5 +1,5 @@
 import CampaignCard from "@/components/ui/campaignCard/campaignCard";
-import Plus from "@/assets/Plus.svg";
+import Plus from "@/assets/Plus.png";
 import { useState, useEffect } from "react";
 import CampaignModal from "./components/CampaignModal";
 import EditCampaignModal from "@/components/campaign/EditCampaignModal";
