@@ -165,9 +165,8 @@ function Dashboard() {
   const { user } = useUser();
   const navigate = useNavigate();
 
-  
-  if(user?.role != "ADMIN") {
-    navigate("/")
+  if (user?.role != "ADMIN") {
+    navigate("/");
   }
 
   useEffect(() => {
