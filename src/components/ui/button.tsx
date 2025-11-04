@@ -4,7 +4,7 @@ import cn from "@/utils/cn";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const buttonVariants = cva(
-  "cursor-pointer px-6 py-2 transition-all duration-300 ease-in-out font-semibold rounded-xl focus:outline-none focus:ring-offset-2 shadow-sm hover:shadow-md hover:opacity-90 disabled:opacity-50 disabled:pointer-events-none inline-flex items-center justify-center text-sm [&>svg]:shrink-0 [&>svg]:pointer-events-none [&>svg]:h-5 [&>svg]:w-5",
+  "cursor-pointer px-6 py-2 transition-all duration-300 ease-in-out font-semibold rounded-[10px] focus:outline-none focus:ring-offset-2 shadow-sm hover:shadow-md hover:opacity-90 disabled:opacity-50 disabled:pointer-events-none inline-flex items-center justify-center text-sm [&>svg]:shrink-0 [&>svg]:pointer-events-none [&>svg]:h-5 [&>svg]:w-5",
   {
     variants: {
       variant: {
@@ -26,7 +26,6 @@ export const buttonVariants = cva(
         medium: "h-12 w-60",
         large: "h-12 w-80",
         icon: "h-10 w-10 rounded-full text-gray-900",
-        campaign: "h-9.5  text-white",
       },
       desactive: {
         true: "opacity-50 pointer-events-none",

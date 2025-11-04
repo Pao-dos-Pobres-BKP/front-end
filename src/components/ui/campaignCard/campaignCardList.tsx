@@ -28,13 +28,13 @@ export function CampaignCardList(props: CampaignCardListProps) {
     goal,
     raised,
     creatorName,
-    startDate,
-    endDate,
     title,
     className,
     progressPercent: percent = 0,
     onAction,
-    isAdmin = false,
+    startDate,
+    endDate,
+    isAdmin,
   } = props;
 
   const handleActionKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -54,7 +54,7 @@ export function CampaignCardList(props: CampaignCardListProps) {
   return (
     <article
       className={cn(
-        "flex w-full bg-white border border-[#e6e8eb] rounded-2xl p-4 md:p-5 gap-3",
+        "flex flex-col md:flex-row w-full bg-white border border-[#e6e8eb] rounded-2xl p-4 md:p-5 items-start md:items-center justify-between gap-3",
         className
       )}
       aria-label={`Card lista ${title}`}
@@ -81,7 +81,6 @@ export function CampaignCardList(props: CampaignCardListProps) {
                     ? "bg-gradient-to-b from-[#456DFF] to-[#AABCFF] bg-clip-text text-transparent"
                     : "text-[#034d6b]"
               )}
-              title={`por ${creatorName}`}
             >
               por {creatorName}
             </div>

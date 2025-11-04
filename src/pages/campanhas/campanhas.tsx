@@ -257,6 +257,7 @@ const Campanhas = () => {
     targetValue: number;
     endDate: Date;
     image?: File | null;
+    password: string;
   }) => {
     try {
       const originalCampaign = campaigns.find((c) => c.id === data.id);
@@ -414,7 +415,7 @@ const Campanhas = () => {
     <div className="bg-[var(--color-bg-campaingn)] p-8 min-h-screen flex flex-col gap-6">
       <section className="flex justify-center items-center gap-4">
         <div className="w-full">
-          <SearchBar placeholder="Pesquisar campanhas" />
+          <SearchBar />
         </div>
 
         <button

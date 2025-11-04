@@ -24,7 +24,6 @@ export type CampaignCardCompactProps = {
 export function CampaignCardCompact(props: CampaignCardCompactProps) {
   const {
     situation,
-    goal,
     raised,
     creatorName,
     title,
@@ -73,7 +72,8 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
     <>
       <article
         className={cn(
-          "flex w-full bg-white border border-[#e6e8eb] rounded-2xl p-5 gap-3",
+          "flex flex-col w-full bg-white border border-[#e6e8eb] rounded-2xl p-5 gap-3",
+          "md:flex-row md:items-center md:justify-between",
           className
         )}
         aria-label={`Card compacto ${title}`}
@@ -91,12 +91,7 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
               {title}
             </div>
             {creatorName && (
-              <div
-                className="text-sm text-[#f68537] w-full overflow-hidden text-ellipsis whitespace-nowrap"
-                title={`por ${creatorName}`}
-              >
-                por {creatorName}
-              </div>
+              <div className="text-sm text-[#f68537] truncate">por {creatorName}</div>
             )}
           </div>
         </div>
@@ -107,16 +102,13 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
             <div className="text-lg font-bold text-[#034d6b] whitespace-nowrap">
               {formatCurrency(raised)}
             </div>
-            <div className="text-sm text-[#6b7280] whitespace-nowrap">
-              de {formatCurrency(goal)}
-            </div>
           </div>
 
           <div className="w-full">
             {situation === "approved" || situation === "recurring" ? (
               <Progress value={percent} variant="blue" size="large" />
             ) : situation === "rejected" ? (
-              <div className="text-center text-xs font-semibold text-yellow-800 bg-red-400 rounded-full py-0.5 px-2 w-full max-w-[120px]">
+              <div className="text-center text-xs font-semibold text-white bg-red-400 rounded-full py-0.5 px-2 w-full max-w-[120px]">
                 Rejeitada
               </div>
             ) : (

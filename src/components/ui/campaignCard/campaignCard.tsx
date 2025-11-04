@@ -35,7 +35,7 @@ export type CampaignCardProps = {
   donorName?: string;
   donorEmail?: string;
   donationAmount?: number;
-  memberSince?: string;
+  memberSince?: string; //'DD/MM/AAAA' or year
   campaigns?: string[];
   lastDonation?: number;
 };
@@ -51,7 +51,6 @@ export default function CampaignCard({
   className,
   donorName = "",
   donorEmail = "",
-  donationAmount,
   memberSince = "",
   campaigns = [],
   lastDonation = 0,
@@ -59,8 +58,7 @@ export default function CampaignCard({
   role,
   type,
   date = new Date(),
-  isAdmin = false,
-  onAction,
+  isAdmin,
 }: CampaignCardProps) {
   const percent = goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
 
@@ -69,14 +67,10 @@ export default function CampaignCard({
       <CampaignCardProfile
         donorName={donorName}
         donorEmail={donorEmail}
-        donationAmount={donationAmount}
         memberSince={memberSince}
         campaigns={campaigns}
-        title={title}
         raised={raised}
-        goal={goal}
         className={className}
-        progressPercent={percent}
       />
     );
   }
@@ -91,7 +85,6 @@ export default function CampaignCard({
         title={title}
         className={className}
         progressPercent={percent}
-        onAction={onAction}
       />
     );
   }
@@ -117,12 +110,11 @@ export default function CampaignCard({
         goal={goal}
         raised={raised}
         creatorName={creatorName}
-        startDate={startDate}
-        endDate={endDate}
         title={title}
         className={className}
         progressPercent={percent}
-        onAction={onAction}
+        startDate={startDate}
+        endDate={endDate}
         isAdmin={isAdmin}
       />
     );
@@ -151,41 +143,36 @@ export default function CampaignCard({
 
   return (
     <article
-      className={cn("w-full bg-white border border-[#e6e8eb] rounded-2xl p-4", className)}
+      className={cn(
+        "w-full bg-white border border-[#e6e8eb] rounded-2xl",
+        "md:flex md:items-center md:justify-between md:gap-4",
+        className
+      )}
       role="group"
       aria-label={`Card da campanha ${title}`}
     >
-      <div className="flex flex-col gap-4 w-full">
+      <div className="flex gap-4 w-full p-4">
         <div className="flex-1 min-w-0">
           <div className="min-w-0">
-            <div className="flex items-center gap-2 justify-center">
+            <div className="flex-shrink-0 flex items-center gap-2 justify-center">
               <div className="h-5 w-5 flex-shrink-0">
                 <img src={blueHeart} alt="Coração azul" className="h-5 w-5" />
               </div>
-              <h3
-                className="text-3xl font-semibold text-[#034d6b] leading-tight overflow-hidden text-ellipsis whitespace-nowrap"
-                title={title}
-              >
+              <h3 className="text-3xl font-semibold text-[#034d6b] leading-tight truncate">
                 {title}
               </h3>
             </div>
             {creatorName && (
-              <p
-                className="mt-1 text-base text-[#f68537] font-semibold text-center overflow-hidden text-ellipsis whitespace-nowrap"
-                title={`por ${creatorName}`}
-              >
+              <p className="mt-1 text-base text-[#f68537] font-semibold text-center">
+                {" "}
                 por {creatorName}
               </p>
             )}
           </div>
           <div className="mt-4 items-center flex flex-col">
             <div className="flex items-baseline gap-3">
-              <span className="text-3xl font-bold text-[#034d6b] whitespace-nowrap">
-                {formatCurrency(raised)}
-              </span>
-              <span className="text-base text-[#6b7280] whitespace-nowrap">
-                de {formatCurrency(goal)}
-              </span>
+              <span className="text-3xl font-bold text-[#034d6b]">{formatCurrency(raised)}</span>
+              <span className="text-base text-[#6b7280]">de {formatCurrency(goal)}</span>
             </div>
           </div>
           <div className="mt-4 md:mt-6">

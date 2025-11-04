@@ -14,6 +14,7 @@ interface AdminCreateCampaignModalProps {
     startDate: Date;
     endDate: Date;
     image?: File | null;
+    password: string;
   }) => Promise<void> | void;
 }
 
@@ -37,6 +38,7 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
     endDate: undefined as Date | undefined,
   });
   const [imageFile, setImageFile] = React.useState<File | null>(null);
+  const [password, setPassword] = React.useState("");
   const [, setErrors] = React.useState<Record<string, string>>({});
 
   function resetAll() {
@@ -49,6 +51,7 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
       endDate: undefined,
     });
     setImageFile(null);
+    setPassword("");
     setErrors({});
   }
   function handleChange(field: string, value: string) {
@@ -126,6 +129,7 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
       startDate: form.startDate,
       endDate: form.endDate,
       image: imageFile ?? null,
+      password,
     });
     resetAll();
     onOpenChange(false);

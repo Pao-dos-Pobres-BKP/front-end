@@ -153,12 +153,11 @@ export function Hero({ items, className, showArrows = true, showIndicators = tru
                 aria-hidden
               />
               <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center px-4 py-8 sm:px-6 lg:px-8">
-                <div className="grid w-full gap-4 sm:gap-6 md:grid-cols-12">
-                  <div className="md:col-span-7 lg:col-span-8 max-w-xl">
+                <div className="grid h-full w-full items-center gap-4 sm:gap-6 md:grid-cols-12">
+                  <div className="md:col-span-7 lg:col-span-8 max-w-xl self-center">
                     <h1 className="text-balance max-w-[22ch] sm:max-w-[26ch] lg:max-w-[30ch] text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight text-white drop-shadow">
                       {item.title}
                     </h1>
-
                     {item.description && (
                       <p className="mt-3 max-w-2xl text-pretty text-sm/6 sm:text-base/7 md:text-lg/8 text-white px-4 py-2 inline-block bg-[#00D1D3]/90 rounded-lg ">
                         {item.description}
@@ -167,7 +166,7 @@ export function Hero({ items, className, showArrows = true, showIndicators = tru
                   </div>
 
                   {hasInfo && (
-                    <div className="md:col-span-5 lg:col-span-4">
+                    <div className="md:col-span-5 lg:col-span-4 self-center">
                       <div className="ml-auto max-w-sm rounded-xl bg-[#00D1D3]/70 p-4 backdrop-blur-md shadow-lg">
                         <dl className="space-y-3 text-sm text-white">
                           {item.location && (

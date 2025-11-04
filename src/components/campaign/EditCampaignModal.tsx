@@ -21,6 +21,7 @@ interface EditCampaignModalProps {
     targetValue: number;
     endDate: Date;
     image?: File | null;
+    password: string;
   }) => Promise<void> | void;
   onDeleteRequest: () => void; // triggers external delete modal
 }
@@ -47,6 +48,7 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
     endDate: undefined as Date | undefined,
   });
   const [imageFile, setImageFile] = React.useState<File | null>(null);
+  const [password, setPassword] = React.useState("");
   const [, setErrors] = React.useState<Record<string, string>>({});
 
   React.useEffect(() => {
@@ -64,9 +66,9 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
   }, [campaign, open]);
 
   function resetAll() {
+    setPassword("");
     setErrors({});
   }
-
   function handleChange(field: string, value: string) {
     if (field === "targetValue") value = currencyMask(value);
     setForm((f) => ({ ...f, [field]: value }));
@@ -132,8 +134,8 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
       targetValue: parsed.targetValue,
       endDate: form.endDate,
       image: imageFile ?? null,
+      password,
     });
-
     resetAll();
     onOpenChange(false);
   }
