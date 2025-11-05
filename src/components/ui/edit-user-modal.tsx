@@ -1,15 +1,19 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import type { User, Gender } from "@/contexts/UserContext";
 import Modal from "@/components/ui/modal";
 import Input from "./input";
 import { Select } from "./select";
 import { DatePicker } from "./Calendar/date-picker";
+import { ROUTES } from "@/constant/routes";
 
 interface EditUserModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (dados: User) => void;
+  onSave?: (dados: User) => void;
   initialData: User;
+  onDeleteAccount?: () => Promise<void>;
+  onUpdateAccount?: (userData: User) => Promise<void>;
 }
 
 export default function EditUserModal({
@@ -17,12 +21,17 @@ export default function EditUserModal({
   onClose,
   onSave,
   initialData,
+  onDeleteAccount,
+  onUpdateAccount,
 }: EditUserModalProps) {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<User>(initialData);
   const [previewPhoto, setPreviewPhoto] = useState(
     initialData.photo || "https://via.placeholder.com/60"
   );
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -56,9 +65,45 @@ export default function EditUserModal({
     setFormData((prev) => ({ ...prev, photo: "" }));
   };
 
-  const handleConfirm = () => {
-    onSave(formData);
-    onClose();
+  const handleConfirm = async () => {
+    try {
+      setIsSaving(true);
+
+      // If onUpdateAccount is provided, use it (API call)
+      if (onUpdateAccount) {
+        await onUpdateAccount(formData);
+      }
+
+      // Call onSave if provided (for local state update)
+      if (onSave) {
+        onSave(formData);
+      }
+
+      onClose();
+    } catch (error) {
+      console.error("Failed to update account:", error);
+      alert("Falha ao atualizar a conta. Por favor, tente novamente.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!onDeleteAccount) return;
+
+    try {
+      setIsDeleting(true);
+      await onDeleteAccount();
+      setShowDeleteModal(false);
+      onClose();
+      // Navigate to home after successful deletion
+      navigate(ROUTES.home);
+    } catch (error) {
+      console.error("Failed to delete account:", error);
+      alert("Falha ao apagar a conta. Por favor, tente novamente.");
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   return (
@@ -165,17 +210,19 @@ export default function EditUserModal({
 
         <div className="flex justify-center gap-4 mt-6">
           <button
-            className="px-6 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 cursor-pointer transition-colors duration-200"
+            className="px-6 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 cursor-pointer transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={onClose}
+            disabled={isSaving}
           >
             Cancelar
           </button>
 
           <button
-            className="px-6 py-2 bg-[#005172] text-white rounded-lg hover:bg-[#006b91] cursor-pointer transition-colors duration-200"
+            className="px-6 py-2 bg-[#005172] text-white rounded-lg hover:bg-[#006b91] cursor-pointer transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleConfirm}
+            disabled={isSaving}
           >
-            Confirmar
+            {isSaving ? "Salvando..." : "Confirmar"}
           </button>
         </div>
         <div className="flex flex-col items-center mt-4">
@@ -191,11 +238,9 @@ export default function EditUserModal({
 
       <Modal
         isOpen={showDeleteModal}
-        onClose={() => setShowDeleteModal(false)}
+        onClose={() => !isDeleting && setShowDeleteModal(false)}
         variant="delete-account"
-        onConfirm={() => {
-          setShowDeleteModal(false);
-        }}
+        onConfirm={handleDeleteConfirm}
       />
     </div>
   );

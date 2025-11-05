@@ -2,7 +2,7 @@
 
 import type { LoginInput } from "@/schemas/auth";
 import api from "./api";
-import type { User } from "@/contexts/UserContext";
+import type { RoleEnum, User } from "@/contexts/UserContext";
 
 export interface LoginResponse {
   accessToken: string;
@@ -40,6 +40,7 @@ export async function getDonor(id: string, accessToken: string): Promise<User> {
     cpf: data.cpf,
     accessToken: accessToken,
     role: "DONOR",
+    totalDonated: data.totalDonated,
   };
   return user;
 }
@@ -53,6 +54,50 @@ export async function getAdmin(id: string, accessToken: string): Promise<User> {
     root: data.root,
     accessToken: accessToken,
     role: "ADMIN",
+    totalDonated: data.totalDonated,
   };
   return user;
+}
+
+export async function deleteAccount(id: string, role: RoleEnum): Promise<void> {
+  const deleteEndpoint = role === "DONOR" ? "/donors" : "/admin";
+
+  return api.delete(`${deleteEndpoint}/${id}`);
+}
+
+export async function updateAccount(id: string, user: User): Promise<void> {
+  const updateEndpoint = user.role === "DONOR" ? "/donors" : "/admin";
+
+  // Only send the fields that the API expects
+  const requestBody: {
+    email: string;
+    password?: string;
+    fullName: string;
+    birthDate?: string;
+    gender?: string;
+    phone?: string;
+    cpf?: string;
+  } = {
+    email: user.email,
+    fullName: user.fullname,
+  };
+
+  if (user.birthDate) {
+    requestBody.birthDate =
+      user.birthDate instanceof Date ? user.birthDate.toISOString().split("T")[0] : user.birthDate;
+  }
+  if (user.gender) requestBody.gender = user.gender;
+  if (user.phone) {
+    const cleanPhone = user.phone.replace(/\D/g, "");
+    if (cleanPhone.startsWith("55")) {
+      requestBody.phone = `+${cleanPhone}`;
+    } else {
+      requestBody.phone = `+55${cleanPhone}`;
+    }
+  }
+  if (user.cpf) {
+    requestBody.cpf = user.cpf.replace(/\D/g, "");
+  }
+
+  return api.patch(`${updateEndpoint}/${id}`, requestBody);
 }

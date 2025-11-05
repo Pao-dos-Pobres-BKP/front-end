@@ -7,12 +7,14 @@ import { CampaignCardHistoric } from "./campaignCardHistoric";
 import { CampaignCardList } from "./campaignCardList";
 import { CampaignCardProfileCompact } from "./campaingCardProfileCompact";
 import { CampaignCardEventAndNews } from "./campaingCardEventAndNews";
+import type { DonorDonationsAPI } from "@/services/donation";
 
 export type CampaignCardProps = {
   title?: string;
   raised?: number;
   goal?: number;
   creatorName?: string;
+  campaignCreator?: string;
   startDate?: string;
   endDate?: string;
   variant?:
@@ -37,6 +39,7 @@ export type CampaignCardProps = {
   memberSince?: string;
   campaigns?: string[];
   lastDonation?: number;
+  periodicity?: DonorDonationsAPI["periodicity"];
 };
 
 export default function CampaignCard({
@@ -44,6 +47,7 @@ export default function CampaignCard({
   raised = 3,
   goal = 0,
   creatorName,
+  campaignCreator,
   startDate,
   endDate,
   variant = "default",
@@ -52,7 +56,9 @@ export default function CampaignCard({
   lastDonation = 0,
   situation,
   role,
+  periodicity,
   type,
+  donationAmount,
   date = new Date(),
   isAdmin = false,
   onAction,
@@ -97,10 +103,13 @@ export default function CampaignCard({
         situation={situation}
         goal={goal}
         raised={raised}
-        creatorName={creatorName}
+        creatorName={campaignCreator || creatorName}
         title={title}
         className={className}
         lastDonation={lastDonation}
+        donationAmount={donationAmount}
+        periodicity={periodicity}
+        onAction={onAction}
       />
     );
   }
