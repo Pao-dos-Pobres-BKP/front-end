@@ -1,120 +1,339 @@
-import { SearchBar } from "@/components/ui/search-bar";
-import Button from "@/components/ui/button";
-import PlusIcon from "@/assets/Plus.svg";
 import { Tabs } from "@/components/ui/tabs";
-import { CampaignCardEventAndNews } from "@/components/ui/campaignCard/campaingCardEventAndNews";
-import { DatePicker } from "@/components/ui/Calendar/date-picker";
-
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { getNews, deleteNews, updateNews, createNews, type NewsAPI } from "@/services/news";
+import { getEvents, deleteEvent, updateEvent, createEvent, type EventAPI } from "@/services/events";
 import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+  DeleteNewsEventModal,
+  EditNewsEventModal,
+  CreateNewsEventModal,
+} from "@/components/news-events";
+import {
+  SearchHeader,
+  PaginationControls,
+  EmptyState,
+  LoadingState,
+  NewsEventsList,
+  type NewsEventItem,
+} from "./news-events/components";
 
-import { useState } from "react";
-import { cn } from "@/lib/utils";
+const CARDS_PER_PAGE = 10;
+const MIN_LOADING_TIME = 500;
+const INITIAL_PAGE = 1;
+const API_PAGE_SIZE = 100;
+
+const TAB_INDEX = {
+  NEWS: 0,
+  EVENTS: 1,
+  ALL: 2,
+} as const;
 
 export default function NewsEvents() {
-  const mockEventsAndNews = [
-    {
-      title: "Campanha de Doação de Roupas",
-      date: new Date(2025, 8, 15),
-      type: "news" as const,
-    },
-    {
-      title: "Evento de Adoção de Animais",
-      date: new Date(2025, 9, 25),
-      type: "event" as const,
-    },
-    {
-      title: "Mutirão de Arrecadação de Alimentos",
-      date: new Date(2025, 10, 3),
-      type: "news" as const,
-    },
-    {
-      title: "Mutirão de Arrecadação de Alimentos",
-      date: new Date(2025, 10, 3),
-      type: "event" as const,
-    },
-    {
-      title: "Mutirão de Arrecadação de Alimentos",
-      date: new Date(2025, 10, 3),
-      type: "news" as const,
-    },
-    {
-      title: "Mutirão de Arrecadação de Alimentos",
-      date: new Date(2025, 10, 3),
-      type: "event" as const,
-    },
-    {
-      title: "Mutirão de Arrecadação de Alimentos",
-      date: new Date(2025, 10, 3),
-      type: "event" as const,
-    },
-    {
-      title: "Mutirão de Arrecadação de Alimentos",
-      date: new Date(2025, 10, 3),
-      type: "news" as const,
-    },
-    {
-      title: "Mutirão de Arrecadação de Alimentos",
-      date: new Date(2025, 10, 3),
-      type: "event" as const,
-    },
-    {
-      title: "Mutirão de Arrecadação de Alimentos",
-      date: new Date(2025, 10, 3),
-      type: "news" as const,
-    },
-    {
-      title: "Mutirão de Arrecadação de Alimentos",
-      date: new Date(2025, 10, 3),
-      type: "event" as const,
-    },
-    {
-      title: "Mutirão de Arrecadação de Alimentos",
-      date: new Date(2025, 10, 3),
-      type: "news" as const,
-    },
-  ];
+  const [allItems, setAllItems] = useState<NewsEventItem[]>([]);
+  const [filteredItems, setFilteredItems] = useState<NewsEventItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(INITIAL_PAGE);
+  const [totalPages, setTotalPages] = useState(INITIAL_PAGE);
+  const [activeTabIndex, setActiveTabIndex] = useState<number>(TAB_INDEX.NEWS);
+  const [sortOrder, setSortOrder] = useState<"recent" | "oldest">("recent");
+  const [searchParams] = useSearchParams();
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [activeTabIndex, setActiveTabIndex] = useState(0);
-  const cardsPerPage = 10;
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<NewsEventItem | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  const filteredData =
-    activeTabIndex === 0
-      ? mockEventsAndNews.filter((e) => e.type === "news")
-      : activeTabIndex === 1
-        ? mockEventsAndNews.filter((e) => e.type === "event")
-        : mockEventsAndNews;
+  useEffect(() => {
+    setCurrentPage(INITIAL_PAGE);
+  }, [searchParams, sortOrder, activeTabIndex]);
 
-  const totalPages = Math.ceil(filteredData.length / cardsPerPage);
-  const shouldShowPagination = totalPages > 1;
+  useEffect(() => {
+    const fetchAllData = async () => {
+      const startTime = Date.now();
 
-  const searchHeader = (
-    <div className="flex flex-wrap w-full items-center gap-3 my-5">
-      <div className="flex-1 min-w-[200px]">
-        <SearchBar />
-      </div>
-      <div>
-        <DatePicker className="!bg-[var(--color-text-special-2)] !text-[var(--color-background)] [&_*]:!text-[var(--color-background)]" />
-      </div>
-      <Button variant="quinary" size="extraSmall">
-        Pesquisar
-      </Button>
-      <Button
-        variant="quinary"
-        size="extraSmall"
-        className="flex items-center justify-center flex-shrink-0"
-      >
-        <img src={PlusIcon} alt="Icone-plus" className="w-8 h-8 translate-y-[4px]" />
-      </Button>
-    </div>
-  );
+      try {
+        setLoading(true);
+
+        const [newsItems, eventItems] = await Promise.all([fetchNewsItems(), fetchEventItems()]);
+
+        const combined = [...newsItems, ...eventItems];
+        setAllItems(combined);
+
+        await ensureMinimumLoadingTime(startTime);
+      } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAllData();
+  }, []);
+
+  const fetchNewsItems = async (): Promise<NewsEventItem[]> => {
+    try {
+      const newsResponse = await getNews({
+        page: INITIAL_PAGE,
+        pageSize: API_PAGE_SIZE,
+      });
+
+      const newsData = newsResponse.data || [];
+
+      if (Array.isArray(newsData) && newsData.length > 0) {
+        return newsData.map((news) => ({
+          id: news.id,
+          title: news.title,
+          date: new Date(news.date),
+          type: "news" as const,
+          originalData: news,
+        }));
+      }
+
+      return [];
+    } catch (error) {
+      console.error("Erro ao buscar notícias:", error);
+      return [];
+    }
+  };
+
+  const fetchEventItems = async (): Promise<NewsEventItem[]> => {
+    try {
+      const eventsResponse = await getEvents({
+        page: INITIAL_PAGE,
+        pageSize: API_PAGE_SIZE,
+      });
+
+      const eventsData = eventsResponse.data || [];
+
+      if (Array.isArray(eventsData) && eventsData.length > 0) {
+        return eventsData.map((event) => ({
+          id: event.id,
+          title: event.title,
+          date: new Date(event.dateStart),
+          type: "event" as const,
+          originalData: event,
+        }));
+      }
+
+      return [];
+    } catch (error) {
+      console.error("Erro ao buscar eventos:", error);
+      return [];
+    }
+  };
+
+  const ensureMinimumLoadingTime = async (startTime: number): Promise<void> => {
+    const elapsedTime = Date.now() - startTime;
+    if (elapsedTime < MIN_LOADING_TIME) {
+      await new Promise((resolve) => setTimeout(resolve, MIN_LOADING_TIME - elapsedTime));
+    }
+  };
+
+  useEffect(() => {
+    const searchTerm = searchParams.get("search")?.toLowerCase() || "";
+
+    let filtered = [...allItems];
+
+    if (activeTabIndex === TAB_INDEX.NEWS) {
+      filtered = filtered.filter((item) => item.type === "news");
+    } else if (activeTabIndex === TAB_INDEX.EVENTS) {
+      filtered = filtered.filter((item) => item.type === "event");
+    }
+
+    // Filtrar por busca (título)
+    if (searchTerm) {
+      filtered = filtered.filter((item) => item.title.toLowerCase().includes(searchTerm));
+    }
+
+    // Ordenar por data
+    filtered.sort((a, b) => {
+      const multiplier = sortOrder === "recent" ? -1 : 1;
+      return multiplier * (a.date.getTime() - b.date.getTime());
+    });
+
+    // Calcular paginação
+    const totalPagesCalculated = Math.ceil(filtered.length / CARDS_PER_PAGE);
+    setTotalPages(Math.max(INITIAL_PAGE, totalPagesCalculated));
+
+    // Paginar
+    const startIndex = (currentPage - 1) * CARDS_PER_PAGE;
+    const endIndex = startIndex + CARDS_PER_PAGE;
+    const paginated = filtered.slice(startIndex, endIndex);
+
+    setFilteredItems(paginated);
+  }, [allItems, searchParams, activeTabIndex, sortOrder, currentPage]);
+
+  const handleOpenDeleteModal = (item: NewsEventItem) => {
+    setSelectedItem(item);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!selectedItem) return;
+
+    try {
+      setIsDeleting(true);
+      if (selectedItem.type === "news") {
+        await deleteNews(selectedItem.id);
+      } else {
+        await deleteEvent(selectedItem.id);
+      }
+      setIsDeleteModalOpen(false);
+      window.location.reload();
+    } catch (error) {
+      console.error("Erro ao excluir:", error);
+      alert(
+        `Erro ao excluir ${selectedItem.type === "news" ? "notícia" : "evento"}. Tente novamente.`
+      );
+      setIsDeleting(false);
+    }
+  };
+
+  const handleOpenEditModal = (item: NewsEventItem) => {
+    setSelectedItem(item);
+    setIsEditModalOpen(true);
+  };
+
+  const handleSave = async (
+    data:
+      | {
+          id: string;
+          title: string;
+          description: string;
+          date: string;
+          location: string;
+          url: string;
+        }
+      | {
+          id: string;
+          title: string;
+          description: string;
+          dateStart: string;
+          dateEnd: string;
+          location: string;
+          url: string;
+        }
+  ) => {
+    if (!selectedItem) return;
+
+    try {
+      if (selectedItem.type === "news") {
+        const { id, ...newsData } = data as {
+          id: string;
+          title: string;
+          description: string;
+          date: string;
+          location: string;
+          url: string;
+        };
+        await updateNews(id, newsData);
+      } else {
+        const { id, ...eventData } = data as {
+          id: string;
+          title: string;
+          description: string;
+          dateStart: string;
+          dateEnd: string;
+          location: string;
+          url: string;
+        };
+        await updateEvent(id, eventData);
+      }
+      setIsEditModalOpen(false);
+      window.location.reload();
+    } catch (error) {
+      console.error(
+        `Erro ao salvar ${selectedItem.type === "news" ? "notícia" : "evento"}:`,
+        error
+      );
+      alert(
+        `Erro ao salvar ${selectedItem.type === "news" ? "notícia" : "evento"}. Tente novamente.`
+      );
+    }
+  };
+
+  const handleDeleteRequestFromEditModal = () => {
+    setIsEditModalOpen(false);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleCreate = async (
+    type: "news" | "event",
+    data:
+      | { title: string; description: string; date: string; location: string; url: string }
+      | {
+          title: string;
+          description: string;
+          dateStart: string;
+          dateEnd: string;
+          location: string;
+          url: string;
+        }
+  ) => {
+    try {
+      if (type === "news") {
+        await createNews(
+          data as {
+            title: string;
+            description: string;
+            date: string;
+            location: string;
+            url: string;
+          }
+        );
+      } else {
+        await createEvent(
+          data as {
+            title: string;
+            description: string;
+            dateStart: string;
+            dateEnd: string;
+            location: string;
+            url: string;
+          }
+        );
+      }
+      setIsCreateModalOpen(false);
+      window.location.reload();
+    } catch (error) {
+      console.error(`Erro ao criar ${type === "news" ? "notícia" : "evento"}:`, error);
+      alert(`Erro ao criar ${type === "news" ? "notícia" : "evento"}. Tente novamente.`);
+    }
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleSortChange = () => {
+    setSortOrder(sortOrder === "recent" ? "oldest" : "recent");
+  };
+
+  const getEmptyStateMessage = (): string => {
+    if (activeTabIndex === TAB_INDEX.NEWS) return "notícia";
+    if (activeTabIndex === TAB_INDEX.EVENTS) return "evento";
+    return "item";
+  };
+
+  const renderContent = () => {
+    if (loading) {
+      return <LoadingState count={CARDS_PER_PAGE} />;
+    }
+
+    if (filteredItems.length === 0) {
+      return <EmptyState message={getEmptyStateMessage()} />;
+    }
+
+    return (
+      <NewsEventsList
+        items={filteredItems}
+        onDelete={handleOpenDeleteModal}
+        onEdit={handleOpenEditModal}
+      />
+    );
+  };
 
   return (
     <div className="w-full min-h-screen px-4 sm:px-8 py-10 flex flex-col gap-8 bg-[#2F5361]">
@@ -122,116 +341,69 @@ export default function NewsEvents() {
         <Tabs
           tabs={["Notícias", "Eventos", "Todos"]}
           variant="secondary"
-          headerContent={searchHeader}
+          headerContent={
+            <SearchHeader
+              sortOrder={sortOrder}
+              onSortChange={handleSortChange}
+              onCreateClick={() => setIsCreateModalOpen(true)}
+            />
+          }
           onTabChange={(_, index) => {
             setActiveTabIndex(index);
-            setCurrentPage(1);
+            setCurrentPage(INITIAL_PAGE);
           }}
         >
-          <div className="flex flex-col gap-3 w-full">
-            {mockEventsAndNews
-              .filter((e) => e.type === "news")
-              .slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage)
-              .map((item, index) => (
-                <CampaignCardEventAndNews
-                  key={index}
-                  title={item.title}
-                  date={item.date}
-                  type={item.type}
-                  onDelete={() => console.log(`Excluir: ${item.title}`)}
-                  onEdit={() => console.log(`Editar: ${item.title}`)}
-                />
-              ))}
-          </div>
-
-          <div className="flex flex-col gap-3 w-full">
-            {mockEventsAndNews
-              .filter((e) => e.type === "event")
-              .slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage)
-              .map((item, index) => (
-                <CampaignCardEventAndNews
-                  key={index}
-                  title={item.title}
-                  date={item.date}
-                  type={item.type}
-                  onDelete={() => console.log(`Excluir: ${item.title}`)}
-                  onEdit={() => console.log(`Editar: ${item.title}`)}
-                />
-              ))}
-          </div>
-
-          <div className="flex flex-col gap-3 w-full">
-            {mockEventsAndNews
-              .slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage)
-              .map((item, index) => (
-                <CampaignCardEventAndNews
-                  key={index}
-                  title={item.title}
-                  date={item.date}
-                  type={item.type}
-                  onDelete={() => console.log(`Excluir: ${item.title}`)}
-                  onEdit={() => console.log(`Editar: ${item.title}`)}
-                />
-              ))}
-          </div>
+          {renderContent()}
+          {renderContent()}
+          {renderContent()}
         </Tabs>
       </div>
 
-      {shouldShowPagination && (
-        <div className="flex justify-center items-center gap-2 mt-6">
-          <Pagination>
-            <PaginationContent className="gap-2">
-              <PaginationItem>
-                <PaginationPrevious
-                  size="sm"
-                  onClick={currentPage === 1 ? undefined : () => setCurrentPage(currentPage - 1)}
-                  className={cn(
-                    "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
-                    currentPage === 1
-                      ? "bg-white text-[#F68537] border-[#F68537] opacity-50 cursor-not-allowed"
-                      : "bg-[#F68537] text-white border-[#F68537]"
-                  )}
-                >
-                  Anterior
-                </PaginationPrevious>
-              </PaginationItem>
+      {!loading && totalPages > INITIAL_PAGE && (
+        <PaginationControls
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
 
-              {Array.from({ length: totalPages }, (_, i) => (
-                <PaginationItem key={i}>
-                  <PaginationLink
-                    size="icon"
-                    onClick={() => setCurrentPage(i + 1)}
-                    isActive={currentPage === i + 1}
-                    className={`px-3 py-1 border rounded-full transition-colors ${
-                      currentPage === i + 1
-                        ? "bg-white text-[#F68537] border-[#F68537]"
-                        : "bg-[#F68537] text-white border-[#F68537]"
-                    }`}
-                  >
-                    {i + 1}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
+      {/* Modals */}
+      <CreateNewsEventModal
+        open={isCreateModalOpen}
+        onOpenChange={setIsCreateModalOpen}
+        onCreate={handleCreate}
+      />
 
-              <PaginationItem>
-                <PaginationNext
-                  size="sm"
-                  onClick={
-                    currentPage === totalPages ? undefined : () => setCurrentPage(currentPage + 1)
-                  }
-                  className={cn(
-                    "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
-                    currentPage === totalPages
-                      ? "bg-white text-[#F68537] border-[#F68537] opacity-50 cursor-not-allowed"
-                      : "bg-[#F68537] text-white border-[#F68537]"
-                  )}
-                >
-                  Próximo
-                </PaginationNext>
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
+      {selectedItem && (
+        <>
+          <DeleteNewsEventModal
+            open={isDeleteModalOpen && !isDeleting}
+            onOpenChange={setIsDeleteModalOpen}
+            onConfirm={handleConfirmDelete}
+            itemTitle={selectedItem.title}
+            itemType={selectedItem.type}
+          />
+
+          {selectedItem.type === "news" ? (
+            <EditNewsEventModal
+              type="news"
+              open={isEditModalOpen}
+              onOpenChange={setIsEditModalOpen}
+              data={selectedItem.originalData as NewsAPI}
+              onSave={handleSave}
+              onDeleteRequest={handleDeleteRequestFromEditModal}
+            />
+          ) : (
+            <EditNewsEventModal
+              type="event"
+              open={isEditModalOpen}
+              onOpenChange={setIsEditModalOpen}
+              data={selectedItem.originalData as EventAPI}
+              onSave={handleSave}
+              onDeleteRequest={handleDeleteRequestFromEditModal}
+            />
+          )}
+        </>
       )}
     </div>
   );
