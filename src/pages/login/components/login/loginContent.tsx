@@ -97,10 +97,6 @@ export default function LoginContent({ onRegisterClick }: { onRegisterClick: () 
             {isLoading ? "Carregando..." : "Entrar"}
           </Button>
 
-          <Button type="button" variant="tertiary" className="w-full">
-            Entrar com o Google
-          </Button>
-
           <Divider text="ou" variant="secondary" className="mt-1" />
 
           <Button

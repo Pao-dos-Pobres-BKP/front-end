@@ -17,15 +17,7 @@ export type CampaignCardCompactProps = {
 };
 
 export function CampaignCardCompact(props: CampaignCardCompactProps) {
-  const {
-    situation,
-    goal,
-    raised,
-    creatorName,
-    title,
-    className,
-    progressPercent: percent = 0,
-  } = props;
+  const { situation, raised, creatorName, title, className, progressPercent: percent = 0 } = props;
 
   const situationIcon =
     situation === "approved"
@@ -46,37 +38,44 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
         )}
         aria-label={`Card compacto ${title}`}
       >
-        <div className="flex items-center gap-2">
-          {situationIcon && <img src={situationIcon} alt="" className="h-6 w-6 flex-shrink-0" />}
-          <div className="flex flex-col truncate">
-            <div className="text-[#034d6b] text-xl font-semibold truncate">{title}</div>
+        {/* Column 1: Icon + Title/Creator */}
+        <div className="flex items-start gap-2 flex-shrink-0 min-w-0 w-full md:w-[280px]">
+          {situationIcon && (
+            <img src={situationIcon} alt="" className="h-6 w-6 flex-shrink-0 mt-0.5" />
+          )}
+          <div className="flex flex-col min-w-0 flex-1">
+            <div
+              className="text-[#034d6b] text-xl font-semibold w-full overflow-hidden text-ellipsis whitespace-nowrap"
+              title={title}
+            >
+              {title}
+            </div>
             {creatorName && (
               <div className="text-sm text-[#f68537] truncate">por {creatorName}</div>
             )}
           </div>
         </div>
-        <div className="flex items-center w-full gap-3">
-          <div className="flex flex-col flex-1 min-w-0">
-            <div className="flex justify-between items-center gap-1.5 w-full flex-wrap">
-              <div className="text-lg font-bold text-[#034d6b] truncate">
-                {formatCurrency(raised)}
-              </div>
-              <div className="text-sm text-[#6b7280] truncate">de {formatCurrency(goal)}</div>
-            </div>
 
-            <div className="w-full mt-1">
-              {situation === "approved" || situation === "recurring" ? (
-                <Progress value={percent} variant="blue" size="large" />
-              ) : situation === "rejected" ? (
-                <div className="text-center text-xs font-semibold text-yellow-800 bg-red-400 rounded-full py-0.5 px-2 w-full max-w-[120px]">
-                  Rejeitada
-                </div>
-              ) : (
-                <div className="text-center text-xs font-semibold text-white bg-[#F6C337] rounded-full py-0.5 px-2 w-full max-w-[140px]">
-                  Pendente Aprovação
-                </div>
-              )}
+        {/* Column 2: Values + Progress Bar */}
+        <div className="flex flex-col flex-1 min-w-0 justify-center">
+          <div className="flex justify-between items-center gap-1.5 mb-1">
+            <div className="text-lg font-bold text-[#034d6b] whitespace-nowrap">
+              {formatCurrency(raised)}
             </div>
+          </div>
+
+          <div className="w-full">
+            {situation === "approved" || situation === "recurring" ? (
+              <Progress value={percent} variant="blue" size="large" />
+            ) : situation === "rejected" ? (
+              <div className="text-center text-xs font-semibold text-white bg-red-400 rounded-full py-0.5 px-2 w-full max-w-[120px]">
+                Rejeitada
+              </div>
+            ) : (
+              <div className="text-center text-xs font-semibold text-white bg-[#F6C337] rounded-full py-0.5 px-2 w-full max-w-[140px]">
+                Pendente Aprovação
+              </div>
+            )}
           </div>
         </div>
       </article>

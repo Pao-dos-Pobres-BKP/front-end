@@ -51,7 +51,11 @@ export const News = ({ news }: NewsProps) => {
         <CarouselContent>
           {news.map((news) => (
             <CarouselItem key={news.id}>
-              <NewsItem imageUrl={excluir1} title={news.title} link={news.url} />
+              <NewsItem
+                imageUrl={excluir1}
+                title={news.title}
+                link={"https://www.paodospobres.org.br/categorias-noticias/noticias/"}
+              />
             </CarouselItem>
           ))}
         </CarouselContent>
