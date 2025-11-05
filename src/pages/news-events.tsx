@@ -104,6 +104,9 @@ export default function NewsEvents() {
         <DatePicker className="!bg-[var(--color-text-special-2)] !text-[var(--color-background)] [&_*]:!text-[var(--color-background)]" />
       </div>
       <Button variant="quinary" size="extraSmall">
+        Exportar CSV
+      </Button>
+      <Button variant="quinary" size="extraSmall">
         Pesquisar
       </Button>
       <Button

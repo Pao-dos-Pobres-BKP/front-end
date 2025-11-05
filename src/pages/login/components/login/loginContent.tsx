@@ -56,6 +56,19 @@ export default function LoginContent({ onRegisterClick }: { onRegisterClick: () 
     }
   };
 
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    setApiError(null);
+    console.log("Iniciando login com Google...");
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    console.log("Chamada ao backend do Google finalizada (simulação).");
+    // const user = await loginComGoogle(token);
+    // setUser(user);
+    // navigate("/perfil");
+    setApiError("Simulação concluída. O backend precisa implementar.");
+    setIsLoading(false);
+  };
+
   return (
     <div className="mx-auto my-4 w-full text-center">
       <form noValidate onSubmit={handleSubmit} className="space-y-2">
@@ -97,6 +110,16 @@ export default function LoginContent({ onRegisterClick }: { onRegisterClick: () 
             {isLoading ? "Carregando..." : "Entrar"}
           </Button>
 
+          <Button
+            type="button"
+            variant="tertiary"
+            className="w-full"
+            onClick={handleGoogleLogin}
+            disabled={isLoading}
+          >
+            {isLoading ? "Carregando..." : "Entrar com o Google"}
+          </Button>
+
           <Divider text="ou" variant="secondary" className="mt-1" />
 
           <Button
@@ -105,6 +128,7 @@ export default function LoginContent({ onRegisterClick }: { onRegisterClick: () 
             data-testid="btn-cadastrar"
             className="w-full"
             onClick={onRegisterClick}
+            disabled={isLoading}
           >
             Cadastre-se
           </Button>

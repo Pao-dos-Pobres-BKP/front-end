@@ -163,9 +163,14 @@ export default function DonorList() {
   return (
     <div className="w-full min-h-screen px-4 sm:px-8 py-10 flex flex-col gap-8 bg-[#2F5361]">
       <div className="flex flex-col sm:flex-row gap-2 w-full items-center">
-        <Input placeholder="Buscar..." fullWidth />
-        <button className="w-full md:w-auto px-4 py-2.5 rounded-lg bg-[#F68537] text-white hover:bg-orange-600">
-          Pesquisar
+        <div className="flex flex-col sm:flex-row gap-2 w-full">
+          <Input placeholder="Buscar..." fullWidth />
+          <button className="w-full md:w-auto px-4 py-2.5 rounded-lg bg-[#F68537] text-white hover:bg-orange-600">
+            Pesquisar
+          </button>
+        </div>
+        <button className="w-full md:w-auto px-4 py-2.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700">
+          Exportar CSV
         </button>
       </div>
 

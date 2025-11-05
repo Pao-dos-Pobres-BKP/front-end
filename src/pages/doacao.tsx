@@ -28,6 +28,8 @@ const Doacao = () => {
   const [timer, setTimer] = useState(600);
   const [isCampaignConfirmed, setIsCampaignConfirmed] = useState(false);
   const [isValueConfirmed, setIsValueConfirmed] = useState(false);
+  const [selectedFrequency, setSelectedFrequency] = useState("");
+  const [isFrequencyConfirmed, setIsFrequencyConfirmed] = useState(false);
   const [isStep3Confirmed, setIsStep3Confirmed] = useState(false);
   const [isStep4Confirmed, setIsStep4Confirmed] = useState(false);
   const [cardNumber, setCardNumber] = useState("");
@@ -165,6 +167,13 @@ const Doacao = () => {
     setCurrentStep("item-3");
   };
 
+  const handleConfirmFrequency = () => {
+    if (selectedFrequency) {
+      setIsFrequencyConfirmed(true);
+      setCurrentStep("item-4");
+    }
+  };
+
   const handleDonationValueChange = (value: string) => {
     if (valueError) {
       setValueError("");
@@ -175,7 +184,7 @@ const Doacao = () => {
   const handleConfirmStep3 = () => {
     if (step3Value) {
       setIsStep3Confirmed(true);
-      setCurrentStep("item-4");
+      setCurrentStep("item-5");
     }
   };
 
@@ -226,6 +235,15 @@ const Doacao = () => {
     value: campaign.id,
     label: campaign.name,
   }));
+
+  const frequencyOptions = [
+    { value: "unica", label: "Única" },
+    { value: "semanal", label: "A cada semana" },
+    { value: "quinzenal", label: "A cada duas semanas" },
+    { value: "mensal", label: "Uma vez ao mês" },
+    { value: "trimestral", label: "A cada três meses" },
+  ];
+
   const mockPixCode =
     "00020126360014br.gov.bcb.pix0114+55119999999995204000053039865802BR5913NOME COMPLETO6009SAO PAULO62070503***6304E2E1";
   const mockQrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Example";
@@ -362,6 +380,48 @@ const Doacao = () => {
               <AccordionTrigger variant="secondary" size="large" disabled={!isValueConfirmed}>
                 <StepHeader
                   stepNumber="3"
+                  title="Frequência"
+                  isActive={isFrequencyConfirmed}
+                  value={
+                    isFrequencyConfirmed
+                      ? frequencyOptions.find((f) => f.value === selectedFrequency)?.label
+                      : undefined
+                  }
+                  valueType="text"
+                />
+              </AccordionTrigger>
+              <AccordionContent variant="secondary">
+                <div className="flex flex-col gap-4">
+                  <Select
+                    options={frequencyOptions}
+                    value={selectedFrequency}
+                    onChange={setSelectedFrequency}
+                    placeholder="Escolha a frequência da doação"
+                    label="Frequência"
+                    fullWidth
+                  />
+                  <Button
+                    variant="confirm"
+                    size="small"
+                    onClick={handleConfirmFrequency}
+                    className="self-end"
+                    disabled={!selectedFrequency}
+                  >
+                    Confirmar
+                  </Button>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* Passo 4 */}
+            <AccordionItem
+              value="item-3"
+              className="mb-4 rounded-md overflow-hidden"
+              disabled={!isFrequencyConfirmed}
+            >
+              <AccordionTrigger variant="secondary" size="large" disabled={!isFrequencyConfirmed}>
+                <StepHeader
+                  stepNumber="4"
                   title="Método de Pagamento"
                   isActive={isStep3Confirmed}
                   value={isStep3Confirmed ? step3Value : undefined}
@@ -384,15 +444,15 @@ const Doacao = () => {
               </AccordionContent>
             </AccordionItem>
 
-            {/* Passo 4 */}
+            {/* Passo 5 */}
             <AccordionItem
-              value="item-4"
+              value="item-5"
               className="mb-4 rounded-md overflow-hidden"
               disabled={!isStep3Confirmed}
             >
               <AccordionTrigger variant="secondary" size="large" disabled={!isStep3Confirmed}>
                 <StepHeader
-                  stepNumber="4"
+                  stepNumber="5"
                   title="Pagamento"
                   isActive={isStep4Confirmed}
                   value={shouldShowPaymentTag ? paymentStatus : undefined}

@@ -433,6 +433,10 @@ const Campanhas = () => {
         >
           <img src={Plus} alt="Plus Icon" className="h-4 w-4" />
         </div>
+
+        <button className="w-full md:w-auto px-4 py-2.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700">
+          Exportar CSV
+        </button>
       </section>
 
       {loading ? (
