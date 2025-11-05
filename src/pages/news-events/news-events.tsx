@@ -15,7 +15,7 @@ import {
   LoadingState,
   NewsEventsList,
   type NewsEventItem,
-} from "./news-events/components";
+} from "./components";
 
 const CARDS_PER_PAGE = 10;
 const MIN_LOADING_TIME = 500;
