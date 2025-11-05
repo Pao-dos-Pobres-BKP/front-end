@@ -36,6 +36,7 @@ export const Newsletter = () => {
         setIsModalOpen(true);
         setEmail("");
         setIsChecked(false);
+        setErrorMessage("");
       },
       onError: (message) => {
         setErrorMessage(message);
