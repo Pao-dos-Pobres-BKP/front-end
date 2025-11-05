@@ -60,9 +60,9 @@ function Navbar() {
       </div>
       {isAuthenticated && user.role == "ADMIN" && (
         <div className="hidden lg:flex flex-shrink-0">
-          <NavLink to="/comunicados" className={getNavLinkClass}>
+          <NavLink to="/noticias-eventos" className={getNavLinkClass}>
             <DiscoverIcon className="h-5 w-5 fill-current" />
-            <strong>Comunicados</strong>
+            <strong>Notícias & Eventos</strong>
           </NavLink>
         </div>
       )}
@@ -142,12 +142,12 @@ function Navbar() {
               {isAuthenticated && (
                 <>
                   <NavLink
-                    to="/comunicados"
+                    to="/noticias-eventos"
                     className={getNavLinkClass}
                     onClick={() => setIsOpen(false)}
                   >
                     <DiscoverIcon className="h-5 w-5 fill-current" />
-                    <strong>Notícias</strong>
+                    <strong>Notícias & Eventos</strong>
                   </NavLink>
                   <NavLink
                     to="/doadores"
