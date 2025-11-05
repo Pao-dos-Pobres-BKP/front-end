@@ -141,22 +141,18 @@ export default function NewsEvents() {
       filtered = filtered.filter((item) => item.type === "event");
     }
 
-    // Filtrar por busca (título)
     if (searchTerm) {
       filtered = filtered.filter((item) => item.title.toLowerCase().includes(searchTerm));
     }
 
-    // Ordenar por data
     filtered.sort((a, b) => {
       const multiplier = sortOrder === "recent" ? -1 : 1;
       return multiplier * (a.date.getTime() - b.date.getTime());
     });
 
-    // Calcular paginação
     const totalPagesCalculated = Math.ceil(filtered.length / CARDS_PER_PAGE);
     setTotalPages(Math.max(INITIAL_PAGE, totalPagesCalculated));
 
-    // Paginar
     const startIndex = (currentPage - 1) * CARDS_PER_PAGE;
     const endIndex = startIndex + CARDS_PER_PAGE;
     const paginated = filtered.slice(startIndex, endIndex);
