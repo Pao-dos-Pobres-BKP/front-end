@@ -3,7 +3,7 @@ import api from "./api";
 export type DonorAPI = {
   id: string;
   email: string;
-  fullname: string;
+  fullName: string;
   birthdate: Date;
   gender: string;
   phone: string;

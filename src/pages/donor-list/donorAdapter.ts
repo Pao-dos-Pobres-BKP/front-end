@@ -1,19 +1,24 @@
 import type { DonorAPI } from "@/services/donor";
 import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
 
-function toDonor(donor: DonorAPI) {
+export type Donor = {
+  id: string;
+  donorName: string;
+  donorEmail: string;
+  raised: number;
+  memberSince: string;
+  campaigns: string[];
+};
+
+function toDonor(donor: DonorAPI): Donor {
   return {
     id: donor.id,
-    donorName: donor.fullname,
+    donorName: donor.fullName,
     donorEmail: donor.email,
-    birthdate: format(new Date(donor.birthdate), "dd 'de' MMMM 'de' yyyy", { locale: ptBR }),
     raised: donor.raised,
     memberSince: format(new Date(donor.createdAt), "dd/MM/yyyy"),
     campaigns: donor.campaigns,
   };
 }
 
-export const donorAdapter = {
-  toDonor,
-};
+export const donorAdapter = { toDonor };

@@ -1,22 +1,24 @@
-import { getDonors, type DonorAPI } from "@/services/donor";
+import { getDonors } from "@/services/donor";
+import { donorAdapter } from "./donorAdapter";
 import { useCallback, useEffect, useState } from "react";
+import type { Donor } from "./donorAdapter";
 
 export function useDonorList() {
-  const [donors, setDonorList] = useState<DonorAPI[]>([]);
+  const [donors, setDonorList] = useState<Donor[]>([]);
 
   const fetchDonors = useCallback(async () => {
-    await getDonorList();
+    try {
+      const response = await getDonors();
+      const adapted = response.data.map(donorAdapter.toDonor);
+      setDonorList(adapted);
+    } catch (error) {
+      console.error("Erro ao carregar doadores:", error);
+    }
   }, []);
+
   useEffect(() => {
     fetchDonors();
   }, [fetchDonors]);
-
-  async function getDonorList() {
-    const response = await getDonors();
-    if (response.data.length > 0) {
-      setDonorList(response.data);
-    }
-  }
 
   return { donors };
 }

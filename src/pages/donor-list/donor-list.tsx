@@ -20,7 +20,7 @@ export default function DonorList() {
 
   const { donors } = useDonorList();
 
-  const donorListItems = donors
+  //const donorListItems = donors
   // const mockDonors = [
   //   {
   //     id: 1,
@@ -160,10 +160,10 @@ export default function DonorList() {
   // ];
 
   // const totalPages = Math.ceil(mockDonors.length / cardsPerPage);
-  const totalPages = Math.ceil(donorListItems.length / cardsPerPage);
-  // const indexOfLastCard = currentPage * cardsPerPage;
-  // const indexOfFirstCard = indexOfLastCard - cardsPerPage;
-  // const currentCards = mockDonors.slice(indexOfFirstCard, indexOfLastCard);
+  const totalPages = Math.ceil(donors.length / cardsPerPage);
+  const indexOfLastCard = currentPage * cardsPerPage;
+  const indexOfFirstCard = indexOfLastCard - cardsPerPage;
+  const currentDonors = donors.slice(indexOfFirstCard, indexOfLastCard);
   // const currentCards = donorListItems.slice(indexOfFirstCard, indexOfLastCard);
   return (
     <div className="w-full min-h-screen px-4 sm:px-8 py-10 flex flex-col gap-8 bg-[#2F5361]">
@@ -175,17 +175,21 @@ export default function DonorList() {
       </div>
 
       <div className="flex flex-col gap-4">
-        {donorListItems.map((donor, index) => (
+        { currentDonors.length === 0 ? (
+          <p className="text-white text-center mt-6">Nenhum doador encontrado.</p>
+        ) : (
+          currentDonors.map((donor, index) => (
           <CampaignCard
             key={index}
             variant="profile"
-            donorName={donor.fullname}
-            donorEmail={donor.email}
+            donorName={donor.donorName}
+            donorEmail={donor.donorEmail}
             raised={donor.raised}
-            // memberSince={`${donor.createdAt.getDay()}/${donor.createdAt.getMonth()}/${donor.createdAt.getFullYear()}`}
+            memberSince={donor.memberSince}
             campaigns={donor.campaigns}
           />
-        ))}
+        ))
+        ) }
       </div>
       <div className="flex justify-center items-center gap-2 mt-6">
         <Pagination>

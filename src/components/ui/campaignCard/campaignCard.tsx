@@ -7,6 +7,7 @@ import { CampaignCardHistoric } from "./campaignCardHistoric";
 import { CampaignCardList } from "./campaignCardList";
 import { CampaignCardProfileCompact } from "./campaingCardProfileCompact";
 import { CampaignCardEventAndNews } from "./campaingCardEventAndNews";
+import { CampaignCardProfile } from "./campaignCardProfile";
 
 export type CampaignCardProps = {
   title?: string;
@@ -49,6 +50,9 @@ export default function CampaignCard({
   variant = "default",
   className,
   donorName = "",
+  donorEmail = "",
+  memberSince = "",
+  campaigns = [],
   lastDonation = 0,
   situation,
   role,
@@ -59,22 +63,18 @@ export default function CampaignCard({
 }: CampaignCardProps) {
   const percent = goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
 
-  // if (variant === "profile") {
-  //   return (
-  //     <CampaignCardProfile
-  //       donorName={donorName}
-  //       donorEmail={donorEmail}
-  //       donationAmount={donationAmount}
-  //       memberSince={memberSince}
-  //       campaigns={campaigns}
-  //       title={title}
-  //       raised={raised}
-  //       goal={goal}
-  //       className={className}
-  //       progressPercent={percent}
-  //     />
-  //   );
-  // }
+   if (variant === "profile") {
+     return (
+       <CampaignCardProfile
+         raised={raised}
+         className={className}
+         donorName={donorName}
+         donorEmail={donorEmail}
+         memberSince={memberSince}
+         campaigns={campaigns}
+       />
+     );
+   }
 
   if (variant === "compact") {
     return (
