@@ -4,11 +4,6 @@ import { Progress } from "../progress";
 import blueHeart from "@/assets/blueHeart.svg";
 import orangeHeart from "@/assets/orangeHeart.svg";
 import redHeart from "@/assets/redHeart.svg";
-import eyeIcon from "@/assets/eyeIcon.svg";
-import editIcon from "@/assets/editIcon.svg";
-import cancelIcon from "@/assets/cancelIcon.svg";
-import { useState } from "react";
-import ConfirmCancelRecurringModal from "../confirm-cancel-recurring-modal";
 
 export type CampaignCardCompactProps = {
   title: string;
@@ -30,36 +25,7 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
     title,
     className,
     progressPercent: percent = 0,
-    onAction,
   } = props;
-
-  const [showCancelRecurring, setShowCancelRecurring] = useState(false);
-
-  const actionIconSrc =
-    situation === "pending" ? eyeIcon : situation === "approved" ? editIcon : cancelIcon;
-
-  const actionButtonClass =
-    situation === "approved"
-      ? "bg-[#034d6b] hover:bg-[#023a50] text-white hover:text-white"
-      : situation === "pending"
-        ? "bg-[#F68537] hover:bg-[#e5782e] text-white hover:text-white"
-        : "bg-[#D65E5E] hover:bg-[#c44f4f] text-white hover:text-white";
-
-  const handleActionKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      onAction?.();
-    }
-  };
-
-  const handleActionClick = () => {
-    if (situation === "recurring") {
-      setShowCancelRecurring(true);
-    } else {
-      onAction?.();
-    }
-    // ADICIONAR AQUI AS OUTRAS VARIAÇÕES DE BOTÃO
-  };
 
   const situationIcon =
     situation === "approved"
@@ -112,36 +78,8 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
               )}
             </div>
           </div>
-          <div className="flex-shrink-0">
-            <div
-              role="button"
-              tabIndex={0}
-              onClick={handleActionClick}
-              onKeyDown={handleActionKeyDown}
-              className={cn(
-                "inline-flex items-center justify-center text-sm font-semibold rounded-[10px] transition-colors shadow-sm hover:shadow-lg focus:outline-none cursor-pointer min-w-[44px] h-10 sm:h-11 md:h-12 px-3",
-                actionButtonClass
-              )}
-            >
-              <img
-                src={actionIconSrc}
-                alt=""
-                className="h-[18px] w-[18px] sm:h-[20px] sm:w-[20px] md:h-[21px] md:w-[21px]"
-                aria-hidden="true"
-              />
-            </div>
-          </div>
         </div>
       </article>
-
-      <ConfirmCancelRecurringModal
-        isOpen={showCancelRecurring}
-        onClose={() => setShowCancelRecurring(false)}
-        onConfirm={() => {
-          setShowCancelRecurring(false);
-          onAction?.();
-        }}
-      />
     </>
   );
 }

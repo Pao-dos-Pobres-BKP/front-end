@@ -89,7 +89,11 @@ export async function updateAccount(id: string, user: User): Promise<void> {
   if (user.gender) requestBody.gender = user.gender;
   if (user.phone) {
     const cleanPhone = user.phone.replace(/\D/g, "");
-    requestBody.phone = `+55${cleanPhone}`;
+    if (cleanPhone.startsWith("55")) {
+      requestBody.phone = `+${cleanPhone}`;
+    } else {
+      requestBody.phone = `+55${cleanPhone}`;
+    }
   }
   if (user.cpf) {
     requestBody.cpf = user.cpf.replace(/\D/g, "");

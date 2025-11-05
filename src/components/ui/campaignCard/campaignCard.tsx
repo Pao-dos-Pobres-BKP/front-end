@@ -59,6 +59,7 @@ export default function CampaignCard({
   date,
   role,
   periodicity,
+  onAction,
 }: CampaignCardProps) {
   const percent = goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
 
@@ -105,6 +106,7 @@ export default function CampaignCard({
         lastDonation={lastDonation}
         donationAmount={donationAmount}
         periodicity={periodicity}
+        onAction={onAction}
       />
     );
   }

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getDonorCampaigns } from "@/services/campaign";
 import {
   getDonorDonations as getDonorDonationsService,
+  updateDonation,
   type DonorDonationsAPI,
 } from "@/services/donation";
 import { deleteAccount, updateAccount } from "@/services/auth";
@@ -53,6 +54,15 @@ export function usePerfil({
     await updateAccount(userId, userData);
   }
 
+  async function handleCancelDonation(donation: DonorDonationsAPI) {
+    const updatedDonation: DonorDonationsAPI = {
+      ...donation,
+      periodicity: "CANCELED",
+    };
+    await updateDonation(updatedDonation);
+    await getDonorDonations(donationsPage, donationsPageSize);
+  }
+
   return {
     campaigns,
     campaignsTotalPages,
@@ -60,5 +70,6 @@ export function usePerfil({
     donationsTotalPages,
     handleDeleteAccount,
     handleUpdateAccount,
+    handleCancelDonation,
   };
 }

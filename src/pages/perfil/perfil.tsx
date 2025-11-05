@@ -53,6 +53,7 @@ export default function Perfil() {
     donationsTotalPages,
     handleDeleteAccount,
     handleUpdateAccount,
+    handleCancelDonation,
   } = usePerfil({
     campaignsPage: currentCampaignsPage,
     campaignsPageSize: campaignsPageSize,
@@ -309,17 +310,20 @@ export default function Perfil() {
 
           <div className="mt-2 bg-white rounded-lg p-6 min-h-[580px] flex flex-col">
             <div className="flex flex-col gap-3 flex-1">
-              {donations.map((donation, index) => (
-                <CampaignCard
-                  key={index}
-                  variant="historic"
-                  className="border border-[#005172] rounded-lg text-sm p-3"
-                  title={donation.campaignName}
-                  donationAmount={donation.amount}
-                  periodicity={donation.periodicity}
-                  campaignCreator={donation.campaignCreatedBy}
-                />
-              ))}
+              {donations
+                .filter((donation) => donation.periodicity !== "CANCELED")
+                .map((donation, index) => (
+                  <CampaignCard
+                    key={index}
+                    variant="historic"
+                    className="border border-[#005172] rounded-lg text-sm p-3"
+                    title={donation.campaignName}
+                    donationAmount={donation.amount}
+                    periodicity={donation.periodicity}
+                    campaignCreator={donation.campaignCreatedBy}
+                    onAction={() => handleCancelDonation(donation)}
+                  />
+                ))}
             </div>
 
             <div className="flex justify-center items-center gap-2 mt-6">
