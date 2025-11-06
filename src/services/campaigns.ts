@@ -32,7 +32,6 @@ export async function getCampaigns(
     const response = await api.get<PageableResponse<CampaignAPI>>("/campaigns", {
       params,
     });
-
     return response.data;
   } catch (error) {
     console.error(error);
@@ -97,4 +96,32 @@ export async function updateCampaignStatus(id: string, status: CampaignStatus): 
     console.error(error);
     throw error;
   }
+}
+
+export type DonorCampaignsAPI = {
+  id: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+  targetAmount: string;
+  currentAmount: string;
+  startDate: string;
+  endDate: string;
+  status: string;
+  createdBy: string;
+  creatorName: string;
+};
+
+export async function getDonorCampaigns(page: number, pageSize: number) {
+  const response = await api.get<PageableResponse<DonorCampaignsAPI>>(
+    `/campaigns/donor/all-donations`,
+    {
+      params: {
+        page: page.toString(),
+        pageSize: pageSize.toString(),
+      },
+    }
+  );
+
+  return response.data;
 }

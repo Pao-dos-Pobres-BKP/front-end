@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import Button from "./button";
 import CreateAdminModal from "./create-admin-modal";
-import UserList from "./user-list";
+import UserList from "./user-list.tsx";
 import { PlusCircleIcon } from "lucide-react";
 import { listAllAdmins } from "@/services/admin/listAdmins";
-import { listAllDonors } from "@/services/donors/listDonors";
+import { getAllDonors } from "@/services/donors.ts";
 
 type FormData = {
   nome: string;
@@ -57,7 +57,7 @@ export default function ProfileSettingsModal({
   const loadUsers = useCallback(async () => {
     try {
       setLoading(true);
-      const [admins, donors] = await Promise.all([listAllAdmins(), listAllDonors()]);
+      const [admins, donors] = await Promise.all([listAllAdmins(), getAllDonors()]);
       const mappedAdmins: User[] = admins.map((a) => ({
         id: a.id,
         profileName: a.fullName,
