@@ -4,7 +4,7 @@ import blueHeart from "@/assets/blueHeart.svg";
 import orangeHeart from "@/assets/orangeHeart.svg";
 import redHeart from "@/assets/redHeart.svg";
 import cancelIcon from "@/assets/cancelIcon.svg";
-import type { DonorDonationsAPI } from "@/services/donation";
+import type { DonorDonationsAPI } from "@/services/donations";
 import { useState } from "react";
 import ConfirmCancelRecurringModal from "../confirm-cancel-recurring-modal";
 

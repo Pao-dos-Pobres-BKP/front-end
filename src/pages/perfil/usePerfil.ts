@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
-import { getDonorCampaigns } from "@/services/campaign";
+import { getDonorCampaigns } from "@/services/campaigns";
 import {
   getDonorDonations as getDonorDonationsService,
   updateDonation,
   type DonorDonationsAPI,
-} from "@/services/donation";
+} from "@/services/donations";
 import { deleteAccount, updateAccount } from "@/services/auth";
 import type { RoleEnum, User } from "@/contexts/UserContext";
 import type { CampaignDonation } from "./types";
