@@ -56,6 +56,7 @@ export default function Perfil() {
   const [isCreateAdminModalOpen, setIsCreateAdminModalOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const { user: currentUser, logout, setUser } = useUser();
+  const isAdmin = currentUser?.role === "ADMIN";
 
   const [dados, setDados] = useState<ProfileUser>({
     id: "1",
@@ -135,7 +136,7 @@ export default function Perfil() {
             </div>
 
             <div className="flex items-center gap-2 w-full sm:w-auto">
-              {currentUser?.role === "ADMIN" && (
+              {isAdmin && (
                 <button
                   onClick={handleOpenCreateAdminModal}
                   className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl bg-[#005172] text-white hover:bg-[#24434f] transition-colors"
@@ -198,80 +199,88 @@ export default function Perfil() {
                   </div>
                 </div>
 
-                <div className="mt-10 flex items-center gap-2">
-                  <span className="text-sm text-[#005172] whitespace-nowrap">
-                    Quanto doou até agora:
-                  </span>
-                  <Progress
-                    value={dados.percentageAchieved}
-                    variant="blue"
-                    size="medium"
-                    className="flex-1"
-                  />
-                  <span className="text-sm text-[#005172] whitespace-nowrap">
-                    {formatCurrency(currentUser?.totalDonated ?? 0)}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex-1 flex flex-col gap-3 items-start">
-              <h3 className="text-sm font-semibold text-[#005172]">Campanhas que apoia</h3>
-
-              <div className="flex flex-col gap-3 w-full min-h-[400px]">
-                {campaigns.length > 0 ? (
-                  campaigns.map((campaign, index) => (
-                    <CampaignCard
-                      key={index}
-                      {...campaign}
-                      variant="compact"
-                      situation="recurring"
-                      className="border border-[#005172] rounded-lg text-sm p-3"
+                {!isAdmin && (
+                  <div className="mt-10 flex items-center gap-2">
+                    <span className="text-sm text-[#005172] whitespace-nowrap">
+                      Quanto doou até agora:
+                    </span>
+                    <Progress
+                      value={dados.percentageAchieved}
+                      variant="blue"
+                      size="medium"
+                      className="flex-1"
                     />
-                  ))
-                ) : (
-                  <div className="w-full mx-auto py-8 bg-blue-100 text-[#005172] text-center font-medium border border-[#005172] rounded-lg">
-                    Você ainda não apoia nenhuma campanha.
+                    <span className="text-sm text-[#005172] whitespace-nowrap">
+                      {formatCurrency(currentUser?.totalDonated ?? 0)}
+                    </span>
                   </div>
                 )}
               </div>
-              <Pagination
-                currentPage={currentCampaignsPage}
-                totalPages={campaignsTotalPages}
-                onPageChange={setCurrentCampaignsPage}
-              />
             </div>
+
+            {!isAdmin && (
+              <div className="flex-1 flex flex-col gap-3 items-start">
+                <h3 className="text-sm font-semibold text-[#005172]">Campanhas que apoia</h3>
+
+                <div className="flex flex-col gap-3 w-full min-h-[400px]">
+                  {campaigns.length > 0 ? (
+                    campaigns.map((campaign, index) => (
+                      <CampaignCard
+                        key={index}
+                        {...campaign}
+                        variant="compact"
+                        situation="recurring"
+                        className="border border-[#005172] rounded-lg text-sm p-3"
+                      />
+                    ))
+                  ) : (
+                    <div className="w-full mx-auto py-8 bg-blue-100 text-[#005172] text-center font-medium border border-[#005172] rounded-lg">
+                      Você ainda não apoia nenhuma campanha.
+                    </div>
+                  )}
+                </div>
+                <Pagination
+                  currentPage={currentCampaignsPage}
+                  totalPages={campaignsTotalPages}
+                  onPageChange={setCurrentCampaignsPage}
+                />
+              </div>
+            )}
           </div>
+          
+          {!isAdmin && (
+            <>
+              <hr className="border-t border-[#266D88CC] mx-50 my-8" />
+              <h2 className="text-2xl font-bold text-[#005172] mt-2 mb-4">Histórico de Doações</h2>
 
-          <hr className="border-t border-[#266D88CC] mx-50 my-8" />
-          <h2 className="text-2xl font-bold text-[#005172] mt-2 mb-4">Histórico de Doações</h2>
+              <div className="mt-2 bg-white rounded-lg p-6 min-h-[580px] flex flex-col">
+                <div className="flex flex-col gap-3 flex-1">
+                  {donations
+                    .filter((donation) => donation.periodicity !== "CANCELED")
+                    .map((donation, index) => (
+                      <CampaignCard
+                        key={index}
+                        variant="historic"
+                        className="border border-[#005172] rounded-lg text-sm p-3"
+                        title={donation.campaignName}
+                        donationAmount={donation.amount}
+                        periodicity={donation.periodicity}
+                        campaignCreator={donation.campaignCreatedBy}
+                        onAction={() => handleCancelDonation(donation)}
+                      />
+                    ))}
+                </div>
 
-          <div className="mt-2 bg-white rounded-lg p-6 min-h-[580px] flex flex-col">
-            <div className="flex flex-col gap-3 flex-1">
-              {donations
-                .filter((donation) => donation.periodicity !== "CANCELED")
-                .map((donation, index) => (
-                  <CampaignCard
-                    key={index}
-                    variant="historic"
-                    className="border border-[#005172] rounded-lg text-sm p-3"
-                    title={donation.campaignName}
-                    donationAmount={donation.amount}
-                    periodicity={donation.periodicity}
-                    campaignCreator={donation.campaignCreatedBy}
-                    onAction={() => handleCancelDonation(donation)}
+                <div className="flex justify-center items-center gap-2 mt-6">
+                  <Pagination
+                    currentPage={currentDonationsPage}
+                    totalPages={donationsTotalPages}
+                    onPageChange={setCurrentDonationsPage}
                   />
-                ))}
-            </div>
-
-            <div className="flex justify-center items-center gap-2 mt-6">
-              <Pagination
-                currentPage={currentDonationsPage}
-                totalPages={donationsTotalPages}
-                onPageChange={setCurrentDonationsPage}
-              />
-            </div>
-          </div>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
 

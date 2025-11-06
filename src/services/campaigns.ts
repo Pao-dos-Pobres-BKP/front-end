@@ -32,7 +32,6 @@ export async function getCampaigns(
     const response = await api.get<PageableResponse<CampaignAPI>>("/campaigns", {
       params,
     });
-
     return response.data;
   } catch (error) {
     console.error(error);

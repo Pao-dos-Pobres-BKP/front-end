@@ -1,6 +1,6 @@
 import { Tabs } from "@/components/ui/tabs";
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { getNews, deleteNews, updateNews, createNews, type NewsAPI } from "@/services/news";
 import { getEvents, deleteEvent, updateEvent, createEvent, type EventAPI } from "@/services/events";
 import {
@@ -16,6 +16,7 @@ import {
   type NewsEventItem,
 } from "./components";
 import { Pagination } from "@/components/ui/Pagination";
+import { useUser } from "@/hooks/useUser";
 
 const CARDS_PER_PAGE = 10;
 const MIN_LOADING_TIME = 500;
@@ -43,6 +44,12 @@ export default function NewsEvents() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<NewsEventItem | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const navigate = useNavigate();
+  const { user } = useUser();
+  
+  if (user?.role != "ADMIN") {
+    navigate("/");
+  }
 
   useEffect(() => {
     setCurrentPage(INITIAL_PAGE);
