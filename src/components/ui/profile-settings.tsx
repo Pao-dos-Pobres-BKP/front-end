@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Button from "./button";
 import CreateAdminModal from "./create-admin-modal";
-import UserList from "./user-list";
+import UserList from "./user-list.tsx";
 import { PlusCircleIcon } from "lucide-react";
 import { listAllAdmins } from "@/services/admin/listAdmins";
 import { listAllDonors } from "@/services/donors/listDonors";
