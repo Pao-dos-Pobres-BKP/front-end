@@ -424,14 +424,12 @@ const Campanhas = () => {
             ))}
           </div>
 
-          {totalPages > 1 && (
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-              className="mt-4"
-            />
-          )}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+            className="mt-4"
+          />
         </>
       )}
 

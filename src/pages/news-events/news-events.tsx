@@ -355,7 +355,7 @@ export default function NewsEvents() {
         </Tabs>
       </div>
 
-      {!loading && totalPages > INITIAL_PAGE && (
+      {!loading && (
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}

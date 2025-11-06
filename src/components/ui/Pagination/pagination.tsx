@@ -31,6 +31,11 @@ interface PaginationProps {
  * ```
  */
 export function Pagination({ currentPage, totalPages, onPageChange, className }: PaginationProps) {
+  // Não renderiza o componente se houver apenas 1 página ou menos
+  if (totalPages <= 1) {
+    return null;
+  }
+
   return (
     <PaginationNavigation className={className}>
       <PaginationContent className="gap-2">
