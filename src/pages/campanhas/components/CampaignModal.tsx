@@ -94,7 +94,6 @@ export default function CampaignModal({ open, onOpenChange, campaign }: Campaign
       description=""
       footer={
         <div className="w-full -mt-4">
-          {/* Imagem com skeleton */}
           <div className="relative w-full h-40 mb-3">
             {!imageLoaded && (
               <div className="absolute inset-0 bg-gray-300 animate-pulse rounded-2xl" />
