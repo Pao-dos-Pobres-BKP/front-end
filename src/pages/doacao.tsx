@@ -1,4 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useUser } from "../hooks/useUser";
 import {
   Accordion,
   AccordionContent,
@@ -16,6 +18,9 @@ import CreditCardForm from "../components/ui/creditCardForm";
 import BoletoPaymentDisplay from "../components/ui/boletoPaymentDisplay";
 
 const Doacao = () => {
+  const [searchParams] = useSearchParams();
+  const { user } = useUser();
+  const isAnonymous = !user;
   const [currentStep, setCurrentStep] = useState("item-1");
   const [selectedCampaign, setSelectedCampaign] = useState("");
   const [donationValue, setDonationValue] = useState("0");
@@ -39,8 +44,26 @@ const Doacao = () => {
   const [paymentSubStep, setPaymentSubStep] = useState<"form" | "pending">("form");
   const [isCreatingPayment, setIsCreatingPayment] = useState(false);
   const [valueError, setValueError] = useState("");
-  const [isSelectOpen, setIsSelectOpen] = useState(false);
+  const [isCampaignSelectOpen, setIsCampaignSelectOpen] = useState(false);
+  const [isFrequencySelectOpen, setIsFrequencySelectOpen] = useState(false);
 
+  const campaignOptions = useMemo(() => mockCampaigns.map((campaign) => ({
+    value: campaign.id,
+    label: campaign.name,
+  })), []);
+
+  useEffect(() => {
+    const campaignIdParam = searchParams.get("campaignId");
+    if (campaignIdParam) {
+      const isValidCampaign = campaignOptions.some((c) => c.value === campaignIdParam);
+      if (isValidCampaign) {
+        setSelectedCampaign(campaignIdParam);
+        setIsCampaignConfirmed(true);
+        setCurrentStep("item-2");
+      }
+    }
+  }, [searchParams, campaignOptions]);
+  
   useEffect(() => {
     if (currentStep === "item-4" && step3Value === "Pix" && !paymentId && !isCreatingPayment) {
       console.log("Iniciando pagamento Pix automaticamente...");
@@ -164,7 +187,14 @@ const Doacao = () => {
     }
     setValueError("");
     setIsValueConfirmed(true);
-    setCurrentStep("item-3");
+
+    if (isAnonymous) {
+      setSelectedFrequency("unica");
+      setIsFrequencyConfirmed(true);
+      setCurrentStep("item-4");
+    } else {
+      setCurrentStep("item-3");
+    }
   };
 
   const handleConfirmFrequency = () => {
@@ -231,17 +261,12 @@ const Doacao = () => {
       step3Value === "Boleto" ||
       (step3Value === "Crédito" && paymentSubStep === "pending"));
 
-  const campaignOptions = mockCampaigns.map((campaign) => ({
-    value: campaign.id,
-    label: campaign.name,
-  }));
-
   const frequencyOptions = [
     { value: "unica", label: "Única" },
-    { value: "semanal", label: "A cada semana" },
-    { value: "quinzenal", label: "A cada duas semanas" },
-    { value: "mensal", label: "Uma vez ao mês" },
-    { value: "trimestral", label: "A cada três meses" },
+    { value: "MONTHLY", label: "Mensal" },
+    { value: "QUARTERLY", label: "Trimestral" },
+    { value: "SEMI_ANNUAL", label: "Semestral" },
+    { value: "YEARLY", label: "Anual" },
   ];
 
   const mockPixCode =
@@ -274,6 +299,7 @@ const Doacao = () => {
         <div className="container py-10 w-full max-w-lg mx-auto flex flex-col gap-6 items-center">
           <Accordion
             type="single"
+            collapsible
             className="w-full"
             value={currentStep}
             onValueChange={setCurrentStep}
@@ -281,7 +307,7 @@ const Doacao = () => {
             {/* Passo 1 */}
             <AccordionItem
               value="item-1"
-              className={`mb-4 rounded-md relative ${isSelectOpen ? "overflow-visible" : "overflow-hidden"}`}
+              className={`mb-4 rounded-md relative ${isCampaignSelectOpen ? "overflow-visible" : "overflow-hidden"}`}
             >
               <AccordionTrigger variant="secondary" size="large">
                 <StepHeader
@@ -302,7 +328,7 @@ const Doacao = () => {
                     options={campaignOptions}
                     value={selectedCampaign}
                     onChange={setSelectedCampaign}
-                    onOpenChange={setIsSelectOpen}
+                    onOpenChange={setIsCampaignSelectOpen}
                     placeholder="Escolha uma campanha para doar"
                     label="Campanha"
                     fullWidth
@@ -374,18 +400,20 @@ const Doacao = () => {
             {/* Passo 3 */}
             <AccordionItem
               value="item-3"
-              className="mb-4 rounded-md overflow-hidden"
-              disabled={!isValueConfirmed}
+              className={`mb-4 rounded-md ${isFrequencySelectOpen ? "overflow-visible" : "overflow-hidden"}`}
+              disabled={!isValueConfirmed || isAnonymous}
             >
-              <AccordionTrigger variant="secondary" size="large" disabled={!isValueConfirmed}>
+              <AccordionTrigger variant="secondary" size="large" disabled={!isValueConfirmed || isAnonymous}>
                 <StepHeader
                   stepNumber="3"
                   title="Frequência"
                   isActive={isFrequencyConfirmed}
                   value={
-                    isFrequencyConfirmed
-                      ? frequencyOptions.find((f) => f.value === selectedFrequency)?.label
-                      : undefined
+                     isAnonymous && isFrequencyConfirmed
+                      ? "Única (Anônimo)"
+                      : isFrequencyConfirmed
+                        ? frequencyOptions.find((f) => f.value === selectedFrequency)?.label
+                        : undefined
                   }
                   valueType="text"
                 />
@@ -396,6 +424,7 @@ const Doacao = () => {
                     options={frequencyOptions}
                     value={selectedFrequency}
                     onChange={setSelectedFrequency}
+                    onOpenChange={setIsFrequencySelectOpen}
                     placeholder="Escolha a frequência da doação"
                     label="Frequência"
                     fullWidth
@@ -415,7 +444,7 @@ const Doacao = () => {
 
             {/* Passo 4 */}
             <AccordionItem
-              value="item-3"
+              value="item-4"
               className="mb-4 rounded-md overflow-hidden"
               disabled={!isFrequencyConfirmed}
             >
