@@ -5,6 +5,7 @@ import { PaginationLink } from "./PaginationLink";
 import { PaginationPrevious } from "./PaginationPrevious";
 import { PaginationNext } from "./PaginationNext";
 import { cn } from "@/lib/utils";
+import { useEffect } from "react";
 
 interface PaginationProps {
   currentPage: number;
@@ -32,6 +33,7 @@ interface PaginationProps {
  */
 export function Pagination({ currentPage, totalPages, onPageChange, className }: PaginationProps) {
   // Não renderiza o componente se houver apenas 1 página ou menos
+  useEffect(() => {console.log({currentPage})}, [currentPage])
   if (totalPages <= 1) {
     return null;
   }

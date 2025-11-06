@@ -15,7 +15,7 @@ function toDonor(donor: DonorAPI): Donor {
     id: donor.id,
     donorName: donor.fullName,
     donorEmail: donor.email,
-    raised: donor.raised,
+    raised: (donor.totalDonated as number) || (donor.raised as number),
     memberSince: format(new Date(donor.createdAt), "dd/MM/yyyy"),
     campaigns: donor.campaigns,
   };

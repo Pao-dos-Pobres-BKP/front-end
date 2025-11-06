@@ -2,169 +2,16 @@ import CampaignCard from "@/components/ui/campaignCard/campaignCard";
 import Input from "@/components/ui/input";
 
 import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+  Pagination
+} from "@/components/ui/Pagination";
 
 import { useState } from "react";
 import { useDonorList } from "./use-donor-list";
-//import { donorAdapter } from "./donorAdapter";
 
 export default function DonorList() {
   const [currentPage, setCurrentPage] = useState(1);
-  const cardsPerPage = 8;
 
-  const { donors } = useDonorList();
-
-  //const donorListItems = donors
-  // const mockDonors = [
-  //   {
-  //     id: 1,
-  //     donorName: "Fulano de Tal",
-  //     donorEmail: "email@email.com",
-  //     donationAmount: 1500,
-  //     title: "Campanha Santo Antônio",
-  //     raised: 1500,
-  //     goal: 2000,
-  //     memberSince: "12/08/2023",
-  //     campaigns: [
-  //       "Campanha Santo Antônio",
-  //       "Campanha de Aniversário 130 anos do Pão",
-  //       "Campanha de Natal Solidário",
-  //     ],
-  //   },
-  //   {
-  //     id: 1,
-  //     donorName: "Fulano de Tal",
-  //     donorEmail: "email@email.com",
-  //     donationAmount: 1500,
-  //     title: "Campanha Santo Antônio",
-  //     raised: 1500,
-  //     goal: 2000,
-  //     memberSince: "12/08/2023",
-  //     campaigns: [
-  //       "Campanha Santo Antônio",
-  //       "Campanha de Aniversário 130 anos do Pão",
-  //       "Campanha de Natal Solidário",
-  //     ],
-  //   },
-  //   {
-  //     id: 1,
-  //     donorName: "Fulano de Tal",
-  //     donorEmail: "email@email.com",
-  //     donationAmount: 1500,
-  //     title: "Campanha Santo Antônio",
-  //     raised: 1500,
-  //     goal: 2000,
-  //     memberSince: "12/08/2023",
-  //     campaigns: [
-  //       "Campanha Santo Antônio",
-  //       "Campanha de Aniversário 130 anos do Pão",
-  //       "Campanha de Natal Solidário",
-  //     ],
-  //   },
-  //   {
-  //     id: 1,
-  //     donorName: "Fulano de Tal",
-  //     donorEmail: "email@email.com",
-  //     donationAmount: 1500,
-  //     title: "Campanha Santo Antônio",
-  //     raised: 1500,
-  //     goal: 2000,
-  //     memberSince: "12/08/2023",
-  //     campaigns: [
-  //       "Campanha Santo Antônio",
-  //       "Campanha de Aniversário 130 anos do Pão",
-  //       "Campanha de Natal Solidário",
-  //     ],
-  //   },
-  //   {
-  //     id: 1,
-  //     donorName: "Fulano de Tal",
-  //     donorEmail: "email@email.com",
-  //     donationAmount: 1500,
-  //     title: "Campanha Santo Antônio",
-  //     raised: 1500,
-  //     goal: 2000,
-  //     memberSince: "12/08/2023",
-  //     campaigns: [
-  //       "Campanha Santo Antônio",
-  //       "Campanha de Aniversário 130 anos do Pão",
-  //       "Campanha de Natal Solidário",
-  //     ],
-  //   },
-  //   {
-  //     id: 1,
-  //     donorName: "Fulano de Tal",
-  //     donorEmail: "email@email.com",
-  //     donationAmount: 1500,
-  //     title: "Campanha Santo Antônio",
-  //     raised: 1500,
-  //     goal: 2000,
-  //     memberSince: "12/08/2023",
-  //     campaigns: [
-  //       "Campanha Santo Antônio",
-  //       "Campanha de Aniversário 130 anos do Pão",
-  //       "Campanha de Natal Solidário",
-  //     ],
-  //   },
-  //   {
-  //     id: 1,
-  //     donorName: "Fulano de Tal",
-  //     donorEmail: "email@email.com",
-  //     donationAmount: 1500,
-  //     title: "Campanha Santo Antônio",
-  //     raised: 1500,
-  //     goal: 2000,
-  //     memberSince: "12/08/2023",
-  //     campaigns: [
-  //       "Campanha Santo Antônio",
-  //       "Campanha de Aniversário 130 anos do Pão",
-  //       "Campanha de Natal Solidário",
-  //     ],
-  //   },
-  //   {
-  //     id: 1,
-  //     donorName: "Fulano de Tal",
-  //     donorEmail: "email@email.com",
-  //     donationAmount: 1500,
-  //     title: "Campanha Santo Antônio",
-  //     raised: 1500,
-  //     goal: 2000,
-  //     memberSince: "12/08/2023",
-  //     campaigns: [
-  //       "Campanha Santo Antônio",
-  //       "Campanha de Aniversário 130 anos do Pão",
-  //       "Campanha de Natal Solidário",
-  //     ],
-  //   },
-  //   {
-  //     id: 1,
-  //     donorName: "Fulano de Tal",
-  //     donorEmail: "email@email.com",
-  //     donationAmount: 1500,
-  //     title: "Campanha Santo Antônio",
-  //     raised: 1500,
-  //     goal: 2000,
-  //     memberSince: "12/08/2023",
-  //     campaigns: [
-  //       "Campanha Santo Antônio",
-  //       "Campanha de Aniversário 130 anos do Pão",
-  //       "Campanha de Natal Solidário",
-  //     ],
-  //   },
-  // ];
-
-  // const totalPages = Math.ceil(mockDonors.length / cardsPerPage);
-  const totalPages = Math.ceil(donors.length / cardsPerPage);
-  const indexOfLastCard = currentPage * cardsPerPage;
-  const indexOfFirstCard = indexOfLastCard - cardsPerPage;
-  const currentDonors = donors.slice(indexOfFirstCard, indexOfLastCard);
-  // const currentCards = donorListItems.slice(indexOfFirstCard, indexOfLastCard);
+  const { donors, total } = useDonorList(currentPage);
   return (
     <div className="w-full min-h-screen px-4 sm:px-8 py-10 flex flex-col gap-8 bg-[#2F5361]">
       <div className="flex flex-col sm:flex-row gap-2 w-full items-center">
@@ -175,10 +22,10 @@ export default function DonorList() {
       </div>
 
       <div className="flex flex-col gap-4">
-        { currentDonors.length === 0 ? (
+        { donors.length === 0 ? (
           <p className="text-white text-center mt-6">Nenhum doador encontrado.</p>
         ) : (
-          currentDonors.map((donor, index) => (
+          donors.map((donor, index) => (
           <CampaignCard
             key={index}
             variant="profile"
@@ -192,40 +39,7 @@ export default function DonorList() {
         ) }
       </div>
       <div className="flex justify-center items-center gap-2 mt-6">
-        <Pagination>
-          <PaginationContent className="text-white">
-            <PaginationItem>
-              <PaginationPrevious
-                onClick={currentPage === 1 ? undefined : () => setCurrentPage(currentPage - 1)}
-                className={currentPage === 1 ? "opacity-30 cursor-not-allowed" : ""}
-              >
-                Anterior
-              </PaginationPrevious>
-            </PaginationItem>
-
-            {Array.from({ length: totalPages }, (_, i) => (
-              <PaginationItem key={i}>
-                <PaginationLink
-                  onClick={() => setCurrentPage(i + 1)}
-                  isActive={currentPage === i + 1}
-                >
-                  {i + 1}
-                </PaginationLink>
-              </PaginationItem>
-            ))}
-
-            <PaginationItem>
-              <PaginationNext
-                onClick={
-                  currentPage === totalPages ? undefined : () => setCurrentPage(currentPage + 1)
-                }
-                className={currentPage === totalPages ? "opacity-30 cursor-not-allowed" : ""}
-              >
-                Próximo
-              </PaginationNext>
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+        <Pagination onPageChange={setCurrentPage} currentPage={currentPage} totalPages={total}/>
       </div>
     </div>
   );

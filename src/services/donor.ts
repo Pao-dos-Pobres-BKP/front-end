@@ -1,4 +1,5 @@
 import api from "./api";
+import type { PageableResponse } from "./types";
 
 export type DonorAPI = {
   id: string;
@@ -8,14 +9,17 @@ export type DonorAPI = {
   gender: string;
   phone: string;
   cpf: string;
-  raised: number;
+  raised?: number;
+  totalDonated?: number;
   createdAt: Date;
   campaigns: string[];
 };
 
-export async function getDonors() {
+export async function getDonors(page: number, pageSize: number) {
   try {
-    const response = await api.get("/donors");
+    const response = await api.get<PageableResponse<DonorAPI>>("/donors", {
+      params: {page: page.toString(), pageSize: pageSize.toString()}
+    });
     return response.data;
   } catch (error) {
     console.error(error);
