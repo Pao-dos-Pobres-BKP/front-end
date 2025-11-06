@@ -22,15 +22,7 @@ import { useSearchParams } from "react-router-dom";
 import { ArrowUpDown } from "lucide-react";
 import CampaignCardSkeleton from "@/skeletons/campaign-card-skeleton";
 import type { CampaignBase } from "@/types/Campaign";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationPrevious,
-  PaginationNext,
-  PaginationEllipsis,
-} from "@/components/ui/pagination";
+import { Pagination } from "@/components/ui/Pagination";
 
 type CampaignData = {
   id: string;
@@ -70,34 +62,28 @@ const Campanhas = () => {
   const { user } = useUser();
   const [searchParams] = useSearchParams();
 
-  // Resetar para página 1 quando mudar filtros ou ordenação
   useEffect(() => {
     setCurrentPage(1);
   }, [searchParams, sortOrder]);
 
-  // Buscar campanhas e doações do usuário
   useEffect(() => {
     const fetchData = async () => {
-      const MIN_LOADING_TIME = 500; // Tempo mínimo de loading em ms
+      const MIN_LOADING_TIME = 500;
       const startTime = Date.now();
 
       try {
         setLoading(true);
 
-        // Obter termo de busca dos parâmetros da URL
         const searchTerm = searchParams.get("search") || undefined;
 
-        // Buscar campanhas com paginação
         const campaignsResponse = await getCampaigns({
           page: currentPage,
           pageSize: 10,
           title: searchTerm,
         });
 
-        // Armazenar metadados de paginação
         setTotalPages(campaignsResponse.lastPage);
 
-        // Buscar doações do usuário (apenas se for doador)
         let donatedCampaignIds = new Set<string>();
         if (user?.role === "DONOR") {
           try {
@@ -108,21 +94,17 @@ const Campanhas = () => {
           }
         }
 
-        // Aplicar lógica de filtro e determinar situação de cada campanha
         let filteredCampaigns = campaignsResponse.data
           .filter((campaign) => {
-            // Admins veem tudo
             if (user?.role === "ADMIN") return true;
 
-            // Doadores veem tudo exceto campanhas finalizadas
             if (user?.role === "DONOR") {
               return campaign.status !== "FINISHED";
             }
 
-            return true;
+            return campaign.status === "ACTIVE";
           })
           .map((campaign): CampaignWithSituation => {
-            // Determinar a situação do card
             let situation: "approved" | "pending" | "rejected" | "recurring" = "approved";
 
             if (campaign.status === "PENDING") {
@@ -130,7 +112,6 @@ const Campanhas = () => {
             } else if (campaign.status === "CANCELED") {
               situation = "rejected";
             } else if (campaign.status === "ACTIVE") {
-              // Se o usuário é doador e contribuiu para esta campanha, mostrar como recurring
               if (user?.role === "DONOR" && donatedCampaignIds.has(campaign.id)) {
                 situation = "recurring";
               } else {
@@ -144,16 +125,13 @@ const Campanhas = () => {
             };
           });
 
-        // Ordenar por data (o backend já retorna ordenado, mas aplicamos a ordem local se necessário)
         if (sortOrder === "oldest") {
           filteredCampaigns = filteredCampaigns.reverse();
         }
 
-        // Calcular tempo restante para atingir o tempo mínimo de loading
         const elapsedTime = Date.now() - startTime;
         const remainingTime = Math.max(0, MIN_LOADING_TIME - elapsedTime);
 
-        // Aguardar o tempo mínimo antes de exibir os resultados
         await new Promise((resolve) => setTimeout(resolve, remainingTime));
 
         setCampaigns(filteredCampaigns);
@@ -164,9 +142,7 @@ const Campanhas = () => {
       }
     };
 
-    if (user) {
-      fetchData();
-    }
+    fetchData();
   }, [user, searchParams, sortOrder, currentPage]);
 
   const handleOpenCampaignModal = (campaign: CampaignAPI) => {
@@ -192,12 +168,11 @@ const Campanhas = () => {
       description: campaign.description,
       targetValue: campaign.targetAmount,
       image: campaign.imageUrl ? { url: campaign.imageUrl, name: "" } : undefined,
-      // Adicionar as datas ao objeto
       ...(campaign.startDate && { startDate: campaign.startDate }),
       ...(campaign.endDate && { endDate: campaign.endDate }),
     };
     setSelectedCampaignToEdit(campaignBase);
-    // Armazena a campanha completa para possível exclusão
+
     const fullCampaign = campaigns.find((c) => c.id === campaign.id);
     if (fullCampaign) {
       setCampaignToDelete(fullCampaign);
@@ -271,7 +246,6 @@ const Campanhas = () => {
         title: data.title,
         description: data.description,
         targetAmount: data.targetValue,
-        // currentAmount: originalCampaign.currentAmount > 0 ? originalCampaign.currentAmount : null,
         startDate: originalCampaign.startDate,
         endDate: data.endDate.toISOString(),
         imageUrl: imageUrl || undefined,
@@ -317,7 +291,6 @@ const Campanhas = () => {
   };
 
   const handleCancelDelete = () => {
-    // Se estiver no processo de deletar, não faz nada
     if (isDeleting) return;
 
     setIsDeleteConfirmOpen(false);
@@ -363,51 +336,6 @@ const Campanhas = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const renderPaginationItems = () => {
-    const items = [];
-    const maxVisiblePages = 5;
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-
-    if (endPage - startPage < maxVisiblePages - 1) {
-      startPage = Math.max(1, endPage - maxVisiblePages + 1);
-    }
-
-    if (startPage > 1) {
-      items.push(
-        <PaginationItem key="1">
-          <PaginationLink onClick={() => handlePageChange(1)}>1</PaginationLink>
-        </PaginationItem>
-      );
-      if (startPage > 2) {
-        items.push(<PaginationEllipsis key="ellipsis-start" />);
-      }
-    }
-
-    for (let page = startPage; page <= endPage; page++) {
-      items.push(
-        <PaginationItem key={page}>
-          <PaginationLink onClick={() => handlePageChange(page)} isActive={page === currentPage}>
-            {page}
-          </PaginationLink>
-        </PaginationItem>
-      );
-    }
-
-    if (endPage < totalPages) {
-      if (endPage < totalPages - 1) {
-        items.push(<PaginationEllipsis key="ellipsis-end" />);
-      }
-      items.push(
-        <PaginationItem key={totalPages}>
-          <PaginationLink onClick={() => handlePageChange(totalPages)}>{totalPages}</PaginationLink>
-        </PaginationItem>
-      );
-    }
-
-    return items;
-  };
-
   return (
     <div className="bg-[var(--color-bg-campaingn)] p-8 min-h-screen flex flex-col gap-6">
       <section className="flex justify-center items-center gap-4">
@@ -426,17 +354,15 @@ const Campanhas = () => {
           </span>
         </button>
 
-        <div
-          role="button"
-          className="min-h-10 min-w-10 bg-[var(--color-text-special-2)] flex items-center justify-center rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md hover:opacity-90 flex-shrink-0"
-          onClick={() => setIsCreateModalOpen(true)}
-        >
-          <img src={Plus} alt="Plus Icon" className="h-4 w-4" />
-        </div>
-
-        <button className="w-full md:w-auto px-4 py-2.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700">
-          Exportar CSV
-        </button>
+        {user && (
+          <div
+            role="button"
+            className="min-h-10 min-w-10 bg-[var(--color-text-special-2)] flex items-center justify-center rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md hover:opacity-90 flex-shrink-0"
+            onClick={() => setIsCreateModalOpen(true)}
+          >
+            <img src={Plus} alt="Plus Icon" className="h-4 w-4" />
+          </div>
+        )}
       </section>
 
       {loading ? (
@@ -481,25 +407,12 @@ const Campanhas = () => {
             ))}
           </div>
 
-          {totalPages > 1 && (
-            <Pagination className="mt-4">
-              <PaginationContent>
-                <PaginationPrevious
-                  onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                  className={
-                    currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"
-                  }
-                />
-                {renderPaginationItems()}
-                <PaginationNext
-                  onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
-                  className={
-                    currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"
-                  }
-                />
-              </PaginationContent>
-            </Pagination>
-          )}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+            className="mt-4"
+          />
         </>
       )}
 

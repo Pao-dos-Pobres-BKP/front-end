@@ -1,19 +1,20 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "@/components/ui/button";
-import Link from "@/components/ui/link";
 import Input from "@/components/ui/input";
 import Divider from "@/components/ui/divider";
 import type { LoginInput } from "@/schemas/auth";
 import { loginSchema } from "@/schemas/auth";
 import { login } from "@/services/auth";
 import { useUser } from "@/hooks/useUser";
+import ForgotPasswordModal from "../ForgotPasswordModal";
 
 import { Eye, EyeOff } from "lucide-react";
 
 export default function LoginContent({ onRegisterClick }: { onRegisterClick: () => void }) {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
   const [form, setForm] = useState<LoginInput>({
     email: "",
     password: "",
@@ -47,7 +48,14 @@ export default function LoginContent({ onRegisterClick }: { onRegisterClick: () 
     try {
       const user = await login(form);
       setUser(user);
-      navigate("/perfil");
+
+      if (user.role === "ADMIN") {
+        navigate("/dashboard");
+      } else if (user.role === "DONOR") {
+        navigate("/");
+      } else {
+        navigate("/perfil");
+      }
     } catch (error) {
       console.error(error);
       setApiError("Email ou senha incorretos.");
@@ -98,9 +106,13 @@ export default function LoginContent({ onRegisterClick }: { onRegisterClick: () 
           />
 
           <div className="mt-[-12px] flex space-between w-full text-sm justify-between items-center">
-            <Link href="/esqueci-senha" variant="blue">
+            <button
+              type="button"
+              onClick={() => setIsForgotPasswordOpen(true)}
+              className="text-[var(--color-components)] border-[var(--color-components)] focus:ring-[var(--color-components)] underline cursor-pointer text-sm"
+            >
               Esqueceu sua senha?
-            </Link>
+            </button>
             <div>{apiError && <p className=" text-sm text-red-600">{apiError}</p>}</div>
           </div>
         </div>
@@ -134,6 +146,8 @@ export default function LoginContent({ onRegisterClick }: { onRegisterClick: () 
           </Button>
         </div>
       </form>
+
+      <ForgotPasswordModal open={isForgotPasswordOpen} onOpenChange={setIsForgotPasswordOpen} />
     </div>
   );
 }
