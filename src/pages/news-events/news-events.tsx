@@ -10,12 +10,12 @@ import {
 } from "@/components/news-events";
 import {
   SearchHeader,
-  PaginationControls,
   EmptyState,
   LoadingState,
   NewsEventsList,
   type NewsEventItem,
 } from "./components";
+import { Pagination } from "@/components/ui/Pagination";
 
 const CARDS_PER_PAGE = 10;
 const MIN_LOADING_TIME = 500;
@@ -356,7 +356,7 @@ export default function NewsEvents() {
       </div>
 
       {!loading && totalPages > INITIAL_PAGE && (
-        <PaginationControls
+        <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={handlePageChange}

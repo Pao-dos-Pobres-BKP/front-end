@@ -47,7 +47,7 @@ export default function LoginContent({ onRegisterClick }: { onRegisterClick: () 
     try {
       const user = await login(form);
       setUser(user);
-      
+
       if (user.role === "ADMIN") {
         navigate("/dashboard");
       } else if (user.role === "DONOR") {

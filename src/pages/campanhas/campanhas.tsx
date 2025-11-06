@@ -22,15 +22,7 @@ import { useSearchParams } from "react-router-dom";
 import { ArrowUpDown } from "lucide-react";
 import CampaignCardSkeleton from "@/skeletons/campaign-card-skeleton";
 import type { CampaignBase } from "@/types/Campaign";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationPrevious,
-  PaginationNext,
-  PaginationEllipsis,
-} from "@/components/ui/pagination";
+import { Pagination } from "@/components/ui/Pagination";
 
 type CampaignData = {
   id: string;
@@ -363,51 +355,6 @@ const Campanhas = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const renderPaginationItems = () => {
-    const items = [];
-    const maxVisiblePages = 5;
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-
-    if (endPage - startPage < maxVisiblePages - 1) {
-      startPage = Math.max(1, endPage - maxVisiblePages + 1);
-    }
-
-    if (startPage > 1) {
-      items.push(
-        <PaginationItem key="1">
-          <PaginationLink onClick={() => handlePageChange(1)}>1</PaginationLink>
-        </PaginationItem>
-      );
-      if (startPage > 2) {
-        items.push(<PaginationEllipsis key="ellipsis-start" />);
-      }
-    }
-
-    for (let page = startPage; page <= endPage; page++) {
-      items.push(
-        <PaginationItem key={page}>
-          <PaginationLink onClick={() => handlePageChange(page)} isActive={page === currentPage}>
-            {page}
-          </PaginationLink>
-        </PaginationItem>
-      );
-    }
-
-    if (endPage < totalPages) {
-      if (endPage < totalPages - 1) {
-        items.push(<PaginationEllipsis key="ellipsis-end" />);
-      }
-      items.push(
-        <PaginationItem key={totalPages}>
-          <PaginationLink onClick={() => handlePageChange(totalPages)}>{totalPages}</PaginationLink>
-        </PaginationItem>
-      );
-    }
-
-    return items;
-  };
-
   return (
     <div className="bg-[var(--color-bg-campaingn)] p-8 min-h-screen flex flex-col gap-6">
       <section className="flex justify-center items-center gap-4">
@@ -478,23 +425,12 @@ const Campanhas = () => {
           </div>
 
           {totalPages > 1 && (
-            <Pagination className="mt-4">
-              <PaginationContent>
-                <PaginationPrevious
-                  onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                  className={
-                    currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"
-                  }
-                />
-                {renderPaginationItems()}
-                <PaginationNext
-                  onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
-                  className={
-                    currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"
-                  }
-                />
-              </PaginationContent>
-            </Pagination>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+              className="mt-4"
+            />
           )}
         </>
       )}

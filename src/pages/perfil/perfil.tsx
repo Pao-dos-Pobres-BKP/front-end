@@ -2,16 +2,7 @@ import { Progress } from "@/components/ui/progress";
 import CampaignCard from "@/components/ui/campaignCard/campaignCard";
 import exemplo_foto_perfil from "@/assets/exemplo_foto_perfil.jpg";
 import { EditSquare } from "react-iconly";
-import { cn } from "@/lib/utils";
-
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import { Pagination } from "@/components/ui/Pagination";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -244,64 +235,11 @@ export default function Perfil() {
                   </div>
                 )}
               </div>
-              <Pagination>
-                <PaginationContent className="gap-2">
-                  <PaginationItem>
-                    <PaginationPrevious
-                      size="sm"
-                      onClick={
-                        currentCampaignsPage === 1
-                          ? undefined
-                          : () => setCurrentCampaignsPage((prev) => prev - 1)
-                      }
-                      className={cn(
-                        "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
-                        currentCampaignsPage === 1
-                          ? "bg-white text-[#F68537] border-[#F68537] cursor-not-allowed"
-                          : "bg-[#F68537] text-white border-[#F68537]"
-                      )}
-                    >
-                      Anterior
-                    </PaginationPrevious>
-                  </PaginationItem>
-
-                  {Array.from({ length: campaignsTotalPages }, (_, i) => (
-                    <PaginationItem key={i}>
-                      <PaginationLink
-                        size="icon"
-                        onClick={() => setCurrentCampaignsPage(i + 1)}
-                        isActive={currentCampaignsPage === i + 1}
-                        className={`px-3 py-1 border rounded-full transition-colors ${
-                          currentCampaignsPage === i + 1
-                            ? "bg-white text-[#F68537] border-[#F68537]"
-                            : "bg-[#F68537] text-white border-[#F68537]"
-                        }`}
-                      >
-                        {i + 1}
-                      </PaginationLink>
-                    </PaginationItem>
-                  ))}
-
-                  <PaginationItem>
-                    <PaginationNext
-                      size="sm"
-                      onClick={
-                        currentCampaignsPage === campaignsTotalPages
-                          ? undefined
-                          : () => setCurrentCampaignsPage((prev) => prev + 1)
-                      }
-                      className={cn(
-                        "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
-                        currentCampaignsPage === campaignsTotalPages
-                          ? "bg-white text-[#F68537] border-[#F68537] cursor-not-allowed"
-                          : "bg-[#F68537] text-white border-[#F68537]"
-                      )}
-                    >
-                      Próximo
-                    </PaginationNext>
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
+              <Pagination
+                currentPage={currentCampaignsPage}
+                totalPages={campaignsTotalPages}
+                onPageChange={setCurrentCampaignsPage}
+              />
             </div>
           </div>
 
@@ -327,64 +265,11 @@ export default function Perfil() {
             </div>
 
             <div className="flex justify-center items-center gap-2 mt-6">
-              <Pagination>
-                <PaginationContent className="gap-2">
-                  <PaginationItem>
-                    <PaginationPrevious
-                      size="sm"
-                      onClick={
-                        currentDonationsPage === 1
-                          ? undefined
-                          : () => setCurrentDonationsPage((prev) => prev - 1)
-                      }
-                      className={cn(
-                        "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
-                        currentDonationsPage === 1
-                          ? "bg-white text-[#F68537] border-[#F68537] cursor-not-allowed"
-                          : "bg-[#F68537] text-white border-[#F68537]"
-                      )}
-                    >
-                      Anterior
-                    </PaginationPrevious>
-                  </PaginationItem>
-
-                  {Array.from({ length: donationsTotalPages }, (_, i) => (
-                    <PaginationItem key={i}>
-                      <PaginationLink
-                        size="icon"
-                        onClick={() => setCurrentDonationsPage(i + 1)}
-                        isActive={currentDonationsPage === i + 1}
-                        className={`px-3 py-1 border rounded-full transition-colors ${
-                          currentDonationsPage === i + 1
-                            ? "bg-white text-[#F68537] border-[#F68537]"
-                            : "bg-[#F68537] text-white border-[#F68537]"
-                        }`}
-                      >
-                        {i + 1}
-                      </PaginationLink>
-                    </PaginationItem>
-                  ))}
-
-                  <PaginationItem>
-                    <PaginationNext
-                      size="sm"
-                      onClick={
-                        currentDonationsPage === donationsTotalPages
-                          ? undefined
-                          : () => setCurrentDonationsPage((prev) => prev + 1)
-                      }
-                      className={cn(
-                        "px-3 py-1 text-xs h-7 w-fit rounded-full transition-colors",
-                        currentDonationsPage === donationsTotalPages
-                          ? "bg-white text-[#F68537] border-[#F68537] cursor-not-allowed"
-                          : "bg-[#F68537] text-white border-[#F68537]"
-                      )}
-                    >
-                      Próximo
-                    </PaginationNext>
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
+              <Pagination
+                currentPage={currentDonationsPage}
+                totalPages={donationsTotalPages}
+                onPageChange={setCurrentDonationsPage}
+              />
             </div>
           </div>
         </div>
