@@ -150,7 +150,9 @@ export default function ForgotPasswordModal({ open, onOpenChange }: ForgotPasswo
             <DialogTitle className="text-2xl font-semibold text-[var(--color-components)] mb-2">
               Recuperar Senha
             </DialogTitle>
-            <p className="text-[var(--color-text-2)] mb-6">Digite seu CPF para verificar sua conta</p>
+            <p className="text-[var(--color-text-2)] mb-6">
+              Digite seu CPF para verificar sua conta
+            </p>
 
             <form onSubmit={handleCpfSubmit} className="space-y-4">
               <Input
@@ -175,12 +177,7 @@ export default function ForgotPasswordModal({ open, onOpenChange }: ForgotPasswo
                 >
                   Cancelar
                 </Button>
-                <Button
-                  type="submit"
-                  variant="confirm"
-                  className="w-full"
-                  disabled={isLoading}
-                >
+                <Button type="submit" variant="confirm" className="w-full" disabled={isLoading}>
                   {isLoading ? "Verificando..." : "Continuar"}
                 </Button>
               </div>
@@ -204,7 +201,9 @@ export default function ForgotPasswordModal({ open, onOpenChange }: ForgotPasswo
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 fullWidth
-                RightIcon={showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                RightIcon={
+                  showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />
+                }
                 onClickRightIcon={() => setShowPassword((prev) => !prev)}
               />
 
@@ -236,12 +235,7 @@ export default function ForgotPasswordModal({ open, onOpenChange }: ForgotPasswo
                 >
                   Voltar
                 </Button>
-                <Button
-                  type="submit"
-                  variant="confirm"
-                  className="w-full"
-                  disabled={isLoading}
-                >
+                <Button type="submit" variant="confirm" className="w-full" disabled={isLoading}>
                   {isLoading ? "Atualizando..." : "Atualizar Senha"}
                 </Button>
               </div>
@@ -285,4 +279,3 @@ export default function ForgotPasswordModal({ open, onOpenChange }: ForgotPasswo
     </Dialog>
   );
 }
-

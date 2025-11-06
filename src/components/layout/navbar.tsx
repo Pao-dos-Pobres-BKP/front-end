@@ -18,6 +18,10 @@ function Navbar() {
   const isAuthenticated = !!user;
   const avatarUrl = "https://i.pravatar.cc/40";
 
+  const getFirstName = (fullName: string) => {
+    return fullName.split(" ")[0];
+  };
+
   const linkStyles = "flex items-center gap-2.5 px-4 py-2 rounded-3xl transition-colors";
   const getNavLinkClass = ({ isActive }: { isActive: boolean }) => {
     return `${linkStyles} ${
@@ -88,7 +92,7 @@ function Navbar() {
                 className="h-8 w-8 rounded-full"
               />
               <strong className="text-[var(--color-components)] font-semibold ">
-                {user.fullname}
+                {getFirstName(user.fullname)}
               </strong>
             </Link>
           ) : (
@@ -121,7 +125,7 @@ function Navbar() {
                     className="h-8 w-8 rounded-full"
                   />
                   <strong className="text-[var(--color-components)] truncate font-semibold text-lg">
-                    {user.fullname}
+                    {getFirstName(user.fullname)}
                   </strong>
                 </div>
                 <hr className="border-[var(--color-components)]" />

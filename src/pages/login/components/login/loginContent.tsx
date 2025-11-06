@@ -123,10 +123,7 @@ export default function LoginContent({ onRegisterClick }: { onRegisterClick: () 
         </div>
       </form>
 
-      <ForgotPasswordModal
-        open={isForgotPasswordOpen}
-        onOpenChange={setIsForgotPasswordOpen}
-      />
+      <ForgotPasswordModal open={isForgotPasswordOpen} onOpenChange={setIsForgotPasswordOpen} />
     </div>
   );
 }
