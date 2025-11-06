@@ -337,19 +337,19 @@ const Campanhas = () => {
   };
 
   return (
-    <div className="bg-[var(--color-bg-campaingn)] p-8 min-h-screen flex flex-col gap-6">
-      <section className="flex justify-center items-center gap-4">
+    <div className="bg-[var(--color-bg-campaingn)] p-4 sm:p-8 min-h-screen flex flex-col gap-6">
+      <section className="flex justify-center items-center gap-2 sm:gap-4">
         <div className="w-full">
           <SearchBar />
         </div>
 
         <button
           onClick={() => setSortOrder(sortOrder === "recent" ? "oldest" : "recent")}
-          className="min-h-10 px-4 bg-[var(--color-text-special-2)] text-white flex items-center justify-center gap-2 rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md hover:opacity-90 whitespace-nowrap"
+          className="min-h-10 min-w-10 px-2 sm:px-4 bg-[var(--color-text-special-2)] text-white flex items-center justify-center gap-2 rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md hover:opacity-90 flex-shrink-0"
           title={sortOrder === "recent" ? "Ordenar por mais antigos" : "Ordenar por mais recentes"}
         >
           <ArrowUpDown className="h-4 w-4" />
-          <span className="text-sm font-medium">
+          <span className="text-sm font-medium hidden sm:inline whitespace-nowrap">
             {sortOrder === "recent" ? "Mais recentes" : "Mais antigos"}
           </span>
         </button>
