@@ -47,7 +47,14 @@ export default function LoginContent({ onRegisterClick }: { onRegisterClick: () 
     try {
       const user = await login(form);
       setUser(user);
-      navigate("/perfil");
+      
+      if (user.role === "ADMIN") {
+        navigate("/dashboard");
+      } else if (user.role === "DONOR") {
+        navigate("/");
+      } else {
+        navigate("/perfil");
+      }
     } catch (error) {
       console.error(error);
       setApiError("Email ou senha incorretos.");
