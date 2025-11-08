@@ -13,9 +13,20 @@ export function useFormValidation<T extends object>(
 
   const updateField = (field: keyof T, value: T[keyof T]) => {
     setForm((prev) => ({ ...prev, [field]: value }));
-    setErrors((prev) => ({ ...prev, [field]: undefined }));
+    try {
+      const rule = (validationRules as unknown as Record<string, (v: unknown) => string | null>)[
+        String(field)
+      ];
+      if (typeof rule === "function") {
+        const error = rule(value as unknown);
+        setErrors((prev) => ({ ...prev, [field]: error ?? undefined }));
+      } else {
+        setErrors((prev) => ({ ...prev, [field]: undefined }));
+      }
+    } catch {
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
+    }
   };
-
   const validateForm = (): boolean => {
     const newErrors: Partial<Record<keyof T, string>> = {};
     let hasErrors = false;
