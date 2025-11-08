@@ -173,11 +173,9 @@ function Dashboard() {
   const { user } = useUser();
   const navigate = useNavigate();
 
-  /*
   if (user?.role != "ADMIN") {
     navigate("/");
   }
-  */
 
   useEffect(() => {
     const fetchCampaigns = async () => {
@@ -205,7 +203,7 @@ function Dashboard() {
       }
     };
 
-    //fetchMetrics();
+    fetchMetrics();
   }, []);
 
   useEffect(() => {
