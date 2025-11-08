@@ -19,7 +19,11 @@ const initialForm: PersonalFormData = {
 };
 
 const validationRules = {
-  nomeCompleto: (value: string) => (!value.trim() ? "Nome completo é obrigatório" : null),
+  nomeCompleto: (value: string) => {
+    if (!value.trim()) return "Nome completo é obrigatório";
+    if (value.trim().length < 3) return "Nome deve ter no mínimo 3 caracteres";
+    return null;
+  },
   dataNascimento: (value?: Date) => (!value ? "Data de nascimento é obrigatória" : null),
   genero: (value: string) => (!value ? "Gênero é obrigatório" : null),
   cpf: (value: string) => {
@@ -46,6 +50,11 @@ export default function PersonalFields({ onCancel, onNext }: PersonalFieldsProps
     }
   };
 
+  const isFormValid = Object.entries(validationRules).every(([key, rule]) => {
+    const value = (form as unknown as Record<string, unknown>)[key];
+    return (rule as (v: unknown) => string | null)(value) === null;
+  });
+
   const steps = [
     { number: 1, label: "Dados Pessoais", isActive: true, isCompleted: false },
     { number: 2, label: "Dados de Acesso", isActive: false, isCompleted: false },
@@ -59,6 +68,7 @@ export default function PersonalFields({ onCancel, onNext }: PersonalFieldsProps
         primaryAction={{
           label: "Próximo",
           onClick: handleNext,
+          disabled: !isFormValid,
           variant: "primary",
         }}
         secondaryAction={{

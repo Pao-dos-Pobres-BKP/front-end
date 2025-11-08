@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFormValidation } from "@/hooks/useFormValidation";
 import FormContainer from "../shared/FormContainer";
 import FormActions from "../shared/FormActions";
@@ -48,6 +48,23 @@ export default function AccessFields({ onBack, onRegister }: AccessFieldsProps) 
     validationRules
   );
 
+  useEffect(() => {
+    const confirm = form.confirmPassword;
+    const rules = validationRules as unknown as Record<string, (v: unknown) => string | null>;
+    if (!confirm) {
+      const err = rules.confirmPassword(confirm as unknown);
+      setErrors((prev) => ({ ...prev, confirmPassword: err ?? undefined }));
+      return;
+    }
+
+    if (form.password !== confirm) {
+      setErrors((prev) => ({ ...prev, confirmPassword: "Senhas não coincidem" }));
+    } else {
+      const err = rules.confirmPassword(confirm as unknown);
+      setErrors((prev) => ({ ...prev, confirmPassword: err ?? undefined }));
+    }
+  }, [form.password, form.confirmPassword, setErrors]);
+
   const handleRegister = async () => {
     const isFormValid = validateForm();
     if (form.password !== form.confirmPassword) {
@@ -93,7 +110,13 @@ export default function AccessFields({ onBack, onRegister }: AccessFieldsProps) 
           label: isLoading ? "Cadastrando..." : "Cadastrar",
           onClick: handleRegister,
           variant: "confirm",
-          disabled: isLoading,
+          disabled:
+            isLoading ||
+            !Object.entries(validationRules).every(([key, rule]) => {
+              const value = (form as unknown as Record<string, unknown>)[key];
+              return (rule as (v: unknown) => string | null)(value) === null;
+            }) ||
+            form.password !== form.confirmPassword,
         }}
         secondaryAction={{
           label: "Voltar",
