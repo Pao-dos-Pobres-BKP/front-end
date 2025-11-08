@@ -5,9 +5,8 @@ import StarIcon from "@/assets/Star.svg?react";
 import HomeIcon from "@/assets/Home.svg?react";
 import VectorIcon from "@/assets/Vector.svg?react";
 import DiscoverIcon from "@/assets/Discovery.svg?react";
-import UserIcon from "@/assets/User.svg?react";
 import ActivityIcon from "@/assets/Activity.svg?react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Heart } from "lucide-react";
 import { useUser } from "@/hooks/useUser";
 import { NAVBAR_HEIGHT_CLASS, Z_INDEX } from "@/constant/layout";
 
@@ -62,19 +61,19 @@ function Navbar() {
           <strong>Campanhas</strong>
         </NavLink>
       </div>
+      {(!isAuthenticated || user.role !== "ADMIN") && (
+        <div className="hidden lg:flex flex-shrink-0">
+          <NavLink to="/doacao" className={getNavLinkClass}>
+            <Heart className="h-5 w-5 stroke-current fill-none" strokeWidth={2} />
+            <strong>Doar</strong>
+          </NavLink>
+        </div>
+      )}
       {isAuthenticated && user.role == "ADMIN" && (
         <div className="hidden lg:flex flex-shrink-0">
           <NavLink to="/noticias-eventos" className={getNavLinkClass}>
             <DiscoverIcon className="h-5 w-5 fill-current" />
             <strong>Notícias & Eventos</strong>
-          </NavLink>
-        </div>
-      )}
-      {isAuthenticated && user.role == "ADMIN" && (
-        <div>
-          <NavLink to="/doadores" className={getNavLinkClass}>
-            <UserIcon className="h-5 w-5 fill-current" />
-            <strong>Doadores</strong>
           </NavLink>
         </div>
       )}
@@ -143,25 +142,22 @@ function Navbar() {
                 <strong>Campanhas</strong>
               </NavLink>
 
-              {isAuthenticated && (
-                <>
-                  <NavLink
-                    to="/noticias-eventos"
-                    className={getNavLinkClass}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <DiscoverIcon className="h-5 w-5 fill-current" />
-                    <strong>Notícias & Eventos</strong>
-                  </NavLink>
-                  <NavLink
-                    to="/doadores"
-                    className={getNavLinkClass}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <UserIcon className="h-5 w-5 fill-current" />
-                    <strong>Doadores</strong>
-                  </NavLink>
-                </>
+              {(!isAuthenticated || user.role !== "ADMIN") && (
+                <NavLink to="/doacao" className={getNavLinkClass} onClick={() => setIsOpen(false)}>
+                  <Heart className="h-5 w-5 stroke-current fill-none" strokeWidth={2} />
+                  <strong>Doar</strong>
+                </NavLink>
+              )}
+
+              {isAuthenticated && user.role == "ADMIN" && (
+                <NavLink
+                  to="/noticias-eventos"
+                  className={getNavLinkClass}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <DiscoverIcon className="h-5 w-5 fill-current" />
+                  <strong>Notícias & Eventos</strong>
+                </NavLink>
               )}
 
               {!isAuthenticated && (
