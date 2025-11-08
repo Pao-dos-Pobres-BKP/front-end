@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Modal from "@/components/ui/modal";
 import Input from "./input";
-import { createAdmin, type CreateAdmin } from "@/services/admin/createAdmin";
+import { createAdmin, type CreateAdmin } from "@/services/admin";
 import axios from "axios";
 
 interface CreateAdminModalProps {

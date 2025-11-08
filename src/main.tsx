@@ -3,11 +3,13 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
 import { UserProvider } from "./providers/UserProvider.tsx";
+import { Toaster } from "sonner";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <UserProvider>
       <App />
+      <Toaster position="top-right" richColors />
     </UserProvider>
   </StrictMode>
 );

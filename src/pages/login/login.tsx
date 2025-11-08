@@ -7,8 +7,9 @@ import LoginLayout from "./components/loginLayout";
 import { signIn } from "@/services/signIn";
 import type { PersonalFormData } from "./components/registration/PersonalFormFields";
 import type { AccessFormData } from "./components/registration/AccessFormFields";
+import { getHeaderConfig } from "./headerConfig";
 
-type FormStep = "login" | "personal" | "access" | "success";
+export type FormStep = "login" | "personal" | "access" | "success";
 
 export type RegistrationData = PersonalFormData & AccessFormData;
 
@@ -33,33 +34,7 @@ export default function Login() {
     }
   };
 
-  const getHeaderConfig = () => {
-    switch (currentStep) {
-      case "login":
-        return {
-          headerText: "Login",
-          headerSubtext: "Preencha os dados abaixo para acessar sua conta.",
-          FooterHref: "/doacao",
-        };
-      case "personal":
-        return {
-          headerText: "Cadastro",
-          headerSubtext: "Preencha seus dados pessoais para continuar.",
-          FooterHref: "/login",
-        };
-      case "access":
-        return {
-          headerText: "Cadastro",
-          headerSubtext: "Crie suas credenciais de acesso.",
-          FooterHref: "/login",
-        };
-      case "success":
-        return {
-          headerText: "Sucesso!",
-          headerSubtext: "Sua conta foi criada com sucesso.",
-        };
-    }
-  };
+  const getHeader = () => getHeaderConfig(currentStep);
 
   const renderCurrentStep = () => {
     switch (currentStep) {
@@ -82,7 +57,7 @@ export default function Login() {
   };
 
   return (
-    <LoginLayout {...getHeaderConfig()}>
+    <LoginLayout {...getHeader()}>
       <div className="relative overflow-hidden">
         <div
           key={currentStep}
