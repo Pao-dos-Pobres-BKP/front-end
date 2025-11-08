@@ -12,7 +12,7 @@ export type DonorAPI = {
   raised?: number;
   totalDonated?: number;
   createdAt: Date;
-  campaigns: string[];
+  campaignsTitles: string[];
 };
 
 export async function getDonors(page: number, pageSize: number) {
