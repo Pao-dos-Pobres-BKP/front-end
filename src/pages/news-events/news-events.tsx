@@ -46,7 +46,7 @@ export default function NewsEvents() {
   const [isDeleting, setIsDeleting] = useState(false);
   const navigate = useNavigate();
   const { user } = useUser();
-  
+
   if (user?.role != "ADMIN") {
     navigate("/");
   }
