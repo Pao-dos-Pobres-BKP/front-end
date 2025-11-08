@@ -41,6 +41,7 @@ export async function getDonor(id: string, accessToken: string): Promise<User> {
     accessToken: accessToken,
     role: "DONOR",
     totalDonated: data.totalDonated,
+    createdAt: data.createdAt ? new Date(data.createdAt) : undefined,
   };
   return user;
 }

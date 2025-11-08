@@ -6,6 +6,7 @@ export type Gender = "MALE" | "FEMALE" | "OTHER";
 export interface User {
   id: string;
   fullname: string;
+  password?: string;
   email: string;
   birthDate?: Date;
   root?: boolean;
