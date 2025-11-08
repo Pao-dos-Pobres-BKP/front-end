@@ -159,7 +159,10 @@ function Navbar() {
 
               {(!isAuthenticated || user.role !== "ADMIN") && (
                 <NavLink to="/doacao" className={getNavLinkClass} onClick={() => setIsOpen(false)}>
-                  <Heart className="h-5 w-5 stroke-current fill-none flex-shrink-0" strokeWidth={2} />
+                  <Heart
+                    className="h-5 w-5 stroke-current fill-none flex-shrink-0"
+                    strokeWidth={2}
+                  />
                   <strong>Doar</strong>
                 </NavLink>
               )}
@@ -184,8 +187,17 @@ function Navbar() {
 
               {isAuthenticated && (
                 <NavLink to="/perfil" className={getNavLinkClass} onClick={() => setIsOpen(false)}>
-                  <svg className="h-5 w-5 stroke-current flex-shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                  <svg
+                    className="h-5 w-5 stroke-current flex-shrink-0"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+                    />
                   </svg>
                   <strong>Perfil</strong>
                 </NavLink>
