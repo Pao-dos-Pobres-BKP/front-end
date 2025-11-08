@@ -33,41 +33,42 @@ export function CampaignCardEventAndNews({
   return (
     <article
       className={cn(
-        "flex flex-row w-full bg-white border border-[#e6e8eb] rounded-xl overflow-hidden h-28",
+        "flex flex-row w-full bg-white border border-[#e6e8eb] rounded-xl overflow-hidden",
+        "min-h-28 sm:h-28",
         "items-stretch",
         className
       )}
       aria-label={`Card ${typeConfig.label}: ${title}`}
     >
-      <div className="w-28 h-full flex-shrink-0 relative">
+      <div className="w-28 sm:w-32 h-full flex-shrink-0 relative">
         <img
           src={excluir2}
           alt="Imagem de fundo"
-          className="h-full w-full object-cover opacity-90"
+          className="h-full w-full object-cover opacity-80"
           style={{
-            WebkitMaskImage: "linear-gradient(to right, black 50%, transparent 95%)",
+            WebkitMaskImage: "linear-gradient(to right, black 60%, transparent 100%)",
             WebkitMaskRepeat: "no-repeat",
             WebkitMaskSize: "100% 100%",
-            maskImage: "linear-gradient(to right, black 50%, transparent 95%)",
+            maskImage: "linear-gradient(to right, black 60%, transparent 100%)",
             maskRepeat: "no-repeat",
             maskSize: "100% 100%",
           }}
         />
       </div>
 
-      <div className="flex-1 flex flex-col justify-center px-4 py-3 overflow-hidden">
+      <div className="flex-1 flex flex-col justify-center px-3 sm:px-4 py-3 overflow-hidden min-w-0">
         <h3
-          className="text-lg sm:text-2xl font-semibold text-[#034d6b] leading-tight text-left line-clamp-2"
+          className="text-base sm:text-2xl font-semibold text-[#034d6b] leading-snug sm:leading-tight text-left line-clamp-2 mb-1 sm:mb-0"
           title={title}
         >
           {title}
         </h3>
-        <div className="flex items-center mt-2">
-          <span className="text-xs font-medium" style={{ color: typeConfig.color }}>
+        <div className="flex items-center mt-1 sm:mt-2 flex-wrap gap-1.5 sm:gap-0">
+          <span className="text-[10px] sm:text-xs font-medium" style={{ color: typeConfig.color }}>
             {formattedDate}
           </span>
           <span
-            className="text-[10px] sm:text-sm text-white px-2 py-0.5 rounded-xl ml-2 sm:ml-8"
+            className="text-[9px] sm:text-sm text-white px-1.5 sm:px-2 py-0.5 rounded-xl sm:ml-8 whitespace-nowrap"
             style={{ backgroundColor: typeConfig.color }}
           >
             {typeConfig.label}
@@ -75,21 +76,21 @@ export function CampaignCardEventAndNews({
         </div>
       </div>
 
-      <div className="flex items-center gap-2 pr-4">
+      <div className="flex items-center gap-1.5 sm:gap-2 pr-2 sm:pr-4">
         <button
           onClick={onDelete}
-          className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center bg-[#D65E5E] hover:bg-[#c44f4f] transition"
+          className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center bg-[#D65E5E] hover:bg-[#c44f4f] transition flex-shrink-0"
           aria-label="Excluir"
         >
-          <Delete set="light" primaryColor="#ffffff" size={22} />
+          <Delete set="light" primaryColor="#ffffff" size={20} />
         </button>
 
         <button
           onClick={onEdit}
-          className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center bg-[#034d6b] hover:bg-[#023a50] transition"
+          className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center bg-[#034d6b] hover:bg-[#023a50] transition flex-shrink-0"
           aria-label="Editar"
         >
-          <img src={editIcon} alt="Editar" className="w-5 h-5" />
+          <img src={editIcon} alt="Editar" className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
       </div>
     </article>
