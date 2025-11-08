@@ -15,7 +15,7 @@ import type { HowToHelpAPI } from "@/services/how-to-help";
 
 const WhatsAppButton = () => {
   const handleContactClick = () => {
-    window.open("https://wa.me/5551991341262", "_blank"); //simula rota wpp
+    window.open("https://wa.me/5551989719615", "_blank");
   };
   return (
     <Button
@@ -87,8 +87,8 @@ export default function HowToHelpSection() {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-16 relative">
-          <div className="flex-1 lg:pr-72">
+        <div className="flex flex-col lg:flex-row gap-16">
+          <div className="flex-1">
             <Accordion
               type="single"
               collapsible
@@ -98,7 +98,7 @@ export default function HowToHelpSection() {
             >
               {howToHelpList.map((howToHelp) => (
                 <AccordionItem key={howToHelp.id} value={howToHelp.id}>
-                  <AccordionTrigger variant="secondary" size="large" className="[&>svg]:hidden">
+                  <AccordionTrigger variant="secondary" className="w-full [&>svg]:hidden">
                     <div className="flex items-center justify-between w-full">
                       <div className="flex items-center gap-3">
                         <span className="text-[#024b5a] font-medium text-lg">
@@ -150,7 +150,7 @@ export default function HowToHelpSection() {
               ))}
             </Accordion>
           </div>
-          <div className="lg:absolute lg:top-16 lg:right-0 lg:w-52 flex flex-col gap-2 mt-6 lg:mt-0">
+          <div className="lg:w-52 flex flex-col gap-2 mt-6 lg:mt-0">
             <Button
               onClick={() => (window.location.href = "/doacao")} //simula rota de /doacoes
               className="bg-[var(--color-text-special)] text-white w-full hover:bg-[var(--color-text-special)] hover:opacity-95"

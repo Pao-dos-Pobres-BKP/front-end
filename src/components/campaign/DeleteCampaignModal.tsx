@@ -1,57 +1,53 @@
-import React from "react";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { PasswordStep } from "./steps";
+import Modal from "@/components/ui/modal";
+import Button from "@/components/ui/button";
 
-interface DeleteCampaignModalProps {
+type DeleteCampaignModalProps = {
   open: boolean;
-  onOpenChange: (o: boolean) => void;
-  campaignId: string | null;
-  onDelete: (data: { id: string; password: string }) => Promise<void> | void;
-}
+  onOpenChange: (open: boolean) => void;
+  onConfirm: () => void;
+  campaignTitle: string;
+};
 
-export const DeleteCampaignModal: React.FC<DeleteCampaignModalProps> = ({
+export default function DeleteCampaignModal({
   open,
   onOpenChange,
-  campaignId,
-  onDelete,
-}) => {
-  const [password, setPassword] = React.useState("");
-
-  function resetAll() {
-    setPassword("");
-  }
-
-  async function handleDelete() {
-    if (!campaignId) return;
-    await onDelete({ id: campaignId, password });
-    resetAll();
-    onOpenChange(false);
-  }
-
+  onConfirm,
+  campaignTitle,
+}: DeleteCampaignModalProps) {
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(o: boolean) => {
-        if (!o) resetAll();
-        onOpenChange(o);
-      }}
-    >
-      <DialogContent className="bg-white border-none max-w-3xl" showCloseButton={false}>
-        <DialogTitle className="text-2xl font-semibold text-[var(--color-components)]">
-          Excluir Campanha
-        </DialogTitle>
-        <PasswordStep
-          password={password}
-          onChange={setPassword}
-          onBack={() => onOpenChange(false)}
-          onSubmit={handleDelete}
-          confirmLabel="Excluir"
-          destructive
-          stepOverride={1}
-          totalStepsOverride={1}
-        />
-      </DialogContent>
-    </Dialog>
+    <Modal
+      variant="custom"
+      isOpen={open}
+      onClose={() => onOpenChange(false)}
+      title="Excluir Campanha"
+      description=""
+      footer={
+        <div className="w-full space-y-4">
+          <p className="text-[14px] text-[var(--color-text-2)]">
+            Tem certeza que deseja excluir a campanha{" "}
+            <strong className="text-[var(--color-text-3)]">"{campaignTitle}"</strong>?
+          </p>
+          <p className="text-[13px] text-red-600 font-medium">
+            Esta ação não pode ser desfeita. Todas as informações da campanha serão permanentemente
+            removidas.
+          </p>
+          <div className="flex gap-3 justify-center pt-2">
+            <Button variant="senary" size="extraSmall" onClick={() => onOpenChange(false)}>
+              Cancelar
+            </Button>
+            <Button
+              variant="destructive"
+              size="extraSmall"
+              onClick={() => {
+                onConfirm();
+                onOpenChange(false);
+              }}
+            >
+              Excluir
+            </Button>
+          </div>
+        </div>
+      }
+    />
   );
-};
-export default DeleteCampaignModal;
+}

@@ -13,7 +13,7 @@ function eventToHeroItem(event: EventAPI): HeroItem {
     location: event.location,
     date: format(event.dateStart, "d 'de' MMMM 'de' yyyy", { locale: ptBR }),
     buttonLabel: "Ir para o evento",
-    buttonLink: event.url,
+    buttonLink: "https://www.paodospobres.org.br/categorias-noticias/evento/",
     id: event.id,
     imageAlt: event.title,
     time: format(event.dateStart, "HH:mm", { locale: ptBR }),

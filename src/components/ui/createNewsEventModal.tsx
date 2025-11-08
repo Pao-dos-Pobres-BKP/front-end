@@ -1,6 +1,5 @@
 // Modal para a criação de nova notíca ou novo evento
 import { useState, useEffect } from "react";
-import { Pagination, PaginationContent, PaginationItem } from "@/components/ui/pagination";
 import Calendar from "@/assets/Calendar.svg";
 import Paper from "@/assets/Paper.svg";
 import Image from "@/assets/Image.svg";
@@ -269,22 +268,26 @@ export default function CreateNewsEventModal({
               </button>
             </div>
 
-            <Pagination className="mt-6 flex justify-center">
-              <PaginationContent className="flex gap-2">
-                <PaginationItem>
-                  <button
-                    className={`w-3 h-3 rounded-full ${currentPage === "evento" ? "bg-[#005172]" : "bg-gray-300"}`}
-                    onClick={() => setCurrentPage("evento")}
-                  ></button>
-                </PaginationItem>
-                <PaginationItem>
-                  <button
-                    className={`w-3 h-3 rounded-full ${currentPage === "noticia" ? "bg-[#005172]" : "bg-gray-300"}`}
-                    onClick={() => setCurrentPage("noticia")}
-                  ></button>
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+            <div className="mt-6 flex justify-center">
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  className={`w-3 h-3 rounded-full transition-colors ${
+                    currentPage === "evento" ? "bg-[#005172]" : "bg-gray-300"
+                  }`}
+                  onClick={() => setCurrentPage("evento")}
+                  aria-label="Ir para página de evento"
+                />
+                <button
+                  type="button"
+                  className={`w-3 h-3 rounded-full transition-colors ${
+                    currentPage === "noticia" ? "bg-[#005172]" : "bg-gray-300"
+                  }`}
+                  onClick={() => setCurrentPage("noticia")}
+                  aria-label="Ir para página de notícia"
+                />
+              </div>
+            </div>
           </>
         )}
       </div>

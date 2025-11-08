@@ -25,7 +25,7 @@ export function useHome() {
   async function getFeaturedEvents() {
     const LAST_EVENTS_PAGE_SIZE = 3;
 
-    const response = await getEvents(LAST_EVENTS_PAGE_SIZE);
+    const response = await getEvents({ pageSize: LAST_EVENTS_PAGE_SIZE });
 
     if (response.data) {
       setLastEvents(response.data);

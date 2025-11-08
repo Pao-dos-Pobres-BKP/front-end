@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { useState } from "react";
-import Checkbox from "@/components/ui/checkbox";
+import { Checkbox } from "@/components/ui/checkbox";
 import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
 import Modal from "@/components/ui/modal";
@@ -36,6 +36,7 @@ export const Newsletter = () => {
         setIsModalOpen(true);
         setEmail("");
         setIsChecked(false);
+        setErrorMessage("");
       },
       onError: (message) => {
         setErrorMessage(message);
@@ -74,12 +75,19 @@ export const Newsletter = () => {
           </Button>
         </div>
 
-        <Checkbox
-          label="Aceito os termos e condições"
-          id="newsletter"
-          onChange={() => setIsChecked((prev) => !prev)}
-          checked={isChecked}
-        />
+        <div className="flex items-center gap-2">
+          <Checkbox
+            id="newsletter"
+            onCheckedChange={() => setIsChecked((prev) => !prev)}
+            checked={isChecked}
+          />
+          <label
+            htmlFor="newsletter"
+            className="text-sm font-medium leading-none cursor-pointer peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Aceito os termos e condições
+          </label>
+        </div>
 
         {errorMessage && <span className="text-red-500 text-sm">{errorMessage}</span>}
       </div>

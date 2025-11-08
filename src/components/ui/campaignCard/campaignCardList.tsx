@@ -1,20 +1,25 @@
 import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/utils/formatCurrency";
+import { formatDate } from "@/utils/formatters";
 import { Progress } from "../progress";
 import blueHeart from "@/assets/blueHeart.svg";
 import orangeHeart from "@/assets/orangeHeart.svg";
 import redHeart from "@/assets/redHeart.svg";
 import { Category } from "react-iconly";
+import { Edit2, Eye, X } from "lucide-react";
 
 export type CampaignCardListProps = {
   title: string;
   raised: number;
   goal: number;
   creatorName?: string;
+  startDate?: string;
+  endDate?: string;
   onAction?: () => void;
   className?: string;
   situation?: "approved" | "pending" | "rejected" | "recurring";
   progressPercent?: number;
+  isAdmin?: boolean;
 };
 
 export function CampaignCardList(props: CampaignCardListProps) {
@@ -27,89 +32,142 @@ export function CampaignCardList(props: CampaignCardListProps) {
     className,
     progressPercent: percent = 0,
     onAction,
+    startDate,
+    endDate,
+    isAdmin,
   } = props;
 
-  const handleActionKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      onAction?.();
-    }
-  };
-
-  const situationIcons: Record<"approved" | "pending" | "recurring", string> = {
+  const situationIcons: Record<"approved" | "pending" | "rejected" | "recurring", string> = {
     approved: blueHeart,
     pending: orangeHeart,
+    rejected: redHeart,
     recurring: redHeart,
   };
 
   return (
     <article
       className={cn(
-        "flex flex-col md:flex-row w-full bg-white border border-[#e6e8eb] rounded-2xl p-4 md:p-5 items-start md:items-center justify-between gap-3",
+        "flex flex-col lg:flex-row w-full bg-white border border-[#e6e8eb] rounded-2xl p-4 sm:p-5 lg:p-6 gap-4 lg:gap-6 items-stretch lg:items-center transition-shadow hover:shadow-md",
         className
       )}
       aria-label={`Card lista ${title}`}
     >
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between w-full gap-3">
-        <div className="flex items-center gap-2 flex-shrink-0">
-          {situation && situation !== "rejected" && (
-            <img src={situationIcons[situation]} alt="" className="h-6 w-6 flex-shrink-0" />
-          )}
-          <div className="flex flex-col truncate">
-            <div className="text-[#034d6b] text-xl font-semibold truncate">{title}</div>
-            {creatorName && (
-              <div
-                className={cn(
-                  "text-xs sm:text-sm truncate",
-                  situation === "recurring"
-                    ? "bg-gradient-to-b from-[#FF4A4A] to-[#FF8787] bg-clip-text text-transparent"
-                    : situation === "approved"
-                      ? "bg-gradient-to-b from-[#456DFF] to-[#AABCFF] bg-clip-text text-transparent"
-                      : "text-[#034d6b]"
-                )}
-              >
-                por {creatorName}
-              </div>
-            )}
-          </div>
-        </div>
-        <div className="flex items-center w-full gap-3">
-          <div className="flex flex-col flex-1">
-            <div className="flex justify-between items-center gap-1.5 w-full flex-wrap">
-              <div className="text-xl font-bold text-[#034d6b] truncate">
-                {formatCurrency(raised)}
-              </div>
-              <div className="text-sm text-[#6b7280] truncate">de {formatCurrency(goal)}</div>
-            </div>
-            <div className="w-full mt-1">
-              {situation === "approved" || situation === "recurring" ? (
-                <Progress value={percent} variant="blue" size="large" />
-              ) : situation === "rejected" ? (
-                <div className="text-center text-xs font-semibold text-yellow-800 bg-red-400 rounded-full py-0.5 px-2 w-full max-w-[120px]">
-                  Rejeitada
-                </div>
-              ) : (
-                <div className="text-center text-xs font-semibold text-white bg-[#F6C337] rounded-full py-0.5 px-2 w-full max-w-[140px]">
-                  Pendente Aprovação
-                </div>
-              )}
-            </div>
-          </div>
-          <div className="flex-shrink-0">
-            <div
-              role="button"
-              tabIndex={0}
-              onClick={onAction}
-              onKeyDown={handleActionKeyDown}
+      {/* Column 1: Icon + Title/Creator */}
+      <div className="flex items-start gap-2 sm:gap-3 flex-shrink-0 min-w-0 w-full lg:w-auto lg:flex-1 lg:max-w-[400px]">
+        {situation && (
+          <img
+            src={situationIcons[situation]}
+            alt=""
+            className="h-6 w-6 sm:h-7 sm:w-7 flex-shrink-0 mt-0.5"
+          />
+        )}
+        <div className="flex flex-col items-start min-w-0 flex-1">
+          <h3
+            className="text-[#034d6b] text-lg sm:text-xl font-semibold text-left w-full overflow-hidden text-ellipsis line-clamp-2"
+            title={title}
+          >
+            {title}
+          </h3>
+          {creatorName && (
+            <p
               className={cn(
-                "inline-flex items-center justify-center text-sm font-semibold rounded-[10px] transition-colors shadow-sm hover:shadow-lg focus:outline-none cursor-pointer min-w-[44px] h-10 sm:h-11 md:h-12 px-3",
-                "bg-[#034d6b] hover:bg-[#023a50] text-white"
+                "text-xs sm:text-sm text-left w-full overflow-hidden text-ellipsis whitespace-nowrap mt-0.5",
+                situation === "recurring" || situation === "rejected"
+                  ? "bg-gradient-to-b from-[#FF4A4A] to-[#FF8787] bg-clip-text text-transparent"
+                  : situation === "approved"
+                    ? "bg-gradient-to-b from-[#456DFF] to-[#AABCFF] bg-clip-text text-transparent"
+                    : "text-[#034d6b]"
               )}
+              title={`por ${creatorName}`}
             >
-              <Category set="bold" />
-            </div>
-          </div>
+              por {creatorName}
+            </p>
+          )}
+          {startDate && endDate && (
+            <p className="text-[10px] sm:text-xs text-[#6b7280] text-left mt-1">
+              {formatDate(startDate)} até {formatDate(endDate)}
+            </p>
+          )}
         </div>
+      </div>
+
+      {/* Column 2: Values + Progress Bar */}
+      <div className="flex flex-col flex-1 min-w-0 justify-center gap-2">
+        <div className="flex flex-wrap justify-between items-baseline gap-2">
+          <span className="text-xl sm:text-2xl font-bold text-[#034d6b] whitespace-nowrap">
+            {formatCurrency(raised)}
+          </span>
+          <span className="text-sm sm:text-base text-[#6b7280] whitespace-nowrap">
+            de {formatCurrency(goal)}
+          </span>
+        </div>
+        <div className="w-full">
+          {situation === "approved" || situation === "recurring" ? (
+            <Progress value={percent} variant="blue" size="large" />
+          ) : situation === "rejected" ? (
+            <div className="text-center text-xs sm:text-sm font-semibold text-white bg-red-500 rounded-full py-1 px-3 w-fit">
+              Rejeitada
+            </div>
+          ) : (
+            <div className="text-center text-xs sm:text-sm font-semibold text-white bg-[#F6C337] rounded-full py-1 px-3 w-fit">
+              Pendente Aprovação
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Column 3: Action Button */}
+      <div className="flex-shrink-0 flex items-center justify-end lg:justify-center w-full lg:w-auto">
+        <button
+          type="button"
+          onClick={onAction}
+          className={cn(
+            "inline-flex items-center justify-center text-sm font-semibold rounded-xl transition-all shadow-sm hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer w-full sm:w-auto sm:min-w-[120px] lg:min-w-[44px] lg:w-12 h-11 sm:h-12 px-4 lg:px-0",
+            situation === "pending"
+              ? "bg-[#F6C337] hover:bg-[#E5B328] text-white focus:ring-[#F6C337]"
+              : situation === "rejected"
+                ? "bg-red-500 hover:bg-red-600 text-white focus:ring-red-500"
+                : "bg-[#034d6b] hover:bg-[#023a50] text-white focus:ring-[#034d6b]"
+          )}
+          aria-label={
+            isAdmin
+              ? situation === "pending"
+                ? "Visualizar campanha pendente"
+                : situation === "rejected"
+                  ? "Excluir campanha rejeitada"
+                  : "Editar campanha"
+              : "Ver detalhes da campanha"
+          }
+        >
+          {isAdmin ? (
+            situation === "pending" ? (
+              <>
+                <Eye className="h-5 w-5 lg:block" />
+                <span className="ml-2 lg:hidden">Visualizar</span>
+              </>
+            ) : situation === "rejected" ? (
+              <>
+                <X className="h-5 w-5 lg:block" />
+                <span className="ml-2 lg:hidden">Excluir</span>
+              </>
+            ) : (
+              <>
+                <Edit2 className="h-5 w-5 lg:block" />
+                <span className="ml-2 lg:hidden">Editar</span>
+              </>
+            )
+          ) : situation === "pending" || situation === "rejected" ? (
+            <>
+              <Eye className="h-5 w-5 lg:block" />
+              <span className="ml-2 lg:hidden">Ver detalhes</span>
+            </>
+          ) : (
+            <>
+              <Category set="bold" />
+              <span className="ml-2 lg:hidden">Ver detalhes</span>
+            </>
+          )}
+        </button>
       </div>
     </article>
   );
