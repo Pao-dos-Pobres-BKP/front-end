@@ -5,9 +5,8 @@ import StarIcon from "@/assets/Star.svg?react";
 import HomeIcon from "@/assets/Home.svg?react";
 import VectorIcon from "@/assets/Vector.svg?react";
 import DiscoverIcon from "@/assets/Discovery.svg?react";
-import UserIcon from "@/assets/User.svg?react";
 import ActivityIcon from "@/assets/Activity.svg?react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Heart } from "lucide-react";
 import { useUser } from "@/hooks/useUser";
 import { NAVBAR_HEIGHT_CLASS, Z_INDEX } from "@/constant/layout";
 
@@ -62,19 +61,19 @@ function Navbar() {
           <strong>Campanhas</strong>
         </NavLink>
       </div>
+      {(!isAuthenticated || user.role !== "ADMIN") && (
+        <div className="hidden lg:flex flex-shrink-0">
+          <NavLink to="/doacao" className={getNavLinkClass}>
+            <Heart className="h-5 w-5 stroke-current fill-none" strokeWidth={2} />
+            <strong>Doar</strong>
+          </NavLink>
+        </div>
+      )}
       {isAuthenticated && user.role == "ADMIN" && (
         <div className="hidden lg:flex flex-shrink-0">
           <NavLink to="/noticias-eventos" className={getNavLinkClass}>
             <DiscoverIcon className="h-5 w-5 fill-current" />
             <strong>Notícias & Eventos</strong>
-          </NavLink>
-        </div>
-      )}
-      {isAuthenticated && user.role == "ADMIN" && (
-        <div>
-          <NavLink to="/doadores" className={getNavLinkClass}>
-            <UserIcon className="h-5 w-5 fill-current" />
-            <strong>Doadores</strong>
           </NavLink>
         </div>
       )}
@@ -117,57 +116,90 @@ function Navbar() {
               <X className="h-6 w-6 text-[var(--color-components)]" />
             </button>
             {isAuthenticated && (
-              <div className="flex flex-col gap-3 text-left">
-                <div className="flex gap-3 text-left mb-2 max-w-45">
+              <div className="flex flex-col gap-3">
+                <Link
+                  to="/perfil"
+                  className="flex gap-3 items-center mb-2 hover:bg-black/10 p-2 rounded-lg transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
                   <img
                     src={avatarUrl}
                     alt={`Avatar de ${user.fullname}`}
-                    className="h-8 w-8 rounded-full"
+                    className="h-8 w-8 rounded-full flex-shrink-0"
                   />
                   <strong className="text-[var(--color-components)] truncate font-semibold text-lg">
                     {getFirstName(user.fullname)}
                   </strong>
-                </div>
+                </Link>
                 <hr className="border-[var(--color-components)]" />
               </div>
             )}
 
             <div className="flex flex-col gap-2">
               <NavLink to="/" className={getNavLinkClass} onClick={() => setIsOpen(false)}>
-                <HomeIcon className="h-5 w-5 fill-current" />
+                <HomeIcon className="h-5 w-5 fill-current flex-shrink-0" />
                 <strong>Home</strong>
               </NavLink>
 
+              {isAuthenticated && user.role === "ADMIN" && (
+                <NavLink
+                  to="/dashboard"
+                  className={getNavLinkClass}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <ActivityIcon className="h-5 w-5 fill-current flex-shrink-0" />
+                  <strong>Dashboard</strong>
+                </NavLink>
+              )}
+
               <NavLink to="/campanhas" className={getNavLinkClass} onClick={() => setIsOpen(false)}>
-                <StarIcon className="h-5 w-5 fill-current" />
+                <StarIcon className="h-5 w-5 fill-current flex-shrink-0" />
                 <strong>Campanhas</strong>
               </NavLink>
 
-              {isAuthenticated && (
-                <>
-                  <NavLink
-                    to="/noticias-eventos"
-                    className={getNavLinkClass}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <DiscoverIcon className="h-5 w-5 fill-current" />
-                    <strong>Notícias & Eventos</strong>
-                  </NavLink>
-                  <NavLink
-                    to="/doadores"
-                    className={getNavLinkClass}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <UserIcon className="h-5 w-5 fill-current" />
-                    <strong>Doadores</strong>
-                  </NavLink>
-                </>
+              {(!isAuthenticated || user.role !== "ADMIN") && (
+                <NavLink to="/doacao" className={getNavLinkClass} onClick={() => setIsOpen(false)}>
+                  <Heart
+                    className="h-5 w-5 stroke-current fill-none flex-shrink-0"
+                    strokeWidth={2}
+                  />
+                  <strong>Doar</strong>
+                </NavLink>
+              )}
+
+              {isAuthenticated && user.role === "ADMIN" && (
+                <NavLink
+                  to="/noticias-eventos"
+                  className={getNavLinkClass}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <DiscoverIcon className="h-5 w-5 fill-current flex-shrink-0" />
+                  <strong>Notícias & Eventos</strong>
+                </NavLink>
               )}
 
               {!isAuthenticated && (
                 <NavLink to="/login" className={getNavLinkClass} onClick={() => setIsOpen(false)}>
-                  <VectorIcon className="h-5 w-5 fill-current" />
+                  <VectorIcon className="h-5 w-5 fill-current flex-shrink-0" />
                   <strong>Login/Registre-se</strong>
+                </NavLink>
+              )}
+
+              {isAuthenticated && (
+                <NavLink to="/perfil" className={getNavLinkClass} onClick={() => setIsOpen(false)}>
+                  <svg
+                    className="h-5 w-5 stroke-current flex-shrink-0"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+                    />
+                  </svg>
+                  <strong>Perfil</strong>
                 </NavLink>
               )}
             </div>

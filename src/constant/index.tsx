@@ -22,8 +22,8 @@ const Navigation = () => {
           <Route path={ROUTES.doacao} element={<Doacao />} />
           <Route path={ROUTES.campanhas} element={<Campanhas />} />
           <Route path={ROUTES.perfil} element={<Perfil />} />
+          <Route path={ROUTES.donorList} element={<DonorList/>}/>
           <Route path={ROUTES.dashboard} element={<Dashboard />} />
-          <Route path={ROUTES.donorList} element={<DonorList />} />
           <Route path={ROUTES.partners} element={<Partners />} />
           <Route path={ROUTES.newsEvents} element={<NewsEvents />} />
           <Route path="*" element={<NotFound />} />

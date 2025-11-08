@@ -10,6 +10,7 @@ export interface DonorItem {
   gender: DonorGender;
   phone: string;
   cpf: string;
+  createdAt: string;
 }
 
 export interface PaginatedDonors {
@@ -50,4 +51,8 @@ export interface UpdateDonorData {
 
 export async function updateDonor(id: string, data: UpdateDonorData): Promise<void> {
   await api.patch(`/donors/${id}`, data);
+}
+
+export async function deleteDonor(id: string): Promise<void> {
+  await api.delete(`/donors/${id}`);
 }

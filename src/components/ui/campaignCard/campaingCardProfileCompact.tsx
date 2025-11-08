@@ -8,6 +8,8 @@ export type CampaignCardProfileCompactProps = {
   onAction?: () => void;
   className?: string;
   showRole?: boolean;
+  email?: string;
+  memberSince?: Date;
 };
 
 export function CampaignCardProfileCompact({
@@ -16,6 +18,8 @@ export function CampaignCardProfileCompact({
   onAction,
   className,
   showRole,
+  email,
+  memberSince,
 }: CampaignCardProfileCompactProps) {
   const roleConfig = {
     donor: {
@@ -39,16 +43,22 @@ export function CampaignCardProfileCompact({
     }
   };
 
-  const truncateName = (name: string, maxLength: number = 25) => {
-    return name.length > maxLength ? `${name.substring(0, maxLength)}...` : name;
+  const formatMemberSince = (date?: Date) => {
+    if (!date) return "";
+    const dateObj = date instanceof Date ? date : new Date(date);
+    return dateObj.toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    });
   };
 
   return (
     <article
       className={cn(
-        "flex flex-row w-full items-center",
+        "flex flex-row w-full items-center justify-between",
         "bg-[var(--color-background)] border border-[var(--color-components-2)]",
-        "rounded-2xl p-4 gap-3",
+        "rounded-2xl p-3 sm:p-4 gap-2 sm:gap-3",
         "sm:cursor-default cursor-pointer",
         className
       )}
@@ -66,7 +76,8 @@ export function CampaignCardProfileCompact({
       tabIndex={window.innerWidth < 640 ? 0 : undefined}
       role={window.innerWidth < 640 ? "button" : undefined}
     >
-      <div className="flex items-center min-w-0 flex-shrink-0">
+      {/* Left side: Avatar + Name/Email */}
+      <div className="flex items-center min-w-0 flex-1">
         <div className="h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0">
           <img
             src={fulano_de_tal_profile_pic}
@@ -75,29 +86,41 @@ export function CampaignCardProfileCompact({
           />
         </div>
 
-        <div className="flex-1 min-w-0 ml-3">
-          <div
+        <div className="flex flex-col min-w-0 flex-1 ml-2 sm:ml-3">
+          <h3
             className="font-semibold text-[var(--color-brand-dark)] truncate text-sm sm:text-base lg:text-lg text-left"
             title={profileName}
           >
-            {truncateName(profileName)}
-          </div>
+            {profileName}
+          </h3>
+          {memberSince && (
+            <p className="text-[10px] sm:text-xs text-[var(--color-brand-dark)] opacity-70 mt-0.5 text-left">
+              Membro desde {formatMemberSince(memberSince)}
+            </p>
+          )}
+          {email && (
+            <p
+              className="text-[10px] sm:text-xs text-[var(--color-brand-dark)] opacity-70 truncate mt-0.5 text-left"
+              title={email}
+            >
+              {email}
+            </p>
+          )}
         </div>
       </div>
 
-      <div className="flex items-center gap-2 sm:gap-3">
+      {/* Right side: Badge + Action button (fixed width container) */}
+      <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
         {showRole && (
-          <div className="w-[90px] sm:w-[120px] flex-shrink-0">
-            <div
-              className={cn(
-                "font-semibold rounded-lg py-2 px-3 text-xs sm:text-sm text-center whitespace-nowrap",
-                roleConfig.bg,
-                roleConfig.text
-              )}
-            >
-              <span className="sm:hidden">{roleConfig.short}</span>
-              <span className="hidden sm:inline">{roleConfig.long}</span>
-            </div>
+          <div
+            className={cn(
+              "font-semibold rounded-lg py-1.5 sm:py-2 px-2 sm:px-3 text-xs sm:text-sm text-center whitespace-nowrap flex-shrink-0",
+              roleConfig.bg,
+              roleConfig.text
+            )}
+          >
+            <span className="sm:hidden">{roleConfig.short}</span>
+            <span className="hidden sm:inline">{roleConfig.long}</span>
           </div>
         )}
 
@@ -111,11 +134,11 @@ export function CampaignCardProfileCompact({
           onKeyDown={handleActionKeyDown}
           className={cn(
             "inline-flex items-center justify-center text-sm font-semibold rounded-[10px] transition-colors shadow-sm hover:shadow-lg focus:outline-none cursor-pointer flex-shrink-0",
-            "min-w-[40px] h-9 sm:min-w-[44px] sm:h-11 md:h-12 px-2 sm:px-3",
+            "w-9 h-9 sm:w-11 sm:h-11",
             "bg-[#034d6b] hover:bg-[#023a50] text-white"
           )}
         >
-          <Category set="bold" />
+          <Category set="bold" size="small" />
         </div>
       </div>
     </article>

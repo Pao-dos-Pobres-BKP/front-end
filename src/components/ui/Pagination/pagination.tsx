@@ -38,6 +38,24 @@ export function Pagination({ currentPage, totalPages, onPageChange, className }:
     return null;
   }
 
+  const getVisiblePages = (): number[] => {
+    if (totalPages <= 3) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+
+    if (currentPage === 1) {
+      return [1, 2, 3];
+    }
+
+    if (currentPage === totalPages) {
+      return [totalPages - 2, totalPages - 1, totalPages];
+    }
+
+    return [currentPage - 1, currentPage, currentPage + 1];
+  };
+
+  const visiblePages = getVisiblePages();
+
   return (
     <PaginationNavigation className={className}>
       <PaginationContent className="gap-2">
@@ -56,19 +74,19 @@ export function Pagination({ currentPage, totalPages, onPageChange, className }:
           </PaginationPrevious>
         </PaginationItem>
 
-        {Array.from({ length: totalPages }, (_, i) => (
-          <PaginationItem key={i}>
+        {visiblePages.map((pageNumber) => (
+          <PaginationItem key={pageNumber}>
             <PaginationLink
               size="icon"
-              onClick={() => onPageChange(i + 1)}
-              isActive={currentPage === i + 1}
+              onClick={() => onPageChange(pageNumber)}
+              isActive={currentPage === pageNumber}
               className={`px-3 py-1 border rounded-full transition-colors ${
-                currentPage === i + 1
+                currentPage === pageNumber
                   ? "bg-white text-[#F68537] border-[#F68537]"
                   : "bg-[#F68537] text-white border-[#F68537]"
               }`}
             >
-              {i + 1}
+              {pageNumber}
             </PaginationLink>
           </PaginationItem>
         ))}
