@@ -1,4 +1,4 @@
-import type { DonorCampaignsAPI } from "@/services/campaign";
+import type { DonorCampaignsAPI } from "@/services/campaigns";
 import type { CampaignCard, SituationType } from "../types";
 
 function toCampaignCard(campaign: DonorCampaignsAPI): CampaignCard {

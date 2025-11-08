@@ -6,6 +6,7 @@ import Input from "./input";
 import { Select } from "./select";
 import { DatePicker } from "./Calendar/date-picker";
 import { ROUTES } from "@/constant/routes";
+import { Eye, EyeOff } from "lucide-react";
 
 interface EditUserModalProps {
   isOpen: boolean;
@@ -32,11 +33,16 @@ export default function EditUserModal({
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const isAdmin = initialData.role === "ADMIN";
 
   useEffect(() => {
     if (isOpen) {
       setFormData(initialData);
       setPreviewPhoto(initialData.photo || "https://via.placeholder.com/60");
+      setNewPassword(""); // Reset password field when modal opens
     }
   }, [isOpen, initialData]);
 
@@ -69,14 +75,20 @@ export default function EditUserModal({
     try {
       setIsSaving(true);
 
+      // Add password to formData if provided
+      const dataToUpdate = {
+        ...formData,
+        ...(newPassword && { password: newPassword }), // Only include password if filled
+      };
+
       // If onUpdateAccount is provided, use it (API call)
       if (onUpdateAccount) {
-        await onUpdateAccount(formData);
+        await onUpdateAccount(dataToUpdate);
       }
 
       // Call onSave if provided (for local state update)
       if (onSave) {
-        onSave(formData);
+        onSave(dataToUpdate);
       }
 
       onClose();
@@ -145,58 +157,6 @@ export default function EditUserModal({
         </div>
 
         <div className="mb-4">
-          <DatePicker
-            label="Data de Nascimento"
-            value={formData.birthDate ? new Date(formData.birthDate) : undefined}
-            onChange={(date) =>
-              setFormData((prev) => ({
-                ...prev,
-                birthDate: date ?? undefined,
-              }))
-            }
-            fullWidth
-          />
-        </div>
-
-        <div className="mb-4">
-          <Select
-            id="gender"
-            label="Gênero"
-            options={[
-              { value: "MALE", label: "Masculino" },
-              { value: "FEMALE", label: "Feminino" },
-              { value: "OTHER", label: "Outro" },
-            ]}
-            value={formData.gender || ""}
-            onChange={handleGenderChange}
-            fullWidth
-            placeholder="Selecione um gênero"
-          />
-        </div>
-
-        <div className="mb-4">
-          <Input
-            id="cpf"
-            name="cpf"
-            label="CPF"
-            value={formData.cpf || ""}
-            onChange={handleChange}
-            fullWidth
-          />
-        </div>
-
-        <div className="mb-4">
-          <Input
-            id="phone"
-            name="phone"
-            label="Telefone"
-            value={formData.phone || ""}
-            onChange={handleChange}
-            fullWidth
-          />
-        </div>
-
-        <div className="mb-4">
           <Input
             id="email"
             name="email"
@@ -207,6 +167,83 @@ export default function EditUserModal({
             fullWidth
           />
         </div>
+
+        <div className="mb-4">
+          <Input
+            id="password"
+            name="password"
+            type={showPassword ? "text" : "password"}
+            label="Nova Senha (deixe em branco para manter a atual)"
+            placeholder="Digite uma nova senha"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            fullWidth
+            RightIcon={
+              showPassword ? (
+                <EyeOff className="h-4 w-4 cursor-pointer" />
+              ) : (
+                <Eye className="h-4 w-4 cursor-pointer" />
+              )
+            }
+            onClickRightIcon={() => setShowPassword((prev) => !prev)}
+          />
+        </div>
+
+        {!isAdmin && (
+          <>
+            <div className="mb-4">
+              <DatePicker
+                label="Data de Nascimento"
+                value={formData.birthDate ? new Date(formData.birthDate) : undefined}
+                onChange={(date) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    birthDate: date ?? undefined,
+                  }))
+                }
+                fullWidth
+              />
+            </div>
+
+            <div className="mb-4">
+              <Select
+                id="gender"
+                label="Gênero"
+                options={[
+                  { value: "MALE", label: "Masculino" },
+                  { value: "FEMALE", label: "Feminino" },
+                  { value: "OTHER", label: "Outro" },
+                ]}
+                value={formData.gender || ""}
+                onChange={handleGenderChange}
+                fullWidth
+                placeholder="Selecione um gênero"
+              />
+            </div>
+
+            <div className="mb-4">
+              <Input
+                id="cpf"
+                name="cpf"
+                label="CPF"
+                value={formData.cpf || ""}
+                onChange={handleChange}
+                fullWidth
+              />
+            </div>
+
+            <div className="mb-4">
+              <Input
+                id="phone"
+                name="phone"
+                label="Telefone"
+                value={formData.phone || ""}
+                onChange={handleChange}
+                fullWidth
+              />
+            </div>
+          </>
+        )}
 
         <div className="flex justify-center gap-4 mt-6">
           <button

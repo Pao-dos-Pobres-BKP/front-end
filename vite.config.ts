@@ -33,4 +33,22 @@ export default defineConfig({
     port: 15570,
     cors: true,
   },
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: "./vitest-setup.ts",
+    css: true,
+    coverage: {
+      provider: "v8",
+      reporter: ["text"],
+      exclude: [
+        "node_modules/",
+        "src/vite-env.d.ts",
+        "**/*.d.ts",
+        "**/*.config.*",
+        "**/mockData",
+        "src/types/**",
+      ],
+    },
+  },
 });

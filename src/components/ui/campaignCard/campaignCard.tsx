@@ -7,7 +7,7 @@ import { CampaignCardHistoric } from "./campaignCardHistoric";
 import { CampaignCardList } from "./campaignCardList";
 import { CampaignCardProfileCompact } from "./campaingCardProfileCompact";
 import { CampaignCardEventAndNews } from "./campaingCardEventAndNews";
-import type { DonorDonationsAPI } from "@/services/donation";
+import type { DonorDonationsAPI } from "@/services/donations";
 
 export type CampaignCardProps = {
   title?: string;

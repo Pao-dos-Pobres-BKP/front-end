@@ -62,34 +62,28 @@ const Campanhas = () => {
   const { user } = useUser();
   const [searchParams] = useSearchParams();
 
-  // Resetar para página 1 quando mudar filtros ou ordenação
   useEffect(() => {
     setCurrentPage(1);
   }, [searchParams, sortOrder]);
 
-  // Buscar campanhas e doações do usuário
   useEffect(() => {
     const fetchData = async () => {
-      const MIN_LOADING_TIME = 500; // Tempo mínimo de loading em ms
+      const MIN_LOADING_TIME = 500;
       const startTime = Date.now();
 
       try {
         setLoading(true);
 
-        // Obter termo de busca dos parâmetros da URL
         const searchTerm = searchParams.get("search") || undefined;
 
-        // Buscar campanhas com paginação
         const campaignsResponse = await getCampaigns({
           page: currentPage,
           pageSize: 10,
           title: searchTerm,
         });
 
-        // Armazenar metadados de paginação
         setTotalPages(campaignsResponse.lastPage);
 
-        // Buscar doações do usuário (apenas se for doador)
         let donatedCampaignIds = new Set<string>();
         if (user?.role === "DONOR") {
           try {
@@ -100,21 +94,17 @@ const Campanhas = () => {
           }
         }
 
-        // Aplicar lógica de filtro e determinar situação de cada campanha
         let filteredCampaigns = campaignsResponse.data
           .filter((campaign) => {
-            // Admins veem tudo
             if (user?.role === "ADMIN") return true;
 
-            // Doadores veem tudo exceto campanhas finalizadas
             if (user?.role === "DONOR") {
               return campaign.status !== "FINISHED";
             }
 
-            return true;
+            return campaign.status === "ACTIVE";
           })
           .map((campaign): CampaignWithSituation => {
-            // Determinar a situação do card
             let situation: "approved" | "pending" | "rejected" | "recurring" = "approved";
 
             if (campaign.status === "PENDING") {
@@ -122,7 +112,6 @@ const Campanhas = () => {
             } else if (campaign.status === "CANCELED") {
               situation = "rejected";
             } else if (campaign.status === "ACTIVE") {
-              // Se o usuário é doador e contribuiu para esta campanha, mostrar como recurring
               if (user?.role === "DONOR" && donatedCampaignIds.has(campaign.id)) {
                 situation = "recurring";
               } else {
@@ -136,16 +125,13 @@ const Campanhas = () => {
             };
           });
 
-        // Ordenar por data (o backend já retorna ordenado, mas aplicamos a ordem local se necessário)
         if (sortOrder === "oldest") {
           filteredCampaigns = filteredCampaigns.reverse();
         }
 
-        // Calcular tempo restante para atingir o tempo mínimo de loading
         const elapsedTime = Date.now() - startTime;
         const remainingTime = Math.max(0, MIN_LOADING_TIME - elapsedTime);
 
-        // Aguardar o tempo mínimo antes de exibir os resultados
         await new Promise((resolve) => setTimeout(resolve, remainingTime));
 
         setCampaigns(filteredCampaigns);
@@ -156,9 +142,7 @@ const Campanhas = () => {
       }
     };
 
-    if (user) {
-      fetchData();
-    }
+    fetchData();
   }, [user, searchParams, sortOrder, currentPage]);
 
   const handleOpenCampaignModal = (campaign: CampaignAPI) => {
@@ -184,12 +168,11 @@ const Campanhas = () => {
       description: campaign.description,
       targetValue: campaign.targetAmount,
       image: campaign.imageUrl ? { url: campaign.imageUrl, name: "" } : undefined,
-      // Adicionar as datas ao objeto
       ...(campaign.startDate && { startDate: campaign.startDate }),
       ...(campaign.endDate && { endDate: campaign.endDate }),
     };
     setSelectedCampaignToEdit(campaignBase);
-    // Armazena a campanha completa para possível exclusão
+
     const fullCampaign = campaigns.find((c) => c.id === campaign.id);
     if (fullCampaign) {
       setCampaignToDelete(fullCampaign);
@@ -263,7 +246,6 @@ const Campanhas = () => {
         title: data.title,
         description: data.description,
         targetAmount: data.targetValue,
-        // currentAmount: originalCampaign.currentAmount > 0 ? originalCampaign.currentAmount : null,
         startDate: originalCampaign.startDate,
         endDate: data.endDate.toISOString(),
         imageUrl: imageUrl || undefined,
@@ -309,7 +291,6 @@ const Campanhas = () => {
   };
 
   const handleCancelDelete = () => {
-    // Se estiver no processo de deletar, não faz nada
     if (isDeleting) return;
 
     setIsDeleteConfirmOpen(false);
@@ -356,30 +337,32 @@ const Campanhas = () => {
   };
 
   return (
-    <div className="bg-[var(--color-bg-campaingn)] p-8 min-h-screen flex flex-col gap-6">
-      <section className="flex justify-center items-center gap-4">
+    <div className="bg-[var(--color-bg-campaingn)] p-4 sm:p-8 min-h-screen flex flex-col gap-6">
+      <section className="flex justify-center items-center gap-2 sm:gap-4">
         <div className="w-full">
           <SearchBar />
         </div>
 
         <button
           onClick={() => setSortOrder(sortOrder === "recent" ? "oldest" : "recent")}
-          className="min-h-10 px-4 bg-[var(--color-text-special-2)] text-white flex items-center justify-center gap-2 rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md hover:opacity-90 whitespace-nowrap"
+          className="min-h-10 min-w-10 px-2 sm:px-4 bg-[var(--color-text-special-2)] text-white flex items-center justify-center gap-2 rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md hover:opacity-90 flex-shrink-0"
           title={sortOrder === "recent" ? "Ordenar por mais antigos" : "Ordenar por mais recentes"}
         >
           <ArrowUpDown className="h-4 w-4" />
-          <span className="text-sm font-medium">
+          <span className="text-sm font-medium hidden sm:inline whitespace-nowrap">
             {sortOrder === "recent" ? "Mais recentes" : "Mais antigos"}
           </span>
         </button>
 
-        <div
-          role="button"
-          className="min-h-10 min-w-10 bg-[var(--color-text-special-2)] flex items-center justify-center rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md hover:opacity-90 flex-shrink-0"
-          onClick={() => setIsCreateModalOpen(true)}
-        >
-          <img src={Plus} alt="Plus Icon" className="h-4 w-4" />
-        </div>
+        {user && (
+          <div
+            role="button"
+            className="min-h-10 min-w-10 bg-[var(--color-text-special-2)] flex items-center justify-center rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md hover:opacity-90 flex-shrink-0"
+            onClick={() => setIsCreateModalOpen(true)}
+          >
+            <img src={Plus} alt="Plus Icon" className="h-4 w-4" />
+          </div>
+        )}
       </section>
 
       {loading ? (

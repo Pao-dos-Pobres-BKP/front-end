@@ -11,7 +11,7 @@ export type CampaignCardProfileProps = {
   className?: string;
   donorName: string;
   donorEmail: string;
-  memberSince: string; //'DD/MM/AAAA' or year
+  memberSince: string;
   campaigns: string[];
 };
 

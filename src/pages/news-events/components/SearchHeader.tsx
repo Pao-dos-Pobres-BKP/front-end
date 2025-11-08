@@ -10,18 +10,18 @@ interface SearchHeaderProps {
 
 export function SearchHeader({ sortOrder, onSortChange, onCreateClick }: SearchHeaderProps) {
   return (
-    <div className="flex flex-wrap w-full items-center gap-3 my-5">
-      <div className="flex-1 min-w-[200px]">
+    <div className="flex w-full items-center gap-2 sm:gap-4 my-5">
+      <div className="flex-1">
         <SearchBar />
       </div>
 
       <button
         onClick={onSortChange}
-        className="min-h-10 px-4 bg-[var(--color-text-special-2)] text-white flex items-center justify-center gap-2 rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md hover:opacity-90 whitespace-nowrap"
+        className="min-h-10 min-w-10 px-2 sm:px-4 bg-[var(--color-text-special-2)] text-white flex items-center justify-center gap-2 rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md hover:opacity-90 flex-shrink-0"
         title={sortOrder === "recent" ? "Ordenar por mais antigos" : "Ordenar por mais recentes"}
       >
         <ArrowUpDown className="h-4 w-4" />
-        <span className="text-sm font-medium">
+        <span className="text-sm font-medium hidden sm:inline whitespace-nowrap">
           {sortOrder === "recent" ? "Mais recentes" : "Mais antigos"}
         </span>
       </button>

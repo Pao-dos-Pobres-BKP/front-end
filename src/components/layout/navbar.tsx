@@ -5,9 +5,8 @@ import StarIcon from "@/assets/Star.svg?react";
 import HomeIcon from "@/assets/Home.svg?react";
 import VectorIcon from "@/assets/Vector.svg?react";
 import DiscoverIcon from "@/assets/Discovery.svg?react";
-import UserIcon from "@/assets/User.svg?react";
 import ActivityIcon from "@/assets/Activity.svg?react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Heart } from "lucide-react";
 import { useUser } from "@/hooks/useUser";
 import { NAVBAR_HEIGHT_CLASS, Z_INDEX } from "@/constant/layout";
 
@@ -17,6 +16,10 @@ function Navbar() {
   const { user } = useUser();
   const isAuthenticated = !!user;
   const avatarUrl = "https://i.pravatar.cc/40";
+
+  const getFirstName = (fullName: string) => {
+    return fullName.split(" ")[0];
+  };
 
   const linkStyles = "flex items-center gap-2.5 px-4 py-2 rounded-3xl transition-colors";
   const getNavLinkClass = ({ isActive }: { isActive: boolean }) => {
@@ -58,19 +61,19 @@ function Navbar() {
           <strong>Campanhas</strong>
         </NavLink>
       </div>
+      {(!isAuthenticated || user.role !== "ADMIN") && (
+        <div className="hidden lg:flex flex-shrink-0">
+          <NavLink to="/doacao" className={getNavLinkClass}>
+            <Heart className="h-5 w-5 stroke-current fill-none" strokeWidth={2} />
+            <strong>Doar</strong>
+          </NavLink>
+        </div>
+      )}
       {isAuthenticated && user.role == "ADMIN" && (
         <div className="hidden lg:flex flex-shrink-0">
           <NavLink to="/noticias-eventos" className={getNavLinkClass}>
             <DiscoverIcon className="h-5 w-5 fill-current" />
             <strong>Notícias & Eventos</strong>
-          </NavLink>
-        </div>
-      )}
-      {isAuthenticated && user.role == "ADMIN" && (
-        <div>
-          <NavLink to="/doadores" className={getNavLinkClass}>
-            <UserIcon className="h-5 w-5 fill-current" />
-            <strong>Doadores</strong>
           </NavLink>
         </div>
       )}
@@ -88,7 +91,7 @@ function Navbar() {
                 className="h-8 w-8 rounded-full"
               />
               <strong className="text-[var(--color-components)] font-semibold ">
-                {user.fullname}
+                {getFirstName(user.fullname)}
               </strong>
             </Link>
           ) : (
@@ -121,7 +124,7 @@ function Navbar() {
                     className="h-8 w-8 rounded-full"
                   />
                   <strong className="text-[var(--color-components)] truncate font-semibold text-lg">
-                    {user.fullname}
+                    {getFirstName(user.fullname)}
                   </strong>
                 </div>
                 <hr className="border-[var(--color-components)]" />
@@ -139,25 +142,22 @@ function Navbar() {
                 <strong>Campanhas</strong>
               </NavLink>
 
-              {isAuthenticated && (
-                <>
-                  <NavLink
-                    to="/noticias-eventos"
-                    className={getNavLinkClass}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <DiscoverIcon className="h-5 w-5 fill-current" />
-                    <strong>Notícias & Eventos</strong>
-                  </NavLink>
-                  <NavLink
-                    to="/doadores"
-                    className={getNavLinkClass}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <UserIcon className="h-5 w-5 fill-current" />
-                    <strong>Doadores</strong>
-                  </NavLink>
-                </>
+              {(!isAuthenticated || user.role !== "ADMIN") && (
+                <NavLink to="/doacao" className={getNavLinkClass} onClick={() => setIsOpen(false)}>
+                  <Heart className="h-5 w-5 stroke-current fill-none" strokeWidth={2} />
+                  <strong>Doar</strong>
+                </NavLink>
+              )}
+
+              {isAuthenticated && user.role == "ADMIN" && (
+                <NavLink
+                  to="/noticias-eventos"
+                  className={getNavLinkClass}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <DiscoverIcon className="h-5 w-5 fill-current" />
+                  <strong>Notícias & Eventos</strong>
+                </NavLink>
               )}
 
               {!isAuthenticated && (
