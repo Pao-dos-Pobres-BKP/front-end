@@ -7,9 +7,17 @@ import {
 
 import { useState } from "react";
 import { useDonorList } from "./use-donor-list";
+import { useUser } from "@/hooks/useUser";
+import { useNavigate } from "react-router-dom";
 
 export default function DonorList() {
+  const { user } = useUser(); 
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
+
+  if (user?.role != "ADMIN") {
+    navigate("/");
+  }
 
   const { donors, total } = useDonorList(currentPage);
   return (
@@ -34,6 +42,7 @@ export default function DonorList() {
             raised={donor.raised}
             memberSince={donor.memberSince}
             campaigns={donor.campaigns}
+            donorId={donor.id}
           />
         ))
         ) }

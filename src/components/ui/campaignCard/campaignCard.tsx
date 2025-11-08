@@ -36,6 +36,7 @@ export type CampaignCardProps = {
   role?: "donor" | "admin"; // for "profile_compact"
   donorName?: string;
   donorEmail?: string;
+  donorId?: string;
   donationAmount?: number;
   memberSince?: string;
   campaigns?: string[];
@@ -55,6 +56,7 @@ export default function CampaignCard({
   className,
   donorName = "",
   donorEmail = "",
+  donorId="",
   memberSince = "",
   campaigns = [],
   lastDonation = 0,
@@ -78,6 +80,7 @@ export default function CampaignCard({
          donorEmail={donorEmail}
          memberSince={memberSince}
          campaigns={campaigns}
+         donorId={donorId}
        />
      );
    }

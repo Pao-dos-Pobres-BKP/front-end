@@ -3,6 +3,7 @@ import { formatCurrency } from "@/utils/formatCurrency";
 import Button from "../button";
 import { useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export type CampaignCardProfileProps = {
   raised: number;
@@ -13,6 +14,7 @@ export type CampaignCardProfileProps = {
   donorEmail: string;
   memberSince: string;
   campaigns: string[];
+  donorId: string;
 };
 
 export function CampaignCardProfile({
@@ -20,11 +22,14 @@ export function CampaignCardProfile({
   className,
   donorName,
   donorEmail,
+  donorId,
   memberSince = "DD/MM/AAAA",
   campaigns = [],
 }: CampaignCardProfileProps) {
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [showAllCampaigns, setShowAllCampaigns] = useState(false);
+
+  const navigate = useNavigate();
 
   const displayedCampaigns = showAllCampaigns ? campaigns : campaigns.slice(0, 3);
   const hasMoreCampaigns = campaigns.length > 3;
@@ -125,7 +130,7 @@ export function CampaignCardProfile({
                   <div>Membro desde: {memberSince ?? "DD/MM/AAAA"}</div>
                   <div>
                     <Button
-                      onClick={() => (window.location.href = "/perfil")}
+                      onClick={() => navigate(`/perfil/${donorId}`)}
                       variant="secondary"
                       size="small"
                     >
