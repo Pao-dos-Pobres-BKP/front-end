@@ -77,6 +77,14 @@ function Navbar() {
           </NavLink>
         </div>
       )}
+      {isAuthenticated && user.role == "ADMIN" && (
+        <div className="hidden lg:flex flex-shrink-0">
+          <NavLink to="/doadores" className={getNavLinkClass}>
+            <DiscoverIcon className="h-5 w-5 fill-current" />
+            <strong>Doadores</strong>
+          </NavLink>
+        </div>
+      )}
       <div className="flex-shrink-0">
         {/*DESKTOP*/}
         <div className="hidden lg:flex items-center">
