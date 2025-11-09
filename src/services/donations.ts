@@ -63,3 +63,21 @@ export async function updateDonation(donation: DonorDonationsAPI): Promise<void>
   } as DonorDonationsAPI);
   return response.data;
 }
+
+export type CreateDonationParams = {
+  amount: number;
+  paymentMethod: "PIX" | "BANK_SLIP" | "CREDIT_CARD";
+  periodicity?: Periodicity | null;
+  campaignId?: string;
+  donorId?: string;
+};
+
+export async function createDonation(data: CreateDonationParams): Promise<DonationAPI> {
+  try {
+    const response = await api.post<DonationAPI>("/donations", data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

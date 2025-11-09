@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { Newsletter } from "./newsletter";
-import * as useNewsletterHook from "./useNewsletter";   
+import * as useNewsletterHook from "./useNewsletter";
 
 vi.mock("@/components/ui/modal", () => ({
   default: (props: { isOpen: boolean; variant: string }) => {
@@ -57,7 +57,6 @@ describe("Newsletter Component", () => {
       expect(await screen.findByText("Email inválido")).toBeInTheDocument();
       expect(mockSubscribe).not.toHaveBeenCalled();
     });
-
   });
 
   describe("Submissão de formulário", () => {
