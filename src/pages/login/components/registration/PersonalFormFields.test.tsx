@@ -22,11 +22,11 @@ describe("PersonalFormFields component", () => {
     expect(screen.getByLabelText("CPF")).toBeInTheDocument();
     expect(screen.getByLabelText("Telefone")).toBeInTheDocument();
 
-  expect(screen.getByPlaceholderText("Digite seu nome completo")).toBeInTheDocument();
-  expect(screen.getByText("Selecione sua data de nascimento")).toBeInTheDocument();
-  expect(screen.getByText("Selecione seu gênero")).toBeInTheDocument();
-  expect(screen.getByPlaceholderText("000.000.000-00")).toBeInTheDocument();
-  expect(screen.getByPlaceholderText("(11) 99999-9999")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Digite seu nome completo")).toBeInTheDocument();
+    expect(screen.getByText("Selecione sua data de nascimento")).toBeInTheDocument();
+    expect(screen.getByText("Selecione seu gênero")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("000.000.000-00")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("(11) 99999-9999")).toBeInTheDocument();
   });
 
   it("calls onChange when typing and formats CPF", () => {
@@ -60,7 +60,7 @@ describe("PersonalFormFields component", () => {
       telefone: "",
     };
 
-    const errors: Partial<Record<'nomeCompleto', string>> = {
+    const errors: Partial<Record<"nomeCompleto", string>> = {
       nomeCompleto: "Nome deve ter no mínimo 3 caracteres",
     };
 

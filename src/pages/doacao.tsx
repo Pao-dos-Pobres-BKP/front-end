@@ -8,23 +8,28 @@ import {
 import CurrencyInput from "../components/ui/currencyInput";
 import Button from "../components/ui/button";
 import StepHeader from "../components/ui/stepHeader";
+import { Combobox } from "../components/ui/combobox";
 import { Select } from "../components/ui/select";
-import { mockCampaigns } from "../mocks/campaigns";
 import PaymentMethodSelector from "../components/ui/paymentMethodSelector";
 import PixPaymentDisplay from "../components/ui/pixPaymentDisplay";
 import CreditCardForm from "../components/ui/creditCardForm";
 import BoletoPaymentDisplay from "../components/ui/boletoPaymentDisplay";
+import { getCampaigns, type CampaignAPI } from "../services/campaigns";
+import { createDonation, type Periodicity } from "../services/donations";
+import { useUser } from "../hooks/useUser";
+import { toast } from "sonner";
 
 const Doacao = () => {
+  const { user: currentUser } = useUser();
   const [currentStep, setCurrentStep] = useState("item-1");
   const [selectedCampaign, setSelectedCampaign] = useState("");
   const [donationValue, setDonationValue] = useState("0");
+  const [periodicity, setPeriodicity] = useState<Periodicity | "UNIQUE">("UNIQUE");
   const [step3Value, setStep3Value] = useState("");
   const [paymentStatus, setPaymentStatus] = useState<
     "Pendente" | "Confirmado" | "Negado" | "Cancelado"
   >("Pendente");
   const [paymentId] = useState<string | null>(null);
-  // const [paymentId, setPaymentId] = useState<string | null>(null);
   const [timer, setTimer] = useState(600);
   const [isCampaignConfirmed, setIsCampaignConfirmed] = useState(false);
   const [isValueConfirmed, setIsValueConfirmed] = useState(false);
@@ -36,13 +41,37 @@ const Doacao = () => {
   const [cvv, setCvv] = useState("");
   const [paymentSubStep, setPaymentSubStep] = useState<"form" | "pending">("form");
   const [isCreatingPayment, setIsCreatingPayment] = useState(false);
+  const [isCreatingDonation, setIsCreatingDonation] = useState(false);
   const [valueError, setValueError] = useState("");
-  const [isSelectOpen, setIsSelectOpen] = useState(false);
+  const [campaigns, setCampaigns] = useState<CampaignAPI[]>([]);
+  const [isLoadingCampaigns, setIsLoadingCampaigns] = useState(false);
+  const [campaignSearchTerm, setCampaignSearchTerm] = useState("");
+
+  useEffect(() => {
+    const fetchCampaigns = async () => {
+      try {
+        setIsLoadingCampaigns(true);
+        const response = await getCampaigns({
+          page: 1,
+          pageSize: 100,
+          title: campaignSearchTerm || undefined,
+          status: "ACTIVE",
+        });
+        setCampaigns(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar campanhas:", error);
+        setCampaigns([]);
+      } finally {
+        setIsLoadingCampaigns(false);
+      }
+    };
+
+    fetchCampaigns();
+  }, [campaignSearchTerm]);
 
   useEffect(() => {
     if (currentStep === "item-4" && step3Value === "Pix" && !paymentId && !isCreatingPayment) {
       console.log("Iniciando pagamento Pix automaticamente...");
-      createPaymentInApi();
     }
   }, [currentStep, step3Value, paymentId, isCreatingPayment]);
 
@@ -74,49 +103,6 @@ const Doacao = () => {
     }
   }, [step3Value, paymentSubStep, paymentStatus]);
 
-  useEffect(() => {
-    /*
-    if (!paymentId) return;
-
-    // Conexão de eventos com backend
-    const eventSource = new EventSource(`http://localhost:3001/api/payment-events/${paymentId}`);
-
-    console.log(`Escutando eventos para o pagamento: ${paymentId}`);
-
-    // Define o que fazer quando uma mensagem chegar
-    eventSource.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      console.log("Evento de pagamento recebido:", data);
-
-      if (data.status) {
-        setPaymentStatus(data.status);
-        setIsStep4Confirmed(true);
-        setCurrentStep("");
-
-        // 3. Fecha a conexão depois de receber a atualização final
-        eventSource.close();
-        setPaymentId(null);
-      }
-    };
-
-    // Lidar com erros de conexão
-    eventSource.onerror = (err) => {
-      console.error("Erro na conexão EventSource:", err);
-      setPaymentStatus("Negado");
-      eventSource.close();
-      setPaymentId(null);
-    };
-
-    // 4. Garante que a conexão será fechada se o componente for desmontado
-    return () => {
-      console.log("Fechando conexão de eventos.");
-      eventSource.close();
-    };
-    */
-  }, [paymentId]);
-
-  // ===== SIMULAÇÃO DE PAGAMENTO =====
-
   const simulatePaymentConfirmation = useCallback(() => {
     console.log("Simulando processamento do pagamento...");
     if (step3Value === "Crédito") setPaymentSubStep("pending");
@@ -129,17 +115,69 @@ const Doacao = () => {
     }, 3000);
   }, [step3Value]);
 
+  const handleCreateDonation = useCallback(async () => {
+    if (!currentUser) {
+      toast.error("Você precisa estar logado para fazer uma doação");
+      return;
+    }
+
+    try {
+      setIsCreatingDonation(true);
+
+      const paymentMethodMap: Record<string, "PIX" | "BANK_SLIP" | "CREDIT_CARD"> = {
+        Pix: "PIX",
+        Boleto: "BANK_SLIP",
+        Crédito: "CREDIT_CARD",
+      };
+
+      const donationData = {
+        amount: parseInt(donationValue, 10) / 100, // Convert from cents to reais
+        periodicity: periodicity === "UNIQUE" ? null : (periodicity as Periodicity),
+        campaignId: selectedCampaign === "direct-donation" ? undefined : selectedCampaign,
+        donorId: currentUser.id,
+        paymentMethod: paymentMethodMap[step3Value],
+      };
+
+      const result = await createDonation(donationData);
+      console.log("Doação criada com sucesso:", result);
+      toast.success("Doação criada com sucesso!");
+
+      simulatePaymentConfirmation();
+    } catch (error) {
+      console.error("Erro ao criar doação:", error);
+      toast.error("Erro ao criar doação. Tente novamente.");
+      setPaymentStatus("Negado");
+    } finally {
+      setIsCreatingDonation(false);
+    }
+  }, [
+    currentUser,
+    donationValue,
+    periodicity,
+    selectedCampaign,
+    step3Value,
+    simulatePaymentConfirmation,
+  ]);
+
   useEffect(() => {
     if (
       currentStep === "item-4" &&
       step3Value === "Pix" &&
       !isCreatingPayment &&
-      !isStep4Confirmed
+      !isStep4Confirmed &&
+      !isCreatingDonation
     ) {
       setIsCreatingPayment(true);
-      simulatePaymentConfirmation();
+      handleCreateDonation();
     }
-  }, [currentStep, step3Value, isCreatingPayment, isStep4Confirmed, simulatePaymentConfirmation]);
+  }, [
+    currentStep,
+    step3Value,
+    isCreatingPayment,
+    isStep4Confirmed,
+    isCreatingDonation,
+    handleCreateDonation,
+  ]);
 
   const handleConfirmCampaign = () => {
     if (selectedCampaign) {
@@ -149,7 +187,8 @@ const Doacao = () => {
   };
 
   const handleDirectDonation = () => {
-    setSelectedCampaign("pao-dos-pobres");
+    // Special ID for direct donations (without campaign)
+    setSelectedCampaign("direct-donation");
     setIsCampaignConfirmed(true);
     setCurrentStep("item-2");
   };
@@ -158,6 +197,10 @@ const Doacao = () => {
     const valueInCents = parseInt(donationValue, 10);
     if (valueInCents < 500) {
       setValueError("O valor mínimo para doação é de R$ 5,00.");
+      return;
+    }
+    if (!periodicity) {
+      setValueError("Por favor, selecione a frequência da doação.");
       return;
     }
     setValueError("");
@@ -186,34 +229,7 @@ const Doacao = () => {
   };
 
   const handleConfirmCardDetails = async () => {
-    simulatePaymentConfirmation();
-    // setPaymentSubStep("pending");
-    // await createPaymentInApi("Crédito");
-  };
-
-  const createPaymentInApi = async () => {
-    /*
-  const createPaymentInApi = async (method: string) => {
-    setIsCreatingPayment(true);
-    try {
-      const response = await fetch("http://localhost:3001/api/create-payment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          amount: parseInt(donationValue, 10) / 100,
-          method: method,
-        }),
-      });
-      const data = await response.json();
-      setPaymentId(data.internalId);
-    } catch (error) {
-      console.error("Erro ao criar pagamento:", error);
-      setPaymentStatus("Negado");
-    } finally {
-      setIsCreatingPayment(false);
-    }
-  };
-    */
+    await handleCreateDonation();
   };
 
   const shouldShowPaymentTag =
@@ -222,9 +238,9 @@ const Doacao = () => {
       step3Value === "Boleto" ||
       (step3Value === "Crédito" && paymentSubStep === "pending"));
 
-  const campaignOptions = mockCampaigns.map((campaign) => ({
+  const campaignOptions = campaigns.map((campaign) => ({
     value: campaign.id,
-    label: campaign.name,
+    label: campaign.title,
   }));
   const mockPixCode =
     "00020126360014br.gov.bcb.pix0114+55119999999995204000053039865802BR5913NOME COMPLETO6009SAO PAULO62070503***6304E2E1";
@@ -260,10 +276,10 @@ const Doacao = () => {
             value={currentStep}
             onValueChange={setCurrentStep}
           >
-            {/* Passo 1 */}
+            {/* Step 1 */}
             <AccordionItem
               value="item-1"
-              className={`mb-4 rounded-md relative ${isSelectOpen ? "overflow-visible" : "overflow-hidden"}`}
+              className={`mb-4 rounded-md relative ${currentStep === "item-1" ? "overflow-visible" : "overflow-hidden"}`}
             >
               <AccordionTrigger variant="secondary" size="large">
                 <StepHeader
@@ -272,7 +288,9 @@ const Doacao = () => {
                   isActive={isCampaignConfirmed}
                   value={
                     isCampaignConfirmed
-                      ? campaignOptions.find((c) => c.value === selectedCampaign)?.label
+                      ? selectedCampaign === "direct-donation"
+                        ? "Fundação O Pão dos Pobres"
+                        : campaignOptions.find((c) => c.value === selectedCampaign)?.label
                       : undefined
                   }
                   valueType="text"
@@ -280,14 +298,20 @@ const Doacao = () => {
               </AccordionTrigger>
               <AccordionContent variant="secondary">
                 <div className="flex flex-col gap-4">
-                  <Select
+                  <Combobox
                     options={campaignOptions}
                     value={selectedCampaign}
                     onChange={setSelectedCampaign}
-                    onOpenChange={setIsSelectOpen}
-                    placeholder="Escolha uma campanha para doar"
+                    onSearchChange={setCampaignSearchTerm}
+                    placeholder="Pesquise ou escolha uma campanha para doar"
                     label="Campanha"
                     fullWidth
+                    isLoading={isLoadingCampaigns}
+                    emptyMessage={
+                      campaignSearchTerm
+                        ? "Nenhuma campanha encontrada"
+                        : "Nenhuma campanha ativa disponível"
+                    }
                   />
                   <Button
                     variant="confirm"
@@ -316,21 +340,35 @@ const Doacao = () => {
               </AccordionContent>
             </AccordionItem>
 
-            {/* Passo 2 */}
+            {/* Step 2 */}
             <AccordionItem
               value="item-2"
-              className="mb-4 rounded-md overflow-hidden"
+              className={`mb-4 rounded-md ${currentStep === "item-2" ? "overflow-visible" : "overflow-hidden"}`}
               disabled={!isCampaignConfirmed}
             >
               <AccordionTrigger variant="secondary" size="large" disabled={!isCampaignConfirmed}>
                 <StepHeader
                   stepNumber="2"
-                  title="Valor"
+                  title="Valor e Frequência"
                   isActive={isValueConfirmed}
                   value={
-                    isValueConfirmed ? (parseInt(donationValue, 10) / 100).toString() : undefined
+                    isValueConfirmed
+                      ? `${(parseInt(donationValue, 10) / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })} - ${
+                          periodicity === "UNIQUE"
+                            ? "Doação única"
+                            : periodicity === "MONTHLY"
+                              ? "Mensal"
+                              : periodicity === "QUARTERLY"
+                                ? "Trimestral"
+                                : periodicity === "SEMI_ANNUAL"
+                                  ? "Semestral"
+                                  : periodicity === "YEARLY"
+                                    ? "Anual"
+                                    : ""
+                        }`
+                      : undefined
                   }
-                  valueType="currency"
+                  valueType="text"
                 />
               </AccordionTrigger>
               <AccordionContent variant="secondary">
@@ -340,12 +378,26 @@ const Doacao = () => {
                     onValueChange={handleDonationValueChange}
                     error={valueError}
                   />
+                  <Select
+                    options={[
+                      { value: "UNIQUE", label: "Doação única" },
+                      { value: "MONTHLY", label: "Mensal" },
+                      { value: "QUARTERLY", label: "Trimestral" },
+                      { value: "SEMI_ANNUAL", label: "Semestral" },
+                      { value: "YEARLY", label: "Anual" },
+                    ]}
+                    value={periodicity}
+                    onChange={(value) => setPeriodicity(value as Periodicity | "UNIQUE")}
+                    placeholder="Selecione a frequência"
+                    label="Frequência"
+                    fullWidth
+                  />
                   <Button
                     variant="confirm"
                     size="small"
                     onClick={handleConfirmValue}
                     className="self-end"
-                    disabled={parseInt(donationValue, 10) <= 0}
+                    disabled={parseInt(donationValue, 10) <= 0 || !periodicity}
                   >
                     Confirmar
                   </Button>
@@ -353,7 +405,7 @@ const Doacao = () => {
               </AccordionContent>
             </AccordionItem>
 
-            {/* Passo 3 */}
+            {/* Step 3 */}
             <AccordionItem
               value="item-3"
               className="mb-4 rounded-md overflow-hidden"
@@ -384,7 +436,7 @@ const Doacao = () => {
               </AccordionContent>
             </AccordionItem>
 
-            {/* Passo 4 */}
+            {/* Step 4 */}
             <AccordionItem
               value="item-4"
               className="mb-4 rounded-md overflow-hidden"
