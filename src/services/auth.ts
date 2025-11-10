@@ -99,6 +99,8 @@ export async function updateAccount(id: string, user: User): Promise<void> {
   if (user.cpf) {
     requestBody.cpf = user.cpf.replace(/\D/g, "");
   }
-
+  if (user.password) {
+    requestBody.password = user.password;
+  }
   return api.patch(`${updateEndpoint}/${id}`, requestBody);
 }
