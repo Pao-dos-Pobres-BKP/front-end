@@ -69,6 +69,13 @@ const Doacao = () => {
     fetchCampaigns();
   }, [campaignSearchTerm]);
 
+  // Set periodicity to UNIQUE for anonymous users
+  useEffect(() => {
+    if (!currentUser) {
+      setPeriodicity("UNIQUE");
+    }
+  }, [currentUser]);
+
   useEffect(() => {
     if (currentStep === "item-4" && step3Value === "Pix" && !paymentId && !isCreatingPayment) {
       console.log("Iniciando pagamento Pix automaticamente...");
@@ -116,8 +123,9 @@ const Doacao = () => {
   }, [step3Value]);
 
   const handleCreateDonation = useCallback(async () => {
-    if (!currentUser) {
-      toast.error("Você precisa estar logado para fazer uma doação");
+    // Validate that anonymous users can only make one-time donations
+    if (!currentUser && periodicity !== "UNIQUE") {
+      toast.error("Você precisa estar logado para fazer doações recorrentes");
       return;
     }
 
@@ -134,7 +142,7 @@ const Doacao = () => {
         amount: parseInt(donationValue, 10) / 100, // Convert from cents to reais
         periodicity: periodicity === "UNIQUE" ? null : (periodicity as Periodicity),
         campaignId: selectedCampaign === "direct-donation" ? undefined : selectedCampaign,
-        donorId: currentUser.id,
+        donorId: currentUser?.id,
         paymentMethod: paymentMethodMap[step3Value],
       };
 
@@ -199,7 +207,7 @@ const Doacao = () => {
       setValueError("O valor mínimo para doação é de R$ 5,00.");
       return;
     }
-    if (!periodicity) {
+    if (currentUser && !periodicity) {
       setValueError("Por favor, selecione a frequência da doação.");
       return;
     }
@@ -378,26 +386,36 @@ const Doacao = () => {
                     onValueChange={handleDonationValueChange}
                     error={valueError}
                   />
-                  <Select
-                    options={[
-                      { value: "UNIQUE", label: "Doação única" },
-                      { value: "MONTHLY", label: "Mensal" },
-                      { value: "QUARTERLY", label: "Trimestral" },
-                      { value: "SEMI_ANNUAL", label: "Semestral" },
-                      { value: "YEARLY", label: "Anual" },
-                    ]}
-                    value={periodicity}
-                    onChange={(value) => setPeriodicity(value as Periodicity | "UNIQUE")}
-                    placeholder="Selecione a frequência"
-                    label="Frequência"
-                    fullWidth
-                  />
+                  {currentUser ? (
+                    <Select
+                      options={[
+                        { value: "UNIQUE", label: "Doação única" },
+                        { value: "MONTHLY", label: "Mensal" },
+                        { value: "QUARTERLY", label: "Trimestral" },
+                        { value: "SEMI_ANNUAL", label: "Semestral" },
+                        { value: "YEARLY", label: "Anual" },
+                      ]}
+                      value={periodicity}
+                      onChange={(value) => setPeriodicity(value as Periodicity | "UNIQUE")}
+                      placeholder="Selecione a frequência"
+                      label="Frequência"
+                      fullWidth
+                    />
+                  ) : (
+                    <div className="p-4 rounded-lg bg-blue-50 border border-blue-200">
+                      <p className="font-semibold text-blue-900 mb-2">Doação única</p>
+                      <p className="text-sm text-blue-700">
+                        Para realizar doações com recorrência (mensal, trimestral, semestral ou anual), 
+                        é necessário fazer login com uma conta de doador.
+                      </p>
+                    </div>
+                  )}
                   <Button
                     variant="confirm"
                     size="small"
                     onClick={handleConfirmValue}
                     className="self-end"
-                    disabled={parseInt(donationValue, 10) <= 0 || !periodicity}
+                    desactive={parseInt(donationValue, 10) <= 0 || (currentUser && !periodicity)}
                   >
                     Confirmar
                   </Button>
