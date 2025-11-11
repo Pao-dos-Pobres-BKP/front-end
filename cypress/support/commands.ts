@@ -32,9 +32,9 @@ declare global {
 // Custom command to login
 Cypress.Commands.add('login', (email: string, password: string) => {
   cy.visit('/login');
-  cy.get('input[name="email"]').type(email);
-  cy.get('input[name="password"]').type(password);
-  cy.get('button[type="submit"]').click();
+  cy.getByTestId('login-email').type(email);
+  cy.getByTestId('login-password').type(password);
+  cy.getByTestId('login-submit').click();
 });
 
 // Custom command to get by data-testid
