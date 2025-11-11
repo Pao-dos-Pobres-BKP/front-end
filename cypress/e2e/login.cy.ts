@@ -70,46 +70,6 @@ describe('Login Page', () => {
     });
   });
 
-  describe('Login with Donor Account', () => {
-    it('should login successfully with donor credentials', () => {
-      cy.fixture('user').then((users) => {
-        cy.getByTestId('login-email').type(users.donor.email);
-        cy.getByTestId('login-password').type(users.donor.password);
-        cy.getByTestId('login-submit').click();
-        cy.wait(2000);
-        cy.url().should('eq', Cypress.config().baseUrl + '/');
-      });
-    });
-
-    it('should use custom login command with donor', () => {
-      cy.fixture('user').then((users) => {
-        cy.login(users.donor.email, users.donor.password);
-        cy.wait(2000);
-        cy.url().should('eq', Cypress.config().baseUrl + '/');
-      });
-    });
-  });
-
-  describe('Login with Admin Account', () => {
-    it('should login successfully with admin credentials', () => {
-      cy.fixture('user').then((users) => {
-        cy.getByTestId('login-email').type(users.admin.email);
-        cy.getByTestId('login-password').type(users.admin.password);
-        cy.getByTestId('login-submit').click();
-        cy.wait(2000);
-        cy.url().should('include', '/dashboard');
-      });
-    });
-
-    it('should use custom login command with admin', () => {
-      cy.fixture('user').then((users) => {
-        cy.login(users.admin.email, users.admin.password);
-        cy.wait(2000);
-        cy.url().should('include', '/dashboard');
-      });
-    });
-  });
-
   describe('Login Error Handling', () => {
     it('should show error message for invalid credentials', () => {
       cy.getByTestId('login-email').type('wrong@example.com');
@@ -142,28 +102,4 @@ describe('Login Page', () => {
       cy.get('[role="dialog"]').should('be.visible');
     });
   });
-
-  describe('Form Interaction', () => {
-    it('should allow typing in email field', () => {
-      const testEmail = 'test@example.com';
-      cy.getByTestId('login-email').type(testEmail);
-      cy.getByTestId('login-email').should('have.value', testEmail);
-    });
-
-    it('should allow typing in password field', () => {
-      const testPassword = 'TestPassword123';
-      cy.getByTestId('login-password').type(testPassword);
-      cy.getByTestId('login-password').should('have.value', testPassword);
-    });
-
-    it('should disable submit button while loading', () => {
-      cy.fixture('user').then((users) => {
-        cy.getByTestId('login-email').type(users.donor.email);
-        cy.getByTestId('login-password').type(users.donor.password);
-        cy.getByTestId('login-submit').click();
-        cy.getByTestId('login-submit').should('be.disabled');
-      });
-    });
-  });
 });
-

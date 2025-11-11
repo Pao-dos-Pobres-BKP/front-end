@@ -17,7 +17,7 @@ export type CampaignCardCompactProps = {
 };
 
 export function CampaignCardCompact(props: CampaignCardCompactProps) {
-  const { situation, raised, creatorName, title, className, progressPercent: percent = 0 } = props;
+  const { situation, raised, goal, creatorName, title, className, progressPercent: percent = 0 } = props;
 
   const situationIcon =
     situation === "approved"
@@ -58,10 +58,13 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
 
         {/* Column 2: Values + Progress Bar */}
         <div className="flex flex-col flex-1 min-w-0 justify-center">
-          <div className="flex justify-between items-center gap-1.5 mb-1">
-            <div className="text-lg font-bold text-[#034d6b] whitespace-nowrap">
+          <div className="flex justify-between items-baseline gap-1.5 mb-1">
+            <span className="text-lg font-bold text-[#034d6b] whitespace-nowrap">
               {formatCurrency(raised)}
-            </div>
+            </span>
+            <span className="text-sm text-[#6b7280] whitespace-nowrap">
+              de {formatCurrency(goal)}
+            </span>
           </div>
 
           <div className="w-full">
