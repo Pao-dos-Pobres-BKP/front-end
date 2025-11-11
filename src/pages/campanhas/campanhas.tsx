@@ -351,6 +351,7 @@ const Campanhas = () => {
           onClick={() => setSortOrder(sortOrder === "recent" ? "oldest" : "recent")}
           className="min-h-10 min-w-10 px-2 sm:px-4 bg-[var(--color-text-special-2)] text-white flex items-center justify-center gap-2 rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md hover:opacity-90 flex-shrink-0"
           title={sortOrder === "recent" ? "Ordenar por mais antigos" : "Ordenar por mais recentes"}
+          data-testid="sort-button"
         >
           <ArrowUpDown className="h-4 w-4" />
           <span className="text-sm font-medium hidden sm:inline whitespace-nowrap">

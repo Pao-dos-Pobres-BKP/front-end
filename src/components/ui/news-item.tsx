@@ -3,9 +3,16 @@ type NewsItemProps = {
   title: string;
   link?: string;
   onClick?: () => void;
+  "data-testid"?: string;
 };
 
-export default function NewsItem({ imageUrl, title, link, onClick }: NewsItemProps) {
+export default function NewsItem({
+  imageUrl,
+  title,
+  link,
+  onClick,
+  "data-testid": dataTestId,
+}: NewsItemProps) {
   const content = (
     <div className="flex flex-col h-full">
       <div className="h-36 w-full">
@@ -27,7 +34,7 @@ export default function NewsItem({ imageUrl, title, link, onClick }: NewsItemPro
 
   if (onClick) {
     return (
-      <button onClick={onClick} className={className} type="button">
+      <button onClick={onClick} className={className} type="button" data-testid={dataTestId}>
         {content}
       </button>
     );
@@ -35,11 +42,21 @@ export default function NewsItem({ imageUrl, title, link, onClick }: NewsItemPro
 
   if (link) {
     return (
-      <a href={link} target="_blank" rel="noopener noreferrer" className={className}>
+      <a
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={className}
+        data-testid={dataTestId}
+      >
         {content}
       </a>
     );
   }
 
-  return <div className={className}>{content}</div>;
+  return (
+    <div className={className} data-testid={dataTestId}>
+      {content}
+    </div>
+  );
 }

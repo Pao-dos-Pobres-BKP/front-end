@@ -100,8 +100,8 @@ export default function HowToHelpSection() {
             >
               {howToHelpList.map((howToHelp) => (
                 <AccordionItem key={howToHelp.id} value={howToHelp.id}>
-                  <AccordionTrigger 
-                    variant="secondary" 
+                  <AccordionTrigger
+                    variant="secondary"
                     className="w-full [&>svg]:hidden"
                     data-testid={`accordion-trigger-${howToHelp.id}`}
                   >

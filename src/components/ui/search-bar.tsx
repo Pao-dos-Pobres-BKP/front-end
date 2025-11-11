@@ -25,6 +25,7 @@ export const SearchBar = () => {
         RightIcon={<Search className="h-4 w-4" color="#94A3B8" />}
         onChange={(e) => setValue(e.currentTarget.value)}
         placeholder="Buscar"
+        data-testid="search-bar"
       />
     </div>
   );
