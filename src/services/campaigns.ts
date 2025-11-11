@@ -15,6 +15,7 @@ export type CampaignAPI = {
   status: CampaignStatus;
   startDate: string;
   endDate: string;
+  isRoot: boolean;
 };
 
 export type GetCampaignsParams = {
@@ -124,4 +125,23 @@ export async function getDonorCampaigns(page: number, pageSize: number) {
   );
 
   return response.data;
+}
+
+export async function getRootCampaign(): Promise<CampaignAPI | null> {
+  try {
+    const response = await api.get<CampaignAPI>("/campaigns/is-root");
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function setRootCampaign(id: string): Promise<void> {
+  try {
+    await api.patch(`/campaigns/${id}/is-root`);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
