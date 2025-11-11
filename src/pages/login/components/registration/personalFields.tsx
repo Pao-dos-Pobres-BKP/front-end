@@ -70,11 +70,13 @@ export default function PersonalFields({ onCancel, onNext }: PersonalFieldsProps
           onClick: handleNext,
           disabled: !isFormValid,
           variant: "primary",
+          testId: "register-next",
         }}
         secondaryAction={{
           label: "Cancelar",
           onClick: onCancel,
           variant: "tertiary",
+          testId: "register-cancel",
         }}
       />
     </FormContainer>

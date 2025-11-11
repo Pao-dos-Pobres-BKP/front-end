@@ -19,6 +19,7 @@ export function SearchHeader({ sortOrder, onSortChange, onCreateClick }: SearchH
         onClick={onSortChange}
         className="min-h-10 min-w-10 px-2 sm:px-4 bg-[var(--color-text-special-2)] text-white flex items-center justify-center gap-2 rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md hover:opacity-90 flex-shrink-0"
         title={sortOrder === "recent" ? "Ordenar por mais antigos" : "Ordenar por mais recentes"}
+        data-testid="sort-button"
       >
         <ArrowUpDown className="h-4 w-4" />
         <span className="text-sm font-medium hidden sm:inline whitespace-nowrap">
@@ -30,6 +31,7 @@ export function SearchHeader({ sortOrder, onSortChange, onCreateClick }: SearchH
         role="button"
         className="min-h-10 min-w-10 bg-[var(--color-text-special-2)] flex items-center justify-center rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md hover:opacity-90 flex-shrink-0"
         onClick={onCreateClick}
+        data-testid="create-button"
       >
         <img src={PlusIcon} alt="Plus Icon" className="h-4 w-4" />
       </div>

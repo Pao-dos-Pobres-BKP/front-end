@@ -59,6 +59,7 @@ export function ProfileHeader({
             className="p-2 rounded-md bg-[#005172] text-white hover:bg-[#24434f] flex items-center justify-center"
             onClick={onEditarConta}
             title="Configurações do perfil"
+            data-testid="profile-settings-button"
           >
             <Setting set="bold" size="medium" />
           </button>

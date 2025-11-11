@@ -57,6 +57,7 @@ export default function AccessFormFields({
     <>
       <Input
         id="email"
+        name="email"
         label="E-mail"
         placeholder="Digite seu e-mail"
         type="email"
@@ -65,10 +66,12 @@ export default function AccessFormFields({
         fullWidth
         error={errors.email}
         disabled={disabled}
+        data-testid="register-email"
       />
 
       <Input
         id="password"
+        name="password"
         label="Senha"
         placeholder="Digite sua senha"
         type="password"
@@ -77,12 +80,14 @@ export default function AccessFormFields({
         fullWidth
         error={errors.password}
         disabled={disabled}
+        data-testid="register-password"
       />
 
       <PasswordRequirements password={form.password} />
 
       <Input
         id="confirmPassword"
+        name="confirmPassword"
         label="Confirmar Senha"
         placeholder="Confirme sua senha"
         type="password"
@@ -91,6 +96,7 @@ export default function AccessFormFields({
         fullWidth
         error={errors.confirmPassword}
         disabled={disabled}
+        data-testid="register-confirm-password"
       />
 
       <p className="text-red-500 mt-2 -mb-4">{errors.api}</p>

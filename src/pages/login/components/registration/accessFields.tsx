@@ -117,12 +117,14 @@ export default function AccessFields({ onBack, onRegister }: AccessFieldsProps) 
               return (rule as (v: unknown) => string | null)(value) === null;
             }) ||
             form.password !== form.confirmPassword,
+          testId: "register-submit",
         }}
         secondaryAction={{
           label: "Voltar",
           onClick: onBack,
           variant: "tertiary",
           disabled: isLoading,
+          testId: "register-back",
         }}
       />
     </FormContainer>

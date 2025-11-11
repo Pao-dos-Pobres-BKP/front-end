@@ -23,7 +23,7 @@ const CurrencyInput = ({ value, onValueChange, error }: CurrencyInputProps) => {
   }, [value]);
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-1" data-testid="currency-input">
       <label htmlFor="donation-value" className="text-sm font-medium">
         Digite o valor da sua doação
       </label>

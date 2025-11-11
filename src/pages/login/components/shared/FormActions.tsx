@@ -6,12 +6,14 @@ interface FormActionsProps {
     onClick: () => void;
     variant?: "primary" | "secondary" | "tertiary" | "destructive" | "confirm";
     disabled?: boolean;
+    testId?: string;
   };
   secondaryAction?: {
     label: string;
     onClick: () => void;
     variant?: "primary" | "secondary" | "tertiary" | "destructive" | "confirm";
     disabled?: boolean;
+    testId?: string;
   };
 }
 
@@ -24,6 +26,7 @@ export default function FormActions({ primaryAction, secondaryAction }: FormActi
         className="w-full"
         onClick={primaryAction.onClick}
         disabled={primaryAction.disabled}
+        data-testid={primaryAction.testId}
       >
         {primaryAction.label}
       </Button>
@@ -35,6 +38,7 @@ export default function FormActions({ primaryAction, secondaryAction }: FormActi
           className="w-full"
           onClick={secondaryAction.onClick}
           disabled={secondaryAction.disabled}
+          data-testid={secondaryAction.testId}
         >
           {secondaryAction.label}
         </Button>
