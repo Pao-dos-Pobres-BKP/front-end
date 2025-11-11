@@ -17,6 +17,7 @@ import {
 } from "./components";
 import { Pagination } from "@/components/ui/Pagination";
 import { useUser } from "@/hooks/useUser";
+import { ResolutionWarningModal } from "@/components/ui/ResolutionWarningModal";
 
 const CARDS_PER_PAGE = 10;
 const MIN_LOADING_TIME = 500;
@@ -340,6 +341,7 @@ export default function NewsEvents() {
 
   return (
     <div className="w-full min-h-screen px-4 sm:px-8 py-6 sm:py-10 flex flex-col gap-6 sm:gap-8 bg-[#2F5361]">
+      <ResolutionWarningModal minWidth={1024} />
       <div className="w-full flex flex-col">
         <Tabs
           tabs={["Notícias", "Eventos", "Todos"]}

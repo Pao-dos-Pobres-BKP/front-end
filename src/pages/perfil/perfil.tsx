@@ -24,6 +24,7 @@ import ConfirmLogoutModal from "@/components/ui/confirm-logout-modal";
 import CreateAdminModal from "@/components/ui/create-admin-modal";
 import { DonorDetailsModal } from "@/components/ui/donor-details-modal";
 import { AdminDetailsModal } from "@/components/ui/admin-details-modal";
+import { ResolutionWarningModal } from "@/components/ui/ResolutionWarningModal";
 
 // Utils
 import { donorToUser, userToUpdateDonorData, getDisplayProfile } from "./utils/profileHelpers";
@@ -209,6 +210,9 @@ export default function Perfil() {
 
   return (
     <div className="min-h-screen bg-[#2F5361] font-inter">
+      {isAdmin && !donorProfile.isViewingAnotherProfile && (
+        <ResolutionWarningModal minWidth={1024} />
+      )}
       <div className="flex justify-center px-4 sm:px-6 lg:px-12 xl:px-8 py-8">
         <div className="w-full max-w-[2400px] bg-white rounded-xl shadow-lg p-4 sm:p-6 lg:p-12 xl:p-16">
           {donorProfile.isViewingAnotherProfile && (
