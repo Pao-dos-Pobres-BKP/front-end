@@ -58,6 +58,7 @@ export const News = ({ news }: NewsProps) => {
             align: "start",
             loop: false,
           }}
+          data-testid="news-carousel"
         >
           <CarouselContent>
             {news.map((newsItem) => (
@@ -66,12 +67,13 @@ export const News = ({ news }: NewsProps) => {
                   imageUrl={excluir1}
                   title={newsItem.title}
                   onClick={() => handleNewsClick(newsItem)}
+                  data-testid={`news-card-${newsItem.id}`}
                 />
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
+          <CarouselPrevious data-testid="news-prev-button" />
+          <CarouselNext data-testid="news-next-button" />
         </Carousel>
       </div>
 

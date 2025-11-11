@@ -21,6 +21,7 @@ const WhatsAppButton = () => {
     <Button
       onClick={handleContactClick}
       className="bg-[var(--color-text-contact)] text-white w-full flex items-center justify-center gap-2 hover:bg-[var(--color-text-contact)] hover:opacity-95"
+      data-testid="contact-button"
     >
       <WhatsAppIcon className="w-5 h-5 text-[#25D366]" />
       Entrar em Contato
@@ -95,10 +96,15 @@ export default function HowToHelpSection() {
               className="space-y-3"
               value={openAccordionId ?? ""}
               onValueChange={setOpenAccordionId}
+              data-testid="how-to-help-accordion"
             >
               {howToHelpList.map((howToHelp) => (
                 <AccordionItem key={howToHelp.id} value={howToHelp.id}>
-                  <AccordionTrigger variant="secondary" className="w-full [&>svg]:hidden">
+                  <AccordionTrigger 
+                    variant="secondary" 
+                    className="w-full [&>svg]:hidden"
+                    data-testid={`accordion-trigger-${howToHelp.id}`}
+                  >
                     <div className="flex items-center justify-between w-full">
                       <div className="flex items-center gap-3">
                         <span className="text-[#024b5a] font-medium text-lg">
@@ -138,7 +144,9 @@ export default function HowToHelpSection() {
                         </div>
                       ) : (
                         <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                          <p className="flex-1 text-sm text-justify leading-relaxed">{howToHelp.description}</p>
+                          <p className="flex-1 text-sm text-justify leading-relaxed">
+                            {howToHelp.description}
+                          </p>
                           <div className="w-full lg:w-52 flex-shrink-0">
                             <WhatsAppButton />
                           </div>
@@ -154,6 +162,7 @@ export default function HowToHelpSection() {
             <Button
               onClick={() => (window.location.href = "/doacao")} //simula rota de /doacoes
               className="bg-[var(--color-text-special)] text-white w-full hover:bg-[var(--color-text-special)] hover:opacity-95"
+              data-testid="donation-button"
             >
               Faça sua doação!
             </Button>
