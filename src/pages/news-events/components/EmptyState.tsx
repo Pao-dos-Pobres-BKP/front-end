@@ -9,4 +9,3 @@ export function EmptyState({ message }: EmptyStateProps) {
     </div>
   );
 }
-

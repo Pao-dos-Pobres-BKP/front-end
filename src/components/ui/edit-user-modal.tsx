@@ -7,6 +7,7 @@ import { Select } from "./select";
 import { DatePicker } from "./Calendar/date-picker";
 import { ROUTES } from "@/constant/routes";
 import { Eye, EyeOff } from "lucide-react";
+import { passwordRequirements } from "@/schemas/auth";
 
 interface EditUserModalProps {
   isOpen: boolean;
@@ -16,6 +17,32 @@ interface EditUserModalProps {
   onDeleteAccount?: () => Promise<void>;
   onUpdateAccount?: (userData: User) => Promise<void>;
 }
+
+const PasswordRequirements = ({ password }: { password: string }) => {
+  const requirements = passwordRequirements;
+
+  if (!password) {
+    return null;
+  }
+
+  return (
+    <div className="mt-2 mb-4 text-left">
+      <ul className="space-y-1">
+        {requirements.map((req) => {
+          const isValid = req.test(password);
+          return (
+            <li
+              key={req.label}
+              className={`text-sm transition-colors ${isValid ? "text-green-600" : "text-red-600"}`}
+            >
+              {req.label}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+};
 
 export default function EditUserModal({
   isOpen,
@@ -35,6 +62,7 @@ export default function EditUserModal({
   const [isSaving, setIsSaving] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
 
   const isAdmin = initialData.role === "ADMIN";
 
@@ -43,6 +71,7 @@ export default function EditUserModal({
       setFormData(initialData);
       setPreviewPhoto(initialData.photo || "https://via.placeholder.com/60");
       setNewPassword(""); // Reset password field when modal opens
+      setPasswordError("");
     }
   }, [isOpen, initialData]);
 
@@ -74,6 +103,20 @@ export default function EditUserModal({
   const handleConfirm = async () => {
     try {
       setIsSaving(true);
+      setPasswordError("");
+
+      // Validate password if it's been filled
+      if (newPassword) {
+        const isPasswordValid = passwordRequirements.every((requirement) =>
+          requirement.test(newPassword)
+        );
+
+        if (!isPasswordValid) {
+          setPasswordError("A senha não atende a todos os requisitos.");
+          setIsSaving(false);
+          return;
+        }
+      }
 
       // Add password to formData if provided
       const dataToUpdate = {
@@ -178,6 +221,7 @@ export default function EditUserModal({
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             fullWidth
+            error={passwordError}
             RightIcon={
               showPassword ? (
                 <EyeOff className="h-4 w-4 cursor-pointer" />
@@ -187,6 +231,7 @@ export default function EditUserModal({
             }
             onClickRightIcon={() => setShowPassword((prev) => !prev)}
           />
+          <PasswordRequirements password={newPassword} />
         </div>
 
         {!isAdmin && (
@@ -262,15 +307,18 @@ export default function EditUserModal({
             {isSaving ? "Salvando..." : "Confirmar"}
           </button>
         </div>
-        <div className="flex flex-col items-center mt-4">
-          <button
-            type="button"
-            onClick={() => setShowDeleteModal(true)}
-            className="text-[#D65E5E] text-sm underline hover:text-red-600 hover:bg-gray-400 cursor-pointer"
-          >
-            Apagar minha conta
-          </button>
-        </div>
+        
+        {(!isAdmin || initialData.root) && (
+          <div className="flex flex-col items-center mt-4">
+            <button
+              type="button"
+              onClick={() => setShowDeleteModal(true)}
+              className="text-[#D65E5E] text-sm underline hover:text-red-600 cursor-pointer"
+            >
+              Apagar minha conta
+            </button>
+          </div>
+        )}
       </div>
 
       <Modal

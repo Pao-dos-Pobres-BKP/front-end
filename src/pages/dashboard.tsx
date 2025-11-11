@@ -289,7 +289,7 @@ function Dashboard() {
         <aside
           className={`transition-all duration-300 ${isSidebarOpen ? "w-80" : "w-0"} overflow-hidden`}
         >
-          <div className="bg-white rounded-lg p-4 h-full flex flex-col gap-4">
+          <div className="bg-white rounded-lg p-4 h-full flex flex-col gap-4 truncate">
             <div className="flex justify-between items-center">
               <h2 className="font-bold text-lg text-[var(--color-components)]">Dashboard</h2>
               <button
@@ -479,7 +479,7 @@ function Dashboard() {
             )}
           </div>
 
-          <div className="bg-white rounded-lg p-6 flex-1 flex flex-col">
+          <div className="bg-white rounded-lg p-6 flex-1 flex flex-col max-h-[600px]">
             <RenderChart
               chartKey={chartToShow}
               campaignId={selectedCampaign ? selectedCampaign.id : null}

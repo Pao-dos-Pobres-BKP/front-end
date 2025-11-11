@@ -81,6 +81,15 @@ export default function Perfil() {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const { user: currentUser, logout, setUser } = useUser();
   const isAdmin = currentUser?.role === "ADMIN";
+  
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    // Only redirect if there's no token AND no current user
+    // This prevents redirecting during the initial load when user data is being fetched
+    if (!token && !currentUser) {
+      navigate(ROUTES.login);
+    }
+  }, [currentUser, navigate]);
 
   const [dados, setDados] = useState<ProfileUser>({
     id: "1",

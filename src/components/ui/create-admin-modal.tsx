@@ -3,6 +3,7 @@ import Modal from "@/components/ui/modal";
 import Input from "./input";
 import { createAdmin, type CreateAdmin } from "@/services/admin";
 import axios from "axios";
+import { Eye, EyeOff } from "lucide-react";
 
 interface CreateAdminModalProps {
   isModalOpen: boolean;
@@ -23,6 +24,8 @@ export default function CreateAdminModal({ isModalOpen, onClose }: CreateAdminMo
   });
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   if (!isModalOpen) return null;
 
@@ -35,6 +38,8 @@ export default function CreateAdminModal({ isModalOpen, onClose }: CreateAdminMo
     });
     setConfirmPassword("");
     setPasswordError("");
+    setShowPassword(false);
+    setShowConfirmPassword(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -106,8 +111,16 @@ export default function CreateAdminModal({ isModalOpen, onClose }: CreateAdminMo
               label="Senha"
               value={formData.password || ""}
               onChange={handleChange}
-              type="password"
+              type={showPassword ? "text" : "password"}
               fullWidth
+              RightIcon={
+                showPassword ? (
+                  <EyeOff className="h-4 w-4 cursor-pointer" />
+                ) : (
+                  <Eye className="h-4 w-4 cursor-pointer" />
+                )
+              }
+              onClickRightIcon={() => setShowPassword((prev) => !prev)}
             />
           </div>
           <div className="mb-4">
@@ -117,8 +130,16 @@ export default function CreateAdminModal({ isModalOpen, onClose }: CreateAdminMo
               label="Confirmar Senha"
               value={confirmPassword}
               onChange={handleChange}
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               fullWidth
+              RightIcon={
+                showConfirmPassword ? (
+                  <EyeOff className="h-4 w-4 cursor-pointer" />
+                ) : (
+                  <Eye className="h-4 w-4 cursor-pointer" />
+                )
+              }
+              onClickRightIcon={() => setShowConfirmPassword((prev) => !prev)}
             />
             {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
           </div>

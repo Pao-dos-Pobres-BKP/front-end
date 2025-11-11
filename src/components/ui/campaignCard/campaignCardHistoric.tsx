@@ -35,9 +35,8 @@ export function CampaignCardHistoric(props: CampaignCardHistoricProps) {
   const [showCancelModal, setShowCancelModal] = useState(false);
 
   const isRecurring = periodicity !== null && periodicity !== undefined;
-  const displayLabel = periodicity && periodicity !== "CANCELED"
-    ? periodicityMapper[periodicity] || "Única"
-    : "Única";
+  const displayLabel =
+    periodicity && periodicity !== "CANCELED" ? periodicityMapper[periodicity] || "Única" : "Única";
   const displaySituation = isRecurring ? "recurring" : "approved";
 
   const gradientTextClass =
@@ -75,9 +74,7 @@ export function CampaignCardHistoric(props: CampaignCardHistoricProps) {
       >
         {/* Left section: Icon + Title + Creator */}
         <div className="flex items-start gap-2 sm:gap-3 min-w-0 flex-1">
-          <div className="flex-shrink-0">
-            {renderIcon()}
-          </div>
+          <div className="flex-shrink-0">{renderIcon()}</div>
           <div className="flex flex-col items-start justify-center min-w-0 flex-1">
             <h3 className="text-[#034d6b] font-semibold text-left text-base sm:text-lg md:text-xl leading-tight truncate w-full">
               {title}
@@ -94,11 +91,21 @@ export function CampaignCardHistoric(props: CampaignCardHistoricProps) {
         <div className="flex items-center justify-between sm:justify-end gap-2 sm:gap-3 md:gap-4 flex-shrink-0 ml-7 sm:ml-0">
           {/* Periodicity and Amount */}
           <div className="flex items-center gap-2 sm:gap-3">
-            <span className={cn("text-sm sm:text-base md:text-lg font-semibold whitespace-nowrap", gradientTextClass)}>
+            <span
+              className={cn(
+                "text-sm sm:text-base md:text-lg font-semibold whitespace-nowrap",
+                gradientTextClass
+              )}
+            >
               {displayLabel}
             </span>
             {donationAmount !== undefined && (
-              <span className={cn("text-base sm:text-lg md:text-xl font-bold whitespace-nowrap", gradientTextClass)}>
+              <span
+                className={cn(
+                  "text-base sm:text-lg md:text-xl font-bold whitespace-nowrap",
+                  gradientTextClass
+                )}
+              >
                 +{formatCurrency(donationAmount ?? 0)}
               </span>
             )}

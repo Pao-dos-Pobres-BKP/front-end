@@ -405,8 +405,8 @@ const Doacao = () => {
                     <div className="p-4 rounded-lg bg-blue-50 border border-blue-200">
                       <p className="font-semibold text-blue-900 mb-2">Doação única</p>
                       <p className="text-sm text-blue-700">
-                        Para realizar doações com recorrência (mensal, trimestral, semestral ou anual), 
-                        é necessário fazer login com uma conta de doador.
+                        Para realizar doações com recorrência (mensal, trimestral, semestral ou
+                        anual), é necessário fazer login com uma conta de doador.
                       </p>
                     </div>
                   )}
