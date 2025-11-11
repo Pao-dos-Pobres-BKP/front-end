@@ -307,7 +307,7 @@ export default function EditUserModal({
             {isSaving ? "Salvando..." : "Confirmar"}
           </button>
         </div>
-        
+
         {(!isAdmin || initialData.root) && (
           <div className="flex flex-col items-center mt-4">
             <button

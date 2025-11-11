@@ -6,6 +6,8 @@ import { deleteDonor } from "@/services/donors";
 import { Edit, Delete } from "react-iconly";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { User } from "lucide-react";
 
 interface DonorDetailsModalProps {
   open: boolean;
@@ -32,8 +34,14 @@ export function DonorDetailsModal({
 }: DonorDetailsModalProps) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const navigate = useNavigate();
 
   if (!donor) return null;
+
+  const handleViewProfile = () => {
+    onOpenChange(false);
+    navigate(`/perfil/${donor.id}`);
+  };
 
   const handleDeleteClick = () => {
     setShowDeleteConfirm(true);
@@ -102,21 +110,30 @@ export function DonorDetailsModal({
         </div>
 
         {!showDeleteConfirm ? (
-          <div className="flex gap-3 mt-6">
+          <div className="flex flex-col gap-3 mt-6">
             <button
-              onClick={onEdit}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-[#005172] hover:bg-[#024561] text-white rounded-xl font-semibold transition-colors"
+              onClick={handleViewProfile}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#2A9D90] hover:bg-[#248276] text-white rounded-xl font-semibold transition-colors"
             >
-              <Edit set="bold" size={20} />
-              Editar
+              <User className="h-5 w-5" />
+              Visualizar Perfil
             </button>
-            <button
-              onClick={handleDeleteClick}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-[#D65E5E] hover:bg-[#c44f4f] text-white rounded-xl font-semibold transition-colors"
-            >
-              <Delete set="bold" size={20} />
-              Excluir
-            </button>
+            <div className="flex gap-3">
+              <button
+                onClick={onEdit}
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-[#005172] hover:bg-[#024561] text-white rounded-xl font-semibold transition-colors"
+              >
+                <Edit set="bold" size={20} />
+                Editar
+              </button>
+              <button
+                onClick={handleDeleteClick}
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-[#D65E5E] hover:bg-[#c44f4f] text-white rounded-xl font-semibold transition-colors"
+              >
+                <Delete set="bold" size={20} />
+                Excluir
+              </button>
+            </div>
           </div>
         ) : (
           <div className="mt-6">
