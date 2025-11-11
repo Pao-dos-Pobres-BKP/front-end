@@ -327,6 +327,7 @@ const Doacao = () => {
                     onClick={handleConfirmCampaign}
                     className="self-end"
                     disabled={!selectedCampaign}
+                    data-testid="confirm-campaign-button"
                   >
                     Confirmar Campanha
                   </Button>
@@ -340,6 +341,7 @@ const Doacao = () => {
                       size="small"
                       onClick={handleDirectDonation}
                       className="w-auto px-4"
+                      data-testid="direct-donation-button"
                     >
                       Doar para Pão dos Pobres
                     </Button>
@@ -416,6 +418,7 @@ const Doacao = () => {
                     onClick={handleConfirmValue}
                     className="self-end"
                     desactive={parseInt(donationValue, 10) <= 0 || (currentUser && !periodicity)}
+                    data-testid="confirm-value-button"
                   >
                     Confirmar
                   </Button>
@@ -440,13 +443,18 @@ const Doacao = () => {
               </AccordionTrigger>
               <AccordionContent variant="secondary">
                 <div className="flex flex-col gap-4">
-                  <PaymentMethodSelector selectedValue={step3Value} onSelect={setStep3Value} />
+                  <PaymentMethodSelector
+                    selectedValue={step3Value}
+                    onSelect={setStep3Value}
+                    data-testid="payment-method-selector"
+                  />
                   <Button
                     variant="confirm"
                     size="small"
                     onClick={handleConfirmStep3}
                     className="self-end"
                     disabled={!step3Value}
+                    data-testid="confirm-payment-method-button"
                   >
                     Confirmar
                   </Button>
@@ -524,6 +532,7 @@ const Doacao = () => {
             size="large"
             onClick={() => (window.location.href = "/")}
             disabled={paymentStatus !== "Confirmado"}
+            data-testid="back-home-button"
           >
             Voltar
           </Button>

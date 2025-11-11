@@ -78,6 +78,7 @@ export const Tabs = ({ tabs, children, variant, headerContent, onTabChange }: Ta
                   setActiveTab(index);
                   if (onTabChange) onTabChange(tab, index);
                 }}
+                data-testid={`tab-${tab.toLowerCase().replace(/\s+/g, "-")}`}
               >
                 <span className="text-xs sm:text-sm font-medium">{tab}</span>
               </button>

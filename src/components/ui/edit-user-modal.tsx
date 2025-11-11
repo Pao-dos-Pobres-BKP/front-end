@@ -314,6 +314,7 @@ export default function EditUserModal({
               type="button"
               onClick={() => setShowDeleteModal(true)}
               className="text-[#D65E5E] text-sm underline hover:text-red-600 cursor-pointer"
+              data-testid="delete-account-button"
             >
               Apagar minha conta
             </button>

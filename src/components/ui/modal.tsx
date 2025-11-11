@@ -199,6 +199,7 @@ function Modal({
                   variant={a.variant}
                   size="extraSmall"
                   onClick={() => handleActionClick(a.action)}
+                  data-testid={`modal-${a.action}-button`}
                 >
                   {a.label}
                 </Button>
