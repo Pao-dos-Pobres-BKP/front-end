@@ -59,7 +59,7 @@ export default function CampaignModal({ open, onOpenChange, campaign }: Campaign
         setCheckingCollaboration(true);
         const donationsResponse = await getUserDonations({ pageSize: 1000 });
         const hasContributed = donationsResponse.data.some(
-          (donation) => donation.campaignId === campaign.id
+          (donation) => donation.campaignId === campaign.id && donation.periodicity !== "CANCELED"
         );
         setIsCollaborator(hasContributed);
       } catch (error) {
@@ -163,7 +163,7 @@ export default function CampaignModal({ open, onOpenChange, campaign }: Campaign
                   className="w-full"
                   onClick={() => onOpenChange(false)}
                 >
-                  Você é colaborador dessa campanha!
+                  Você é colaborante dessa campanha!
                 </Button>
                 <Link href="/perfil" variant="blue">
                   Gerenciar minha colaboração

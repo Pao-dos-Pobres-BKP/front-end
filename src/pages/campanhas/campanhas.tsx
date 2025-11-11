@@ -88,7 +88,11 @@ const Campanhas = () => {
         if (user?.role === "DONOR") {
           try {
             const donationsResponse = await getUserDonations({ pageSize: 1000 });
-            donatedCampaignIds = new Set(donationsResponse.data.map((d) => d.campaignId));
+            donatedCampaignIds = new Set(
+              donationsResponse.data
+                .filter((d) => d.periodicity !== "CANCELED")
+                .map((d) => d.campaignId)
+            );
           } catch (error) {
             console.error("Erro ao buscar doações:", error);
           }
