@@ -55,10 +55,13 @@ export function ProfileDonations({
         </div>
 
         <div className="flex justify-center items-center gap-2 mt-6">
-          <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={onPageChange}
+          />
         </div>
       </div>
     </>
   );
 }
-

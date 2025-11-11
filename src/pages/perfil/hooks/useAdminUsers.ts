@@ -3,9 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { getDonors, type DonorItem } from "@/services/donors";
 import { listAdmins, type AdminItem } from "@/services/admin";
 
-export type UserListItem = 
-  | { type: "donor"; data: DonorItem } 
-  | { type: "admin"; data: AdminItem };
+export type UserListItem = { type: "donor"; data: DonorItem } | { type: "admin"; data: AdminItem };
 
 export type UserFilter = "all" | "donors" | "admins";
 
@@ -63,9 +61,7 @@ export function useAdminUsers(isAdmin: boolean) {
     }
 
     if (searchTerm) {
-      filtered = filtered.filter((u) => 
-        u.data.fullName.toLowerCase().includes(searchTerm)
-      );
+      filtered = filtered.filter((u) => u.data.fullName.toLowerCase().includes(searchTerm));
     }
 
     const totalPages = Math.ceil(filtered.length / USERS_PAGE_SIZE);
@@ -97,4 +93,3 @@ export function useAdminUsers(isAdmin: boolean) {
     fetchUsers,
   };
 }
-

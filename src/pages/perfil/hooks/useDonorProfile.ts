@@ -20,38 +20,43 @@ export function useDonorProfile(
   const [viewingDonorDonations, setViewingDonorDonations] = useState<DonorDonationsAPI[]>([]);
   const [viewingDonorCampaignsTotalPages, setViewingDonorCampaignsTotalPages] = useState(1);
   const [viewingDonorDonationsTotalPages, setViewingDonorDonationsTotalPages] = useState(1);
-  
+
   const [allViewingDonorCampaigns, setAllViewingDonorCampaigns] = useState<CampaignDonation[]>([]);
   const [allViewingDonorDonations, setAllViewingDonorDonations] = useState<DonorDonationsAPI[]>([]);
 
   const isViewingAnotherProfile = !!donorId && donorId !== currentUserId;
 
   // Fetch donor profile data
-  const fetchDonorProfile = useCallback(async (id: string) => {
-    try {
-      setIsLoadingDonorProfile(true);
-      
-      const donorData = await getDonorById(id);
-      setViewingDonorProfile(donorData);
+  const fetchDonorProfile = useCallback(
+    async (id: string) => {
+      try {
+        setIsLoadingDonorProfile(true);
 
-      const donationsData = await getDonorDonations(id, 1, 1000);
-      
-      const transformedDonations = transformDonations(donationsData);
-      setAllViewingDonorDonations(transformedDonations);
-      
-      const uniqueCampaigns = extractUniqueCampaigns(donationsData);
-      setAllViewingDonorCampaigns(uniqueCampaigns);
-      
-      setViewingDonorCampaignsTotalPages(Math.ceil(uniqueCampaigns.length / campaignsPageSize) || 1);
-      setViewingDonorDonationsTotalPages(Math.ceil(transformedDonations.length / 10) || 1);
-    } catch (error) {
-      console.error("Error fetching donor profile:", error);
-      toast.error("Erro ao carregar perfil do doador");
-      navigate("/perfil");
-    } finally {
-      setIsLoadingDonorProfile(false);
-    }
-  }, [campaignsPageSize, navigate]);
+        const donorData = await getDonorById(id);
+        setViewingDonorProfile(donorData);
+
+        const donationsData = await getDonorDonations(id, 1, 1000);
+
+        const transformedDonations = transformDonations(donationsData);
+        setAllViewingDonorDonations(transformedDonations);
+
+        const uniqueCampaigns = extractUniqueCampaigns(donationsData);
+        setAllViewingDonorCampaigns(uniqueCampaigns);
+
+        setViewingDonorCampaignsTotalPages(
+          Math.ceil(uniqueCampaigns.length / campaignsPageSize) || 1
+        );
+        setViewingDonorDonationsTotalPages(Math.ceil(transformedDonations.length / 10) || 1);
+      } catch (error) {
+        console.error("Error fetching donor profile:", error);
+        toast.error("Erro ao carregar perfil do doador");
+        navigate("/perfil");
+      } finally {
+        setIsLoadingDonorProfile(false);
+      }
+    },
+    [campaignsPageSize, navigate]
+  );
 
   // Fetch profile when donorId changes
   useEffect(() => {
@@ -94,4 +99,3 @@ export function useDonorProfile(
     isViewingAnotherProfile,
   };
 }
-

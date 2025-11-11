@@ -122,7 +122,7 @@ export default function HowToHelpSection() {
                     </div>
                   </AccordionTrigger>
                   <AccordionContent variant="secondary">
-                    <div className="py-4">
+                    <div className="py-2">
                       {editingId === howToHelp.id ? (
                         <div>
                           <textarea
@@ -137,8 +137,8 @@ export default function HowToHelpSection() {
                           </small>
                         </div>
                       ) : (
-                        <div className="flex flex-col lg:flex-row lg:items-end gap-4">
-                          <p className="flex-1 text-sm leading-relaxed">{howToHelp.description}</p>
+                        <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+                          <p className="flex-1 text-sm text-justify leading-relaxed">{howToHelp.description}</p>
                           <div className="w-full lg:w-52 flex-shrink-0">
                             <WhatsAppButton />
                           </div>

@@ -18,8 +18,8 @@ export default function ConfirmCancelRecurringModal({
           Você deseja cancelar a recorrência?
         </h2>
         <p className="text-sm text-gray-700 mb-6">
-          Ao cancelar esta assinatura recorrente, não haverá novas cobranças e será perdido todo o acesso
-          aos benefícios relacionados. Deseja realmente prosseguir?
+          Ao cancelar esta assinatura recorrente, não haverá novas cobranças e será perdido todo o
+          acesso aos benefícios relacionados. Deseja realmente prosseguir?
         </p>
 
         <div className="flex justify-end gap-4">

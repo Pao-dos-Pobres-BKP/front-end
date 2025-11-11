@@ -17,7 +17,7 @@ export function transformDonations(donationsData: DonorDonation[]): DonorDonatio
 
 export function extractUniqueCampaigns(donationsData: DonorDonation[]): CampaignDonation[] {
   const campaignsMap = new Map<string, CampaignDonation>();
-  
+
   donationsData.forEach((donation) => {
     if (donation.campaign && !campaignsMap.has(donation.campaignId)) {
       campaignsMap.set(donation.campaignId, {
@@ -30,7 +30,6 @@ export function extractUniqueCampaigns(donationsData: DonorDonation[]): Campaign
       });
     }
   });
-  
+
   return Array.from(campaignsMap.values());
 }
-

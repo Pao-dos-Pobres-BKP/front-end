@@ -168,7 +168,7 @@ export default function Perfil() {
     }
   };
 
-  const handleUserClick = (user: typeof adminUsers.users[0]) => {
+  const handleUserClick = (user: (typeof adminUsers.users)[0]) => {
     if (user.type === "donor") {
       setSelectedDonor(user.data);
       setIsDonorDetailsOpen(true);
@@ -333,4 +333,3 @@ export default function Perfil() {
     </div>
   );
 }
-

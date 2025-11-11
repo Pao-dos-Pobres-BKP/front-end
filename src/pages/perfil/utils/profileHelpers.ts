@@ -62,4 +62,3 @@ export function getDisplayProfile(
     createdAt: currentUser?.createdAt,
   };
 }
-

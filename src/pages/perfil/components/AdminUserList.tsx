@@ -61,9 +61,7 @@ export function AdminUserList({
 
       {loading ? (
         <div className="flex flex-col gap-3 w-full min-h-[200px]">
-          <div className="w-full py-8 text-center text-[#005172]">
-            Carregando usuários...
-          </div>
+          <div className="w-full py-8 text-center text-[#005172]">Carregando usuários...</div>
         </div>
       ) : (
         <>
@@ -95,4 +93,3 @@ export function AdminUserList({
     </div>
   );
 }
-

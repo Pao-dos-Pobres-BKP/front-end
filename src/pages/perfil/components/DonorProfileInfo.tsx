@@ -66,16 +66,12 @@ export function DonorProfileInfo({
 
           <div className="flex items-center gap-2">
             <label className="text-sm font-medium text-[#005172] text-left">Email:</label>
-            <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">
-              {email}
-            </span>
+            <span className="w-60 py-2 pl-0 pr-3 text-sm text-[#94A3B8] text-left">{email}</span>
           </div>
         </div>
 
         <div className="mt-10 flex items-center gap-2">
-          <span className="text-sm text-[#005172] whitespace-nowrap">
-            Quanto doou até agora:
-          </span>
+          <span className="text-sm text-[#005172] whitespace-nowrap">Quanto doou até agora:</span>
           <span className="text-sm text-[#005172] whitespace-nowrap">
             {formatCurrency(totalDonated ?? 0)}
           </span>
@@ -84,4 +80,3 @@ export function DonorProfileInfo({
     </div>
   );
 }
-

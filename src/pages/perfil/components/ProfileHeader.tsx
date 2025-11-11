@@ -31,14 +31,10 @@ export function ProfileHeader({
         />
         <div className="flex flex-col flex-1">
           <div className="flex items-center">
-            <h2 className="text-[22px] sm:text-[27px] font-bold text-[#005172]">
-              {fullname}
-            </h2>
+            <h2 className="text-[22px] sm:text-[27px] font-bold text-[#005172]">{fullname}</h2>
           </div>
           <div className="flex items-center mt-2">
-            <p className="text-xs sm:text-sm font-inter text-[#005172]">
-              {email}
-            </p>
+            <p className="text-xs sm:text-sm font-inter text-[#005172]">{email}</p>
           </div>
         </div>
       </div>
@@ -71,4 +67,3 @@ export function ProfileHeader({
     </div>
   );
 }
-
