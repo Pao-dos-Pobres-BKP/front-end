@@ -13,3 +13,4 @@ export function LoadingState({ count = 10 }: LoadingStateProps) {
     </div>
   );
 }
+

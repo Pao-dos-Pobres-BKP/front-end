@@ -43,9 +43,9 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
           {situationIcon && (
             <img src={situationIcon} alt="" className="h-6 w-6 flex-shrink-0 mt-0.5" />
           )}
-          <div className="flex flex-col min-w-0 flex-1">
+          <div className="flex flex-col items-start min-w-0 flex-1">
             <div
-              className="text-[#034d6b] text-xl font-semibold w-full overflow-hidden text-ellipsis whitespace-nowrap"
+              className="text-[#034d6b] text-xl font-semibold w-full overflow-hidden text-ellipsis whitespace-nowrap text-left"
               title={title}
             >
               {title}
