@@ -71,7 +71,7 @@ export function DonorProfileInfo({
         </div>
 
         <div className="mt-10 flex items-center gap-2">
-          <span className="text-sm text-[#005172] whitespace-nowrap">Quanto doou até agora:</span>
+          <span className="text-sm text-[#005172] whitespace-nowrap">Total doado:</span>
           <span className="text-sm text-[#005172] whitespace-nowrap">
             {formatCurrency(totalDonated ?? 0)}
           </span>

@@ -75,6 +75,8 @@ export default function Perfil() {
     percentageAchieved: 75,
   });
 
+  const shouldLoadData = !!currentUser && currentUser.role === "DONOR" && !donorId;
+
   // Custom hooks
   const {
     campaigns,
@@ -89,6 +91,7 @@ export default function Perfil() {
     campaignsPageSize: campaignsPageSize,
     donationsPage: currentDonationsPage,
     donationsPageSize: 10,
+    shouldLoadData,
   });
 
   const adminUsers = useAdminUsers(isAdmin);

@@ -61,6 +61,7 @@ export function ProfileHeader({
           {isAdmin && (
             <button
               onClick={onOpenCreateAdmin}
+              data-testid="profile-create-admin-button"
               className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl bg-[#005172] text-white hover:bg-[#24434f] transition-colors"
             >
               Criar administrador
@@ -68,6 +69,7 @@ export function ProfileHeader({
           )}
           <button
             onClick={onLogout}
+            data-testid="profile-logout-button"
             className="flex-1 sm:flex-none px-6 py-2 text-sm border rounded-xl text-[#005172] hover:bg-[#e6f3f5] transition-colors"
           >
             Sair da Conta
