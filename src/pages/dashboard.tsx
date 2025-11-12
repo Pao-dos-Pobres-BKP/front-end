@@ -305,6 +305,7 @@ function Dashboard() {
             <div className="flex flex-col gap-2">
               <label className="text-sm font-semibold text-gray-600 text-left">Setor</label>
               <Select
+                id="sector-filter"
                 options={sectorOptions}
                 value={sectorFilter}
                 onChange={setSectorFilter}
@@ -321,6 +322,7 @@ function Dashboard() {
             <div className="flex flex-col gap-2">
               <label className="text-sm font-semibold text-gray-600 text-left">Métrica 1</label>
               <Select
+                id="metric1-filter"
                 options={metric1Options}
                 value={metric1Filter}
                 onChange={setMetric1Filter}
@@ -338,6 +340,7 @@ function Dashboard() {
             <div className="flex flex-col gap-2">
               <label className="text-sm font-semibold text-gray-600 text-left">Métrica 2</label>
               <Select
+                id="metric2-filter"
                 options={metric2Options}
                 value={metric2Filter}
                 onChange={setMetric2Filter}
@@ -412,6 +415,7 @@ function Dashboard() {
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-semibold text-gray-600 text-left">Período</label>
                 <DateRangePicker
+                  id="period-filter"
                   value={datePeriod}
                   onChange={setDatePeriod}
                   placeholder="Selecione..."

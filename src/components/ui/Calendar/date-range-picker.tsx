@@ -75,6 +75,7 @@ export function DateRangePicker({
           <button
             type="button"
             id={id}
+            data-testid={"date-range-picker-" + id}
             className={cn(
               "flex items-center justify-between rounded-lg border border-[var(--color-components)]/30 bg-white px-3 py-2 text-sm text-black shadow-sm outline-none focus:border-[var(--color-components)] focus:ring-1 focus:ring-[var(--color-components)] transition duration-150",
               fullWidth ? "w-full" : "w-80",
