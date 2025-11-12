@@ -12,6 +12,7 @@ export interface DonorItem {
   cpf: string;
   createdAt: string;
   totalDonated: number;
+  imageUrl?: string;
 }
 
 export interface PaginatedDonors {
@@ -102,4 +103,15 @@ export async function getDonorDonations(
     params: { page, limit },
   });
   return data;
+}
+
+export async function updateDonorAvatar(id: string, file: File): Promise<void> {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  await api.patch(`/donors/${id}/avatar`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 }

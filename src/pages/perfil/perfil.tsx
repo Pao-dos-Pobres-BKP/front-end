@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
-import exemplo_foto_perfil from "@/assets/exemplo_foto_perfil.jpg";
 
 import { useUser } from "@/hooks/useUser";
 import { usePerfil } from "./usePerfil";
@@ -25,6 +24,7 @@ import CreateAdminModal from "@/components/ui/create-admin-modal";
 import { DonorDetailsModal } from "@/components/ui/donor-details-modal";
 import { AdminDetailsModal } from "@/components/ui/admin-details-modal";
 import { ResolutionWarningModal } from "@/components/ui/ResolutionWarningModal";
+import ChangeAvatarModal from "@/components/ui/change-avatar-modal";
 
 // Utils
 import { donorToUser, userToUpdateDonorData, getDisplayProfile } from "./utils/profileHelpers";
@@ -54,12 +54,13 @@ export default function Perfil() {
   const [isDonorDetailsOpen, setIsDonorDetailsOpen] = useState(false);
   const [isAdminDetailsOpen, setIsAdminDetailsOpen] = useState(false);
   const [isDonorEditOpen, setIsDonorEditOpen] = useState(false);
+  const [isChangeAvatarModalOpen, setIsChangeAvatarModalOpen] = useState(false);
 
   // Selected users for modals
   const [selectedDonor, setSelectedDonor] = useState<DonorItem | null>(null);
   const [selectedAdmin, setSelectedAdmin] = useState<AdminItem | null>(null);
 
-  // Legacy state (can be removed if not needed)
+  // Legacy state - kept for compatibility but data comes from currentUser
   const [dados, setDados] = useState<ProfileUser>({
     id: "1",
     role: "DONOR",
@@ -72,7 +73,6 @@ export default function Perfil() {
     email: "fulanodetal@email.com.br",
     totalDonated: 2000,
     percentageAchieved: 75,
-    photo: exemplo_foto_perfil,
   });
 
   // Custom hooks
@@ -112,6 +112,23 @@ export default function Perfil() {
   // Handlers
   const handleEditarConta = () => setIsEditModalOpen(true);
   const handleOpenCreateAdminModal = () => setIsCreateAdminModalOpen(true);
+  const handleChangeAvatar = () => setIsChangeAvatarModalOpen(true);
+  const handleAvatarSuccess = async () => {
+    if (currentUser) {
+      try {
+        const { getDonor, getAdmin } = await import("@/services/auth");
+        const updatedUser =
+          currentUser.role === "DONOR"
+            ? await getDonor(currentUser.id, currentUser.accessToken)
+            : await getAdmin(currentUser.id, currentUser.accessToken);
+
+        setUser(updatedUser);
+      } catch (error) {
+        console.error("Erro ao atualizar foto:", error);
+        window.location.reload();
+      }
+    }
+  };
   const handleSalvarPerfil = (updatedUser: User) => {
     setDados((prev) => ({ ...prev, ...updatedUser }));
   };
@@ -225,7 +242,11 @@ export default function Perfil() {
           )}
 
           <ProfileHeader
-            photo={dados.photo}
+            imageUrl={
+              donorProfile.isViewingAnotherProfile
+                ? donorProfile.viewingDonorProfile?.imageUrl
+                : currentUser?.imageUrl
+            }
             fullname={displayProfile.fullname}
             email={displayProfile.email}
             isAdmin={isAdmin}
@@ -233,6 +254,7 @@ export default function Perfil() {
             onEditarConta={handleEditarConta}
             onOpenCreateAdmin={handleOpenCreateAdminModal}
             onLogout={() => setIsLogoutModalOpen(true)}
+            onChangeAvatar={handleChangeAvatar}
           />
 
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 xl:gap-12">
@@ -334,6 +356,14 @@ export default function Perfil() {
           onUpdateAccount={handleUpdateDonor}
         />
       )}
+
+      <ChangeAvatarModal
+        isOpen={isChangeAvatarModalOpen}
+        onClose={() => setIsChangeAvatarModalOpen(false)}
+        donorId={currentUser?.id || ""}
+        currentPhoto={currentUser?.imageUrl}
+        onSuccess={handleAvatarSuccess}
+      />
     </div>
   );
 }

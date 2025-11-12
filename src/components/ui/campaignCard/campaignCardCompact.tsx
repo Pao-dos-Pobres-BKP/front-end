@@ -17,7 +17,15 @@ export type CampaignCardCompactProps = {
 };
 
 export function CampaignCardCompact(props: CampaignCardCompactProps) {
-  const { situation, raised, goal, creatorName, title, className, progressPercent: percent = 0 } = props;
+  const {
+    situation,
+    raised,
+    goal,
+    creatorName,
+    title,
+    className,
+    progressPercent: percent = 0,
+  } = props;
 
   const situationIcon =
     situation === "approved"

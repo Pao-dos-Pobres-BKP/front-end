@@ -74,6 +74,7 @@ export function AdminUserList({
                   role={user.type === "donor" ? "donor" : "admin"}
                   email={user.data.email}
                   showRole={true}
+                  imageUrl={user.data.imageUrl}
                   onAction={() => onUserClick(user)}
                 />
               ))

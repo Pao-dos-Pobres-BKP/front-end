@@ -54,9 +54,6 @@ export default function EditUserModal({
 }: EditUserModalProps) {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<User>(initialData);
-  const [previewPhoto, setPreviewPhoto] = useState(
-    initialData.photo || "https://via.placeholder.com/60"
-  );
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -69,7 +66,6 @@ export default function EditUserModal({
   useEffect(() => {
     if (isOpen) {
       setFormData(initialData);
-      setPreviewPhoto(initialData.photo || "https://via.placeholder.com/60");
       setNewPassword(""); // Reset password field when modal opens
       setPasswordError("");
     }
@@ -84,20 +80,6 @@ export default function EditUserModal({
 
   const handleGenderChange = (value: string) => {
     setFormData((prev) => ({ ...prev, gender: value as Gender }));
-  };
-
-  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setPreviewPhoto(url);
-      setFormData((prev) => ({ ...prev, photo: url }));
-    }
-  };
-
-  const handlePhotoRemove = () => {
-    setPreviewPhoto("https://via.placeholder.com/60");
-    setFormData((prev) => ({ ...prev, photo: "" }));
   };
 
   const handleConfirm = async () => {
@@ -166,28 +148,6 @@ export default function EditUserModal({
       <div className="bg-white w-full max-w-lg rounded-xl p-6 shadow-lg mx-4 sm:mx-0">
         <h2 className="block text-left text-2xl font-bold text-[#005172] mb-4">Editar Perfil</h2>
 
-        <div className="flex items-center gap-4 mb-6">
-          <img
-            src={previewPhoto}
-            alt="foto de perfil"
-            className="w-16 h-16 rounded-full object-cover border"
-          />
-          <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-[#005172] cursor-pointer">
-              <span className="px-3 py-1 border rounded-lg hover:bg-gray-100">Alterar Foto</span>
-              <input type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
-            </label>
-            {previewPhoto !== "https://via.placeholder.com/60" && (
-              <button
-                type="button"
-                onClick={handlePhotoRemove}
-                className="px-3 py-1 border border-red-500 text-red-500 rounded-lg text-sm hover:bg-gray-400 cursor-pointer"
-              >
-                Remover Foto
-              </button>
-            )}
-          </div>
-        </div>
         <div className="mb-4">
           <Input
             id="fullname"

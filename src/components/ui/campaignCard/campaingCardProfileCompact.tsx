@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Category } from "react-iconly";
-import fulano_de_tal_profile_pic from "@/assets/fulano_de_tal_profile_pic.jpg";
+import { getUserAvatar } from "@/constant/defaultAvatar";
 
 export type CampaignCardProfileCompactProps = {
   profileName: string;
@@ -10,6 +10,7 @@ export type CampaignCardProfileCompactProps = {
   showRole?: boolean;
   email?: string;
   memberSince?: Date;
+  imageUrl?: string | null;
 };
 
 export function CampaignCardProfileCompact({
@@ -20,6 +21,7 @@ export function CampaignCardProfileCompact({
   showRole,
   email,
   memberSince,
+  imageUrl,
 }: CampaignCardProfileCompactProps) {
   const roleConfig = {
     donor: {
@@ -80,7 +82,7 @@ export function CampaignCardProfileCompact({
       <div className="flex items-center min-w-0 flex-1">
         <div className="h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0">
           <img
-            src={fulano_de_tal_profile_pic}
+            src={getUserAvatar(imageUrl)}
             alt={`Foto de ${profileName}`}
             className="h-full w-full rounded-full object-cover"
           />

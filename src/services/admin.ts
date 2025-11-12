@@ -5,6 +5,7 @@ export interface AdminItem {
   fullName: string;
   email: string;
   root: boolean;
+  imageUrl?: string;
 }
 
 export interface PaginatedAdmins {
