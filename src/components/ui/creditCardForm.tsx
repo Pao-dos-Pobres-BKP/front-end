@@ -69,7 +69,7 @@ const CreditCardForm = ({
         <div className="w-2/3">
           <Input
             label="Vencimento"
-            placeholder="MM/YY"
+            placeholder="MM/AA"
             value={expiryDate}
             onChange={handleExpiryDateChange}
             disabled={disabled}
@@ -90,7 +90,7 @@ const CreditCardForm = ({
 
       {!disabled && (
         <Button variant="confirm" size="small" onClick={onSubmit} className="self-end mt-2">
-          Confirmar dados do cartão
+          Confirmar
         </Button>
       )}
     </div>

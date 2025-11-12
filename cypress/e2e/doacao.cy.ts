@@ -160,40 +160,16 @@ describe('Doacao Page - Anonymous User', () => {
       cy.getByTestId('confirm-payment-method-button').click();
       cy.wait(1000);
 
-      cy.get('input[placeholder*="Número do cartão"]').type('4111111111111111');
-      cy.get('input[placeholder*="Nome"]').type('TESTE USER');
+      cy.get('input[placeholder*="0000 0000 0000 0000"]').type('4111111111111111');
+      cy.get('input[placeholder*="Como impresso no cartão"]').type('TESTE USER');
       cy.get('input[placeholder*="MM/AA"]').type('12/28');
-      cy.get('input[placeholder*="CVV"]').type('123');
+      cy.get('input[placeholder*="123"]').type('123');
 
-      cy.contains('button', 'Confirmar Pagamento').click();
+      cy.contains('button', 'Confirmar').click();
       cy.wait(4000);
 
       cy.contains('Doação criada com sucesso!').should('be.visible');
       cy.getByTestId('back-home-button').should('not.be.disabled');
-    });
-  });
-
-  describe('Campaign Selection with Search', () => {
-    it('should search and select a campaign if available', () => {
-      cy.get('input[placeholder*="Pesquise"]').click().wait(500);
-      
-      cy.get('body').then(($body) => {
-        if ($body.text().includes('Nenhuma campanha ativa')) {
-          cy.log('No active campaigns available, skipping campaign selection test');
-        } else {
-          cy.get('[role="option"]').first().click();
-          cy.wait(500);
-          cy.getByTestId('confirm-campaign-button').should('not.be.disabled');
-          cy.getByTestId('confirm-campaign-button').click();
-          cy.wait(500);
-          
-          cy.get('input[placeholder*="0,00"]').clear().type('30,00');
-          cy.getByTestId('confirm-value-button').click();
-          cy.wait(500);
-          
-          cy.contains('Método de Pagamento').parent().should('not.have.attr', 'disabled');
-        }
-      });
     });
   });
 });

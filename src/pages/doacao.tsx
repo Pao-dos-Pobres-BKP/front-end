@@ -19,6 +19,9 @@ import { createDonation, type Periodicity } from "../services/donations";
 import { useUser } from "../hooks/useUser";
 import { toast } from "sonner";
 
+// Campaign ID for direct donations to "Fundação O Pão dos Pobres"
+const DIRECT_DONATION_CAMPAIGN_ID = "cmhw8giob0041vvo3ms8jt23e";
+
 const Doacao = () => {
   const { user: currentUser } = useUser();
   const [currentStep, setCurrentStep] = useState("item-1");
@@ -141,7 +144,7 @@ const Doacao = () => {
       const donationData = {
         amount: parseInt(donationValue, 10) / 100, // Convert from cents to reais
         periodicity: periodicity === "UNIQUE" ? null : (periodicity as Periodicity),
-        campaignId: selectedCampaign === "direct-donation" ? undefined : selectedCampaign,
+        campaignId: selectedCampaign,
         donorId: currentUser?.id,
         paymentMethod: paymentMethodMap[step3Value],
       };
@@ -195,8 +198,8 @@ const Doacao = () => {
   };
 
   const handleDirectDonation = () => {
-    // Special ID for direct donations (without campaign)
-    setSelectedCampaign("direct-donation");
+    // Direct donations to Fundação O Pão dos Pobres (specific campaign ID)
+    setSelectedCampaign(DIRECT_DONATION_CAMPAIGN_ID);
     setIsCampaignConfirmed(true);
     setCurrentStep("item-2");
   };
@@ -296,7 +299,7 @@ const Doacao = () => {
                   isActive={isCampaignConfirmed}
                   value={
                     isCampaignConfirmed
-                      ? selectedCampaign === "direct-donation"
+                      ? selectedCampaign === DIRECT_DONATION_CAMPAIGN_ID
                         ? "Fundação O Pão dos Pobres"
                         : campaignOptions.find((c) => c.value === selectedCampaign)?.label
                       : undefined
