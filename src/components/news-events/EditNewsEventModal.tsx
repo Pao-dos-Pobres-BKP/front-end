@@ -160,28 +160,23 @@ export const EditNewsEventModal: React.FC<EditNewsEventModalProps> = (props) => 
         const startDate = new Date(form.dateStart);
         startDate.setHours(0, 0, 0, 0);
 
-        if (startDate < today) {
-          newErrors.dateStart = "Data de início não pode ser anterior ao dia atual";
+        if (startDate <= today) {
+          newErrors.dateStart = "Data de início deve ser a partir de amanhã";
         }
       }
 
       if (!form.dateEnd) {
         newErrors.dateEnd = "Data de término é obrigatória";
-      } else {
-        const endDate = new Date(form.dateEnd);
-        endDate.setHours(0, 0, 0, 0);
-
-        if (endDate < tomorrow) {
-          newErrors.dateEnd = "Data de término não pode ser anterior a amanhã";
-        }
       }
 
       if (form.dateStart && form.dateEnd && !newErrors.dateStart && !newErrors.dateEnd) {
         const startDate = new Date(form.dateStart);
+        startDate.setHours(0, 0, 0, 0);
         const endDate = new Date(form.dateEnd);
+        endDate.setHours(0, 0, 0, 0);
 
-        if (startDate > endDate) {
-          newErrors.dateEnd = "Data de término deve ser posterior à data de início";
+        if (endDate < startDate) {
+          newErrors.dateEnd = "Data de término não pode ser anterior à data de início";
         }
       }
     }

@@ -2,8 +2,7 @@ import { cn } from "@/lib/utils";
 import excluir2 from "@/assets/excluir2.png";
 import editIcon from "@/assets/editIcon.svg";
 import { Delete } from "react-iconly";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { dateUtils } from "@/utils/dateUtils";
 
 export type CampaignCardEventAndNewsProps = {
   title: string;
@@ -27,8 +26,7 @@ export function CampaignCardEventAndNews({
     news: { label: "Notícia", color: "#F68537" },
   }[type];
 
-  const formattedDate =
-    date instanceof Date ? format(date, "d 'de' MMMM 'de' yyyy", { locale: ptBR }) : date;
+  const formattedDate = date instanceof Date ? dateUtils.formatCompleteDate(date) : date;
 
   return (
     <article

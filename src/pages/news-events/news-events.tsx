@@ -48,9 +48,12 @@ export default function NewsEvents() {
   const navigate = useNavigate();
   const { user } = useUser();
 
-  if (user?.role != "ADMIN") {
-    navigate("/");
-  }
+  // Verifica se o usuário é admin, redireciona se não for
+  useEffect(() => {
+    if (user && user.role !== "ADMIN") {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   useEffect(() => {
     setCurrentPage(INITIAL_PAGE);

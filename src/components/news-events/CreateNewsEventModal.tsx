@@ -120,40 +120,34 @@ export const CreateNewsEventModal: React.FC<CreateNewsEventModalProps> = ({
         newErrors.date = "Data é obrigatória";
       }
     } else {
+      // Get today's date as string for comparison
       const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      const tomorrow = new Date(today);
-      tomorrow.setDate(tomorrow.getDate() + 1);
+      const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
       if (!form.dateStart) {
         newErrors.dateStart = "Data de início é obrigatória";
       } else {
         const startDate = new Date(form.dateStart);
-        startDate.setHours(0, 0, 0, 0);
+        const startDateStr = `${startDate.getUTCFullYear()}-${String(startDate.getUTCMonth() + 1).padStart(2, "0")}-${String(startDate.getUTCDate()).padStart(2, "0")}`;
 
-        if (startDate < today) {
-          newErrors.dateStart = "Data de início não pode ser anterior ao dia atual";
+        if (startDateStr <= todayStr) {
+          newErrors.dateStart = "Data de início deve ser a partir de amanhã";
         }
       }
 
       if (!form.dateEnd) {
         newErrors.dateEnd = "Data de término é obrigatória";
-      } else {
-        const endDate = new Date(form.dateEnd);
-        endDate.setHours(0, 0, 0, 0);
-
-        if (endDate < tomorrow) {
-          newErrors.dateEnd = "Data de término não pode ser anterior a amanhã";
-        }
       }
 
       if (form.dateStart && form.dateEnd && !newErrors.dateStart && !newErrors.dateEnd) {
         const startDate = new Date(form.dateStart);
-        const endDate = new Date(form.dateEnd);
+        const startDateStr = `${startDate.getUTCFullYear()}-${String(startDate.getUTCMonth() + 1).padStart(2, "0")}-${String(startDate.getUTCDate()).padStart(2, "0")}`;
 
-        if (startDate > endDate) {
-          newErrors.dateEnd = "Data de término deve ser posterior à data de início";
+        const endDate = new Date(form.dateEnd);
+        const endDateStr = `${endDate.getUTCFullYear()}-${String(endDate.getUTCMonth() + 1).padStart(2, "0")}-${String(endDate.getUTCDate()).padStart(2, "0")}`;
+
+        if (endDateStr < startDateStr) {
+          newErrors.dateEnd = "Data de término não pode ser anterior à data de início";
         }
       }
     }

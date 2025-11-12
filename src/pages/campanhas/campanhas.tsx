@@ -23,6 +23,7 @@ import { ArrowUpDown } from "lucide-react";
 import CampaignCardSkeleton from "@/skeletons/campaign-card-skeleton";
 import type { CampaignBase } from "@/types/Campaign";
 import { Pagination } from "@/components/ui/Pagination";
+import { format } from "date-fns";
 
 type CampaignData = {
   id: string;
@@ -251,7 +252,7 @@ const Campanhas = () => {
         description: data.description,
         targetAmount: data.targetValue,
         startDate: originalCampaign.startDate,
-        endDate: data.endDate.toISOString(),
+        endDate: format(data.endDate, "yyyy-MM-dd") + "T12:00:00.000Z",
         imageUrl: imageUrl || undefined,
         status: originalCampaign.status,
         createdBy: user.id,
@@ -321,8 +322,8 @@ const Campanhas = () => {
         title: data.title,
         description: data.description,
         targetAmount: data.targetValue,
-        startDate: data.startDate.toISOString(),
-        endDate: data.endDate.toISOString(),
+        startDate: format(data.startDate, "yyyy-MM-dd") + "T12:00:00.000Z",
+        endDate: format(data.endDate, "yyyy-MM-dd") + "T12:00:00.000Z",
         imageUrl,
         status: user.role === "ADMIN" ? "ACTIVE" : "PENDING",
         createdBy: user.id,

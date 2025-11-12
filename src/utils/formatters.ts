@@ -178,15 +178,18 @@ export const detectAndFormatPhone = (
 
 /**
  * Formats a date string to Brazilian format (DD/MM/YYYY)
+ * Uses UTC components to avoid timezone conversion issues
  * @param dateString - ISO date string
  * @returns Formatted date string or "N/A" if invalid
  */
 export const formatDate = (dateString?: string): string => {
   if (!dateString) return "N/A";
   const date = new Date(dateString);
-  return date.toLocaleDateString("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
+
+  // Use UTC methods to avoid timezone conversion
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const year = date.getUTCFullYear();
+
+  return `${day}/${month}/${year}`;
 };

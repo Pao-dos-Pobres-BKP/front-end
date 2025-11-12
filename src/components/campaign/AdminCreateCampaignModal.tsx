@@ -96,16 +96,17 @@ export const AdminCreateCampaignModal: React.FC<AdminCreateCampaignModalProps> =
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const startDateOnly = new Date(form.startDate);
-    startDateOnly.setHours(0, 0, 0, 0);
-
-    if (startDateOnly < today) {
-      alert("A data de início não pode ser antes de hoje");
-      return;
-    }
 
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const startDateOnly = new Date(form.startDate);
+    startDateOnly.setHours(0, 0, 0, 0);
+
+    if (startDateOnly < tomorrow) {
+      alert("A data de início deve ser no mínimo amanhã");
+      return;
+    }
     const endDateOnly = new Date(form.endDate);
     endDateOnly.setHours(0, 0, 0, 0);
 
