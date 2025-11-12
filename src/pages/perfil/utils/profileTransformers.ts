@@ -9,7 +9,8 @@ export function transformDonations(donationsData: DonorDonation[]): DonorDonatio
     periodicity: donation.periodicity,
     campaignId: donation.campaignId,
     campaignName: donation.campaign?.title || "Doação Direta",
-    campaignCreatedBy: donation.campaign?.creatorName || donation.campaign?.createdBy || "Fundação",
+    campaignCreatedBy:
+      donation.campaign?.user?.fullName || donation.campaign?.createdBy || "Fundação",
     createdAt: donation.createdAt,
     donorId: donation.donorId,
   }));
@@ -22,7 +23,7 @@ export function extractUniqueCampaigns(donationsData: DonorDonation[]): Campaign
     if (donation.campaign && !campaignsMap.has(donation.campaignId)) {
       campaignsMap.set(donation.campaignId, {
         title: donation.campaign.title,
-        creatorName: donation.campaign.creatorName || donation.campaign.createdBy || "Fundação",
+        creatorName: donation.campaign.user?.fullName || donation.campaign.createdBy || "Fundação",
         raised: parseFloat(donation.campaign.currentAmount) || 0,
         goal: parseFloat(donation.campaign.targetAmount) || 0,
         situation: "recurring" as const,

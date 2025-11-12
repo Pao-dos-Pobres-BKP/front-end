@@ -82,7 +82,9 @@ export interface DonorDonation {
     imageUrl: string;
     status: string;
     createdBy: string;
-    creatorName?: string;
+    user: {
+      fullName: string;
+    };
   };
   payment: Array<{
     id: string;
