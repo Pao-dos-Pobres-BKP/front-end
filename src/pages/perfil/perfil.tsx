@@ -303,6 +303,8 @@ export default function Perfil() {
       <CreateAdminModal
         isModalOpen={isCreateAdminModalOpen}
         onClose={() => setIsCreateAdminModalOpen(false)}
+        onSuccess={adminUsers.fetchUsers}
+        isCurrentUserRoot={currentUser?.root ?? false}
       />
 
       <EditUserModal

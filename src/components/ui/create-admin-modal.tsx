@@ -8,9 +8,11 @@ import { Eye, EyeOff } from "lucide-react";
 interface CreateAdminModalProps {
   isModalOpen: boolean;
   onClose: () => void;
+  onSuccess?: () => void;
+  isCurrentUserRoot?: boolean;
 }
 
-export default function CreateAdminModal({ isModalOpen, onClose }: CreateAdminModalProps) {
+export default function CreateAdminModal({ isModalOpen, onClose, onSuccess, isCurrentUserRoot = false }: CreateAdminModalProps) {
   const [isResponseModalOpen, setIsResponseModalOpen] = useState(false);
   const [serviceResponse, setServiceResponse] = useState<{
     status: number;
@@ -66,6 +68,8 @@ export default function CreateAdminModal({ isModalOpen, onClose }: CreateAdminMo
         setIsResponseModalOpen(true);
         setServiceResponse(response);
         resetForm();
+        // Call onSuccess callback to refresh the user list
+        onSuccess?.();
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -145,15 +149,21 @@ export default function CreateAdminModal({ isModalOpen, onClose }: CreateAdminMo
           </div>
           <div className="flex flex-col gap-2 mb-4 items-start">
             <p className="block mb-1 text-sm font-medium text-[var(--color-components)]">Root</p>
+            {!isCurrentUserRoot && (
+              <p className="text-xs text-gray-500 mb-1">
+                Apenas administradores root podem criar outros administradores root
+              </p>
+            )}
             <div className="flex gap-6">
-              <label className="flex items-center gap-2 cursor-pointer">
+              <label className={`flex items-center gap-2 ${isCurrentUserRoot ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'}`}>
                 <div className="relative flex items-center justify-center">
                   <input
                     type="radio"
                     name="root"
                     checked={formData.root === true}
-                    onChange={() => setFormData((prev) => ({ ...prev, root: true }))}
+                    onChange={() => isCurrentUserRoot && setFormData((prev) => ({ ...prev, root: true }))}
                     className="sr-only"
+                    disabled={!isCurrentUserRoot}
                   />
                   <div
                     className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${

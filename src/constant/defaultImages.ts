@@ -39,7 +39,8 @@ export const getUserAvatar = (imageUrl?: string | null): string => {
 export const getCampaignImage = (imageUrl?: string | null): string => {
   // Check if imageUrl exists and is not empty
   if (imageUrl && imageUrl.trim() !== "") {
-    return imageUrl;
+    // uncomment this to use the image from the database
+    // return imageUrl;
   }
   return DEFAULT_CAMPAIGN_IMAGE;
 };
@@ -51,7 +52,8 @@ export const getCampaignImage = (imageUrl?: string | null): string => {
 export const getEventImage = (imageUrl?: string | null): string => {
   // Check if imageUrl exists and is not empty
   if (imageUrl && imageUrl.trim() !== "") {
-    return imageUrl;
+    // uncomment this to use the image from the database
+    // return imageUrl;
   }
   return DEFAULT_EVENT_IMAGE;
 };
@@ -63,7 +65,8 @@ export const getEventImage = (imageUrl?: string | null): string => {
 export const getNewsImage = (imageUrl?: string | null): string => {
   // Check if imageUrl exists and is not empty
   if (imageUrl && imageUrl.trim() !== "") {
-    return imageUrl;
+    // uncomment this to use the image from the database
+    // return imageUrl;
   }
   return DEFAULT_NEWS_IMAGE;
 };

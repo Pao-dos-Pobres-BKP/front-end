@@ -266,6 +266,19 @@ const Campanhas = () => {
     setIsDeleteConfirmOpen(true);
   };
 
+  const handleFinishCampaign = async () => {
+    if (!selectedCampaignToEdit?.id) return;
+
+    try {
+      await updateCampaignStatus(selectedCampaignToEdit.id, "FINISHED");
+      setIsEditModalOpen(false);
+      window.location.reload();
+    } catch (error) {
+      console.error("Erro ao finalizar campanha:", error);
+      alert("Erro ao finalizar campanha. Tente novamente.");
+    }
+  };
+
   const handleOpenDeleteModal = (campaign: CampaignWithSituation) => {
     setCampaignToDelete(campaign);
     setDeleteFromEditModal(false);
@@ -431,6 +444,8 @@ const Campanhas = () => {
         campaign={selectedCampaignToEdit}
         onSave={handleSaveEditedCampaign}
         onDeleteRequest={handleDeleteRequest}
+        onFinishCampaign={handleFinishCampaign}
+        isAdmin={user?.role === "ADMIN"}
       />
 
       {campaignToDelete && (

@@ -51,8 +51,8 @@ export default function NewsEvents() {
   // Verifica se o usuário é admin, redireciona se não for
   useEffect(() => {
     if (user && user.role !== "ADMIN") {
-      navigate("/");
-    }
+    navigate("/");
+  }
   }, [user, navigate]);
 
   useEffect(() => {

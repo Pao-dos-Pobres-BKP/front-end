@@ -23,6 +23,8 @@ interface EditCampaignModalProps {
     image?: File | null;
   }) => Promise<void> | void;
   onDeleteRequest: () => void; // triggers external delete modal
+  onFinishCampaign?: () => void; // triggers finish campaign action
+  isAdmin?: boolean; // indicates if the user is admin
 }
 
 const currencyMask = (value: string) => {
@@ -37,6 +39,8 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
   campaign,
   onSave,
   onDeleteRequest,
+  onFinishCampaign,
+  isAdmin = false,
 }) => {
   const [form, setForm] = React.useState({
     title: "",
@@ -165,11 +169,20 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
           showDates={true}
           isEditMode={true}
         />
-        <div className="text-center">
+        <div className="text-center space-y-2">
+          {isAdmin && onFinishCampaign && (
+            <button
+              type="button"
+              onClick={onFinishCampaign}
+              className="text-sm text-green-600 hover:cursor-pointer underline font-semibold"
+            >
+              Finalizar esta campanha
+            </button>
+          )}
           <button
             type="button"
             onClick={onDeleteRequest}
-            className="text-sm text-red-600 hover:cursor-pointer underline"
+            className="text-sm text-red-600 hover:cursor-pointer underline block mx-auto"
           >
             Excluir esta campanha
           </button>

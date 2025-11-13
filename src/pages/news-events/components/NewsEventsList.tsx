@@ -32,3 +32,6 @@ export function NewsEventsList({ items, onDelete, onEdit }: NewsEventsListProps)
     </div>
   );
 }
+
+
+
