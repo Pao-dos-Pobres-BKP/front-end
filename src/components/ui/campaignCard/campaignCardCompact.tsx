@@ -4,6 +4,7 @@ import { Progress } from "../progress";
 import blueHeart from "@/assets/blueHeart.svg";
 import orangeHeart from "@/assets/orangeHeart.svg";
 import redHeart from "@/assets/redHeart.svg";
+import greenHeart from "@/assets/greenHeart.svg";
 
 export type CampaignCardCompactProps = {
   title: string;
@@ -12,7 +13,7 @@ export type CampaignCardCompactProps = {
   creatorName?: string;
   onAction?: () => void;
   className?: string;
-  situation?: "approved" | "pending" | "rejected" | "recurring";
+  situation?: "approved" | "pending" | "rejected" | "recurring" | "finished" | "paused";
   progressPercent?: number;
 };
 
@@ -30,11 +31,13 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
   const situationIcon =
     situation === "approved"
       ? blueHeart
-      : situation === "pending"
-        ? orangeHeart
-        : situation === "recurring"
-          ? redHeart
-          : null;
+      : situation === "finished"
+        ? greenHeart
+        : situation === "pending" || situation === "paused"
+          ? orangeHeart
+          : situation === "recurring" || situation === "rejected"
+            ? redHeart
+            : null;
 
   return (
     <>
@@ -59,7 +62,22 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
               {title}
             </div>
             {creatorName && (
-              <div className="text-sm text-[#f68537] truncate">por {creatorName}</div>
+              <div
+                className={cn(
+                  "text-sm truncate font-medium",
+                  situation === "recurring" || situation === "rejected"
+                    ? "bg-gradient-to-b from-[#FF4A4A] to-[#FF8787] bg-clip-text text-transparent"
+                    : situation === "finished"
+                      ? "bg-gradient-to-b from-[#16a34a] to-[#4ade80] bg-clip-text text-transparent"
+                      : situation === "approved"
+                        ? "bg-gradient-to-b from-[#456DFF] to-[#AABCFF] bg-clip-text text-transparent"
+                        : situation === "paused"
+                          ? "text-gray-600 font-semibold"
+                          : "text-[#f68537]"
+                )}
+              >
+                por {creatorName}
+              </div>
             )}
           </div>
         </div>
@@ -78,12 +96,25 @@ export function CampaignCardCompact(props: CampaignCardCompactProps) {
           <div className="w-full">
             {situation === "approved" || situation === "recurring" ? (
               <Progress value={percent} variant="blue" size="large" />
+            ) : situation === "finished" ? (
+              <div className="flex items-center gap-1.5">
+                <div className="w-full bg-[#e6e8eb] rounded-full overflow-hidden">
+                  <div className="h-2 bg-gradient-to-r from-green-600 to-green-400 w-full rounded-full"></div>
+                </div>
+                <div className="text-center text-xs font-bold text-white bg-gradient-to-r from-green-600 to-green-500 rounded-full py-0.5 px-2 whitespace-nowrap shadow-md">
+                  Concluída
+                </div>
+              </div>
+            ) : situation === "paused" ? (
+              <div className="text-center text-xs font-semibold text-white bg-gradient-to-r from-gray-500 to-gray-400 rounded-full py-0.5 px-2 w-full max-w-[120px] shadow-md">
+                Pausada
+              </div>
             ) : situation === "rejected" ? (
-              <div className="text-center text-xs font-semibold text-white bg-red-400 rounded-full py-0.5 px-2 w-full max-w-[120px]">
+              <div className="text-center text-xs font-semibold text-white bg-gradient-to-r from-red-600 to-red-500 rounded-full py-0.5 px-2 w-full max-w-[120px] shadow-md">
                 Rejeitada
               </div>
             ) : (
-              <div className="text-center text-xs font-semibold text-white bg-[#F6C337] rounded-full py-0.5 px-2 w-full max-w-[140px]">
+              <div className="text-center text-xs font-semibold text-white bg-gradient-to-r from-[#F6C337] to-[#E5B328] rounded-full py-0.5 px-2 w-full max-w-[140px] shadow-md">
                 Pendente Aprovação
               </div>
             )}

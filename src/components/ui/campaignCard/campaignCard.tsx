@@ -27,7 +27,7 @@ export type CampaignCardProps = {
     | "event_news";
   onAction?: () => void;
   className?: string;
-  situation?: "approved" | "pending" | "rejected" | "recurring";
+  situation?: "approved" | "pending" | "rejected" | "recurring" | "finished" | "paused";
   type?: "event" | "news"; // for "event_news"
   date?: Date;
   isAdmin?: boolean; // to indicate if the user is admin

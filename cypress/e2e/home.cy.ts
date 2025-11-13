@@ -109,7 +109,7 @@ describe('Home Page', () => {
       cy.getByTestId('newsletter-checkbox').click();
       cy.getByTestId('newsletter-submit').should('not.be.disabled');
       cy.getByTestId('newsletter-submit').click();
-      cy.wait(1000);
+      cy.wait(500);
     });
 
     it('should not allow submit without checkbox', () => {

@@ -227,7 +227,7 @@ describe('System Navigation - Admin', () => {
 
     it('should navigate from dashboard to campaigns', () => {
       cy.visit('/dashboard');
-      cy.wait(1000);
+      cy.wait(500);
       
       cy.get('nav').contains('Campanhas').click();
       cy.wait(500);
@@ -236,7 +236,7 @@ describe('System Navigation - Admin', () => {
 
     it('should navigate from dashboard to profile', () => {
       cy.visit('/dashboard');
-      cy.wait(1000);
+      cy.wait(500);
       
       cy.get('nav').contains('Admin').click();
       cy.wait(500);

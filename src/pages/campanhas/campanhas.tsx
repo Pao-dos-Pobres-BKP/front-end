@@ -38,7 +38,7 @@ type CampaignData = {
 };
 
 type CampaignWithSituation = CampaignAPI & {
-  situation: "approved" | "pending" | "rejected" | "recurring";
+  situation: "approved" | "pending" | "rejected" | "recurring" | "finished" | "paused";
 };
 
 const Campanhas = () => {
@@ -99,36 +99,31 @@ const Campanhas = () => {
           }
         }
 
-        let filteredCampaigns = campaignsResponse.data
-          .filter((campaign) => {
-            if (user?.role === "ADMIN") return true;
+        let filteredCampaigns = campaignsResponse.data.map((campaign): CampaignWithSituation => {
+          let situation: "approved" | "pending" | "rejected" | "recurring" | "finished" | "paused" =
+            "approved";
 
-            if (user?.role === "DONOR") {
-              return campaign.status !== "FINISHED";
+          if (campaign.status === "PENDING") {
+            situation = "pending";
+          } else if (campaign.status === "CANCELED") {
+            situation = "rejected";
+          } else if (campaign.status === "FINISHED") {
+            situation = "finished";
+          } else if (campaign.status === "PAUSED") {
+            situation = "paused";
+          } else if (campaign.status === "ACTIVE") {
+            if (user?.role === "DONOR" && donatedCampaignIds.has(campaign.id)) {
+              situation = "recurring";
+            } else {
+              situation = "approved";
             }
+          }
 
-            return campaign.status === "ACTIVE";
-          })
-          .map((campaign): CampaignWithSituation => {
-            let situation: "approved" | "pending" | "rejected" | "recurring" = "approved";
-
-            if (campaign.status === "PENDING") {
-              situation = "pending";
-            } else if (campaign.status === "CANCELED") {
-              situation = "rejected";
-            } else if (campaign.status === "ACTIVE") {
-              if (user?.role === "DONOR" && donatedCampaignIds.has(campaign.id)) {
-                situation = "recurring";
-              } else {
-                situation = "approved";
-              }
-            }
-
-            return {
-              ...campaign,
-              situation,
-            };
-          });
+          return {
+            ...campaign,
+            situation,
+          };
+        });
 
         if (sortOrder === "oldest") {
           filteredCampaigns = filteredCampaigns.reverse();

@@ -44,7 +44,8 @@ export function Pagination({ currentPage, totalPages, onPageChange, className }:
       return [1, 2, 3];
     }
 
-    if (currentPage === totalPages) {
+    // Se estiver na penúltima ou última página, mostrar as 3 últimas páginas
+    if (currentPage >= totalPages - 1) {
       return [totalPages - 2, totalPages - 1, totalPages];
     }
 

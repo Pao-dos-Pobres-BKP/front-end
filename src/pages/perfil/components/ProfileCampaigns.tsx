@@ -19,7 +19,7 @@ export function ProfileCampaigns({
 }: ProfileCampaignsProps) {
   return (
     <div className="flex-1 flex flex-col gap-3 items-start">
-      <h3 className="text-sm font-semibold text-[#005172]">Campanhas que apoia</h3>
+      <h3 className="text-sm font-semibold text-[#005172]">Campanhas que apoiou</h3>
 
       <div className="flex flex-col gap-3 w-full min-h-[200px]">
         {campaigns.length > 0 ? (

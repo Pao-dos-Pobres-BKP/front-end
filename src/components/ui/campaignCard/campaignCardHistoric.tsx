@@ -3,6 +3,7 @@ import { formatCurrency } from "@/utils/formatCurrency";
 import blueHeart from "@/assets/blueHeart.svg";
 import orangeHeart from "@/assets/orangeHeart.svg";
 import redHeart from "@/assets/redHeart.svg";
+import greenHeart from "@/assets/greenHeart.svg";
 import cancelIcon from "@/assets/cancelIcon.svg";
 import type { DonorDonationsAPI } from "@/services/donations";
 import { useState } from "react";
@@ -14,7 +15,7 @@ export type CampaignCardHistoricProps = {
   goal: number;
   creatorName?: string;
   className?: string;
-  situation?: "approved" | "pending" | "rejected" | "recurring";
+  situation?: "approved" | "pending" | "rejected" | "recurring" | "finished" | "paused";
   lastDonation?: number;
   donationAmount?: number;
   periodicity?: DonorDonationsAPI["periodicity"];
@@ -42,15 +43,22 @@ export function CampaignCardHistoric(props: CampaignCardHistoricProps) {
   const gradientTextClass =
     displaySituation === "recurring"
       ? "bg-gradient-to-b from-[#FF4A4A] to-[#FF8787] bg-clip-text text-transparent"
+      : displaySituation === "finished"
+        ? "bg-gradient-to-b from-[#16a34a] to-[#4ade80] bg-clip-text text-transparent"
       : displaySituation === "approved"
         ? "bg-gradient-to-b from-[#456DFF] to-[#AABCFF] bg-clip-text text-transparent"
+          : displaySituation === "paused"
+            ? "text-gray-600"
         : "text-[#034d6b]";
 
   const renderIcon = () => {
     const map: Record<string, string | undefined> = {
       approved: blueHeart,
+      finished: greenHeart,
       pending: orangeHeart,
+      paused: orangeHeart,
       recurring: redHeart,
+      rejected: redHeart,
     };
     const src = displaySituation ? map[displaySituation] : undefined;
     if (!src) return null;

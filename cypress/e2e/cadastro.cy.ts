@@ -62,16 +62,16 @@ describe('Cadastro de Doador - Fluxo Completo', () => {
 
     cy.getByTestId('register-submit').should('not.be.disabled');
     cy.getByTestId('register-submit').click();
-    cy.wait(3000);
+    cy.wait(1000);
     cy.contains('Cadastro realizado com sucesso!').should('be.visible');
 
     cy.visit('/login');
-    cy.wait(1000);
+    cy.wait(500);
 
     cy.getByTestId('login-email').type(testUser.email);
     cy.getByTestId('login-password').type(testUser.password);
     cy.getByTestId('login-submit').click();
-    cy.wait(2000);
+    cy.wait(500);
   });
 });
 

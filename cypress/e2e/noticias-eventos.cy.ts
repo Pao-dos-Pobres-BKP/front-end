@@ -1,11 +1,12 @@
 describe('Noticias e Eventos Page', () => {
+  const adminEmail = 'admin@email.com';
+  const adminPassword = 'Password@1234';
+
   beforeEach(() => {
-    cy.fixture('user').then((users) => {
-      cy.login(users.admin.email, users.admin.password);
-      cy.wait(2000);
-      cy.contains('Notícias & Eventos').click();
-      cy.wait(2000);
-    });
+    cy.login(adminEmail, adminPassword);
+    cy.wait(500);
+    cy.visit('/noticias-eventos');
+    cy.wait(500);
   });
 
   it('should load the noticias-eventos page', () => {
@@ -60,7 +61,7 @@ describe('Noticias e Eventos Page', () => {
 
   it('should be able to search news and events', () => {
     cy.getByTestId('search-bar').type('teste');
-    cy.wait(1000);
+    cy.wait(500);
     cy.get('body').should('be.visible');
   });
 
@@ -73,7 +74,7 @@ describe('Noticias e Eventos Page', () => {
 
   it('should display news cards when they exist', () => {
     cy.getByTestId('tab-notícias').click();
-    cy.wait(1000);
+    cy.wait(500);
     cy.get('body').then(($body) => {
       if (!$body.text().includes('Nenhum')) {
         cy.get('[data-testid^="news-event-card"]').should('have.length.greaterThan', 0);
@@ -83,7 +84,7 @@ describe('Noticias e Eventos Page', () => {
 
   it('should display event cards when they exist', () => {
     cy.getByTestId('tab-eventos').click();
-    cy.wait(1000);
+    cy.wait(500);
     cy.get('body').then(($body) => {
       if (!$body.text().includes('Nenhum')) {
         cy.get('[data-testid^="news-event-card"]').should('have.length.greaterThan', 0);
@@ -104,9 +105,9 @@ describe('Noticias e Eventos Page', () => {
 
   it('should clear search and show all items', () => {
     cy.getByTestId('search-bar').type('teste');
-    cy.wait(1000);
+    cy.wait(500);
     cy.getByTestId('search-bar').clear();
-    cy.wait(1000);
+    cy.wait(500);
     cy.get('body').should('be.visible');
   });
 });

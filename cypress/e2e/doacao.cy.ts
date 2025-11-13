@@ -1,7 +1,7 @@
 describe('Doacao Page - Anonymous User', () => {
   beforeEach(() => {
     cy.visit('/doacao');
-    cy.wait(1000);
+    cy.wait(500);
   });
 
   describe('Page Load', () => {
@@ -109,7 +109,7 @@ describe('Doacao Page - Anonymous User', () => {
       cy.contains('Pix').click();
       cy.wait(300);
       cy.getByTestId('confirm-payment-method-button').click();
-      cy.wait(1000);
+      cy.wait(500);
 
       cy.contains('Aguardando pagamento').should('be.visible');
       cy.contains('Doação criada com sucesso!').should('be.visible');
@@ -118,7 +118,7 @@ describe('Doacao Page - Anonymous User', () => {
 
       cy.getByTestId('back-home-button').should('not.be.disabled');
       cy.getByTestId('back-home-button').click();
-      cy.wait(1000);
+      cy.wait(500);
       cy.url().should('eq', Cypress.config().baseUrl + '/');
     });
   });
@@ -135,7 +135,7 @@ describe('Doacao Page - Anonymous User', () => {
       cy.contains('Boleto').click();
       cy.wait(300);
       cy.getByTestId('confirm-payment-method-button').click();
-      cy.wait(1000);
+      cy.wait(500);
 
       cy.contains('Aguardando pagamento').should('be.visible');
       cy.contains('button', 'Confirmar Pagamento').should('be.visible');
@@ -158,7 +158,7 @@ describe('Doacao Page - Anonymous User', () => {
       cy.contains('Crédito').click();
       cy.wait(300);
       cy.getByTestId('confirm-payment-method-button').click();
-      cy.wait(1000);
+      cy.wait(500);
 
       cy.get('input[placeholder*="0000 0000 0000 0000"]').type('4111111111111111');
       cy.get('input[placeholder*="Como impresso no cartão"]').type('TESTE USER');
@@ -166,9 +166,9 @@ describe('Doacao Page - Anonymous User', () => {
       cy.get('input[placeholder*="123"]').type('123');
 
       cy.contains('button', 'Confirmar').click();
+      cy.contains('Doação criada com sucesso!').should('be.visible');
       cy.wait(4000);
 
-      cy.contains('Doação criada com sucesso!').should('be.visible');
       cy.getByTestId('back-home-button').should('not.be.disabled');
     });
   });

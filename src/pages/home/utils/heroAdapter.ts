@@ -1,12 +1,12 @@
 import type { EventAPI } from "@/services/events";
 import type { HeroItem } from "../components/hero";
 
-import festaImg from "@/assets/festa-junina-pp.jpg";
+import { getEventImage } from "@/constant/defaultImages";
 import { dateUtils } from "@/utils/dateUtils";
 
 function eventToHeroItem(event: EventAPI): HeroItem {
   return {
-    imageUrl: festaImg,
+    imageUrl: getEventImage(null),
     title: event.title,
     description: event.description,
     location: event.location,
