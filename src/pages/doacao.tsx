@@ -14,13 +14,10 @@ import PaymentMethodSelector from "../components/ui/paymentMethodSelector";
 import PixPaymentDisplay from "../components/ui/pixPaymentDisplay";
 import CreditCardForm from "../components/ui/creditCardForm";
 import BoletoPaymentDisplay from "../components/ui/boletoPaymentDisplay";
-import { getCampaigns, type CampaignAPI } from "../services/campaigns";
+import { getCampaigns, getRootCampaign, type CampaignAPI } from "../services/campaigns";
 import { createDonation, type Periodicity } from "../services/donations";
 import { useUser } from "../hooks/useUser";
 import { toast } from "sonner";
-
-// Campaign ID for direct donations to "Fundação O Pão dos Pobres"
-const DIRECT_DONATION_CAMPAIGN_ID = "cmhw8giob0041vvo3ms8jt23e";
 
 const Doacao = () => {
   const { user: currentUser } = useUser();
@@ -49,6 +46,21 @@ const Doacao = () => {
   const [campaigns, setCampaigns] = useState<CampaignAPI[]>([]);
   const [isLoadingCampaigns, setIsLoadingCampaigns] = useState(false);
   const [campaignSearchTerm, setCampaignSearchTerm] = useState("");
+  const [rootCampaign, setRootCampaign] = useState<CampaignAPI | null>(null);
+
+  // Fetch root campaign
+  useEffect(() => {
+    const fetchRootCampaign = async () => {
+      try {
+        const campaign = await getRootCampaign();
+        setRootCampaign(campaign);
+      } catch (error) {
+        console.error("Erro ao buscar campanha root:", error);
+      }
+    };
+
+    fetchRootCampaign();
+  }, []);
 
   useEffect(() => {
     const fetchCampaigns = async () => {
@@ -198,10 +210,14 @@ const Doacao = () => {
   };
 
   const handleDirectDonation = () => {
-    // Direct donations to Fundação O Pão dos Pobres (specific campaign ID)
-    setSelectedCampaign(DIRECT_DONATION_CAMPAIGN_ID);
-    setIsCampaignConfirmed(true);
-    setCurrentStep("item-2");
+    // Direct donations to Fundação O Pão dos Pobres (root campaign)
+    if (rootCampaign?.id) {
+      setSelectedCampaign(rootCampaign.id);
+      setIsCampaignConfirmed(true);
+      setCurrentStep("item-2");
+    } else {
+      toast.error("Campanha root não encontrada. Tente novamente.");
+    }
   };
 
   const handleConfirmValue = () => {
@@ -299,8 +315,8 @@ const Doacao = () => {
                   isActive={isCampaignConfirmed}
                   value={
                     isCampaignConfirmed
-                      ? selectedCampaign === DIRECT_DONATION_CAMPAIGN_ID
-                        ? "Fundação O Pão dos Pobres"
+                      ? selectedCampaign === rootCampaign?.id
+                        ? rootCampaign?.title || "Fundação O Pão dos Pobres"
                         : campaignOptions.find((c) => c.value === selectedCampaign)?.label
                       : undefined
                   }
@@ -336,8 +352,7 @@ const Doacao = () => {
                   </Button>
                   <div className="text-center my-4">
                     <p className="text-sm text-gray-600 mb-2">
-                      Caso queira apenas fazer uma doação à "Fundação O Pão dos Pobres" sem vínculo
-                      a alguma campanha:
+                      Caso queira apenas fazer uma doação à "{rootCampaign?.title || "Fundação O Pão dos Pobres"}" sem vínculo:
                     </p>
                     <Button
                       variant="secondary"
@@ -345,8 +360,9 @@ const Doacao = () => {
                       onClick={handleDirectDonation}
                       className="w-auto px-4"
                       data-testid="direct-donation-button"
+                      disabled={!rootCampaign}
                     >
-                      Doar para Pão dos Pobres
+                      Doar para {rootCampaign?.title?.replace("Fundação ", "") || "Pão dos Pobres"}
                     </Button>
                   </div>
                 </div>
