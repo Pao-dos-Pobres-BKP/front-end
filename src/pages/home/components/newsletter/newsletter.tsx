@@ -63,6 +63,7 @@ export const Newsletter = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="h-12 w-full"
+            data-testid="newsletter-email"
           />
           <Button
             size="small"
@@ -70,6 +71,7 @@ export const Newsletter = () => {
             onClick={handleSubmit}
             variant="quinary"
             className="whitespace-nowrap"
+            data-testid="newsletter-submit"
           >
             Inscrever-se
           </Button>
@@ -80,6 +82,7 @@ export const Newsletter = () => {
             id="newsletter"
             onCheckedChange={() => setIsChecked((prev) => !prev)}
             checked={isChecked}
+            data-testid="newsletter-checkbox"
           />
           <label
             htmlFor="newsletter"

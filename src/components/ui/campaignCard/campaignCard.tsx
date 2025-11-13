@@ -27,7 +27,7 @@ export type CampaignCardProps = {
     | "event_news";
   onAction?: () => void;
   className?: string;
-  situation?: "approved" | "pending" | "rejected" | "recurring";
+  situation?: "approved" | "pending" | "rejected" | "recurring" | "finished" | "paused";
   type?: "event" | "news"; // for "event_news"
   date?: Date;
   isAdmin?: boolean; // to indicate if the user is admin
@@ -40,6 +40,7 @@ export type CampaignCardProps = {
   campaigns?: string[];
   lastDonation?: number;
   periodicity?: DonorDonationsAPI["periodicity"];
+  imageUrl?: string | null;
 };
 
 export default function CampaignCard({
@@ -62,6 +63,7 @@ export default function CampaignCard({
   date = new Date(),
   isAdmin = false,
   onAction,
+  imageUrl,
 }: CampaignCardProps) {
   const percent = goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
 
@@ -138,6 +140,7 @@ export default function CampaignCard({
         profileName={donorName ?? "Usuário"}
         role={role ?? "donor"}
         className={className}
+        imageUrl={imageUrl}
       />
     );
   }

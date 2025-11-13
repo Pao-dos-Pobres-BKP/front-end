@@ -5,6 +5,7 @@ import { Progress } from "../progress";
 import blueHeart from "@/assets/blueHeart.svg";
 import orangeHeart from "@/assets/orangeHeart.svg";
 import redHeart from "@/assets/redHeart.svg";
+import greenHeart from "@/assets/greenHeart.svg";
 import { Category } from "react-iconly";
 import { Edit2, Eye, X } from "lucide-react";
 
@@ -17,7 +18,7 @@ export type CampaignCardListProps = {
   endDate?: string;
   onAction?: () => void;
   className?: string;
-  situation?: "approved" | "pending" | "rejected" | "recurring";
+  situation?: "approved" | "pending" | "rejected" | "recurring" | "finished" | "paused";
   progressPercent?: number;
   isAdmin?: boolean;
 };
@@ -37,11 +38,16 @@ export function CampaignCardList(props: CampaignCardListProps) {
     isAdmin,
   } = props;
 
-  const situationIcons: Record<"approved" | "pending" | "rejected" | "recurring", string> = {
+  const situationIcons: Record<
+    "approved" | "pending" | "rejected" | "recurring" | "finished" | "paused",
+    string
+  > = {
     approved: blueHeart,
     pending: orangeHeart,
     rejected: redHeart,
     recurring: redHeart,
+    finished: greenHeart, // Verde para concluída (sucesso)
+    paused: orangeHeart, // Laranja para pausada (atenção)
   };
 
   return (
@@ -71,12 +77,16 @@ export function CampaignCardList(props: CampaignCardListProps) {
           {creatorName && (
             <p
               className={cn(
-                "text-xs sm:text-sm text-left w-full overflow-hidden text-ellipsis whitespace-nowrap mt-0.5",
+                "text-xs sm:text-sm text-left w-full overflow-hidden text-ellipsis whitespace-nowrap mt-0.5 font-medium",
                 situation === "recurring" || situation === "rejected"
                   ? "bg-gradient-to-b from-[#FF4A4A] to-[#FF8787] bg-clip-text text-transparent"
-                  : situation === "approved"
-                    ? "bg-gradient-to-b from-[#456DFF] to-[#AABCFF] bg-clip-text text-transparent"
-                    : "text-[#034d6b]"
+                  : situation === "finished"
+                    ? "bg-gradient-to-b from-[#16a34a] to-[#4ade80] bg-clip-text text-transparent"
+                    : situation === "approved"
+                      ? "bg-gradient-to-b from-[#456DFF] to-[#AABCFF] bg-clip-text text-transparent"
+                      : situation === "paused"
+                        ? "text-gray-600 font-semibold"
+                        : "text-[#034d6b]"
               )}
               title={`por ${creatorName}`}
             >
@@ -104,12 +114,25 @@ export function CampaignCardList(props: CampaignCardListProps) {
         <div className="w-full">
           {situation === "approved" || situation === "recurring" ? (
             <Progress value={percent} variant="blue" size="large" />
+          ) : situation === "finished" ? (
+            <div className="flex items-center gap-2">
+              <div className="w-full bg-[#e6e8eb] rounded-full overflow-hidden">
+                <div className="h-2 bg-gradient-to-r from-green-600 to-green-400 w-full rounded-full"></div>
+              </div>
+              <div className="text-center text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-green-600 to-green-500 rounded-full py-1 px-3 whitespace-nowrap shadow-md">
+                Concluída
+              </div>
+            </div>
+          ) : situation === "paused" ? (
+            <div className="text-center text-xs sm:text-sm font-semibold text-white bg-gradient-to-r from-gray-500 to-gray-400 rounded-full py-1 px-3 w-fit shadow-md">
+              Pausada
+            </div>
           ) : situation === "rejected" ? (
-            <div className="text-center text-xs sm:text-sm font-semibold text-white bg-red-500 rounded-full py-1 px-3 w-fit">
+            <div className="text-center text-xs sm:text-sm font-semibold text-white bg-gradient-to-r from-red-600 to-red-500 rounded-full py-1 px-3 w-fit shadow-md">
               Rejeitada
             </div>
           ) : (
-            <div className="text-center text-xs sm:text-sm font-semibold text-white bg-[#F6C337] rounded-full py-1 px-3 w-fit">
+            <div className="text-center text-xs sm:text-sm font-semibold text-white bg-gradient-to-r from-[#F6C337] to-[#E5B328] rounded-full py-1 px-3 w-fit shadow-md">
               Pendente Aprovação
             </div>
           )}
@@ -127,7 +150,11 @@ export function CampaignCardList(props: CampaignCardListProps) {
               ? "bg-[#F6C337] hover:bg-[#E5B328] text-white focus:ring-[#F6C337]"
               : situation === "rejected"
                 ? "bg-red-500 hover:bg-red-600 text-white focus:ring-red-500"
-                : "bg-[#034d6b] hover:bg-[#023a50] text-white focus:ring-[#034d6b]"
+                : situation === "finished"
+                  ? "bg-green-600 hover:bg-green-700 text-white focus:ring-green-600"
+                  : situation === "paused"
+                    ? "bg-gray-500 hover:bg-gray-600 text-white focus:ring-gray-500"
+                    : "bg-[#034d6b] hover:bg-[#023a50] text-white focus:ring-[#034d6b]"
           )}
           aria-label={
             isAdmin

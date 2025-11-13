@@ -23,6 +23,7 @@ import { ArrowUpDown } from "lucide-react";
 import CampaignCardSkeleton from "@/skeletons/campaign-card-skeleton";
 import type { CampaignBase } from "@/types/Campaign";
 import { Pagination } from "@/components/ui/Pagination";
+import { format } from "date-fns";
 
 type CampaignData = {
   id: string;
@@ -37,7 +38,7 @@ type CampaignData = {
 };
 
 type CampaignWithSituation = CampaignAPI & {
-  situation: "approved" | "pending" | "rejected" | "recurring";
+  situation: "approved" | "pending" | "rejected" | "recurring" | "finished" | "paused";
 };
 
 const Campanhas = () => {
@@ -88,42 +89,41 @@ const Campanhas = () => {
         if (user?.role === "DONOR") {
           try {
             const donationsResponse = await getUserDonations({ pageSize: 1000 });
-            donatedCampaignIds = new Set(donationsResponse.data.map((d) => d.campaignId));
+            donatedCampaignIds = new Set(
+              donationsResponse.data
+                .filter((d) => d.periodicity !== "CANCELED")
+                .map((d) => d.campaignId)
+            );
           } catch (error) {
             console.error("Erro ao buscar doações:", error);
           }
         }
 
-        let filteredCampaigns = campaignsResponse.data
-          .filter((campaign) => {
-            if (user?.role === "ADMIN") return true;
+        let filteredCampaigns = campaignsResponse.data.map((campaign): CampaignWithSituation => {
+          let situation: "approved" | "pending" | "rejected" | "recurring" | "finished" | "paused" =
+            "approved";
 
-            if (user?.role === "DONOR") {
-              return campaign.status !== "FINISHED";
+          if (campaign.status === "PENDING") {
+            situation = "pending";
+          } else if (campaign.status === "CANCELED") {
+            situation = "rejected";
+          } else if (campaign.status === "FINISHED") {
+            situation = "finished";
+          } else if (campaign.status === "PAUSED") {
+            situation = "paused";
+          } else if (campaign.status === "ACTIVE") {
+            if (user?.role === "DONOR" && donatedCampaignIds.has(campaign.id)) {
+              situation = "recurring";
+            } else {
+              situation = "approved";
             }
+          }
 
-            return campaign.status === "ACTIVE";
-          })
-          .map((campaign): CampaignWithSituation => {
-            let situation: "approved" | "pending" | "rejected" | "recurring" = "approved";
-
-            if (campaign.status === "PENDING") {
-              situation = "pending";
-            } else if (campaign.status === "CANCELED") {
-              situation = "rejected";
-            } else if (campaign.status === "ACTIVE") {
-              if (user?.role === "DONOR" && donatedCampaignIds.has(campaign.id)) {
-                situation = "recurring";
-              } else {
-                situation = "approved";
-              }
-            }
-
-            return {
-              ...campaign,
-              situation,
-            };
-          });
+          return {
+            ...campaign,
+            situation,
+          };
+        });
 
         if (sortOrder === "oldest") {
           filteredCampaigns = filteredCampaigns.reverse();
@@ -247,7 +247,7 @@ const Campanhas = () => {
         description: data.description,
         targetAmount: data.targetValue,
         startDate: originalCampaign.startDate,
-        endDate: data.endDate.toISOString(),
+        endDate: format(data.endDate, "yyyy-MM-dd") + "T12:00:00.000Z",
         imageUrl: imageUrl || undefined,
         status: originalCampaign.status,
         createdBy: user.id,
@@ -264,6 +264,19 @@ const Campanhas = () => {
     setIsEditModalOpen(false);
     setDeleteFromEditModal(true);
     setIsDeleteConfirmOpen(true);
+  };
+
+  const handleFinishCampaign = async () => {
+    if (!selectedCampaignToEdit?.id) return;
+
+    try {
+      await updateCampaignStatus(selectedCampaignToEdit.id, "FINISHED");
+      setIsEditModalOpen(false);
+      window.location.reload();
+    } catch (error) {
+      console.error("Erro ao finalizar campanha:", error);
+      alert("Erro ao finalizar campanha. Tente novamente.");
+    }
   };
 
   const handleOpenDeleteModal = (campaign: CampaignWithSituation) => {
@@ -317,8 +330,8 @@ const Campanhas = () => {
         title: data.title,
         description: data.description,
         targetAmount: data.targetValue,
-        startDate: data.startDate.toISOString(),
-        endDate: data.endDate.toISOString(),
+        startDate: format(data.startDate, "yyyy-MM-dd") + "T12:00:00.000Z",
+        endDate: format(data.endDate, "yyyy-MM-dd") + "T12:00:00.000Z",
         imageUrl,
         status: user.role === "ADMIN" ? "ACTIVE" : "PENDING",
         createdBy: user.id,
@@ -347,6 +360,7 @@ const Campanhas = () => {
           onClick={() => setSortOrder(sortOrder === "recent" ? "oldest" : "recent")}
           className="min-h-10 min-w-10 px-2 sm:px-4 bg-[var(--color-text-special-2)] text-white flex items-center justify-center gap-2 rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md hover:opacity-90 flex-shrink-0"
           title={sortOrder === "recent" ? "Ordenar por mais antigos" : "Ordenar por mais recentes"}
+          data-testid="sort-button"
         >
           <ArrowUpDown className="h-4 w-4" />
           <span className="text-sm font-medium hidden sm:inline whitespace-nowrap">
@@ -430,6 +444,8 @@ const Campanhas = () => {
         campaign={selectedCampaignToEdit}
         onSave={handleSaveEditedCampaign}
         onDeleteRequest={handleDeleteRequest}
+        onFinishCampaign={handleFinishCampaign}
+        isAdmin={user?.role === "ADMIN"}
       />
 
       {campaignToDelete && (

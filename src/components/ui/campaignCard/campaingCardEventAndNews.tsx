@@ -2,8 +2,7 @@ import { cn } from "@/lib/utils";
 import excluir2 from "@/assets/excluir2.png";
 import editIcon from "@/assets/editIcon.svg";
 import { Delete } from "react-iconly";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { dateUtils } from "@/utils/dateUtils";
 
 export type CampaignCardEventAndNewsProps = {
   title: string;
@@ -27,8 +26,7 @@ export function CampaignCardEventAndNews({
     news: { label: "Notícia", color: "#F68537" },
   }[type];
 
-  const formattedDate =
-    date instanceof Date ? format(date, "d 'de' MMMM 'de' yyyy", { locale: ptBR }) : date;
+  const formattedDate = date instanceof Date ? dateUtils.formatCompleteDate(date) : date;
 
   return (
     <article
@@ -39,6 +37,7 @@ export function CampaignCardEventAndNews({
         className
       )}
       aria-label={`Card ${typeConfig.label}: ${title}`}
+      data-testid={`news-event-card-${type}`}
     >
       <div className="w-28 sm:w-32 h-full flex-shrink-0 relative">
         <img
@@ -81,6 +80,7 @@ export function CampaignCardEventAndNews({
           onClick={onDelete}
           className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center bg-[#D65E5E] hover:bg-[#c44f4f] transition flex-shrink-0"
           aria-label="Excluir"
+          data-testid="delete-news-event-button"
         >
           <Delete set="light" primaryColor="#ffffff" size={20} />
         </button>
@@ -89,6 +89,7 @@ export function CampaignCardEventAndNews({
           onClick={onEdit}
           className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center bg-[#034d6b] hover:bg-[#023a50] transition flex-shrink-0"
           aria-label="Editar"
+          data-testid="edit-news-event-button"
         >
           <img src={editIcon} alt="Editar" className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>

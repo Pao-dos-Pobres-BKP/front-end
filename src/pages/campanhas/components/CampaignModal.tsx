@@ -3,7 +3,7 @@ import Modal from "@/components/ui/modal";
 import { Progress } from "@/components/ui/progress";
 import Button from "@/components/ui/button";
 import Link from "@/components/ui/link";
-import fundo from "@/assets/fundo-pp.png";
+import { getCampaignImage } from "@/constant/defaultImages";
 import { getUserDonations } from "@/services/donations";
 import { useUser } from "@/hooks/useUser";
 import { useNavigate } from "react-router-dom";
@@ -39,7 +39,7 @@ export default function CampaignModal({ open, onOpenChange, campaign }: Campaign
     minimumFractionDigits: 2,
   }).format(campaign.targetAmount);
 
-  const imageUrl = campaign.imageUrl || fundo;
+  const imageUrl = getCampaignImage(campaign.imageUrl);
 
   useEffect(() => {
     const checkCollaboration = async () => {
@@ -59,7 +59,7 @@ export default function CampaignModal({ open, onOpenChange, campaign }: Campaign
         setCheckingCollaboration(true);
         const donationsResponse = await getUserDonations({ pageSize: 1000 });
         const hasContributed = donationsResponse.data.some(
-          (donation) => donation.campaignId === campaign.id
+          (donation) => donation.campaignId === campaign.id && donation.periodicity !== "CANCELED"
         );
         setIsCollaborator(hasContributed);
       } catch (error) {
@@ -140,6 +140,24 @@ export default function CampaignModal({ open, onOpenChange, campaign }: Campaign
               >
                 Campanha rejeitada
               </Button>
+            ) : campaign.status === "FINISHED" ? (
+              <Button
+                variant="quaternary"
+                size="large"
+                className="w-full opacity-60 cursor-not-allowed bg-gradient-to-r from-green-600 to-green-500 text-white"
+                disabled
+              >
+                Campanha finalizada
+              </Button>
+            ) : campaign.status === "PAUSED" ? (
+              <Button
+                variant="quaternary"
+                size="large"
+                className="w-full opacity-60 cursor-not-allowed bg-gradient-to-r from-gray-500 to-gray-400 text-white"
+                disabled
+              >
+                Campanha pausada
+              </Button>
             ) : checkingCollaboration ? (
               <div className="space-y-2">
                 <div className="h-12 bg-gray-300 animate-pulse rounded-xl w-full" />
@@ -163,7 +181,7 @@ export default function CampaignModal({ open, onOpenChange, campaign }: Campaign
                   className="w-full"
                   onClick={() => onOpenChange(false)}
                 >
-                  Você é colaborador dessa campanha!
+                  Você é colaborante dessa campanha!
                 </Button>
                 <Link href="/perfil" variant="blue">
                   Gerenciar minha colaboração

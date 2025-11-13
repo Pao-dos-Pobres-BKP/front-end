@@ -46,6 +46,8 @@ export const CreateNewsEventModal: React.FC<CreateNewsEventModalProps> = ({
     date: "",
     dateStart: "",
     dateEnd: "",
+    timeStart: "",
+    timeEnd: "",
     location: "",
     url: "",
   });
@@ -74,6 +76,8 @@ export const CreateNewsEventModal: React.FC<CreateNewsEventModalProps> = ({
         date: "",
         dateStart: "",
         dateEnd: "",
+        timeStart: "",
+        timeEnd: "",
         location: "",
         url: "",
       });
@@ -91,7 +95,7 @@ export const CreateNewsEventModal: React.FC<CreateNewsEventModalProps> = ({
 
   function handleTypeChange(type: "news" | "event") {
     setSelectedType(type);
-    setForm((f) => ({ ...f, date: "", dateStart: "", dateEnd: "" }));
+    setForm((f) => ({ ...f, date: "", dateStart: "", dateEnd: "", timeStart: "", timeEnd: "" }));
     setErrors({});
   }
 
@@ -120,40 +124,49 @@ export const CreateNewsEventModal: React.FC<CreateNewsEventModalProps> = ({
         newErrors.date = "Data é obrigatória";
       }
     } else {
+      // Get today's date as string for comparison
       const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      const tomorrow = new Date(today);
-      tomorrow.setDate(tomorrow.getDate() + 1);
+      const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
       if (!form.dateStart) {
         newErrors.dateStart = "Data de início é obrigatória";
       } else {
         const startDate = new Date(form.dateStart);
-        startDate.setHours(0, 0, 0, 0);
+        const startDateStr = `${startDate.getUTCFullYear()}-${String(startDate.getUTCMonth() + 1).padStart(2, "0")}-${String(startDate.getUTCDate()).padStart(2, "0")}`;
 
-        if (startDate < today) {
-          newErrors.dateStart = "Data de início não pode ser anterior ao dia atual";
+        if (startDateStr <= todayStr) {
+          newErrors.dateStart = "Data de início deve ser a partir de amanhã";
         }
       }
 
       if (!form.dateEnd) {
         newErrors.dateEnd = "Data de término é obrigatória";
-      } else {
-        const endDate = new Date(form.dateEnd);
-        endDate.setHours(0, 0, 0, 0);
+      }
 
-        if (endDate < tomorrow) {
-          newErrors.dateEnd = "Data de término não pode ser anterior a amanhã";
-        }
+      if (!form.timeStart) {
+        newErrors.timeStart = "Horário de início é obrigatório";
+      }
+
+      if (!form.timeEnd) {
+        newErrors.timeEnd = "Horário de término é obrigatório";
       }
 
       if (form.dateStart && form.dateEnd && !newErrors.dateStart && !newErrors.dateEnd) {
         const startDate = new Date(form.dateStart);
-        const endDate = new Date(form.dateEnd);
+        const startDateStr = `${startDate.getUTCFullYear()}-${String(startDate.getUTCMonth() + 1).padStart(2, "0")}-${String(startDate.getUTCDate()).padStart(2, "0")}`;
 
-        if (startDate > endDate) {
-          newErrors.dateEnd = "Data de término deve ser posterior à data de início";
+        const endDate = new Date(form.dateEnd);
+        const endDateStr = `${endDate.getUTCFullYear()}-${String(endDate.getUTCMonth() + 1).padStart(2, "0")}-${String(endDate.getUTCDate()).padStart(2, "0")}`;
+
+        if (endDateStr < startDateStr) {
+          newErrors.dateEnd = "Data de término não pode ser anterior à data de início";
+        }
+
+        // Validar horários se as datas forem iguais
+        if (endDateStr === startDateStr && form.timeStart && form.timeEnd && !newErrors.timeStart && !newErrors.timeEnd) {
+          if (form.timeEnd <= form.timeStart) {
+            newErrors.timeEnd = "Horário de término deve ser posterior ao horário de início";
+          }
         }
       }
     }
@@ -180,11 +193,15 @@ export const CreateNewsEventModal: React.FC<CreateNewsEventModalProps> = ({
           url: DEFAULT_URLS.NEWS,
         });
       } else {
+        // Combinar data e hora para criar ISO strings sem conversão de timezone
+        const dateStartISO = `${form.dateStart}T${form.timeStart}:00.000Z`;
+        const dateEndISO = `${form.dateEnd}T${form.timeEnd}:00.000Z`;
+
         await onCreate("event", {
           title: form.title,
           description: form.description,
-          dateStart: new Date(form.dateStart).toISOString(),
-          dateEnd: new Date(form.dateEnd).toISOString(),
+          dateStart: dateStartISO,
+          dateEnd: dateEndISO,
           location: form.location,
           url: DEFAULT_URLS.EVENT,
         });
@@ -279,33 +296,65 @@ export const CreateNewsEventModal: React.FC<CreateNewsEventModalProps> = ({
               {errors.date && <p className="text-xs text-red-500 mt-1">{errors.date}</p>}
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="block text-sm font-semibold text-[#034d6b] mb-1.5">
-                  Início <span className="text-red-500">*</span>
-                </label>
-                <Input
-                  type="date"
-                  value={form.dateStart}
-                  onChange={(e) => handleChange("dateStart", e.target.value)}
-                  className={`w-full h-10 ${errors.dateStart ? "border-red-500" : ""}`}
-                />
-                {errors.dateStart && (
-                  <p className="text-xs text-red-500 mt-1">{errors.dateStart}</p>
-                )}
+            <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-sm font-semibold text-[#034d6b] mb-1.5">
+                    Data de Início <span className="text-red-500">*</span>
+                  </label>
+                  <Input
+                    type="date"
+                    value={form.dateStart}
+                    onChange={(e) => handleChange("dateStart", e.target.value)}
+                    className={`w-full h-10 ${errors.dateStart ? "border-red-500" : ""}`}
+                  />
+                  {errors.dateStart && (
+                    <p className="text-xs text-red-500 mt-1">{errors.dateStart}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-[#034d6b] mb-1.5">
+                    Data de Término <span className="text-red-500">*</span>
+                  </label>
+                  <Input
+                    type="date"
+                    value={form.dateEnd}
+                    onChange={(e) => handleChange("dateEnd", e.target.value)}
+                    className={`w-full h-10 ${errors.dateEnd ? "border-red-500" : ""}`}
+                  />
+                  {errors.dateEnd && <p className="text-xs text-red-500 mt-1">{errors.dateEnd}</p>}
+                </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-semibold text-[#034d6b] mb-1.5">
-                  Término <span className="text-red-500">*</span>
-                </label>
-                <Input
-                  type="date"
-                  value={form.dateEnd}
-                  onChange={(e) => handleChange("dateEnd", e.target.value)}
-                  className={`w-full h-10 ${errors.dateEnd ? "border-red-500" : ""}`}
-                />
-                {errors.dateEnd && <p className="text-xs text-red-500 mt-1">{errors.dateEnd}</p>}
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-sm font-semibold text-[#034d6b] mb-1.5">
+                    Horário de Início <span className="text-red-500">*</span>
+                  </label>
+                  <Input
+                    type="time"
+                    value={form.timeStart}
+                    onChange={(e) => handleChange("timeStart", e.target.value)}
+                    className={`w-full h-10 ${errors.timeStart ? "border-red-500" : ""}`}
+                  />
+                  {errors.timeStart && (
+                    <p className="text-xs text-red-500 mt-1">{errors.timeStart}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-[#034d6b] mb-1.5">
+                    Horário de Término <span className="text-red-500">*</span>
+                  </label>
+                  <Input
+                    type="time"
+                    value={form.timeEnd}
+                    onChange={(e) => handleChange("timeEnd", e.target.value)}
+                    className={`w-full h-10 ${errors.timeEnd ? "border-red-500" : ""}`}
+                  />
+                  {errors.timeEnd && <p className="text-xs text-red-500 mt-1">{errors.timeEnd}</p>}
+                </div>
               </div>
             </div>
           )}

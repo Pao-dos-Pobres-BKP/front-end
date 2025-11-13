@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import {
   Accordion,
   AccordionItem,
@@ -7,11 +7,13 @@ import {
 } from "@/components/ui/accordion";
 import { Progress } from "@/components/ui/progress";
 import Button from "@/components/ui/button";
-import { Edit } from "lucide-react";
+import { Edit, Settings } from "lucide-react";
 import { WhatsAppIcon } from "@/icons/whatsappIcon";
 import { useUser } from "@/hooks/useUser";
 import { useHowToHelp } from "./useHowToHelp";
 import type { HowToHelpAPI } from "@/services/how-to-help";
+import { getRootCampaign, type CampaignAPI } from "@/services/campaigns";
+import { SelectRootCampaignModal } from "./SelectRootCampaignModal";
 
 const WhatsAppButton = () => {
   const handleContactClick = () => {
@@ -21,6 +23,7 @@ const WhatsAppButton = () => {
     <Button
       onClick={handleContactClick}
       className="bg-[var(--color-text-contact)] text-white w-full flex items-center justify-center gap-2 hover:bg-[var(--color-text-contact)] hover:opacity-95"
+      data-testid="contact-button"
     >
       <WhatsAppIcon className="w-5 h-5 text-[#25D366]" />
       Entrar em Contato
@@ -29,10 +32,6 @@ const WhatsAppButton = () => {
 };
 
 export default function HowToHelpSection() {
-  //simula api
-  const metaCampanha = 1000;
-  const arrecadado = 750;
-  const percentual = Math.min((arrecadado / metaCampanha) * 100, 100);
   const { user } = useUser();
   const { howToHelpList, updateHowToHelp } = useHowToHelp();
 
@@ -42,6 +41,34 @@ export default function HowToHelpSection() {
   const [editText, setEditText] = useState("");
 
   const [openAccordionId, setOpenAccordionId] = useState<string | null>(null);
+
+  const [rootCampaign, setRootCampaign] = useState<CampaignAPI | null>(null);
+  const [loadingCampaign, setLoadingCampaign] = useState(true);
+  const [isSelectModalOpen, setIsSelectModalOpen] = useState(false);
+
+  const metaCampanha = rootCampaign?.targetAmount || 1000;
+  const arrecadado = rootCampaign?.currentAmount || 0;
+  const percentual = Math.min((arrecadado / metaCampanha) * 100, 100);
+
+  useEffect(() => {
+    fetchRootCampaign();
+  }, []);
+
+  const fetchRootCampaign = async () => {
+    setLoadingCampaign(true);
+    try {
+      const campaign = await getRootCampaign();
+      setRootCampaign(campaign);
+    } catch (error) {
+      console.error("Erro ao buscar campanha principal:", error);
+    } finally {
+      setLoadingCampaign(false);
+    }
+  };
+
+  const handleCampaignUpdated = () => {
+    fetchRootCampaign();
+  };
 
   const handleEdit = (howToHelp: HowToHelpAPI) => {
     setOpenAccordionId(howToHelp.id);
@@ -73,19 +100,44 @@ export default function HowToHelpSection() {
   return (
     <section className="w-full bg-gradient-to-b from-blue-50 to-blue-100">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 space-y-6">
-        <h2 className="text-2xl sm:text-3xl font-bold text-left text-[#024b5a]">COMO AJUDAR?</h2>
-
-        <div className="space-y-2">
-          <h3 className="text-lg font-semibold text-[#024b5a] text-left">
-            Campanha 130 anos do Pão
-          </h3>
-          <Progress value={Math.round(percentual)} variant="blue" />
-          <div className="flex justify-end">
-            <span className="text-sm font-medium text-[#024b5a]">
-              {percentual.toFixed(0)}% atingida
-            </span>
-          </div>
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl sm:text-3xl font-bold text-left text-[#024b5a]">COMO AJUDAR?</h2>
+          {userIsAdmin && (
+            <Button
+              onClick={() => setIsSelectModalOpen(true)}
+              variant="secondary"
+              className="flex items-center gap-2"
+              data-testid="edit-root-campaign-button"
+            >
+              <Settings className="h-4 w-4" />
+              <span className="hidden sm:inline">Alterar Campanha</span>
+            </Button>
+          )}
         </div>
+
+        {loadingCampaign ? (
+          <div className="space-y-2">
+            <div className="h-6 bg-gray-200 rounded animate-pulse w-3/4" />
+            <div className="h-4 bg-gray-200 rounded animate-pulse" />
+          </div>
+        ) : rootCampaign ? (
+          <div className="space-y-2">
+            <h3
+              className="text-lg font-semibold text-[#024b5a] text-left"
+              data-testid="root-campaign-title"
+            >
+              {rootCampaign.title}
+            </h3>
+            <Progress value={Math.round(percentual)} variant="blue" />
+            <div className="flex justify-end">
+              <span className="text-sm font-medium text-[#024b5a]">
+                {percentual.toFixed(0)}% atingida
+              </span>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
 
         <div className="flex flex-col lg:flex-row gap-16">
           <div className="flex-1">
@@ -95,10 +147,15 @@ export default function HowToHelpSection() {
               className="space-y-3"
               value={openAccordionId ?? ""}
               onValueChange={setOpenAccordionId}
+              data-testid="how-to-help-accordion"
             >
               {howToHelpList.map((howToHelp) => (
                 <AccordionItem key={howToHelp.id} value={howToHelp.id}>
-                  <AccordionTrigger variant="secondary" className="w-full [&>svg]:hidden">
+                  <AccordionTrigger
+                    variant="secondary"
+                    className="w-full [&>svg]:hidden"
+                    data-testid={`accordion-trigger-${howToHelp.id}`}
+                  >
                     <div className="flex items-center justify-between w-full">
                       <div className="flex items-center gap-3">
                         <span className="text-[#024b5a] font-medium text-lg">
@@ -122,7 +179,7 @@ export default function HowToHelpSection() {
                     </div>
                   </AccordionTrigger>
                   <AccordionContent variant="secondary">
-                    <div className="py-4">
+                    <div className="py-2">
                       {editingId === howToHelp.id ? (
                         <div>
                           <textarea
@@ -137,8 +194,10 @@ export default function HowToHelpSection() {
                           </small>
                         </div>
                       ) : (
-                        <div className="flex flex-col lg:flex-row lg:items-end gap-4">
-                          <p className="flex-1 text-sm leading-relaxed">{howToHelp.description}</p>
+                        <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+                          <p className="flex-1 text-sm text-justify leading-relaxed">
+                            {howToHelp.description}
+                          </p>
                           <div className="w-full lg:w-52 flex-shrink-0">
                             <WhatsAppButton />
                           </div>
@@ -154,6 +213,7 @@ export default function HowToHelpSection() {
             <Button
               onClick={() => (window.location.href = "/doacao")} //simula rota de /doacoes
               className="bg-[var(--color-text-special)] text-white w-full hover:bg-[var(--color-text-special)] hover:opacity-95"
+              data-testid="donation-button"
             >
               Faça sua doação!
             </Button>
@@ -166,6 +226,13 @@ export default function HowToHelpSection() {
           </div>
         </div>
       </div>
+
+      <SelectRootCampaignModal
+        open={isSelectModalOpen}
+        onOpenChange={setIsSelectModalOpen}
+        onSuccess={handleCampaignUpdated}
+        currentCampaignId={rootCampaign?.id}
+      />
 
       <style>{`
         .accordion-icon { display: inline-block; }

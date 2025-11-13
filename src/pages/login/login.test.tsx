@@ -95,7 +95,7 @@ describe("Login interactions", () => {
     const { container } = render(<Login />);
     const c = within(container);
 
-    fireEvent.click(c.getByTestId("btn-cadastrar"));
+    fireEvent.click(c.getByTestId("register-button"));
 
     await waitFor(() => expect(c.getByText("MockPersonalFields")).toBeInTheDocument());
   });

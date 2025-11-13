@@ -7,6 +7,7 @@ import { Select } from "./select";
 import { DatePicker } from "./Calendar/date-picker";
 import { ROUTES } from "@/constant/routes";
 import { Eye, EyeOff } from "lucide-react";
+import { passwordRequirements } from "@/schemas/auth";
 
 interface EditUserModalProps {
   isOpen: boolean;
@@ -16,6 +17,32 @@ interface EditUserModalProps {
   onDeleteAccount?: () => Promise<void>;
   onUpdateAccount?: (userData: User) => Promise<void>;
 }
+
+const PasswordRequirements = ({ password }: { password: string }) => {
+  const requirements = passwordRequirements;
+
+  if (!password) {
+    return null;
+  }
+
+  return (
+    <div className="mt-2 mb-4 text-left">
+      <ul className="space-y-1">
+        {requirements.map((req) => {
+          const isValid = req.test(password);
+          return (
+            <li
+              key={req.label}
+              className={`text-sm transition-colors ${isValid ? "text-green-600" : "text-red-600"}`}
+            >
+              {req.label}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+};
 
 export default function EditUserModal({
   isOpen,
@@ -27,22 +54,20 @@ export default function EditUserModal({
 }: EditUserModalProps) {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<User>(initialData);
-  const [previewPhoto, setPreviewPhoto] = useState(
-    initialData.photo || "https://via.placeholder.com/60"
-  );
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
 
   const isAdmin = initialData.role === "ADMIN";
 
   useEffect(() => {
     if (isOpen) {
       setFormData(initialData);
-      setPreviewPhoto(initialData.photo || "https://via.placeholder.com/60");
       setNewPassword(""); // Reset password field when modal opens
+      setPasswordError("");
     }
   }, [isOpen, initialData]);
 
@@ -57,23 +82,23 @@ export default function EditUserModal({
     setFormData((prev) => ({ ...prev, gender: value as Gender }));
   };
 
-  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setPreviewPhoto(url);
-      setFormData((prev) => ({ ...prev, photo: url }));
-    }
-  };
-
-  const handlePhotoRemove = () => {
-    setPreviewPhoto("https://via.placeholder.com/60");
-    setFormData((prev) => ({ ...prev, photo: "" }));
-  };
-
   const handleConfirm = async () => {
     try {
       setIsSaving(true);
+      setPasswordError("");
+
+      // Validate password if it's been filled
+      if (newPassword) {
+        const isPasswordValid = passwordRequirements.every((requirement) =>
+          requirement.test(newPassword)
+        );
+
+        if (!isPasswordValid) {
+          setPasswordError("A senha não atende a todos os requisitos.");
+          setIsSaving(false);
+          return;
+        }
+      }
 
       // Add password to formData if provided
       const dataToUpdate = {
@@ -123,28 +148,6 @@ export default function EditUserModal({
       <div className="bg-white w-full max-w-lg rounded-xl p-6 shadow-lg mx-4 sm:mx-0">
         <h2 className="block text-left text-2xl font-bold text-[#005172] mb-4">Editar Perfil</h2>
 
-        <div className="flex items-center gap-4 mb-6">
-          <img
-            src={previewPhoto}
-            alt="foto de perfil"
-            className="w-16 h-16 rounded-full object-cover border"
-          />
-          <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-[#005172] cursor-pointer">
-              <span className="px-3 py-1 border rounded-lg hover:bg-gray-100">Alterar Foto</span>
-              <input type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
-            </label>
-            {previewPhoto !== "https://via.placeholder.com/60" && (
-              <button
-                type="button"
-                onClick={handlePhotoRemove}
-                className="px-3 py-1 border border-red-500 text-red-500 rounded-lg text-sm hover:bg-gray-400 cursor-pointer"
-              >
-                Remover Foto
-              </button>
-            )}
-          </div>
-        </div>
         <div className="mb-4">
           <Input
             id="fullname"
@@ -178,6 +181,7 @@ export default function EditUserModal({
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             fullWidth
+            error={passwordError}
             RightIcon={
               showPassword ? (
                 <EyeOff className="h-4 w-4 cursor-pointer" />
@@ -187,6 +191,7 @@ export default function EditUserModal({
             }
             onClickRightIcon={() => setShowPassword((prev) => !prev)}
           />
+          <PasswordRequirements password={newPassword} />
         </div>
 
         {!isAdmin && (
@@ -262,15 +267,19 @@ export default function EditUserModal({
             {isSaving ? "Salvando..." : "Confirmar"}
           </button>
         </div>
-        <div className="flex flex-col items-center mt-4">
-          <button
-            type="button"
-            onClick={() => setShowDeleteModal(true)}
-            className="text-[#D65E5E] text-sm underline hover:text-red-600 hover:bg-gray-400 cursor-pointer"
-          >
-            Apagar minha conta
-          </button>
-        </div>
+
+        {(!isAdmin || initialData.root) && (
+          <div className="flex flex-col items-center mt-4">
+            <button
+              type="button"
+              onClick={() => setShowDeleteModal(true)}
+              className="text-[#D65E5E] text-sm underline hover:text-red-600 cursor-pointer"
+              data-testid="delete-account-button"
+            >
+              Apagar minha conta
+            </button>
+          </div>
+        )}
       </div>
 
       <Modal

@@ -9,13 +9,14 @@ import ActivityIcon from "@/assets/Activity.svg?react";
 import { Menu, X, Heart } from "lucide-react";
 import { useUser } from "@/hooks/useUser";
 import { NAVBAR_HEIGHT_CLASS, Z_INDEX } from "@/constant/layout";
+import { getUserAvatar } from "@/constant/defaultAvatar";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const { user } = useUser();
   const isAuthenticated = !!user;
-  const avatarUrl = "https://i.pravatar.cc/40";
+  const avatarUrl = getUserAvatar(user?.imageUrl);
 
   const getFirstName = (fullName: string) => {
     return fullName.split(" ")[0];
@@ -88,7 +89,7 @@ function Navbar() {
               <img
                 src={avatarUrl}
                 alt={`Avatar de ${user.fullname}`}
-                className="h-8 w-8 rounded-full"
+                className="h-8 w-8 rounded-full object-cover"
               />
               <strong className="text-[var(--color-components)] font-semibold ">
                 {getFirstName(user.fullname)}
@@ -125,7 +126,7 @@ function Navbar() {
                   <img
                     src={avatarUrl}
                     alt={`Avatar de ${user.fullname}`}
-                    className="h-8 w-8 rounded-full flex-shrink-0"
+                    className="h-8 w-8 rounded-full object-cover flex-shrink-0"
                   />
                   <strong className="text-[var(--color-components)] truncate font-semibold text-lg">
                     {getFirstName(user.fullname)}

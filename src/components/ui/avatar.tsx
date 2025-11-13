@@ -1,6 +1,7 @@
 import { cva, type VariantProps } from "class-variance-authority";
+import { getUserAvatar } from "@/constant/defaultAvatar";
 
-const avatarVariants = cva("", {
+const avatarVariants = cva("object-cover", {
   variants: {
     size: {
       small: "h-6 w-6 rounded-xl",
@@ -11,9 +12,10 @@ const avatarVariants = cva("", {
 });
 
 interface AvatarProps extends VariantProps<typeof avatarVariants> {
-  imgUrl: string;
+  imgUrl?: string | null;
+  alt?: string;
 }
 
-export function Avatar({ imgUrl, size = "medium" }: AvatarProps) {
-  return <img src={imgUrl} className={avatarVariants({ size })} />;
+export function Avatar({ imgUrl, size = "medium", alt = "Avatar do usuário" }: AvatarProps) {
+  return <img src={getUserAvatar(imgUrl)} alt={alt} className={avatarVariants({ size })} />;
 }

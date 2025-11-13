@@ -240,6 +240,7 @@ export function Hero({ items, className, showArrows = true, showIndicators = tru
                           size="small"
                           variant="quaternary"
                           onClick={() => window.open(item.buttonLink!)}
+                          data-testid="hero-event-button"
                         >
                           {item.buttonLabel}
                         </Button>
@@ -265,6 +266,7 @@ export function Hero({ items, className, showArrows = true, showIndicators = tru
             variant="secondary"
             onClick={() => go(-1)}
             className="pointer-events-auto rounded-full bg-white/85 shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-white/80 [@media(hover:none)]:opacity-100"
+            data-testid="hero-prev-button"
           >
             <ChevronLeft className="h-5 w-5 text-gray-900" />
           </Button>
@@ -275,6 +277,7 @@ export function Hero({ items, className, showArrows = true, showIndicators = tru
             variant="secondary"
             onClick={() => go(1)}
             className="pointer-events-auto rounded-full bg-white/85 shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-white/80 [@media(hover:none)]:opacity-100"
+            data-testid="hero-next-button"
           >
             <ChevronRight className="h-5 w-5 text-gray-900" />
           </Button>

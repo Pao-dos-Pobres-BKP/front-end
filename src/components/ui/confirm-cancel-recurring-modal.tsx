@@ -15,11 +15,11 @@ export default function ConfirmCancelRecurringModal({
     <div className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-50 px-2">
       <div className="bg-white w-full max-w-md rounded-xl p-6 shadow-lg mx-4 sm:mx-0 text-left">
         <h2 className="text-xl font-bold text-[#005172] mb-4">
-          Você deseja cancelar sua recorrência?
+          Você deseja cancelar a recorrência?
         </h2>
         <p className="text-sm text-gray-700 mb-6">
-          Ao cancelar sua assinatura recorrente, não haverá novas cobranças e você perderá acesso
-          aos benefícios relacionados. Deseja realmente prosseguir?
+          Ao cancelar esta assinatura recorrente, não haverá novas cobranças e será perdido todo o
+          acesso aos benefícios relacionados. Deseja realmente prosseguir?
         </p>
 
         <div className="flex justify-end gap-4">

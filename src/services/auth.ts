@@ -30,6 +30,8 @@ async function getToken(credentials: LoginInput): Promise<LoginResponse> {
 
 export async function getDonor(id: string, accessToken: string): Promise<User> {
   const { data } = await api.get(`/donors/${id}`);
+  console.log("🔍 [AUTH] Dados do donor recebidos do backend:", data);
+  console.log("📷 [AUTH] Foto do donor no backend:", data.imageUrl);
   const user: User = {
     id: data.id,
     email: data.email,
@@ -42,6 +44,7 @@ export async function getDonor(id: string, accessToken: string): Promise<User> {
     role: "DONOR",
     totalDonated: data.totalDonated,
     createdAt: data.createdAt ? new Date(data.createdAt) : undefined,
+    imageUrl: data.imageUrl,
   };
   return user;
 }
@@ -56,6 +59,7 @@ export async function getAdmin(id: string, accessToken: string): Promise<User> {
     accessToken: accessToken,
     role: "ADMIN",
     totalDonated: data.totalDonated,
+    imageUrl: data.imageUrl,
   };
   return user;
 }
@@ -99,6 +103,8 @@ export async function updateAccount(id: string, user: User): Promise<void> {
   if (user.cpf) {
     requestBody.cpf = user.cpf.replace(/\D/g, "");
   }
-
+  if (user.password) {
+    requestBody.password = user.password;
+  }
   return api.patch(`${updateEndpoint}/${id}`, requestBody);
 }

@@ -11,6 +11,8 @@ export interface DonorItem {
   phone: string;
   cpf: string;
   createdAt: string;
+  totalDonated: number;
+  imageUrl?: string;
 }
 
 export interface PaginatedDonors {
@@ -55,4 +57,63 @@ export async function updateDonor(id: string, data: UpdateDonorData): Promise<vo
 
 export async function deleteDonor(id: string): Promise<void> {
   await api.delete(`/donors/${id}`);
+}
+
+export async function getDonorById(id: string): Promise<DonorItem> {
+  const { data } = await api.get<DonorItem>(`/donors/${id}`);
+  return data;
+}
+
+export interface DonorDonation {
+  id: string;
+  amount: string;
+  periodicity: "MONTHLY" | "QUARTERLY" | "SEMI_ANNUAL" | "YEARLY" | "CANCELED" | null;
+  donorId: string;
+  campaignId: string;
+  createdAt: string;
+  campaign?: {
+    id: string;
+    title: string;
+    description: string;
+    targetAmount: string;
+    currentAmount: string;
+    startDate: string;
+    endDate: string;
+    imageUrl: string;
+    status: string;
+    createdBy: string;
+    user: {
+      fullName: string;
+    };
+  };
+  payment: Array<{
+    id: string;
+    paymentMethod: string;
+    status: string;
+    amount: string;
+    paidAt: string;
+    donationId: string;
+  }>;
+}
+
+export async function getDonorDonations(
+  donorId: string,
+  page = 1,
+  limit = 10
+): Promise<DonorDonation[]> {
+  const { data } = await api.get<DonorDonation[]>(`/donors/donations/${donorId}`, {
+    params: { page, limit },
+  });
+  return data;
+}
+
+export async function updateDonorAvatar(id: string, file: File): Promise<void> {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  await api.patch(`/donors/${id}/avatar`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 }

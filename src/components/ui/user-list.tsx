@@ -10,6 +10,7 @@ interface User {
   id?: string | number;
   profileName: string;
   role: UserRole;
+  imageUrl?: string | null;
 }
 
 interface UserListProps {
@@ -126,6 +127,7 @@ export default function UserList({ users, onUserAction }: UserListProps) {
                 key={user.id ?? `${keyPrefix}-${index}`}
                 profileName={user.profileName}
                 role={user.role}
+                imageUrl={user.imageUrl}
                 onAction={() => onUserAction?.(user)}
                 className="w-full"
                 showRole={showRole}

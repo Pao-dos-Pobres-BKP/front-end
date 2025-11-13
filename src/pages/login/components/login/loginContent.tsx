@@ -70,6 +70,7 @@ export default function LoginContent({ onRegisterClick }: { onRegisterClick: () 
         <div className="my-8 flex flex-col gap-4">
           <Input
             id="email"
+            name="email"
             label="E-mail"
             placeholder="Digite seu e-mail"
             type="email"
@@ -77,10 +78,12 @@ export default function LoginContent({ onRegisterClick }: { onRegisterClick: () 
             onChange={handleChange("email")}
             fullWidth
             error={errors.email}
+            data-testid="login-email"
           />
 
           <Input
             id="senha"
+            name="password"
             label="Senha"
             placeholder="Digite sua senha"
             type={showPassword ? "text" : "password"}
@@ -90,6 +93,7 @@ export default function LoginContent({ onRegisterClick }: { onRegisterClick: () 
             error={errors.password}
             RightIcon={showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             onClickRightIcon={() => setShowPassword((prev) => !prev)}
+            data-testid="login-password"
           />
 
           <div className="mt-[-12px] flex space-between w-full text-sm justify-between items-center">
@@ -97,15 +101,28 @@ export default function LoginContent({ onRegisterClick }: { onRegisterClick: () 
               type="button"
               onClick={() => setIsForgotPasswordOpen(true)}
               className="text-[var(--color-components)] border-[var(--color-components)] focus:ring-[var(--color-components)] underline cursor-pointer text-sm"
+              data-testid="forgot-password-button"
             >
               Esqueceu sua senha?
             </button>
-            <div>{apiError && <p className=" text-sm text-red-600">{apiError}</p>}</div>
+            <div>
+              {apiError && (
+                <p className=" text-sm text-red-600" data-testid="login-error">
+                  {apiError}
+                </p>
+              )}
+            </div>
           </div>
         </div>
 
         <div className="flex flex-col gap-2">
-          <Button type="submit" variant="confirm" className="w-full" disabled={isLoading}>
+          <Button
+            type="submit"
+            variant="confirm"
+            className="w-full"
+            disabled={isLoading}
+            data-testid="login-submit"
+          >
             {isLoading ? "Carregando..." : "Entrar"}
           </Button>
 
@@ -114,7 +131,7 @@ export default function LoginContent({ onRegisterClick }: { onRegisterClick: () 
           <Button
             type="button"
             variant="primary"
-            data-testid="btn-cadastrar"
+            data-testid="register-button"
             className="w-full"
             onClick={onRegisterClick}
           >

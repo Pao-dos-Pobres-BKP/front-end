@@ -18,6 +18,7 @@ import { getGlobalMetrics } from "@/services/metrics/global";
 import { getCampaigns, type CampaignAPI } from "@/services/campaigns";
 import { useUser } from "@/hooks/useUser";
 import { useNavigate } from "react-router-dom";
+import { ResolutionWarningModal } from "@/components/ui/ResolutionWarningModal";
 
 type MetricData = {
   newDonors: number;
@@ -284,12 +285,13 @@ function Dashboard() {
   };
 
   return (
-    <div className="bg-[#2F5361]">
-      <main className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex gap-6">
+    <div className="bg-[#2F5361] min-h-[68vh] flex flex-col">
+      <ResolutionWarningModal minWidth={1024} />
+      <main className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex gap-6 flex-1">
         <aside
           className={`transition-all duration-300 ${isSidebarOpen ? "w-80" : "w-0"} overflow-hidden`}
         >
-          <div className="bg-white rounded-lg p-4 h-full flex flex-col gap-4">
+          <div className="bg-white rounded-lg p-4 h-full flex flex-col gap-4 truncate">
             <div className="flex justify-between items-center">
               <h2 className="font-bold text-lg text-[var(--color-components)]">Dashboard</h2>
               <button
@@ -303,6 +305,7 @@ function Dashboard() {
             <div className="flex flex-col gap-2">
               <label className="text-sm font-semibold text-gray-600 text-left">Setor</label>
               <Select
+                id="sector-filter"
                 options={sectorOptions}
                 value={sectorFilter}
                 onChange={setSectorFilter}
@@ -319,6 +322,7 @@ function Dashboard() {
             <div className="flex flex-col gap-2">
               <label className="text-sm font-semibold text-gray-600 text-left">Métrica 1</label>
               <Select
+                id="metric1-filter"
                 options={metric1Options}
                 value={metric1Filter}
                 onChange={setMetric1Filter}
@@ -336,6 +340,7 @@ function Dashboard() {
             <div className="flex flex-col gap-2">
               <label className="text-sm font-semibold text-gray-600 text-left">Métrica 2</label>
               <Select
+                id="metric2-filter"
                 options={metric2Options}
                 value={metric2Filter}
                 onChange={setMetric2Filter}
@@ -410,6 +415,7 @@ function Dashboard() {
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-semibold text-gray-600 text-left">Período</label>
                 <DateRangePicker
+                  id="period-filter"
                   value={datePeriod}
                   onChange={setDatePeriod}
                   placeholder="Selecione..."
@@ -479,7 +485,7 @@ function Dashboard() {
             )}
           </div>
 
-          <div className="bg-white rounded-lg p-6 flex-1 flex flex-col">
+          <div className="bg-white rounded-lg p-6 flex-1 flex flex-col max-h-[600px]">
             <RenderChart
               chartKey={chartToShow}
               campaignId={selectedCampaign ? selectedCampaign.id : null}

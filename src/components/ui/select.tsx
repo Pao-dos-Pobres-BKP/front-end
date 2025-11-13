@@ -109,6 +109,7 @@ export const Select: React.FC<SelectProps> = ({
         <button
           type="button"
           id={id}
+          data-testid={"select-" + id}
           className={cn(
             "flex items-center justify-between rounded-lg border border-[var(--color-components)]/30 bg-white px-3 py-2 text-sm text-black shadow-sm outline-none focus:border-[var(--color-components)] focus:ring-1 focus:ring-[var(--color-components)] transition duration-150 w-full",
             open && "ring-1 ring-[var(--color-components)]",
@@ -143,6 +144,7 @@ export const Select: React.FC<SelectProps> = ({
           >
             {options.map((option) => (
               <li
+                data-testid={`select-option-${option.value}`}
                 key={option.value}
                 className={cn(
                   "px-3 py-2 cursor-pointer select-none flex items-center text-black hover:bg-[var(--color-components)]/10 transition",

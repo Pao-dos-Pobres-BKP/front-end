@@ -42,6 +42,7 @@ export default function PersonalFormFields({ form, errors, onChange }: PersonalF
     <>
       <Input
         id="nomeCompleto"
+        name="nomeCompleto"
         label="Nome Completo"
         placeholder="Digite seu nome completo"
         type="text"
@@ -49,6 +50,7 @@ export default function PersonalFormFields({ form, errors, onChange }: PersonalF
         onChange={handleInputChange("nomeCompleto")}
         fullWidth
         error={errors.nomeCompleto}
+        data-testid="register-fullname"
       />
 
       <DatePicker
@@ -74,6 +76,7 @@ export default function PersonalFormFields({ form, errors, onChange }: PersonalF
 
       <Input
         id="cpf"
+        name="cpf"
         label="CPF"
         placeholder="000.000.000-00"
         type="text"
@@ -82,10 +85,12 @@ export default function PersonalFormFields({ form, errors, onChange }: PersonalF
         fullWidth
         error={errors.cpf}
         maxLength={14}
+        data-testid="register-cpf"
       />
 
       <Input
         id="telefone"
+        name="telefone"
         label="Telefone"
         placeholder="(11) 99999-9999"
         type="tel"
@@ -94,6 +99,7 @@ export default function PersonalFormFields({ form, errors, onChange }: PersonalF
         fullWidth
         error={errors.telefone}
         maxLength={15}
+        data-testid="register-phone"
       />
     </>
   );

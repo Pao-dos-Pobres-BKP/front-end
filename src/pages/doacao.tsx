@@ -19,6 +19,9 @@ import { createDonation, type Periodicity } from "../services/donations";
 import { useUser } from "../hooks/useUser";
 import { toast } from "sonner";
 
+// Campaign ID for direct donations to "Fundação O Pão dos Pobres"
+const DIRECT_DONATION_CAMPAIGN_ID = "cmhw8giob0041vvo3ms8jt23e";
+
 const Doacao = () => {
   const { user: currentUser } = useUser();
   const [currentStep, setCurrentStep] = useState("item-1");
@@ -141,7 +144,7 @@ const Doacao = () => {
       const donationData = {
         amount: parseInt(donationValue, 10) / 100, // Convert from cents to reais
         periodicity: periodicity === "UNIQUE" ? null : (periodicity as Periodicity),
-        campaignId: selectedCampaign === "direct-donation" ? undefined : selectedCampaign,
+        campaignId: selectedCampaign,
         donorId: currentUser?.id,
         paymentMethod: paymentMethodMap[step3Value],
       };
@@ -195,8 +198,8 @@ const Doacao = () => {
   };
 
   const handleDirectDonation = () => {
-    // Special ID for direct donations (without campaign)
-    setSelectedCampaign("direct-donation");
+    // Direct donations to Fundação O Pão dos Pobres (specific campaign ID)
+    setSelectedCampaign(DIRECT_DONATION_CAMPAIGN_ID);
     setIsCampaignConfirmed(true);
     setCurrentStep("item-2");
   };
@@ -296,7 +299,7 @@ const Doacao = () => {
                   isActive={isCampaignConfirmed}
                   value={
                     isCampaignConfirmed
-                      ? selectedCampaign === "direct-donation"
+                      ? selectedCampaign === DIRECT_DONATION_CAMPAIGN_ID
                         ? "Fundação O Pão dos Pobres"
                         : campaignOptions.find((c) => c.value === selectedCampaign)?.label
                       : undefined
@@ -327,6 +330,7 @@ const Doacao = () => {
                     onClick={handleConfirmCampaign}
                     className="self-end"
                     disabled={!selectedCampaign}
+                    data-testid="confirm-campaign-button"
                   >
                     Confirmar Campanha
                   </Button>
@@ -340,6 +344,7 @@ const Doacao = () => {
                       size="small"
                       onClick={handleDirectDonation}
                       className="w-auto px-4"
+                      data-testid="direct-donation-button"
                     >
                       Doar para Pão dos Pobres
                     </Button>
@@ -405,8 +410,8 @@ const Doacao = () => {
                     <div className="p-4 rounded-lg bg-blue-50 border border-blue-200">
                       <p className="font-semibold text-blue-900 mb-2">Doação única</p>
                       <p className="text-sm text-blue-700">
-                        Para realizar doações com recorrência (mensal, trimestral, semestral ou anual), 
-                        é necessário fazer login com uma conta de doador.
+                        Para realizar doações com recorrência (mensal, trimestral, semestral ou
+                        anual), é necessário fazer login com uma conta de doador.
                       </p>
                     </div>
                   )}
@@ -416,6 +421,7 @@ const Doacao = () => {
                     onClick={handleConfirmValue}
                     className="self-end"
                     desactive={parseInt(donationValue, 10) <= 0 || (currentUser && !periodicity)}
+                    data-testid="confirm-value-button"
                   >
                     Confirmar
                   </Button>
@@ -440,13 +446,18 @@ const Doacao = () => {
               </AccordionTrigger>
               <AccordionContent variant="secondary">
                 <div className="flex flex-col gap-4">
-                  <PaymentMethodSelector selectedValue={step3Value} onSelect={setStep3Value} />
+                  <PaymentMethodSelector
+                    selectedValue={step3Value}
+                    onSelect={setStep3Value}
+                    data-testid="payment-method-selector"
+                  />
                   <Button
                     variant="confirm"
                     size="small"
                     onClick={handleConfirmStep3}
                     className="self-end"
                     disabled={!step3Value}
+                    data-testid="confirm-payment-method-button"
                   >
                     Confirmar
                   </Button>
@@ -524,6 +535,7 @@ const Doacao = () => {
             size="large"
             onClick={() => (window.location.href = "/")}
             disabled={paymentStatus !== "Confirmado"}
+            data-testid="back-home-button"
           >
             Voltar
           </Button>

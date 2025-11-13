@@ -16,6 +16,7 @@ interface UsePerfilOptions {
   campaignsPageSize: number;
   donationsPage: number;
   donationsPageSize: number;
+  shouldLoadData?: boolean;
 }
 
 export function usePerfil({
@@ -23,6 +24,7 @@ export function usePerfil({
   campaignsPageSize,
   donationsPage,
   donationsPageSize,
+  shouldLoadData = true,
 }: UsePerfilOptions) {
   const [campaigns, setCampaigns] = useState<CampaignDonation[]>([]);
   const [campaignsTotalPages, setCampaignsTotalPages] = useState(0);
@@ -30,9 +32,11 @@ export function usePerfil({
   const [donationsTotalPages, setDonationsTotalPages] = useState(0);
 
   useEffect(() => {
-    getCampaignDonations(campaignsPage, campaignsPageSize);
-    getDonorDonations(donationsPage, donationsPageSize);
-  }, [campaignsPage, campaignsPageSize, donationsPage, donationsPageSize]);
+    if (shouldLoadData) {
+      getCampaignDonations(campaignsPage, campaignsPageSize);
+      getDonorDonations(donationsPage, donationsPageSize);
+    }
+  }, [campaignsPage, campaignsPageSize, donationsPage, donationsPageSize, shouldLoadData]);
 
   async function getCampaignDonations(campaignsPage: number, campaignsPageSize: number) {
     const response = await getDonorCampaigns(campaignsPage, campaignsPageSize);
@@ -60,7 +64,10 @@ export function usePerfil({
       periodicity: "CANCELED",
     };
     await updateDonation(updatedDonation);
-    await getDonorDonations(donationsPage, donationsPageSize);
+    // Só recarrega doações se os dados devem ser carregados
+    if (shouldLoadData) {
+      await getDonorDonations(donationsPage, donationsPageSize);
+    }
   }
 
   return {

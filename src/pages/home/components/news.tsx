@@ -9,7 +9,7 @@ import {
 import NewsItem from "@/components/ui/news-item";
 import NewsModal from "@/components/ui/news-modal";
 import type { NewsAPI } from "@/services/news";
-import excluir1 from "@/assets/excluir1.jpg";
+import { getNewsImage } from "@/constant/defaultImages";
 
 interface NewsProps {
   news: NewsAPI[];
@@ -58,20 +58,22 @@ export const News = ({ news }: NewsProps) => {
             align: "start",
             loop: false,
           }}
+          data-testid="news-carousel"
         >
           <CarouselContent>
             {news.map((newsItem) => (
               <CarouselItem key={newsItem.id}>
                 <NewsItem
-                  imageUrl={excluir1}
+                  imageUrl={getNewsImage(null)}
                   title={newsItem.title}
                   onClick={() => handleNewsClick(newsItem)}
+                  data-testid={`news-card-${newsItem.id}`}
                 />
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
+          <CarouselPrevious data-testid="news-prev-button" />
+          <CarouselNext data-testid="news-next-button" />
         </Carousel>
       </div>
 
