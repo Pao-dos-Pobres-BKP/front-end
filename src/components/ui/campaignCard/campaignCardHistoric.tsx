@@ -43,13 +43,7 @@ export function CampaignCardHistoric(props: CampaignCardHistoricProps) {
   const gradientTextClass =
     displaySituation === "recurring"
       ? "bg-gradient-to-b from-[#FF4A4A] to-[#FF8787] bg-clip-text text-transparent"
-      : displaySituation === "finished"
-        ? "bg-gradient-to-b from-[#16a34a] to-[#4ade80] bg-clip-text text-transparent"
-        : displaySituation === "approved"
-          ? "bg-gradient-to-b from-[#456DFF] to-[#AABCFF] bg-clip-text text-transparent"
-          : displaySituation === "paused"
-            ? "text-gray-600"
-            : "text-[#034d6b]";
+      : "bg-gradient-to-b from-[#456DFF] to-[#AABCFF] bg-clip-text text-transparent";
 
   const renderIcon = () => {
     const map: Record<string, string | undefined> = {
