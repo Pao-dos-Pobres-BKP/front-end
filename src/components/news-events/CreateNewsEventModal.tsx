@@ -3,6 +3,8 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import Input from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import Button from "@/components/ui/button";
+import { DatePicker } from "@/components/ui/Calendar/date-picker";
+import { TimePicker } from "@/components/ui/Calendar/time-picker";
 
 const VALIDATION_RULES = {
   TITLE_MIN_LENGTH: 3,
@@ -43,9 +45,9 @@ export const CreateNewsEventModal: React.FC<CreateNewsEventModalProps> = ({
   const [form, setForm] = React.useState({
     title: "",
     description: "",
-    date: "",
-    dateStart: "",
-    dateEnd: "",
+    date: undefined as Date | undefined,
+    dateStart: undefined as Date | undefined,
+    dateEnd: undefined as Date | undefined,
     timeStart: "",
     timeEnd: "",
     location: "",
@@ -73,9 +75,9 @@ export const CreateNewsEventModal: React.FC<CreateNewsEventModalProps> = ({
       setForm({
         title: "",
         description: "",
-        date: "",
-        dateStart: "",
-        dateEnd: "",
+        date: undefined,
+        dateStart: undefined,
+        dateEnd: undefined,
         timeStart: "",
         timeEnd: "",
         location: "",
@@ -95,8 +97,15 @@ export const CreateNewsEventModal: React.FC<CreateNewsEventModalProps> = ({
 
   function handleTypeChange(type: "news" | "event") {
     setSelectedType(type);
-    setForm((f) => ({ ...f, date: "", dateStart: "", dateEnd: "", timeStart: "", timeEnd: "" }));
+    setForm((f) => ({ ...f, date: undefined, dateStart: undefined, dateEnd: undefined, timeStart: "", timeEnd: "" }));
     setErrors({});
+  }
+
+  function handleDateChange(field: "date" | "dateStart" | "dateEnd", value: Date | undefined) {
+    setForm((f) => ({ ...f, [field]: value }));
+    if (errors[field]) {
+      setErrors((e) => ({ ...e, [field]: "" }));
+    }
   }
 
   function validateForm(): boolean {
@@ -130,9 +139,9 @@ export const CreateNewsEventModal: React.FC<CreateNewsEventModalProps> = ({
 
       if (!form.dateStart) {
         newErrors.dateStart = "Data de início é obrigatória";
-      } else {
-        const startDate = new Date(form.dateStart);
-        const startDateStr = `${startDate.getUTCFullYear()}-${String(startDate.getUTCMonth() + 1).padStart(2, "0")}-${String(startDate.getUTCDate()).padStart(2, "0")}`;
+      } else if (form.dateStart) {
+        const startDate = form.dateStart;
+        const startDateStr = `${startDate.getFullYear()}-${String(startDate.getMonth() + 1).padStart(2, "0")}-${String(startDate.getDate()).padStart(2, "0")}`;
 
         if (startDateStr <= todayStr) {
           newErrors.dateStart = "Data de início deve ser a partir de amanhã";
@@ -152,11 +161,11 @@ export const CreateNewsEventModal: React.FC<CreateNewsEventModalProps> = ({
       }
 
       if (form.dateStart && form.dateEnd && !newErrors.dateStart && !newErrors.dateEnd) {
-        const startDate = new Date(form.dateStart);
-        const startDateStr = `${startDate.getUTCFullYear()}-${String(startDate.getUTCMonth() + 1).padStart(2, "0")}-${String(startDate.getUTCDate()).padStart(2, "0")}`;
+        const startDate = form.dateStart;
+        const startDateStr = `${startDate.getFullYear()}-${String(startDate.getMonth() + 1).padStart(2, "0")}-${String(startDate.getDate()).padStart(2, "0")}`;
 
-        const endDate = new Date(form.dateEnd);
-        const endDateStr = `${endDate.getUTCFullYear()}-${String(endDate.getUTCMonth() + 1).padStart(2, "0")}-${String(endDate.getUTCDate()).padStart(2, "0")}`;
+        const endDate = form.dateEnd;
+        const endDateStr = `${endDate.getFullYear()}-${String(endDate.getMonth() + 1).padStart(2, "0")}-${String(endDate.getDate()).padStart(2, "0")}`;
 
         if (endDateStr < startDateStr) {
           newErrors.dateEnd = "Data de término não pode ser anterior à data de início";
@@ -185,17 +194,32 @@ export const CreateNewsEventModal: React.FC<CreateNewsEventModalProps> = ({
     setIsSubmitting(true);
     try {
       if (selectedType === "news") {
+        if (!form.date) {
+          alert("Data é obrigatória");
+          return;
+        }
         await onCreate("news", {
           title: form.title,
           description: form.description,
-          date: new Date(form.date).toISOString(),
+          date: form.date.toISOString(),
           location: form.location,
           url: DEFAULT_URLS.NEWS,
         });
       } else {
+        if (!form.dateStart || !form.dateEnd) {
+          alert("Datas são obrigatórias");
+          return;
+        }
         // Combinar data e hora para criar ISO strings sem conversão de timezone
-        const dateStartISO = `${form.dateStart}T${form.timeStart}:00.000Z`;
-        const dateEndISO = `${form.dateEnd}T${form.timeEnd}:00.000Z`;
+        const year = form.dateStart.getFullYear();
+        const month = String(form.dateStart.getMonth() + 1).padStart(2, "0");
+        const day = String(form.dateStart.getDate()).padStart(2, "0");
+        const dateStartISO = `${year}-${month}-${day}T${form.timeStart}:00.000Z`;
+        
+        const yearEnd = form.dateEnd.getFullYear();
+        const monthEnd = String(form.dateEnd.getMonth() + 1).padStart(2, "0");
+        const dayEnd = String(form.dateEnd.getDate()).padStart(2, "0");
+        const dateEndISO = `${yearEnd}-${monthEnd}-${dayEnd}T${form.timeEnd}:00.000Z`;
 
         await onCreate("event", {
           title: form.title,
@@ -287,13 +311,14 @@ export const CreateNewsEventModal: React.FC<CreateNewsEventModalProps> = ({
               <label className="block text-sm font-semibold text-[#034d6b] mb-1.5">
                 Data <span className="text-red-500">*</span>
               </label>
-              <Input
-                type="date"
+              <DatePicker
+                id="news-date"
+                placeholder="Selecione a data"
                 value={form.date}
-                onChange={(e) => handleChange("date", e.target.value)}
-                className={`w-full h-10 ${errors.date ? "border-red-500" : ""}`}
+                onChange={(date) => handleDateChange("date", date)}
+                fullWidth
+                error={errors.date}
               />
-              {errors.date && <p className="text-xs text-red-500 mt-1">{errors.date}</p>}
             </div>
           ) : (
             <div className="space-y-3">
@@ -302,28 +327,28 @@ export const CreateNewsEventModal: React.FC<CreateNewsEventModalProps> = ({
                   <label className="block text-sm font-semibold text-[#034d6b] mb-1.5">
                     Data de Início <span className="text-red-500">*</span>
                   </label>
-                  <Input
-                    type="date"
+                  <DatePicker
+                    id="event-date-start"
+                    placeholder="Selecione a data de início"
                     value={form.dateStart}
-                    onChange={(e) => handleChange("dateStart", e.target.value)}
-                    className={`w-full h-10 ${errors.dateStart ? "border-red-500" : ""}`}
+                    onChange={(date) => handleDateChange("dateStart", date)}
+                    fullWidth
+                    error={errors.dateStart}
                   />
-                  {errors.dateStart && (
-                    <p className="text-xs text-red-500 mt-1">{errors.dateStart}</p>
-                  )}
                 </div>
 
                 <div>
                   <label className="block text-sm font-semibold text-[#034d6b] mb-1.5">
                     Data de Término <span className="text-red-500">*</span>
                   </label>
-                  <Input
-                    type="date"
+                  <DatePicker
+                    id="event-date-end"
+                    placeholder="Selecione a data de término"
                     value={form.dateEnd}
-                    onChange={(e) => handleChange("dateEnd", e.target.value)}
-                    className={`w-full h-10 ${errors.dateEnd ? "border-red-500" : ""}`}
+                    onChange={(date) => handleDateChange("dateEnd", date)}
+                    fullWidth
+                    error={errors.dateEnd}
                   />
-                  {errors.dateEnd && <p className="text-xs text-red-500 mt-1">{errors.dateEnd}</p>}
                 </div>
               </div>
 
@@ -332,28 +357,28 @@ export const CreateNewsEventModal: React.FC<CreateNewsEventModalProps> = ({
                   <label className="block text-sm font-semibold text-[#034d6b] mb-1.5">
                     Horário de Início <span className="text-red-500">*</span>
                   </label>
-                  <Input
-                    type="time"
+                  <TimePicker
+                    id="event-time-start"
+                    placeholder="00:00"
                     value={form.timeStart}
-                    onChange={(e) => handleChange("timeStart", e.target.value)}
-                    className={`w-full h-10 ${errors.timeStart ? "border-red-500" : ""}`}
+                    onChange={(time) => handleChange("timeStart", time)}
+                    fullWidth
+                    error={errors.timeStart}
                   />
-                  {errors.timeStart && (
-                    <p className="text-xs text-red-500 mt-1">{errors.timeStart}</p>
-                  )}
                 </div>
 
                 <div>
                   <label className="block text-sm font-semibold text-[#034d6b] mb-1.5">
                     Horário de Término <span className="text-red-500">*</span>
                   </label>
-                  <Input
-                    type="time"
+                  <TimePicker
+                    id="event-time-end"
+                    placeholder="00:00"
                     value={form.timeEnd}
-                    onChange={(e) => handleChange("timeEnd", e.target.value)}
-                    className={`w-full h-10 ${errors.timeEnd ? "border-red-500" : ""}`}
+                    onChange={(time) => handleChange("timeEnd", time)}
+                    fullWidth
+                    error={errors.timeEnd}
                   />
-                  {errors.timeEnd && <p className="text-xs text-red-500 mt-1">{errors.timeEnd}</p>}
                 </div>
               </div>
             </div>
