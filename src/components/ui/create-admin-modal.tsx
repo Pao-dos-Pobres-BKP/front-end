@@ -148,10 +148,10 @@ export default function CreateAdminModal({ isModalOpen, onClose, onSuccess, isCu
             {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
           </div>
           <div className="flex flex-col gap-2 mb-4 items-start">
-            <p className="block mb-1 text-sm font-medium text-[var(--color-components)]">Root</p>
+            <p className="block mb-1 text-sm font-medium text-[var(--color-components)]">Principal</p>
             {!isCurrentUserRoot && (
               <p className="text-xs text-gray-500 mb-1">
-                Apenas administradores root podem criar outros administradores root
+                Apenas administradores principais podem criar outros administradores principais
               </p>
             )}
             <div className="flex gap-6">
@@ -159,7 +159,7 @@ export default function CreateAdminModal({ isModalOpen, onClose, onSuccess, isCu
                 <div className="relative flex items-center justify-center">
                   <input
                     type="radio"
-                    name="root"
+                    name="principal"
                     checked={formData.root === true}
                     onChange={() => isCurrentUserRoot && setFormData((prev) => ({ ...prev, root: true }))}
                     className="sr-only"
@@ -180,7 +180,7 @@ export default function CreateAdminModal({ isModalOpen, onClose, onSuccess, isCu
                 <div className="relative flex items-center justify-center">
                   <input
                     type="radio"
-                    name="root"
+                    name="principal"
                     checked={formData.root === false}
                     onChange={() => setFormData((prev) => ({ ...prev, root: false }))}
                     className="sr-only"
@@ -250,7 +250,7 @@ export default function CreateAdminModal({ isModalOpen, onClose, onSuccess, isCu
         <div className="flex flex-col justify-between gap-12 items-center w-full">
           <div className="flex flex-col gap-2">
             {serviceResponse?.status === 201 ? (
-              <p>Administrador{formData.root ? " root " : " "}criado com sucesso!</p>
+              <p>Administrador{formData.root ? " principal " : " comum "}criado com sucesso!</p>
             ) : (
               serviceResponse?.message.map((message) => <p key={message}>{message}</p>)
             )}

@@ -77,7 +77,7 @@ export function AdminDetailsModal({
                   admin.root ? "bg-[#F68537] text-white" : "bg-[#005172] text-white"
                 }`}
               >
-                {admin.root ? "Root" : "Administrador"}
+                {admin.root ? "Principal" : "Comum"}
               </span>
             </div>
           </div>
@@ -98,7 +98,7 @@ export function AdminDetailsModal({
         {!isCurrentUserRoot && (
           <div className="mt-6 p-4 bg-gray-100 border border-gray-300 rounded-lg">
             <p className="text-sm text-gray-600 text-center">
-              Apenas administradores ROOT podem excluir outros administradores.
+              Apenas administradores principais podem excluir outros administradores.
             </p>
           </div>
         )}
