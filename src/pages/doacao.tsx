@@ -55,7 +55,7 @@ const Doacao = () => {
         const campaign = await getRootCampaign();
         setRootCampaign(campaign);
       } catch (error) {
-        console.error("Erro ao buscar campanha root:", error);
+        console.error("Erro ao buscar campanha principal:", error);
       }
     };
 
@@ -216,7 +216,7 @@ const Doacao = () => {
       setIsCampaignConfirmed(true);
       setCurrentStep("item-2");
     } else {
-      toast.error("Campanha root não encontrada. Tente novamente.");
+      toast.error("Campanha principal não encontrada. Tente novamente.");
     }
   };
 
